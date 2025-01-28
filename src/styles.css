@@ -5,6 +5,7 @@
 @tailwind components;
 @tailwind  utilities;
 html, body { height: 100%; }
-body { margin: 0; font-family: Monserrat, "Helvetica Neue", sans-serif;
+body { margin: 0;
+  font-family: 'Montserrat', sans-serif;
   @apply min-h-screen;
 }
