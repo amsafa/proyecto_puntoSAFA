@@ -7,6 +7,7 @@ import {
   CajasCategoriaInicioComponent
 } from './component/Inicio_componentes_propios/cajas-categoria-inicio/cajas-categoria-inicio.component';
 import {Carousel} from 'primeng/carousel';
+import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
 
 export const routes: Routes = [
 
@@ -16,6 +17,6 @@ export const routes: Routes = [
   {path: 'heroInicio', component: HeroSectionInicioComponent, pathMatch: 'full'},
   {path: 'buscadorInicio' ,component: BuscadorInicioComponent, pathMatch: 'full'},
   {path: 'cajasCategoria', component: CajasCategoriaInicioComponent, pathMatch: 'full'},
-  {path: 'carrusel', component: Carousel, pathMatch: 'full'}
+  {path: 'carrusel', component: CarouselComponent, pathMatch: 'full'}
 
 ];
