@@ -1,0 +1,13 @@
+<section class="py-10 bg-blue-900 text-white text-center">
+  <div class="container mx-auto">
+    <h2 class="text-2xl font-bold">NUESTRA RECOMENDACÓN DE LA SEMANA:</h2>
+    <div class="mt-6">
+      <!-- Reutilización del componente BookCard -->
+      <app-book-card
+        *ngIf="randomBook"
+        [book]="randomBook"
+        class="mx-auto"
+      ></app-book-card>
+    </div>
+  </div>
+</section>

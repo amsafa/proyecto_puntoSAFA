@@ -30,11 +30,14 @@ export class BookCardComponent implements OnInit {
       image: 'https://gigamesh.com/wp-content/uploads/2023/05/Juego-de-tronos.jpg',
     },
     {
-      title: 'Sombra y Huesos',
-      author: 'Leigh Bardugo',
-      price: 13.95,
-      image: 'https://www.popularlibros.com/imagenes-webp-grandes/9788418/978841800249.webp',
+      title: 'It',
+      author: 'S. King',
+      price: 16.95,
+      image: 'https://es.naufragia.com/wp-content/uploads/2021/04/71z7OGtw8wL-1347x2048.jpg',
     },
+
+
+
   ];
 
   constructor() {}

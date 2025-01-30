@@ -1,0 +1,16 @@
+/* carrusel.component.css */
+.carousel {
+  display: flex;
+  overflow: hidden; /* Oculta los elementos que se desbordan */
+  scroll-behavior: smooth; /* Añade un desplazamiento suave */
+  scroll-snap-type: x mandatory; /* Añade un ajuste de desplazamiento */
+}
+
+.carousel-item {
+  min-width: 300px;
+  flex-shrink: 0;
+}
+
+button {
+  cursor: pointer;
+}
