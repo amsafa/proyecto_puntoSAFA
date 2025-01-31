@@ -1,0 +1,71 @@
+<div class="min-h-screen flex flex-col">
+  <header >
+    <app-header></app-header>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow flex flex-col items-center bg-white">
+    <!-- Encabezado -->
+    <div class="w-full flex items-center bg-[#F0F4EF] p-10">
+      <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-60 h-auto ml-60">
+      <h2 class="flex-2 text-center text-4xl font-bold text-[#1F2D3D]">REGISTRO</h2>
+    </div>
+
+    <!-- Formulario -->
+    <div class="form-container bg-[#BBCCDD] p-8 rounded-lg shadow-md mt-10 w-full max-w-md">
+      <form class="space-y-4">
+        <!-- Campo: Email -->
+        <div class="input-group flex items-center bg-white p-3 rounded-md">
+          <i class="fas fa-envelope text-gray-500 mr-3"></i>
+          <input type="email" placeholder="Email" class="w-full focus:outline-none" required>
+        </div>
+
+        <!-- Campo: Nombre de usuario -->
+        <div class="input-group flex items-center bg-white p-3 rounded-md">
+          <i class="fas fa-user text-gray-500 mr-3"></i>
+          <input type="text" placeholder="Nombre de usuario" class="w-full focus:outline-none" required>
+        </div>
+
+        <!-- Campo: Contraseña -->
+        <div class="input-group flex items-center bg-white p-3 rounded-md">
+          <i class="fas fa-lock text-gray-500 mr-3"></i>
+          <input type="password" placeholder="Contraseña" class="w-full focus:outline-none" required>
+        </div>
+
+        <!-- Campo: Repetir contraseña -->
+        <div class="input-group flex items-center bg-white p-3 rounded-md">
+          <i class="fas fa-lock text-gray-500 mr-3"></i>
+          <input type="password" placeholder="Repite contraseña" class="w-full focus:outline-none" required>
+        </div>
+
+        <!-- Campo: DNI -->
+        <div class="input-group flex items-center bg-white p-3 rounded-md">
+          <i class="fas fa-id-card text-gray-500 mr-3"></i>
+          <input type="text" placeholder="DNI" class="w-full focus:outline-none" required>
+        </div>
+
+        <!-- Campo: Teléfono -->
+        <div class="input-group flex items-center bg-white p-3 rounded-md">
+          <i class="fas fa-phone text-gray-500 mr-3"></i>
+          <input type="tel" placeholder="Teléfono de contacto" class="w-full focus:outline-none" required>
+        </div>
+
+        <!-- Botón de registro -->
+        <button type="submit" class="w-full bg-[#009688] text-white py-3 rounded-md font-semibold hover:bg-[#00796B] transition-colors">
+          Registrarme
+        </button>
+      </form>
+
+      <!-- Enlace para iniciar sesión -->
+      <p class="login-link text-center text-sm mt-4 text-gray-600">
+        ¿Ya tienes cuenta? <a href="#" class="text-[#009688] font-bold hover:underline">Inicia sesión aquí.</a>
+      </p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6">
+    <app-footer></app-footer>
+  </footer>
+
+</div>
