@@ -12,6 +12,6 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   getData(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/path/to/your/endpoint`);
+    return this.http.get<any>(`${this.apiUrl}/http://127.0.0.1:8000/api`);
   }
 }
