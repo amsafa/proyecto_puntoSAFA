@@ -6,11 +6,14 @@ import {BuscadorInicioComponent} from './component/buscador-inicio/buscador-inic
 import {
   CajasCategoriaInicioComponent
 } from './component/Inicio_componentes_propios/cajas-categoria-inicio/cajas-categoria-inicio.component';
-import {Carousel} from 'primeng/carousel';
 import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
 import {
   RecomendacionLibroComponent
 } from './component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component';
+import {CatalogoComponent} from './page/catalogo/catalogo/catalogo.component';
+import {BookCardComponent} from './component/Inicio_componentes_propios/book-card/book-card.component';
+
+
 
 export const routes: Routes = [
 
@@ -22,5 +25,8 @@ export const routes: Routes = [
   {path: 'cajasCategoria', component: CajasCategoriaInicioComponent, pathMatch: 'full'},
   {path: 'carrusel', component: CarouselComponent, pathMatch: 'full'},
   {path: 'recomendacionLibro', component: RecomendacionLibroComponent, pathMatch: 'full'},
+  {path:'catalogo', component:CatalogoComponent, pathMatch:'full'},
+  {path:'bookcard', component:BookCardComponent, pathMatch:'full'},
+
 
 ];
