@@ -1,12 +1,22 @@
 <header class="bg-custom-blue text-white p-4">
   <nav class="container mx-auto flex justify-between items-center">
+    <!-- Logo -->
     <div class="flex items-center space-x-2">
-      <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="h-16">
-      <strong class="text-2xl">Punto Safa</strong>
+      <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="h-12 md:h-16">
+      <strong class="text-xl md:text-2xl">Punto Safa</strong>
     </div>
-    <ul class="flex space-x-16 text-white-lg">
-      <li><a href="#" class=" text-white hover:text-gray-300">Inicio</a></li>
-      <li><a href="#" class=" text-white hover:text-gray-300">Catálogo</a></li>
+
+    <!-- Botón de menú en móvil -->
+    <button (click)="toggleMenu()" class="block md:hidden text-white focus:outline-none">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+
+    <!-- Menú de navegación en pantallas grandes -->
+    <ul class="hidden md:flex space-x-6 text-lg md:text-white">
+      <li><a href="#" class="hover:text-gray-300">Inicio</a></li>
+      <li><a href="#" class="hover:text-gray-300">Catálogo</a></li>
       <li>
         <a href="#" class="bg-white text-blue-900 px-4 py-2 rounded hover:bg-gray-200">
           Iniciar sesión o registrarse
@@ -14,4 +24,13 @@
       </li>
     </ul>
   </nav>
+
+  <!-- Menú desplegable en móviles -->
+  <div *ngIf="isMenuOpen" class="md:hidden bg-custom-blue text-white text-center py-4">
+    <a href="#" class="block py-2 hover:text-gray-300">Inicio</a>
+    <a href="#" class="block py-2 hover:text-gray-300">Catálogo</a>
+    <a href="#" class="block bg-white text-blue-900 px-4 py-2 rounded hover:bg-gray-200">
+      Iniciar sesión o registrarse
+    </a>
+  </div>
 </header>
