@@ -24,17 +24,21 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Esto es lo que se ejecuta al cargar la página
   ngOnInit() {
+    console.log('CarouselComponent cargado');
     this.apiService.getBooks().subscribe({
       next: (data: Book[]) => {
         this.books = data;
+        console.log('Libros cargados:', this.books);
         this.loading = false;
       },
-      error: () => {
+      error: (error) => {
+        console.error('Error al cargar libros:', error);
         this.errorMessage = 'Error al cargar los libros. Inténtalo de nuevo.';
         this.loading = false;
-      },
+      }
     });
   }
+
 
 
   // Esto es lo que se ejecuta después de cargar la página

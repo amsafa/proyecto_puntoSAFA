@@ -152,12 +152,6 @@
       }
     }
   },
-  "cli": {
-    "analytics": "f25df4a6-7292-49c1-9433-7b91df1bcc6e",
-    "schematicCollections": [
-      "@ionic/angular-toolkit"
-    ]
-  },
   "schematics": {
     "@ionic/angular-toolkit:component": {
       "styleext": "css"
