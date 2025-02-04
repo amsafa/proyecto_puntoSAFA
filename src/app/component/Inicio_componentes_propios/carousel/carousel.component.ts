@@ -1,87 +1,75 @@
-import {Component, ElementRef, NgIterable, OnInit, ViewChild} from '@angular/core';
-import {BookCardComponent} from '../book-card/book-card.component';
-import {NgForOf} from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { BookCardComponent } from '../book-card/book-card.component';
+import { NgForOf } from '@angular/common';
+import {ApiService} from '../../../api.service';
+import {Book} from '../../../interface/book';
+import {data} from 'autoprefixer';
 
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css'],
   standalone: true,
-  imports: [
-    BookCardComponent,
-    NgForOf
-  ]
+  imports: [BookCardComponent, NgForOf],
 })
-export class CarouselComponent  implements OnInit {
+export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('carousel') carousel!: ElementRef<HTMLDivElement>;
   autoScrollInterval!: any;
 
-  books = [
-    {
-      title: 'Libro 1',
-      author: 'Autor 1',
-      price: 18.95,
-      image: 'https://via.placeholder.com/150',
-    },
-    {
-      title: 'Libro 2',
-      author: 'Autor 2',
-      price: 22.95,
-      image: 'https://via.placeholder.com/150',
-    },
-    {
-      title: 'Libro 3',
-      author: 'Autor 3',
-      price: 15.75,
-      image: 'https://via.placeholder.com/150',
-    },
-    {
-      title: 'Libro 4',
-      author: 'Autor 4',
-      price: 19.99,
-      image: 'https://via.placeholder.com/150',
-    },
-  ];
+  books: Book[] = [];
+  loading = true;
+  errorMessage = '';
 
+  constructor(private apiService: ApiService) {}
+
+  // Esto es lo que se ejecuta al cargar la página
   ngOnInit() {
-    this.startAutoScroll();
+    this.apiService.getBooks().subscribe({
+      next: (data: Book[]) => {
+        this.books = data;
+        this.loading = false;
+      },
+      error: () => {
+        this.errorMessage = 'Error al cargar los libros. Inténtalo de nuevo.';
+        this.loading = false;
+      },
+    });
   }
 
+
+  // Esto es lo que se ejecuta después de cargar la página
+  ngAfterViewInit() {
+    if (this.books.length) {
+      this.startAutoScroll();
+    }
+  }
+
+  // Esto es lo que se ejecuta al salir de la página
   ngOnDestroy() {
-    clearInterval(this.autoScrollInterval);
+    if (this.autoScrollInterval) {
+      clearInterval(this.autoScrollInterval);
+    }
   }
 
+  // Funciones para mover el carrusel a la izquierda o a la derecha
   scrollLeft() {
-    const carouselElement = this.carousel.nativeElement;
-    carouselElement.scrollBy({
-      left: -300, // Ajusta el tamaño del desplazamiento
-      behavior: 'smooth',
-    });
+    this.carousel.nativeElement.scrollBy({ left: -300, behavior: 'smooth' });
   }
 
+  // Funciones para mover el carrusel a la izquierda o a la derecha
   scrollRight() {
-    const carouselElement = this.carousel.nativeElement;
-    carouselElement.scrollBy({
-      left: 300, // Ajusta el tamaño del desplazamiento
-      behavior: 'smooth',
-    });
+    this.carousel.nativeElement.scrollBy({ left: 300, behavior: 'smooth' });
   }
 
-  //Desplazamiento automático
-
+  // Función para iniciar el carrusel automático
   startAutoScroll() {
     this.autoScrollInterval = setInterval(() => {
       const carouselElement = this.carousel.nativeElement;
-      if (
-        carouselElement.scrollLeft + carouselElement.offsetWidth >=
-        carouselElement.scrollWidth
-      ) {
-        // Si llega al final, vuelve al inicio
+      if (carouselElement.scrollLeft + carouselElement.offsetWidth >= carouselElement.scrollWidth) {
         carouselElement.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
-        // Desplaza hacia la derecha
         this.scrollRight();
       }
-    }, 3000); // Cambia cada 3 segundos
+    }, 3000);
   }
 }
