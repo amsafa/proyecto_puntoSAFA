@@ -1,0 +1,6 @@
+<div *ngIf="loading" class="text-center">Cargando libros...</div>
+<div *ngIf="errorMessage" class="text-red-500">{{ errorMessage }}</div>
+
+<div *ngIf="books.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+  <app-book-card *ngFor="let book of books" [book]="book"></app-book-card>
+</div>
