@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {LibroService} from '../../service/libro.service';
+import {Libro} from '../../interface/libro';
 
 @Component({
   selector: 'app-buscador-inicio',
@@ -6,10 +8,37 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./buscador-inicio.component.css'],
   standalone: true,
 })
-export class BuscadorInicioComponent  implements OnInit {
+export class BuscadorInicioComponent {
 
-  constructor() { }
+  constructor(private libroService: LibroService) {
+  }
 
-  ngOnInit() {}
+  // @Output() resultadoBusqueda: EventEmitter<Libro[]> = new EventEmitter<Libro[]>();
+  //
+  query: string = '';
+  libros: Libro[] = [];
+
+
+  // async searchLibros(): Promise<void> {
+  //   if(this.query){
+  //     const libros = await this.libroService.searchLibros(this.query);
+  //     this.resultadoBusqueda.emit(libros);
+  //   }else {
+  //     this.resultadoBusqueda.emit([]);
+  //   }
+
+  // }
+
+  async searchLibros(): Promise<void> {
+
+    if (this.query) {
+
+      this.libros = await this.libroService.searchLibros(this.query);
+
+    } else {
+
+      this.libros = []; // Clear results if search term is empty
+    }
+  }
 
 }
