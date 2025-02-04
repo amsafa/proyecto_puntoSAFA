@@ -5,6 +5,9 @@ import {HeroSecccionesComponent} from '../../../component/hero-secciones/hero-se
 import {BuscadorInicioComponent} from '../../../component/buscador-inicio/buscador-inicio.component';
 import {FiltroCatalogoComponent} from '../../../component/filtro-catalogo/filtro-catalogo/filtro-catalogo.component';
 import {CurrencyPipe, NgForOf} from '@angular/common';
+import {Libro} from '../../../interface/libro';
+import {LibroService} from '../../../service/libro.service';
+
 
 
 @Component({
@@ -23,45 +26,44 @@ import {CurrencyPipe, NgForOf} from '@angular/common';
 
   ]
 })
-export class CatalogoComponent  implements OnInit {
-  @Input() books: { title: string; author: string; price: number; image: string }[] | null = null;
+export class CatalogoComponent implements OnInit {
+  query: string = '';
+  libros: Libro[] = [];
 
-  constructor() { }
+ constructor(private libroService: LibroService) {
+ }
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.cargarLibros().then(libros => {
+      this.libros = libros; // Assuming 'users' is the property where you store the fetched users
+    }).catch(error => {
+      console.error('Error fetching books:', error); // Handle any errors that occur during the fetch
+    });
 
-  defaultBooks = [
-    {
-      title: 'La huella del verdugo',
-      author: 'Stephen King',
-      price: 18.95,
-      image: 'https://imgv2-2-f.scribdassets.com/img/document/710958426/original/9183498569/1711766544?v=1',
-    },
-    {
-      title: 'Juego de Tronos',
-      author: 'George R. R. Martin',
-      price: 25.99,
-      image: 'https://gigamesh.com/wp-content/uploads/2023/05/Juego-de-tronos.jpg',
-    },
-    {
-      title: 'It',
-      author: 'S. King',
-      price: 16.95,
-      image: 'https://es.naufragia.com/wp-content/uploads/2021/04/71z7OGtw8wL-1347x2048.jpg',
-    },
-    {
-      title: 'Fray Perico',
-      author: 'S. King',
-      price: 16.95,
-      image: 'https://es.naufragia.com/wp-content/uploads/2021/04/71z7OGtw8wL-1347x2048.jpg',
-    },
-
-
-
-  ];
-
-  @Input() book!: any;
-  get displayedBooks() {
-    return this.books || this.defaultBooks;
   }
+
+  async cargarLibros(): Promise<any> {
+    try {
+      return await this.libroService.getLibros(); // Call the service to fetch users
+    } catch (error) {
+      console.error('Error in cargarLibros:', error);
+      throw error; // Rethrow the error to be caught in ngOnInit
+
+    }
+ }
+
+  async searchLibros(): Promise<void> {
+
+    if (this.query) {
+
+      this.libros = await this.libroService.searchLibros(this.query);
+
+    } else {
+
+      this.libros = []; // Clear results if search term is empty
+    }
+  }
+
+
+
 }

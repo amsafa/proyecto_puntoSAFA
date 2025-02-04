@@ -9,9 +9,7 @@
   </h1>
 </app-hero-seccciones>
 
-<app-buscador-inicio></app-buscador-inicio>
-
-
+<app-buscador-inicio (click)="searchLibros()"></app-buscador-inicio>
 
 <div class=" mx-[100px]  height: 100%;
     overflow: auto;">
@@ -28,27 +26,27 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-4">
           <!-- Iteramos los libros -->
           <div
-            *ngFor="let book of displayedBooks"
+            *ngFor="let libro of libros"
             class="bg-white rounded-lg shadow-md p-4 flex flex-col col-4 items-center"
           >
             <!-- Imagen del libro -->
             <img
-              [src]="book.image"
-              [alt]="book.title"
+              [src]="libro.imagen"
+              [alt]="libro.titulo"
               class="w-40 h-60 object-cover rounded"
             />
 
             <!-- Nombre del libro -->
             <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">
-              {{ book.title }}
+              {{ libro.titulo }}
             </h3>
 
             <!-- Autor del libro -->
-            <p class="text-sm text-gray-600 text-center">por {{ book.author }}</p>
+            <p class="text-sm text-gray-600 text-center">por {{ libro.autor }}</p>
 
             <!-- Precio del libro -->
             <p class="mt-2 text-xl font-semibold text-blue-900">
-              {{ book.price | currency: 'EUR' }}
+              {{ libro.precio | currency: 'EUR' }}
             </p>
 
             <!-- Botón para comprar o ver más detalles -->
@@ -67,4 +65,5 @@
 
 <app-footer></app-footer>
 </div>
+
 
