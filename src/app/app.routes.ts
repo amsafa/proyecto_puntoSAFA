@@ -12,6 +12,10 @@ import {
   RecomendacionLibroComponent
 } from './component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component';
 import {RegistroComponent} from './page/registro/registro.component';
+import {LoginComponent} from './page/login/login.component';
+import {HomeComponent} from './page/home/home.component';
+import {AutorComponent} from './page/autor/autor.component';
+
 
 export const routes: Routes = [
 
@@ -23,6 +27,12 @@ export const routes: Routes = [
   {path: 'cajasCategoria', component: CajasCategoriaInicioComponent, pathMatch: 'full'},
   {path: 'carrusel', component: CarouselComponent, pathMatch: 'full'},
   {path: 'recomendacionLibro', component: RecomendacionLibroComponent, pathMatch: 'full'},
-  {path: 'registro', component:RegistroComponent, pathMatch: 'full'}
+  {path: 'registro', component:RegistroComponent, pathMatch: 'full'},
+  {path: 'login', component:LoginComponent, pathMatch: 'full'},
+  {path: 'home', component:HomeComponent, pathMatch: 'full'},
+  {path:'carousel', component:CarouselComponent, pathMatch: 'full'},
+  {path:'autor', component:AutorComponent, pathMatch: 'full'}
+
+
 
 ];

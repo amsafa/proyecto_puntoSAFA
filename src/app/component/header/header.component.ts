@@ -1,21 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-header',
+  templateUrl: './header.component.html',
   imports: [
     NgIf
   ],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
-  isMenuOpen = false; // Variable para manejar el estado del menú
+export class HeaderComponent implements OnInit {
+  isLoggedIn = false;  // Variable para controlar el estado de la sesión
+  isMenuOpen = false;  // Para el menú en móviles
 
-  toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen; // Alternar visibilidad
+
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.isLoggedIn = !!localStorage.getItem('token');  // Verifica si hay un token guardado
   }
 
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 
-
+  logout() {
+    localStorage.removeItem('token');  // Elimina el token
+    this.isLoggedIn = false;
+    this.router.navigate(['/login']);  // Redirige al login después de cerrar sesión
+  }
 }
