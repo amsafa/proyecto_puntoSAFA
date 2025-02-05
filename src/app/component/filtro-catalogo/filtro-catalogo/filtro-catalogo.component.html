@@ -1,0 +1,45 @@
+<!-- Responsive Container -->
+<div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 p-4">
+  <!-- Filtro Catalogo -->
+  <div class="flex-shrink-0">
+    <app-filtro-catalogo></app-filtro-catalogo>
+  </div>
+
+  <!-- Book Card -->
+  <div class="flex-grow">
+
+  </div>
+</div>
+
+<!-- filter.component.html -->
+<div class="bg-[#1D2C4B] max-w-[333px] max-h-[65px] text-center rounded-lg text-white">
+  <h1 class="text-2xl font-bold">Filtros</h1>
+</div>
+<div class="max-w-[333px] p-4 space-y-4">
+  <!-- Precios -->
+  <div>
+    <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Precios</h3>
+    <ul class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold  font-[Montserrat]">
+      <li>Menos de 5 euros</li>
+      <li>De 5 a 10 euros</li>
+      <li>De 10 a 15 euros</li>
+      <li>De 15 a 40 euros</li>
+      <li>Más de 40 euros</li>
+    </ul>
+  </div>
+
+  <!-- Categoría -->
+  <div>
+    <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Categoria</h3>
+    <ul class="flex flex-col space-y-2 text-[#1D2C4B] font-bold text-md font-[Montserrat]">
+      <li>Lógica e inteligencia</li>
+      <li>Temáticas del universo</li>
+      <li>Psicología</li>
+    </ul>
+  </div>
+
+  <!-- Valoración -->
+  <div>
+    <h3 class="text-[#1D2C4B] text-lg font-semibold">Valoración</h3>
+  </div>
+</div>
