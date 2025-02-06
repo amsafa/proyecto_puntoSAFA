@@ -1,9 +1,9 @@
-import {Component, Input, input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
 import {FormsModule} from '@angular/forms';
-import {data} from 'autoprefixer';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @Component({
@@ -14,7 +14,8 @@ import {data} from 'autoprefixer';
     CurrencyPipe,
     NgForOf,
     FormsModule,
-    NgIf
+    NgIf,
+    HttpClientModule
 
   ]
 })
@@ -67,6 +68,23 @@ export class CatalogoComponent  implements OnInit {
   clearSearch(): void {
     this.filter = '';
     this.filteredBooks = this.libros;
+  }
+
+  selectedPriceRange: string | null = null;
+  filterByPrice(range: string): void{
+    if (this.selectedPriceRange === range){
+      this.selectedPriceRange = null;
+      this.filteredBooks = this.libros;
+    }else{
+      this.selectedPriceRange = range;
+      this.libroService.getLibrosByPrecio(range).subscribe(libros => {
+        this.filteredBooks = libros;
+      },error => {
+        console.error('Error fetching books by price:', error);
+        }
+      )
+    }
+
   }
 
 

@@ -58,11 +58,11 @@
       <div>
         <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Precios</h3>
         <ul class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
-          <li><input type="checkbox" class="mr-2">Menos de 5 euros</li>
-          <li><input type="checkbox" class="mr-2">De 5 a 10 euros</li>
-          <li><input type="checkbox" class="mr-2">De 10 a 15 euros</li>
-          <li><input type="checkbox" class="mr-2">De 15 a 40 euros</li>
-          <li><input type="checkbox" class="mr-2">Más de 40 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('menor5')" [checked]="selectedPriceRange ==='menor5'" class="mr-2">Menos de 5 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('5-10')" [checked]="selectedPriceRange ==='5-10'" class="mr-2">De 5 a 10 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('10-15')" [checked]="selectedPriceRange ==='10-15'" class="mr-2">De 10 a 15 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('15-40')" [checked]="selectedPriceRange ==='15-40'" class="mr-2">De 15 a 40 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('mayor40')" [checked]="selectedPriceRange ==='mayor40'" class="mr-2">Más de 40 euros</li>
         </ul>
       </div>
 
