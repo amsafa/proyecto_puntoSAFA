@@ -50,7 +50,7 @@ export class CatalogoComponent  implements OnInit {
   }
 
   searchBooks(): void {
-    const searchTerm = this.filter.toLowerCase().trim();
+    const searchTerm = this.filter?.toLowerCase().trim() || '';
 
     if (!searchTerm) {
       this.filteredBooks = this.libros; // Reset filter if empty
@@ -58,8 +58,9 @@ export class CatalogoComponent  implements OnInit {
     }
 
     this.filteredBooks = this.libros.filter(libro =>
-      libro.titulo.toLowerCase().includes(searchTerm) ||
-      libro.autor.toLowerCase().includes(searchTerm)
+      (libro.titulo?.toLowerCase().includes(searchTerm) ||'') ||
+      (libro.autor?.apellidos?.toLowerCase().includes(searchTerm) || '') ||
+      (libro.autor?.nombre?.toLowerCase().includes(searchTerm) || '')
     );
   }
 
