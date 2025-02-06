@@ -1,38 +1,49 @@
-<!--<section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm">-->
-<!--  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">-->
-
-<!--  <div class="container mx-auto flex flex-col md:flex-row items-center-->
-<!--   px-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">-->
-
-<!--    <div class="mt-10 md:mt-0 md:ml-0 lg:ml-0">-->
-<!--      <img src="../../../../assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-full max-w-xxs md:max-w-xs mx-auto">-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Dynamic Text Content (passed from parent) &ndash;&gt;-->
-<!--    <div class="flex items-center justify-center text-center md:text-left max-w-2xl lg:max-w-xl mx-auto">-->
-<!--      <h1 class="text-4xl font-extrabold text-blue-900 leading-tight">-->
-<!--        Catálogo-->
-<!--      </h1>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</section>-->
-
-<section class="bg-white py-4">
+<section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-  <div class="  container mx-auto flex justify-center items-center space-x-4">
-    <input
-      type="text"
-      placeholder="Buscar libro por autor o título..."
-      class="border  border-gray-300 rounded-xl px-4 py-2 w-2/3 text-custom-blue "
-      [(ngModel)]="filter"
-      id="search" name="search"
 
-    />
-    <button (click)="searchBooks()" class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
-      Buscar
-    </button>
+  <div class="container mx-auto flex flex-col md:flex-row items-center
+   px-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">
+
+    <div class="mt-10 md:mt-0 md:ml-0 lg:ml-0">
+      <img src="../../../../assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-full max-w-xxs md:max-w-xs mx-auto">
+    </div>
+
+    <!-- Dynamic Text Content (passed from parent) -->
+    <div class="flex items-center justify-center text-center md:text-left max-w-2xl lg:max-w-xl mx-auto">
+      <h1 class="text-4xl font-extrabold text-blue-900 leading-tight">
+        Catálogo
+      </h1>
+    </div>
   </div>
 </section>
+<section class="bg-white py-4">
+  <div class="container mx-auto flex justify-center items-center space-x-4 relative w-2/3">
+    <div class="relative w-full">
+  <input
+      type="text"
+      placeholder="Buscar libro por autor o título..."
+      class="border border-gray-300 rounded-xl px-4 py-2 w-2/3 text-custom-blue"
+      [(ngModel)]="filter"
+      id="search"
+      name="search"
+    />
+    </div>
+    <!-- Search Button -->
+    <button  (click)="searchBooks()" class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
+      Buscar
+    </button>
+      <button
+        *ngIf="filter"
+        (click)="clearSearch()"
+        class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400"
+      >
+        ✖
+      </button>
+  </div>
+</section>
+
+
+
 
 
 <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 p-4">
@@ -71,38 +82,19 @@
   <div class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
     <!-- Iteramos los libros -->
     <div
-      *ngFor="let libro of libros"
+      *ngFor="let libro of filteredBooks"
       class="bg-white rounded-lg shadow-lg p-4 flex flex-col items-center"
     >
-      <!-- Imagen del libro -->
-      <img
-        [src]="libro.imagen"
-        [alt]="libro.titulo"
-        class="w-40 h-60 object-cover rounded"
-      />
-
-      <!-- Nombre del libro -->
-      <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">
-        {{ libro.titulo }}
-      </h3>
-
-      <!-- Autor del libro -->
+      <img [src]="libro.imagen" [alt]="libro.titulo" class="w-40 h-60 object-cover rounded" />
+      <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
       <p class="text-sm text-gray-600 text-center">por {{ libro.autor }}</p>
-
-      <!-- Precio del libro -->
-      <p class="mt-2 text-xl font-semibold text-blue-900">
-        {{ libro.precio | currency: 'EUR' }}
-      </p>
-
-      <!-- Botón para comprar o ver más detalles -->
-      <button
-        class="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-700"
-      >
-        Ver detalles
-      </button>
+      <p class="mt-2 text-xl font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
+      <button class="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-700">Ver detalles</button>
     </div>
   </div>
 </div>
+
+
 
 
 

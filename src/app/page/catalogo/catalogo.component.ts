@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {CurrencyPipe, NgForOf} from '@angular/common';
+import {Component, Input, input, OnInit} from '@angular/core';
+import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
 import {FormsModule} from '@angular/forms';
+import {data} from 'autoprefixer';
 
 
 @Component({
@@ -12,47 +13,61 @@ import {FormsModule} from '@angular/forms';
   imports: [
     CurrencyPipe,
     NgForOf,
-    FormsModule
+    FormsModule,
+    NgIf
 
   ]
 })
 export class CatalogoComponent  implements OnInit {
   libros: Libro[] = [];
+  filteredBooks: Libro[] = [];
+  filter: string = '';
 
-  constructor(private libroService: LibroService) {
-  }
+  constructor(private libroService: LibroService) {}
+
+ @Input() categoriaId!: number;
 
   ngOnInit(): void {
     this.cargarLibros().then(libros => {
       this.libros = libros;
-      this.filteredBooks = libros;// Assuming 'users' is the property where you store the fetched users
+      this.filteredBooks = libros; //
+      // Initialize with all books
+      console.log("Estos son los libros de catalogo", this.libros);
     }).catch(error => {
-      console.error('Error fetching books:', error); // Handle any errors that occur during the fetch
+      console.error('Error fetching books:', error);
     });
+
 
   }
 
-  async cargarLibros(): Promise<any> {
+  async cargarLibros(): Promise<Libro[]> {
     try {
-      return await this.libroService.getLibros(); // Call the service to fetch users
+      return await this.libroService.getLibros();
     } catch (error) {
       console.error('Error in cargarLibros:', error);
-      throw error; // Rethrow the error to be caught in ngOnInit
-
+      throw error;
     }
   }
 
-  filteredBooks: Libro[] = []; // Stores filtered results
-  filter: string = '';
+  searchBooks(): void {
+    const searchTerm = this.filter.toLowerCase().trim();
 
+    if (!searchTerm) {
+      this.filteredBooks = this.libros; // Reset filter if empty
+      return;
+    }
 
-  searchBooks() {
-    debugger;
-    this.filteredBooks = this.libros.filter(libro => {
-      return libro.titulo.toLowerCase().includes(this.filter.toLowerCase())
-        || libro.autor.toLowerCase().includes(this.filter.toLowerCase());
-    });
+    this.filteredBooks = this.libros.filter(libro =>
+      libro.titulo.toLowerCase().includes(searchTerm) ||
+      libro.autor.toLowerCase().includes(searchTerm)
+    );
   }
+
+  clearSearch(): void {
+    this.filter = '';
+    this.filteredBooks = this.libros;
+  }
+
 
 
 
