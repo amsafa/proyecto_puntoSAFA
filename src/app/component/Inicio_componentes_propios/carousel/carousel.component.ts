@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { BookCardComponent } from '../book-card/book-card.component';
 import { NgForOf } from '@angular/common';
-import {ApiService} from '../../../api.service';
+import {ApiService} from '../../../service/api.service';
 import {Book} from '../../../interface/book';
 import {data} from 'autoprefixer';
 

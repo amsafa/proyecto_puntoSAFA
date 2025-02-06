@@ -1,4 +1,5 @@
 export interface Book {
+  category: string;
   titulo: string;
   resumen: string;
   anio_publicacion: string;

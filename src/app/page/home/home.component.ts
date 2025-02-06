@@ -9,7 +9,7 @@ import {
   RecomendacionLibroComponent
 } from "../../component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component";
 import {Book} from '../../interface/book';
-import {ApiService} from '../../api.service';
+import {ApiService} from '../../service/api.service';
 
 @Component({
   selector: 'app-home',

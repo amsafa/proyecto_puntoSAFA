@@ -12,5 +12,6 @@ import {Book} from '../../../interface/book';
   ]
 })
 export class BookCardComponent {
-  @Input() book!: Book;
+  // Significa que el componente espera un input de tipo Book y se llama book
+  @Input() book!: Book; // Tipa book como Book
 }
