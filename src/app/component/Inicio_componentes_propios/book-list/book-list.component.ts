@@ -5,6 +5,7 @@ import {BookCardComponent} from '../book-card/book-card.component';
 import {NgForOf, NgIf} from '@angular/common';
 import {data} from 'autoprefixer';
 import {count} from 'rxjs';
+import {BookCardCategoriaComponent} from '../book-card-categoria/book-card-categoria.component';
 
 
 
@@ -15,7 +16,8 @@ import {count} from 'rxjs';
   imports: [
     BookCardComponent,
     NgIf,
-    NgForOf
+    NgForOf,
+    BookCardCategoriaComponent
   ],
   styleUrls: ['./book-list.component.css']
 })
@@ -29,7 +31,7 @@ export class BookListComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.apiService.getBooksByCategory(this.categoryId).subscribe({
-      next: (data) => {
+      next: (data: Libro[]) => {
         this.books = this.getRandomBooks(data, 3); // Filtra 3 libros aleatorios
         this.loading = false;
         //this.books = data;

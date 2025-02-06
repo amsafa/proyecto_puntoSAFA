@@ -4,12 +4,12 @@
 
 <div *ngIf="books.length > 0; else noBooks">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <app-book-card
+    <app-book-card-categoria
       *ngFor="let book of books"
       [book]="book"
     >
 
-    </app-book-card>
+    </app-book-card-categoria>
   </div>
 </div>
 

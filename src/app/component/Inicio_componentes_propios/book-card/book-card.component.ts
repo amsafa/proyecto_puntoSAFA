@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import {CurrencyPipe} from "@angular/common";
-import {Libro} from '../../../interface/./libro';
+import {Libro} from '../../../interface/libro';
 
 @Component({
   selector: 'app-book-card',
