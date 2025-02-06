@@ -10,7 +10,7 @@ import {CarouselComponent} from './component/Inicio_componentes_propios/carousel
 import {
   RecomendacionLibroComponent
 } from './component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component';
-import {CatalogoComponent} from './page/catalogo/catalogo/catalogo.component';
+import {CatalogoComponent} from './page/catalogo/catalogo.component';
 import {BookCardComponent} from './component/Inicio_componentes_propios/book-card/book-card.component';
 
 
