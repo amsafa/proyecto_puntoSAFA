@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import {CurrencyPipe} from "@angular/common";
-import {Book} from '../../../interface/book';
+import {Libro} from '../../../interface/./libro';
 
 @Component({
   selector: 'app-book-card',
@@ -12,6 +12,6 @@ import {Book} from '../../../interface/book';
   ]
 })
 export class BookCardComponent {
-  // Significa que el componente espera un input de tipo Book y se llama book
-  @Input() book!: Book; // Tipa book como Book
+  // Significa que el componente espera un input de tipo Libro y se llama book
+  @Input() book!: Libro; // Tipa book como Libro
 }

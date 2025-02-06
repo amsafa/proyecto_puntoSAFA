@@ -4,10 +4,15 @@
 
 <div *ngIf="books.length > 0; else noBooks">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <app-book-card *ngFor="let book of books" [book]="book"></app-book-card>
+    <app-book-card
+      *ngFor="let book of books"
+      [book]="book"
+    >
+
+    </app-book-card>
   </div>
 </div>
 
 <ng-template #noBooks>
-  <p class="text-gray-500 text-center">ALBA No hay libros disponibles en esta categoría.</p>
+  <p class="text-gray-500 text-center">No hay libros disponibles en esta categoría.</p>
 </ng-template>

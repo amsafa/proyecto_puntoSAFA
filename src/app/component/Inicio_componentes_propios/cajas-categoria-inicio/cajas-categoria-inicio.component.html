@@ -1,19 +1,20 @@
-<section class="py-2">
+<section class="py-2 bg-customAzulito">
   <div class="container mx-auto">
     <!-- Título de la sección -->
-    <h2 class="text-xl font-bold text-center text-blue-900 mb-4">Categorías</h2>
+    <h2 class="text-xl font-bold text-center text-blue-900 mb-4">CATEGORÍAS</h2>
 
     <!-- Contenedor de Categorías -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <!-- Ficción -->
       <div class="bg-blue-50 p-3 rounded shadow-sm">
-        <h3 class="text-lg font-bold text-blue-800 text-center">Ficción</h3>
+        <h3 class="text-lg font-bold text-blue-800 text-center">FICCIÓN</h3>
         <app-book-list [categoryId]="1"></app-book-list> <!-- Ficción (ID 1) -->
+
       </div>
 
       <!-- No Ficción -->
       <div class="bg-blue-50 p-3 rounded shadow-sm">
-        <h3 class="text-lg font-bold text-blue-800 text-center">No Ficción</h3>
+        <h3 class="text-lg font-bold text-blue-800 text-center">NO FICCIÓN</h3>
         <app-book-list [categoryId]="2"></app-book-list> <!-- No Ficción (ID 2) -->
       </div>
     </div>

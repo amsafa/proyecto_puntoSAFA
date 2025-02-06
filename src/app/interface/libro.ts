@@ -1,4 +1,4 @@
-export interface Book {
+export interface Libro {
   category: string;
   titulo: string;
   resumen: string;

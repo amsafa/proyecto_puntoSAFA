@@ -9,6 +9,7 @@ module.exports = {
         'custom-blue': '#1D2C4B',
         'customGreen': '#F0F4EF',
         'customTeal': '#6BBCB7',
+        'customAzulito': '#BBCCDD',
 
 
 

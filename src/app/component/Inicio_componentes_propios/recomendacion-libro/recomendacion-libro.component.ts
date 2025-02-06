@@ -47,6 +47,6 @@ export class RecomendacionLibroComponent  implements OnInit {
     const randomIndex = currentDay % this.books.length; // Elige un índice basado en el día
     console.log('Random Index:', randomIndex);
     this.randomBook = this.books[randomIndex];
-    console.log('Random Book:', this.randomBook);
+    console.log('Random Libro:', this.randomBook);
   }
 }

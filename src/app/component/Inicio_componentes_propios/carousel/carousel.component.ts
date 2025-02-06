@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { BookCardComponent } from '../book-card/book-card.component';
 import { NgForOf } from '@angular/common';
-import {ApiService} from '../../../service/api.service';
-import {Book} from '../../../interface/book';
+import {LibroService} from '../../../service/libro.service';
+import {Libro} from '../../../interface/./libro';
 import {data} from 'autoprefixer';
 
 @Component({
@@ -16,17 +16,17 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('carousel') carousel!: ElementRef<HTMLDivElement>;
   autoScrollInterval!: any;
 
-  books: Book[] = [];
+  books: Libro[] = [];
   loading = true;
   errorMessage = '';
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: LibroService) {}
 
   // Esto es lo que se ejecuta al cargar la página
   ngOnInit() {
     console.log('CarouselComponent cargado');
     this.apiService.getBooks().subscribe({
-      next: (data: Book[]) => {
+      next: (data: Libro[]) => {
         this.books = data;
         console.log('Libros cargados:', this.books);
         this.loading = false;

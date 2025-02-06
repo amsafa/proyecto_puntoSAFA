@@ -8,8 +8,8 @@ import {CarouselComponent} from "../../component/Inicio_componentes_propios/caro
 import {
   RecomendacionLibroComponent
 } from "../../component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component";
-import {Book} from '../../interface/book';
-import {ApiService} from '../../service/api.service';
+import {Libro} from '../../interface/./libro';
+import {LibroService} from '../../service/libro.service';
 
 @Component({
   selector: 'app-home',
@@ -27,16 +27,16 @@ import {ApiService} from '../../service/api.service';
   ]
 })
 export class HomeComponent  implements OnInit {
-  books: Book[] = [];
+  books: Libro[] = [];
   loading = true;
   errorMessage = '';
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: LibroService) {}
 
   //Esta función se ejecuta al cargar la página
   ngOnInit() {
     this.apiService.getBooks().subscribe({
-      next: (data: Book[]) => {
+      next: (data: Libro[]) => {
         this.books = data;
         this.loading = false;
       },

@@ -10,6 +10,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideIonicAngular({}),
-    provideHttpClient() // 🔥 Necesario para usar HttpClient en ApiService
+    provideHttpClient() // 🔥 Necesario para usar HttpClient en LibroService
   ]
 };
