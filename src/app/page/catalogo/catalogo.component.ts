@@ -5,7 +5,6 @@ import {LibroService} from '../../service/libro.service';
 import {FormsModule} from '@angular/forms';
 
 
-
 @Component({
   selector: 'app-catalogo',
   templateUrl: '/catalogo.component.html',
@@ -50,11 +49,11 @@ export class CatalogoComponent  implements OnInit {
   searchBooks() {
     debugger;
     this.filteredBooks = this.libros.filter(libro => {
-      const matchesTitle = libro.titulo.toLowerCase().includes(this.filter.toLowerCase());
-      const matchesAuthor = libro.autor.toLowerCase().includes(this.filter.toLowerCase());
-      return matchesTitle || matchesAuthor;
+      return libro.titulo.toLowerCase().includes(this.filter.toLowerCase())
+        || libro.autor.toLowerCase().includes(this.filter.toLowerCase());
     });
   }
+
 
 
 }
