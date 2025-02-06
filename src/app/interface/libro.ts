@@ -1,3 +1,6 @@
+import {Categoria} from './categoria';
+import {Autor} from './autor';
+
 export interface Libro {
   id: number;
   titulo: string;
@@ -9,7 +12,7 @@ export interface Libro {
   imagen:string;
   idioma:string;
   numPaginas:number;
-  categoria:string;
-  autor:string;
+  categoria:Categoria;
+  autor:Autor;
 
 }
