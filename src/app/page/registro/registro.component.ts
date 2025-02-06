@@ -12,19 +12,16 @@ import {
 
 import {CommonModule} from '@angular/common';
 import {AuthService} from '../../service/auth.service';
-import {RegistroCliente} from '../../modelo/RegistroCliente';
+import {RegistroCliente} from '../../interface/RegistroCliente';
 import {Router} from '@angular/router';
 import Swal from 'sweetalert2';
-import {HeaderComponent} from "../../component/header/header.component";
-import {FooterComponent} from "../../component/footer/footer.component";
+
 
 
 
 @Component({
   selector: 'app-registro',
   imports: [
-      HeaderComponent,
-      FooterComponent,
       CommonModule,
       ReactiveFormsModule
   ],
@@ -40,6 +37,12 @@ export class RegistroComponent implements OnInit {
     this.registroForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       nick: ['', [Validators.required, Validators.minLength(3)]],
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      dni: ['', [Validators.required, Validators.minLength(9)]],
+      apellidos: ['', [Validators.required, Validators.minLength(3)]],
+      foto: [''],
+      direccion: [''],
+      telefono: ['', [Validators.required, Validators.minLength(9)]],
       contrasena: ['', [Validators.required, Validators.minLength(6)]],
       repetircontrasena: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });
@@ -82,6 +85,12 @@ export class RegistroComponent implements OnInit {
     this.registroCliente.email = this.registroForm.get('email')?.value;
     this.registroCliente.nick = this.registroForm.get('nick')?.value;
     this.registroCliente.contrasena = this.registroForm.get('contrasena')?.value;
+    this.registroCliente.dni = this.registroForm.get('dni')?.value;
+    this.registroCliente.nombre = this.registroForm.get('nombre')?.value;
+    this.registroCliente.apellidos = this.registroForm.get('apellidos')?.value;
+    this.registroCliente.foto = this.registroForm.get('foto')?.value;
+    this.registroCliente.direccion = this.registroForm.get('direccion')?.value;
+    this.registroCliente.telefono = this.registroForm.get('telefono')?.value;
   }
 
   // Alerta de éxito usando SweetAlert2

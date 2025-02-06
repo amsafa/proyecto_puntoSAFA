@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Login } from '../modelo/Login';
-import { RegistroCliente } from '../modelo/RegistroCliente';
+import { Login } from '../interface/Login';
+import { RegistroCliente } from '../interface/RegistroCliente';
 
 @Injectable({
   providedIn: 'root'

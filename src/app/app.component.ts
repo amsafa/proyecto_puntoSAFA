@@ -9,7 +9,7 @@ import {FooterComponent} from './component/footer/footer.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ReactiveFormsModule, FormsModule],
+  imports: [RouterOutlet, ReactiveFormsModule, FormsModule, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

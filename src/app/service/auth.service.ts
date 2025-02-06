@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {map, switchMap, tap } from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {RegistroCliente} from '../modelo/RegistroCliente';
+import {RegistroCliente} from '../interface/RegistroCliente';
 import {catchError, Observable, throwError} from 'rxjs';
-import {Login} from '../modelo/Login';
+import {Login} from '../interface/Login';
 import Swal from 'sweetalert2';
 import {ActualizarService} from './actualizar.service';
 

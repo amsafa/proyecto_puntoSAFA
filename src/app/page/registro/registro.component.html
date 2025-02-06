@@ -1,19 +1,16 @@
 <div class="min-h-screen flex flex-col">
-  <header>
-    <app-header></app-header>
-  </header>
 
   <!-- Main Content -->
   <main class="flex-grow flex flex-col items-center bg-white">
     <!-- Encabezado -->
-    <div class="w-full flex items-center bg-[#F0F4EF] p-4">
+    <div class="w-full flex items-center bg-[#F0F4EF] p-2">
       <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-60 h-auto ml-60">
       <h2 class="flex-2 text-center text-4xl font-bold text-[#1F2D3D]">REGISTRO</h2>
     </div>
 
     <!-- Contenedor del Formulario -->
-    <div class="form-container bg-[#BBCCDD] p-8 rounded-lg shadow-md mt-8 w-full max-w-md">
-      <form class="space-y-6" [formGroup]="registroForm" (ngSubmit)="onRegister()">
+    <div class="form-container bg-[#BBCCDD] p-4 rounded-lg shadow-md mt-4 w-full max-w-md">
+      <form class="space-y-10" [formGroup]="registroForm" (ngSubmit)="onRegister()">
         <!-- Campo de email -->
         <div class="relative">
           <input id="email" type="email" formControlName="email" required
@@ -27,18 +24,6 @@
           </div>
         </div>
 
-        <!-- Campo de DNI -->
-        <!--<div class="relative">
-          <input id="dni" type="text" formControlName="dni" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="DNI">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa-solid fa-id-card text-gray-400"></i>
-          </div>
-          <div *ngIf="registroForm.get('dni')?.invalid && registroForm.get('dni')?.touched" class="absolute text-red-500">
-            DNI inválido.
-          </div>
-        </div>  -->
 
         <!-- Campo de Nombre -->
         <div class="relative">
@@ -52,6 +37,88 @@
             Nombre de usuario inválido.
           </div>
         </div>
+
+        <!-- Campo de Nombre -->
+        <div class="relative">
+          <input id="nombre" type="text" formControlName="nombre" required
+                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
+                 placeholder="Nombre">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fa-solid fa-user text-gray-400"></i>
+          </div>
+          <div *ngIf="registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched" class="absolute text-red-500">
+            Nombre inválido.
+          </div>
+        </div>
+
+
+
+        <!-- Campo de Apellido -->
+        <div class="relative">
+          <input id="apellidos" type="text" formControlName="apellidos" required
+                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
+                 placeholder="Apellidos">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fa-solid fa-user text-gray-400"></i>
+          </div>
+          <div *ngIf="registroForm.get('apellidos')?.invalid && registroForm.get('apellidos')?.touched" class="absolute text-red-500">
+            Apellidos inválido.
+          </div>
+        </div>
+
+
+        <!-- Campo de DNI -->
+        <div class="relative">
+          <input id="dni" type="text" formControlName="dni" required
+                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
+                 placeholder="DNI">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fa-solid fa-id-card text-gray-400"></i>
+          </div>
+          <div *ngIf="registroForm.get('dni')?.invalid && registroForm.get('dni')?.touched" class="absolute text-red-500">
+            DNI inválido.
+          </div>
+        </div>
+
+        <!-- Campo de Foto -->
+        <div class="relative">
+          <input id="foto" type="file" formControlName="foto" required
+                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fa-solid fa-camera text-gray-400"></i>
+          </div>
+          <div *ngIf="registroForm.get('foto')?.invalid && registroForm.get('foto')?.touched" class="absolute text-red-500">
+            Foto inválida.
+          </div>
+        </div>
+
+        <!-- Campo de Dirección -->
+        <div class="relative">
+          <input id="direccion" type="text" formControlName="direccion" required
+                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
+                 placeholder="Dirección">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fa-solid fa-map-marker-alt text-gray-400"></i>
+          </div>
+          <div *ngIf="registroForm.get('direccion')?.invalid && registroForm.get('direccion')?.touched" class="absolute text-red-500">
+            Dirección inválida.
+          </div>
+        </div>
+
+        <!-- Campo de Teléfono -->
+        <div class="relative">
+          <input id="telefono" type="text" formControlName="telefono" required
+                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
+                 placeholder="Teléfono">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fa-solid fa-phone text-gray-400"></i>
+          </div>
+          <div *ngIf="registroForm.get('telefono')?.invalid && registroForm.get('telefono')?.touched" class="absolute text-red-500">
+            Teléfono inválido.
+          </div>
+        </div>
+
+
 
         <!-- Campo de contraseña -->
         <div class="relative">
@@ -97,8 +164,5 @@
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-white py-6">
-    <app-footer></app-footer>
-  </footer>
+
 </div>

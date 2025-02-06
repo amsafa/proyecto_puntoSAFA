@@ -15,6 +15,7 @@ import {RegistroComponent} from './page/registro/registro.component';
 import {LoginComponent} from './page/login/login.component';
 import {HomeComponent} from './page/home/home.component';
 import {AutorComponent} from './page/autor/autor.component';
+import {CatalogoComponent} from './page/catalogo/catalogo/catalogo.component';
 
 
 export const routes: Routes = [
@@ -31,7 +32,8 @@ export const routes: Routes = [
   {path: 'login', component:LoginComponent, pathMatch: 'full'},
   {path: 'home', component:HomeComponent, pathMatch: 'full'},
   {path:'carousel', component:CarouselComponent, pathMatch: 'full'},
-  {path:'autor', component:AutorComponent, pathMatch: 'full'}
+  {path:'autor', component:AutorComponent, pathMatch: 'full'},
+  {path:'catalogo', component:CatalogoComponent, pathMatch: 'full'}
 
 
 

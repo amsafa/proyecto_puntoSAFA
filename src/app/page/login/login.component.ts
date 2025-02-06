@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
-import { Login } from '../../modelo/Login';
+import { Login } from '../../interface/Login';
 import {HeaderComponent} from '../../component/header/header.component';
 
 @Component({

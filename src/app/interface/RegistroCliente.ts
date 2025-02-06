@@ -1,9 +1,11 @@
 export class RegistroCliente {
   email?:string;
-  nick?:string;
+  nick?:string
+  nombre?:string;
+  apellidos?:string;
   dni?:string;
-  apellido?:string;
   foto?:string;
   telefono?:string;
+  direccion?:string;
   contrasena?:string;
 }
