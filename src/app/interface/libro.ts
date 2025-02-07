@@ -3,9 +3,12 @@ import {Autor} from './autor';
 
 export interface Libro {
   category: string;
+
+
   titulo: string;
   resumen: string;
   anio_publicacion: string;
+  //  anioPublicacion: Date;
   precio: number;
   ISBN: string;
   editorial: string;

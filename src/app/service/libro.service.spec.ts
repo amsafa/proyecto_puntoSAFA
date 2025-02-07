@@ -2,8 +2,9 @@ import { TestBed } from '@angular/core/testing';
 
 import { LibroService } from './libro.service';
 
-describe('ApiService', () => {
+describe('LibroService', () => {
   let service: LibroService;
+
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
