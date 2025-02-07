@@ -4,19 +4,11 @@ import {FooterComponent} from './component/footer/footer.component';
 import {HeroSectionInicioComponent} from './component/Inicio_componentes_propios/hero-section-inicio/hero-section-inicio.component';
 import {BuscadorInicioComponent} from './component/buscador-inicio/buscador-inicio.component';
 import { CajasCategoriaInicioComponent } from './component/Inicio_componentes_propios/cajas-categoria-inicio/cajas-categoria-inicio.component';
-import {Carousel} from 'primeng/carousel';
-import {
-  CajasCategoriaInicioComponent
-} from './component/Inicio_componentes_propios/cajas-categoria-inicio/cajas-categoria-inicio.component';
 import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
 import { RecomendacionLibroComponent } from './component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component';
 import {BookCardComponent} from './component/Inicio_componentes_propios/book-card/book-card.component';
 import {HomeComponent} from './page/home/home.component';
-import {
-  RecomendacionLibroComponent
-} from './component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component';
 import {CatalogoComponent} from './page/catalogo/catalogo.component';
-import {BookCardComponent} from './component/Inicio_componentes_propios/book-card/book-card.component';
 
 
 
