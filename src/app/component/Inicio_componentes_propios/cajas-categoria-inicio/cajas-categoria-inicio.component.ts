@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {BookCardComponent} from '../book-card/book-card.component';
+import { BookListComponent } from '../book-list/book-list.component';
 
 @Component({
   selector: 'app-cajas-categoria-inicio',
@@ -7,13 +7,13 @@ import {BookCardComponent} from '../book-card/book-card.component';
   styleUrls: ['./cajas-categoria-inicio.component.css'],
   standalone: true,
   imports: [
-    BookCardComponent
+    BookListComponent
   ]
 })
-export class CajasCategoriaInicioComponent  implements OnInit {
+export class CajasCategoriaInicioComponent implements OnInit {
+  categories = ['fiction', 'nonFiction'];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {}
-
+  ngOnInit(): void {}
 }
