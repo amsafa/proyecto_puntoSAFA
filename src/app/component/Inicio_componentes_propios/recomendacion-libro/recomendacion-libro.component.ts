@@ -12,10 +12,7 @@ import {LibroService} from '../../../service/libro.service';
   styleUrls: ['./recomendacion-libro.component.css'],
   standalone: true,
   imports: [
-    BookCardComponent,
-    NgIf,
-    BookCardCategoriaComponent,
-    BookCardComponent,
+
     NgForOf
   ]
 })

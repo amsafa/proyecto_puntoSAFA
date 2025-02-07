@@ -14,7 +14,6 @@ import {BookCardCategoriaComponent} from '../book-card-categoria/book-card-categ
   templateUrl: './book-list.component.html',
 
   imports: [
-    BookCardComponent,
     NgIf,
     NgForOf,
     BookCardCategoriaComponent

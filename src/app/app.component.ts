@@ -16,7 +16,7 @@ import {CarouselComponent} from './component/Inicio_componentes_propios/carousel
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, FooterComponent, HeaderComponent, HeroSectionInicioComponent, CajasCategoriaInicioComponent, CarouselComponent, RouterOutlet],
+  imports: [ReactiveFormsModule, FormsModule, FooterComponent, HeaderComponent,  RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

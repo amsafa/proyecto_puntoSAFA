@@ -17,11 +17,9 @@ import {LibroService} from '../../service/libro.service';
   styleUrls: ['./home.component.css'],
   standalone: true,
   imports: [
-    HeaderComponent,
     HeroSectionInicioComponent,
     BuscadorInicioComponent,
     CajasCategoriaInicioComponent,
-    FooterComponent,
     CarouselComponent,
     RecomendacionLibroComponent
   ]

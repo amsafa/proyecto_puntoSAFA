@@ -4,5 +4,5 @@ export interface Autor {
   apellidos: string;
   biografia: string;
   nacionalidad: string | null;
-  fechaNacimiento: string | null; // ISO 8601 date string or null
+  fechaNacimiento: string | null; // Fecha de nacimiento del autor (opcional)
 }

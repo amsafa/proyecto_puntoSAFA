@@ -8,20 +8,17 @@ import { Categoria } from '../interface/categoria'; // Importar la interfaz de c
   providedIn: 'root'
 })
 export class LibroService {
-  private apiUrlBooks = 'http://127.0.0.1:8000/libro/all'; // Endpoint de libros
-  private apiUrlCategories = 'http://127.0.0.1:8000/libro/categoria'; // Ajusta la URL para categorías
+  private baseUrl = 'http://127.0.0.1:8000/libro'; // Endpoint de libros
 
   constructor(private http: HttpClient) {}
 
   // Método para obtener todos los libros
   getBooks(): Observable<Libro[]> {
-    return this.http.get<Libro[]>(this.apiUrlBooks);
-  }
+    return this.http.get<Libro[]>(`${this.baseUrl}/all`);  }
 
   // Método para obtener libros por categoría (desde el backend)
   getBooksByCategory(id: number): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.apiUrlCategories}/${id}`);
-  }
+    return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
 
 
 }
