@@ -86,7 +86,10 @@ export class CatalogoComponent  implements OnInit {
     }
 
   }
-
+  showCart = false;
+  toggleCart() {
+    this.showCart = !this.showCart;
+  }
 
 
 
