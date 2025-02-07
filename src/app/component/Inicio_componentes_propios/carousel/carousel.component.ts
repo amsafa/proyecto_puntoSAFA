@@ -1,9 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { BookCardComponent } from '../book-card/book-card.component';
 import { NgForOf } from '@angular/common';
-import {LibroService} from '../../../service/libro.service';
-import {Libro} from '../../../interface/./libro';
-import {data} from 'autoprefixer';
+import { LibroService } from '../../../service/libro.service';
+import { Libro } from '../../../interface/libro';
 
 @Component({
   selector: 'app-carousel',
@@ -13,7 +12,7 @@ import {data} from 'autoprefixer';
   imports: [BookCardComponent, NgForOf],
 })
 export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('carousel') carousel!: ElementRef<HTMLDivElement>;
+  @ViewChild('carousel', { static: false }) carousel!: ElementRef<HTMLDivElement>;
   autoScrollInterval!: any;
 
   books: Libro[] = [];
@@ -22,7 +21,6 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private apiService: LibroService) {}
 
-  // Esto es lo que se ejecuta al cargar la página
   ngOnInit() {
     console.log('CarouselComponent cargado');
     this.apiService.getBooks().subscribe({
@@ -39,38 +37,34 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-
-
-  // Esto es lo que se ejecuta después de cargar la página
   ngAfterViewInit() {
-    if (this.books.length) {
+    if (this.books.length && this.carousel) {
       this.startAutoScroll();
     }
   }
 
-  // Esto es lo que se ejecuta al salir de la página
   ngOnDestroy() {
     if (this.autoScrollInterval) {
       clearInterval(this.autoScrollInterval);
     }
   }
 
-  // Funciones para mover el carrusel a la izquierda o a la derecha
   scrollLeft() {
     this.carousel.nativeElement.scrollBy({ left: -300, behavior: 'smooth' });
   }
 
-  // Funciones para mover el carrusel a la izquierda o a la derecha
   scrollRight() {
     this.carousel.nativeElement.scrollBy({ left: 300, behavior: 'smooth' });
   }
 
-  // Función para iniciar el carrusel automático
   startAutoScroll() {
     this.autoScrollInterval = setInterval(() => {
       const carouselElement = this.carousel.nativeElement;
-      if (carouselElement.scrollLeft + carouselElement.offsetWidth >= carouselElement.scrollWidth) {
-        carouselElement.scrollTo({ left: 0, behavior: 'smooth' });
+
+      if (carouselElement.scrollLeft + carouselElement.offsetWidth >= carouselElement.scrollWidth - 10) {
+        setTimeout(() => {
+          carouselElement.scrollTo({ left: 0, behavior: 'smooth' });
+        }, 1000); // Pausa de 1 segundo antes de reiniciar
       } else {
         this.scrollRight();
       }
