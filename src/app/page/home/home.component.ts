@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {HeaderComponent} from '../../component/header/header.component';
 import {
   HeroSectionInicioComponent
 } from '../../component/Inicio_componentes_propios/hero-section-inicio/hero-section-inicio.component';
@@ -14,7 +13,6 @@ import {
   styleUrls: ['./home.component.css'],
   standalone: true,
   imports: [
-    HeaderComponent,
     HeroSectionInicioComponent,
     BuscadorInicioComponent,
     CajasCategoriaInicioComponent
