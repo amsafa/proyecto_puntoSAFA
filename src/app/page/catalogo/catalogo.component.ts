@@ -6,6 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 
 
+
 @Component({
   selector: 'app-catalogo',
   templateUrl: '/catalogo.component.html',
@@ -23,31 +24,34 @@ export class CatalogoComponent  implements OnInit {
   libros: Libro[] = [];
   filteredBooks: Libro[] = [];
   filter: string = '';
+  currentPage: number = 1;
+  totalPages: number = 1;
+  totalItems: number = 0;
+  itemsPerPage: number = 9;
 
   constructor(private libroService: LibroService) {}
 
  @Input() categoriaId!: number;
 
   ngOnInit(): void {
-    this.cargarLibros().then(libros => {
-      this.libros = libros;
-      this.filteredBooks = libros; //
-      // Initialize with all books
-      console.log("Estos son los libros de catalogo", this.libros);
-    }).catch(error => {
-      console.error('Error fetching books:', error);
-    });
+    this.cargarLibros();
 
 
   }
 
-  async cargarLibros(): Promise<Libro[]> {
-    try {
-      return await this.libroService.getLibros();
-    } catch (error) {
-      console.error('Error in cargarLibros:', error);
-      throw error;
-    }
+  cargarLibros(): void {
+    const params = { page: this.currentPage, limit: this.itemsPerPage };
+
+    this.libroService.getLibros(params.page, params.limit).subscribe({
+      next: (libros) => {
+        this.libros = libros;
+        this.filteredBooks = libros; // Initialize with all books
+        console.log("Estos son los libros del catálogo:", this.libros);
+      },
+      error: (error) => {
+        console.error('Error fetching books:', error);
+      }
+    });
   }
 
   searchBooks(): void {
@@ -89,6 +93,11 @@ export class CatalogoComponent  implements OnInit {
   showCart = false;
   toggleCart() {
     this.showCart = !this.showCart;
+  }
+
+  cambiarPagina(delta: number): void {
+    this.currentPage += delta;
+    this.cargarLibros();
   }
 
 
