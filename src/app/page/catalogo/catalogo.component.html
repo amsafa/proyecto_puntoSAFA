@@ -35,7 +35,7 @@
     />
     </div>
     <!-- Search Button -->
-    <button  (click)="searchBooks()" class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
+    <button (click)="searchBooks()" class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
       Buscar
     </button>
       <button
@@ -95,91 +95,91 @@
   </div>
 
   <!-- Book List -->
-  <div class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4 bg-gray-800">
-    <div *ngIf="!libros || libros.length === 0" class="loading">
+<!--  <div class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4 bg-gray-800">-->
+<!--    <div *ngIf="!libros || libros.length === 0" class="loading">-->
+<!--      <p>Cargando libros...</p>-->
+<!--    </div>-->
+<!--    <div-->
+<!--      *ngFor="let libro of filteredBooks"-->
+<!--      class="bg-white rounded-lg shadow-lg p-4  flex flex-col items-center "-->
+<!--    >-->
+<!--      <div class="image-container">-->
+<!--      <img [src]="libro.imagen" [alt]="libro.titulo" class="w-40 h-60 object-cover rounded" />-->
+<!--      <div class="overlay">-->
+<!--        <button class="cart-btn">-->
+<!--          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">-->
+<!--            <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>-->
+<!--          </svg>-->
+<!--          Añadir al carrito-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      </div>-->
+<!--      <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>-->
+<!--      <p class="text-sm text-gray-600 text-center">por {{ libro.autor }}</p>-->
+<!--      <p class="mt-2 text-xl font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>-->
+<!--      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ff9c1a"><path d="m354-287 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-350Z"/></svg>'-->
+<!--      <button class="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-700">Ver detalles</button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+  <div class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-3 bg-gray-800">
+    <div *ngIf="!libros || libros.length === 0" class="loading text-white text-center">
       <p>Cargando libros...</p>
     </div>
-    <div
-      *ngFor="let libro of filteredBooks"
-      class="bg-white rounded-lg shadow-lg p-4  flex flex-col items-center "
-    >
-      <div class="image-container">
-      <img [src]="libro.imagen" [alt]="libro.titulo" class="w-40 h-60 object-cover rounded" />
-      <div class="overlay">
-        <button class="cart-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-            <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>
-          </svg>
-          Añadir al carrito
-        </button>
+
+    <div *ngFor="let libro of filteredBooks" class="bg-white rounded-lg shadow-md p-3 flex flex-col items-center transform scale-90">
+      <div class="relative w-32 h-48">
+        <img [src]="libro.imagen" [alt]="libro.titulo" class="w-full h-full object-cover rounded" />
+        <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity">
+          <button class="cart-btn bg-white p-2 rounded-full shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#5f6368">
+              <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>
+            </svg>
+          </button>
+        </div>
       </div>
-      </div>
-      <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
-      <p class="text-sm text-gray-600 text-center">por {{ libro.autor }}</p>
-      <p class="mt-2 text-xl font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
-      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ff9c1a"><path d="m354-287 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-350Z"/></svg>'
-      <button class="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-700">Ver detalles</button>
+      <h3 class="mt-3 text-base font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
+      <p class="text-xs text-gray-600 text-center">por {{ libro.autor }}</p>
+      <p class="mt-1 text-lg font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
+
+      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ff9c1a" class="mt-1">
+        <path d="m354-287 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-350Z"/>
+      </svg>
+
+      <button class="mt-3 px-3 py-1.5 bg-blue-900 text-white text-sm rounded hover:bg-blue-700">Ver detalles</button>
     </div>
   </div>
 </div>
 
-<div class="flex items-center justify-between border-t border-gray-200 bg-customAzulito px-4 py-3 sm:px-6">
-  <div class="flex flex-1 justify-between sm:hidden">
-    <a href="#" class="relative inline-flex items-center rounded-md border border-gray-300 bg-red-700
-     px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-      Anterior</a>
-    <a href="#" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-yellow-500 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-      Siguiente</a>
-  </div>
-  <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-    <div>
-      <p class="text-sm text-gray-700">
-        Showing
-        <span class="font-medium">1</span>
-        to
-        <span class="font-medium">10</span>
-        of
-        <span class="font-medium">97</span>
-        results
-      </p>
-    </div>
-    <div>
-      <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
-        <button (click)="cambiarPagina(-1)" [disabled]="currentPage === 1"
-        class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300
-ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 bg-violet-800">
+<div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+  <div></div>
+  <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
 
-          <span class="sr-only">Anterior</span>
-          <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-            <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z"
-                  clip-rule="evenodd" />
-          </svg>
-        </button>
-        <!-- Current: "z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" -->
-<!--        <a href="#" aria-current="page" class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">1</a>-->
-<!--        <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">-->
-<!--          2</a>-->
-<!--        <a href="#" class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">-->
-<!--          3</a>-->
-<!--        <span class="relative inline-flex items-center px-4 py-2 text-sm  bg-green-800-->
-<!--        font-semibold text-gray-700 ring-1 ring-gray-300 ring-inset focus:outline-offset-0">...</span>-->
-<!--        <a href="#" class="relative hidden items-center px-4 py-2 text-sm-->
-<!--        font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">-->
-<!--          8</a>-->
-<!--        <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">-->
-<!--          9</a>-->
-<!--        <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">-->
-<!--          10</a>-->
-      <button (click)="cambiarPagina(1)" class="bg-fuchsia-800 relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-          <span class="sr-only">Siguiente</span>
-          <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-          </svg>
-      </button>
-      </nav>
-    </div>
-  </div>
+    <!-- Previous Button (Only visible on page 2 or greater) -->
+    <a *ngIf="currentPage > 1"
+       (click)="changePage(currentPage - 1)"
+       class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
+      Anterior
+      <span class="sr-only"></span>
+      <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+      </svg>
+    </a>
+    <a (click)="changePage(currentPage + 1)"
+       class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
+      <span class="sr-only"></span>
+      Siguiente
+      <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+      </svg>
+    </a>
+  </nav>
 </div>
+
+
+
+
 
 
 
