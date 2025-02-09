@@ -25,9 +25,8 @@ export class CatalogoComponent  implements OnInit {
   filteredBooks: Libro[] = [];
   filter: string = '';
   currentPage: number = 1;
-  totalPages: number = 1;
-  totalItems: number = 0;
   itemsPerPage: number = 9;
+  ordenaPor:string= 'titulo';
 
   constructor(private libroService: LibroService) {}
 
@@ -40,7 +39,11 @@ export class CatalogoComponent  implements OnInit {
   }
 
   cargarLibros(): void {
-    const params = { page: this.currentPage, limit: this.itemsPerPage };
+    const params = {
+      page: this.currentPage,
+      limit: this.itemsPerPage,
+      ordenar:this.ordenaPor
+    };
 
     this.libroService.getLibros(params.page, params.limit).subscribe({
       next: (libros) => {
