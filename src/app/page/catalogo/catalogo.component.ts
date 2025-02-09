@@ -4,6 +4,7 @@ import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import {ActivatedRoute} from '@angular/router';
 
 
 
@@ -26,52 +27,47 @@ export class CatalogoComponent  implements OnInit {
   filter: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 9;
-  ordenaPor:string= 'titulo';
+  totalPagesArray: number[] = [];
 
-  constructor(private libroService: LibroService) {}
+  constructor(private libroService: LibroService, private route:ActivatedRoute) {}
 
  @Input() categoriaId!: number;
 
   ngOnInit(): void {
-    this.cargarLibros();
-
-
-  }
-
-  cargarLibros(): void {
-    const params = {
-      page: this.currentPage,
-      limit: this.itemsPerPage,
-      ordenar:this.ordenaPor
-    };
-
-    this.libroService.getLibros(params.page, params.limit).subscribe({
-      next: (libros) => {
-        this.libros = libros;
-        this.filteredBooks = libros; // Initialize with all books
-        console.log("Estos son los libros del catálogo:", this.libros);
-      },
-      error: (error) => {
-        console.error('Error fetching books:', error);
-      }
+    this.route.queryParams.subscribe(params => {
+      this.filter = params['search'] || '';
+      this.cargarLibros().then(() => {
+        if (this.filter) {
+          this.searchBooks();
+        }
+      });
     });
   }
 
-  searchBooks(): void {
-    const searchTerm = this.filter?.toLowerCase().trim() || '';
-
-    if (!searchTerm) {
-      this.filteredBooks = this.libros; // Reset filter if empty
-      return;
+  async cargarLibros(): Promise<void> {
+    try {
+      const params = { page: this.currentPage, limit: this.itemsPerPage };
+      this.libros = await this.libroService.getLibros(params);
+      this.filteredBooks = [...this.libros];
+      this.setupPagination();
+    } catch (error) {
+      console.error('Error fetching books:', error);
     }
-
-    this.filteredBooks = this.libros.filter(libro =>
-      (libro.titulo?.toLowerCase().includes(searchTerm) ||'') ||
-      (libro.autor?.apellidos?.toLowerCase().includes(searchTerm) || '') ||
-      (libro.autor?.nombre?.toLowerCase().includes(searchTerm) || '')
-    );
   }
 
+  searchBooks(): void {
+    const searchTerm = this.filter.toLowerCase().trim();
+
+    if (!searchTerm) {
+      this.filteredBooks = this.libros;
+    } else {
+      this.filteredBooks = this.libros.filter(libro =>
+        libro.titulo?.toLowerCase().includes(searchTerm) ||
+        libro.autor?.apellidos?.toLowerCase().includes(searchTerm) ||
+        libro.autor?.nombre?.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
   clearSearch(): void {
     this.filter = '';
     this.filteredBooks = this.libros;
@@ -98,11 +94,16 @@ export class CatalogoComponent  implements OnInit {
     this.showCart = !this.showCart;
   }
 
-  cambiarPagina(delta: number): void {
-    this.currentPage += delta;
+  changePage(page: number): void {
+    this.currentPage = page;
     this.cargarLibros();
   }
 
+  setupPagination(): void {
+    const totalBooks = this.libros.length; // This should ideally come from the API
+    const totalPages = Math.ceil(totalBooks / this.itemsPerPage);
+    this.totalPagesArray = Array(totalPages).fill(0).map((_, i) => i + 1);
+  }
 
 
 }
