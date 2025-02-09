@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {HeaderComponent} from '../../component/header/header.component';
 import {HeroSectionInicioComponent } from '../../component/Inicio_componentes_propios/hero-section-inicio/hero-section-inicio.component';
-import {BuscadorInicioComponent} from '../../component/buscador-inicio/buscador-inicio.component';
 import { CajasCategoriaInicioComponent } from '../../component/Inicio_componentes_propios/cajas-categoria-inicio/cajas-categoria-inicio.component';
-import {FooterComponent} from "../../component/footer/footer.component";
 import {CarouselComponent} from "../../component/Inicio_componentes_propios/carousel/carousel.component";
 import {
   RecomendacionLibroComponent
 } from "../../component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component";
 import {Libro} from '../../interface/./libro';
-import {LibroService} from '../../service/libro.service';
+
+import {Router} from '@angular/router';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -18,31 +17,46 @@ import {LibroService} from '../../service/libro.service';
   standalone: true,
   imports: [
     HeroSectionInicioComponent,
-    BuscadorInicioComponent,
     CajasCategoriaInicioComponent,
     CarouselComponent,
-    RecomendacionLibroComponent
+    RecomendacionLibroComponent,
+    FormsModule
   ]
 })
 export class HomeComponent  implements OnInit {
-  books: Libro[] = [];
-  loading = true;
-  errorMessage = '';
 
-  constructor(private apiService: LibroService) {}
+
+  constructor(private  router:Router) {}
 
   //Esta función se ejecuta al cargar la página
   ngOnInit() {
-    this.apiService.getBooks().subscribe({
-      next: (data: Libro[]) => {
-        this.books = data;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error al cargar libros:', error);
-        this.errorMessage = 'Error al cargar los libros. Inténtalo de nuevo.';
-        this.loading = false;
-      }
-    });
+
+  }
+
+
+  libros: Libro[] = [];
+  filteredBooks: Libro[] = [];
+  filter: string = '';
+
+
+  searchBooks(): void {
+    const searchTerm = this.filter.toLowerCase().trim();
+
+    if (!searchTerm) {
+      this.filteredBooks = this.libros;
+    } else {
+      this.filteredBooks = this.libros.filter(libro =>
+        libro.titulo?.toLowerCase().includes(searchTerm) ||
+        libro.autor?.apellidos?.toLowerCase().includes(searchTerm) ||
+        libro.autor?.nombre?.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    // Redirect with query params
+    this.router.navigate(['/catalogo'], { queryParams: { search: searchTerm } });
+  }
+  clearSearch(): void {
+    this.filter = '';
+    this.filteredBooks = this.libros;
   }
 }

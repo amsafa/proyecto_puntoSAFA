@@ -1,6 +1,19 @@
 
   <app-hero-section-inicio></app-hero-section-inicio>
-  <app-buscador-inicio></app-buscador-inicio>
+  <section class="bg-white py-4">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <div class="  container mx-auto flex justify-center items-center space-x-4">
+      <input
+        type="text"
+        [(ngModel)]="filter"
+        placeholder="Buscar libro por autor o título..."
+        class="border  border-gray-300 rounded-xl px-4 py-2 w-2/3 text-custom-blue "
+      />
+      <button (click)="searchBooks()"  class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
+        Buscar
+      </button>
+    </div>
+  </section>
   <app-cajas-categoria-inicio></app-cajas-categoria-inicio>
   <app-carousel></app-carousel>
   <app-recomendacion-libro></app-recomendacion-libro>
