@@ -22,13 +22,11 @@ export class LibroService {
   getBooksByCategory(id: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
 
-    async getLibros(): Promise<Libro[]> {
-        const response = await fetch(`${this.baseUrl}/all`);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return await response.json();
-    }
+  getLibros(page: number, limit: number): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/all`, {
+      params: { page: page.toString(), limit: limit.toString() },
+    });
+  }
 
     getLibrosByPrecio(range:string):Observable<Libro[]> {
         return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}`);
