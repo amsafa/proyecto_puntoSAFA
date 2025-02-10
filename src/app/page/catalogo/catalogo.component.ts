@@ -3,7 +3,7 @@ import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+
 
 
 @Component({
@@ -14,8 +14,8 @@ import {HttpClientModule} from '@angular/common/http';
     CurrencyPipe,
     NgForOf,
     FormsModule,
-    NgIf,
-    HttpClientModule
+    NgIf
+
 
   ]
 })

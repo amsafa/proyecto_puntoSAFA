@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
-import { Categoria } from '../interface/categoria'; // Importar la interfaz de categoría
 import {Observable} from 'rxjs';
+import {LoginService} from './login.service';
 
 
 
@@ -12,7 +12,8 @@ import {Observable} from 'rxjs';
 export class LibroService {
   private baseUrl: string = "http://127.0.0.1:8000/libro";
 
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient, private loginService: LoginService) { }
 
   // Método para obtener todos los libros
   getBooks(): Observable<Libro[]> {
@@ -33,5 +34,7 @@ export class LibroService {
     getLibrosByPrecio(range:string):Observable<Libro[]> {
         return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}`);
     }
+
+
 
 }
