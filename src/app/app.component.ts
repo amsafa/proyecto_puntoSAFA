@@ -5,21 +5,29 @@ import { ApiService } from './api.service';
 import {NgForOf} from '@angular/common';
 import {HeaderComponent} from './component/header/header.component';
 import {FooterComponent} from './component/footer/footer.component';
+import {
+  HeroSectionInicioComponent
+} from './component/Inicio_componentes_propios/hero-section-inicio/hero-section-inicio.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ReactiveFormsModule, FormsModule, HeaderComponent, FooterComponent],
+  imports: [ReactiveFormsModule, FormsModule, HeaderComponent, FooterComponent,RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   title = 'puntoSafa';
-  usuarios: any[] = [];
 
-  constructor(private apiService: ApiService) {}
+
+
+  constructor(private router: ApiService) {}
 
   ngOnInit() {
 
+
+
   }
+
+
 }

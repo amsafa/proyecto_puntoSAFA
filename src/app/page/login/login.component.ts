@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FooterComponent } from '../../component/footer/footer.component';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { Login } from '../../interface/Login';
-import {HeaderComponent} from '../../component/header/header.component';
+
 
 @Component({
   selector: 'app-login',
   imports: [
-    HeaderComponent,
-    FooterComponent,
     FormsModule,
     NgIf,
     ReactiveFormsModule

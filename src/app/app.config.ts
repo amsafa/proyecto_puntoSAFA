@@ -12,4 +12,5 @@ export const appConfig: ApplicationConfig = {
     provideIonicAngular({}),
     provideHttpClient()
   ]
+
 };

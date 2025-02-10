@@ -7,8 +7,7 @@ import {CarouselComponent} from '../../component/Inicio_componentes_propios/caro
 import {
   HeroSectionInicioComponent
 } from '../../component/Inicio_componentes_propios/hero-section-inicio/hero-section-inicio.component';
-import {HeaderComponent} from '../../component/header/header.component';
-import {FooterComponent} from '../../component/footer/footer.component';
+
 
 
 @Component({
@@ -17,8 +16,6 @@ import {FooterComponent} from '../../component/footer/footer.component';
   styleUrls: ['./home.component.css'],
   standalone: true,
   imports: [
-    HeaderComponent,
-    FooterComponent,
     BuscadorInicioComponent,
     CajasCategoriaInicioComponent,
     CarouselComponent,

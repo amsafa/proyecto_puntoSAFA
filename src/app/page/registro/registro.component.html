@@ -11,25 +11,13 @@
     <!-- Contenedor del Formulario -->
     <div class="form-container bg-[#BBCCDD] p-4 rounded-lg shadow-md mt-4 w-full max-w-md">
       <form class="space-y-10" [formGroup]="registroForm" (ngSubmit)="onRegister()">
-        <!-- Campo de email -->
-        <div class="relative">
-          <input id="email" type="email" formControlName="email" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="Email">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fas fa-envelope text-gray-400"></i>
-          </div>
-          <div *ngIf="registroForm.get('email')?.invalid && registroForm.get('email')?.touched" class="absolute text-red-500">
-            Email inválido.
-          </div>
-        </div>
 
 
-        <!-- Campo de Nombre -->
+        <!-- Campo de Nick -->
         <div class="relative">
           <input id="username" type="text" formControlName="nick" required
                  class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="Username">
+                 placeholder="Username o Nick">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <i class="fa-solid fa-user text-gray-400"></i>
           </div>
@@ -66,10 +54,23 @@
           </div>
         </div>
 
+        <!-- Campo de email -->
+        <div class="relative">
+          <input id="email" type="email" formControlName="email" required
+                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
+                 placeholder="Email">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-envelope text-gray-400"></i>
+          </div>
+          <div *ngIf="registroForm.get('email')?.invalid && registroForm.get('email')?.touched" class="absolute text-red-500">
+            Email inválido.
+          </div>
+        </div>
+
 
         <!-- Campo de DNI -->
         <div class="relative">
-          <input id="dni" type="text" formControlName="dni" required
+          <input id="dni" type="text"  formControlName="dni" required
                  class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
                  placeholder="DNI">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -82,15 +83,35 @@
 
         <!-- Campo de Foto -->
         <div class="relative">
-          <input id="foto" type="file" formControlName="foto" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa-solid fa-camera text-gray-400"></i>
+          <!-- Input de texto para mostrar el nombre del archivo -->
+          <div class="relative">
+            <input type="text" [value]="selectedFileName || ''" placeholder="Foto" disabled
+                   class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm
+                  ring-1 ring-inset ring-gray-300 placeholder:text-gray-400
+                  focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6 bg-gray-100">
+
+            <!-- Ícono de Cámara dentro del input -->
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fa-solid fa-camera text-gray-400"></i>
+            </div>
           </div>
-          <div *ngIf="registroForm.get('foto')?.invalid && registroForm.get('foto')?.touched" class="absolute text-red-500">
+
+          <!-- Input de archivo (oculto visualmente, pero funcional) -->
+          <input id="foto" type="file" formControlName="foto" required
+                 (change)="onFileSelected($event)"
+                 class="mt-2 block w-full text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
+                file:bg-gray-200 file:text-gray-700 file:rounded-md file:px-4 file:py-1.5
+                hover:file:bg-gray-300 cursor-pointer">
+
+          <!-- Mensaje de error -->
+          <div *ngIf="registroForm.get('foto')?.invalid && registroForm.get('foto')?.touched"
+               class="text-red-500">
             Foto inválida.
           </div>
         </div>
+
+
+
 
         <!-- Campo de Dirección -->
         <div class="relative">
