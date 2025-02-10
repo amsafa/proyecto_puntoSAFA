@@ -1,0 +1,18 @@
+<div *ngIf="loading" class="text-center text-blue-600">Cargando libros...</div>
+
+<div *ngIf="errorMessage" class="text-center text-red-600">{{ errorMessage }}</div>
+
+<div *ngIf="books.length > 0; else noBooks">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <app-book-card-categoria
+      *ngFor="let book of books"
+      [book]="book"
+    >
+
+    </app-book-card-categoria>
+  </div>
+</div>
+
+<ng-template #noBooks>
+  <p class="text-gray-500 text-center">No hay libros disponibles en esta categoría.</p>
+</ng-template>

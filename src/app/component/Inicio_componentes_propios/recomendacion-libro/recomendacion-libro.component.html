@@ -1,13 +1,24 @@
-<section class="py-10 bg-blue-900 text-white text-center">
-  <div class="container mx-auto">
-    <h2 class="text-2xl font-bold">NUESTRA RECOMENDACÓN DE LA SEMANA:</h2>
-    <div class="mt-6">
-      <!-- Reutilización del componente BookCard -->
-      <app-book-card
-        *ngIf="randomBook"
-        [book]="randomBook"
-        class="mx-auto"
-      ></app-book-card>
+<section class="py-10 bg-customTeal text-white text-center">
+
+  <h2 class="text-3xl font-bold">Recomendaciones</h2>
+  <div class="container mx-auto my-20 flex justify-center">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-4">
+      <div *ngFor="let libro of libros" class="bg-white rounded-lg shadow-md flex flex-col md:flex-row max-w-lg mx-auto">
+        <div class="md:w-1/2 relative h-64 md:h-auto overflow-hidden">
+          <img [src]="libro.imagen" alt="{{ libro.titulo }}" class="object-cover w-full h-full md:rounded-l-lg md:rounded-t-none">
+        </div>
+        <div class="md:w-1/2 p-6 flex flex-col justify-between">
+          <div>
+            <div class="font-bold text-xl mb-2 text-gray-900">{{ libro.titulo }}</div>
+            <p class="text-gray-700 text-base mb-4 line-clamp-3">{{ libro.resumen }}</p>
+          </div>
+          <div class="flex items-center">
+            <div class="text-sm">
+              <p class="text-gray-900 leading-none">{{ libro.autor }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

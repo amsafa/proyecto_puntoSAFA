@@ -1,34 +1,9 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
-  <!-- Iteramos los libros -->
-  <div
-    *ngFor="let book of displayedBooks"
-    class="bg-white rounded-lg shadow-md p-4 flex flex-col items-center"
-  >
-    <!-- Imagen del libro -->
-    <img
-      [src]="book.image"
-      [alt]="book.title"
-      class="w-40 h-60 object-cover rounded"
-    />
+<div class="p-4 bg-white shadow rounded">
+  <img [src]="book.imagen || 'assets/default-book.jpg'" alt="{{ book.titulo }}" class="w-full h-48 object-cover rounded-md">
+  <h3 class="text-gray-600 text-lg font-bold mt-2">{{ book.titulo }}</h3>
+  <p class="text-gray-600">{{ book.autor.apellidos }}</p>
+  <p class="text-gray-600">{{ book.autor}}</p>
 
-    <!-- Nombre del libro -->
-    <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">
-      {{ book.title }}
-    </h3>
 
-    <!-- Autor del libro -->
-    <p class="text-sm text-gray-600 text-center">por {{ book.author }}</p>
-
-    <!-- Precio del libro -->
-    <p class="mt-2 text-xl font-semibold text-blue-900">
-      {{ book.price | currency: 'EUR' }}
-    </p>
-
-    <!-- Botón para comprar o ver más detalles -->
-    <button
-      class="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-700"
-    >
-      Ver detalles
-    </button>
-  </div>
+  <p class="text-blue-500 font-semibold">{{ book.precio | currency }}</p>
 </div>

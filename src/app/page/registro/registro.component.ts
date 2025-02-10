@@ -94,7 +94,14 @@ export class RegistroComponent implements OnInit {
   }
 
   // Alerta de éxito usando SweetAlert2
-  selectedFileName: string | undefined;
+  selectedFileName: string | undefined
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFileName = input.files[0].name; // Guardamos el nombre del archivo
+    }
+  }
+
   mostrarAlertaExito() {
     Swal.fire({
       title: '¡Registro Exitoso!',
@@ -105,11 +112,9 @@ export class RegistroComponent implements OnInit {
       timer: 3000,
       timerProgressBar: true
     }).then(() => {
-      this.registroForm.reset();  // Limpia el formulario después de la alerta
+      this.registroForm.reset();  // Limpia el formulario
+      this.selectedFileName = ''; // Limpia el nombre del archivo seleccionado
     });
   }
 
-  onFileSelected($event: Event) {
-
-  }
 }
