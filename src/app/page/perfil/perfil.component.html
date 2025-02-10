@@ -1,0 +1,92 @@
+<div class="min-h-screen flex flex-col bg-gray-100">
+    <!-- Encabezado -->
+    <header class="w-full bg-[#F0F4EF] flex items-center p-4 shadow">
+        <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-40 h-auto ml-10">
+        <h2 class="flex-grow text-center text-2xl md:text-4xl font-bold text-[#1F2D3D]">
+            Bienvenido a PuntoSafa
+        </h2>
+        <h2 class="text-lg font-semibold text-blue-600 mr-10">¡HOLA! {{ cliente?.nombre }}</h2>
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto p-6 bg-white shadow-lg rounded-lg mt-6">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center gap-8">
+            <!-- Foto del Cliente -->
+            <div class="flex-shrink-0">
+                <img
+                        [src]="cliente?.foto || 'assets/default-user.png'"
+                        alt="Foto del Cliente"
+                        class="w-40 h-40 rounded-full object-cover border-4 border-blue-500"
+                >
+            </div>
+
+
+            <!-- Información del Cliente -->
+            <div class="flex-grow bg-gray-50 p-4 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Perfil del Cliente</h2>
+                <form [formGroup]="perfilForm" (ngSubmit)="guardarCambios()" class="space-y-4">
+                    <div class="flex flex-col">
+                        <label for="email" class="font-medium text-gray-600">Email:</label>
+                        <input id="email" formControlName="email" type="email" class="input-field">
+                    </div>
+
+
+                    <div class="flex flex-col">
+                        <label for="nick" class="font-medium text-gray-600">Nick:</label>
+                        <input id="nick" formControlName="nick" type="text" class="input-field">
+                    </div>
+
+
+                    <div class="flex flex-col">
+                        <label for="nombre" class="font-medium text-gray-600">Nombre:</label>
+                        <input id="nombre" formControlName="nombre" type="text" class="input-field">
+                    </div>
+
+
+                    <div class="flex flex-col">
+                        <label for="apellidos" class="font-medium text-gray-600">Apellidos:</label>
+                        <input id="apellidos" formControlName="apellidos" type="text" class="input-field">
+                    </div>
+
+
+                    <div class="flex flex-col">
+                        <label for="dni" class="font-medium text-gray-600">DNI:</label>
+                        <input id="dni" formControlName="dni" type="text" class="input-field">
+                    </div>
+
+
+                    <div class="flex flex-col">
+                        <label for="direccion" class="font-medium text-gray-600">Dirección:</label>
+                        <input id="direccion" formControlName="direccion" type="text" class="input-field">
+                    </div>
+
+
+                    <div class="flex flex-col">
+                        <label for="telefono" class="font-medium text-gray-600">Teléfono:</label>
+                        <input id="telefono" formControlName="telefono" type="text" class="input-field">
+                    </div>
+
+
+                    <button
+                            type="submit"
+                            [disabled]="!perfilForm.valid"
+                            class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                    >
+                        Guardar Cambios
+                    </button>
+                </form>
+
+
+                <p *ngIf="errorMessage" class="text-red-600 mt-2">{{ errorMessage }}</p>
+            </div>
+        </div>
+
+
+        <!-- Información del Carrito de Compras -->
+        <div class="mt-8 bg-gray-100 p-4 rounded-lg shadow-md">
+            <h2 class="text-lg font-semibold text-gray-700 mb-2">Carrito de Compras</h2>
+            <p class="text-gray-600">Aquí se muestra la información del carrito de compras...</p>
+        </div>
+    </main>
+</div>
