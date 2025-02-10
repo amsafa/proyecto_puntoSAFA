@@ -23,43 +23,47 @@
   </div>
 </section>
 <section class="bg-white py-4">
-  <div class="container mx-auto flex justify-center items-center space-x-4 relative w-2/3">
-    <div class="relative w-full">
-  <input
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <div class="container mx-auto flex justify-center items-center space-x-4">
+    <input
       type="text"
-      placeholder="Buscar libro por autor o título..."
-      class="border border-gray-300 rounded-xl px-4 py-2 w-2/3 text-custom-blue"
       [(ngModel)]="filter"
       id="search"
       name="search"
+      placeholder="Buscar libro por autor o título..."
+      class="border border-gray-300 rounded-xl px-4 py-2 w-2/3 text-custom-blue"
     />
-    </div>
-    <!-- Search Button -->
     <button (click)="searchBooks()" class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
       Buscar
     </button>
-      <button
-        *ngIf="filter"
-        (click)="clearSearch()"
-        class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400"
-      >
-        ✖
-      </button>
+    <button
+      *ngIf="filter"
+      (click)="clearSearch()"
+      class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400"
+    >
+      ✖
+    </button>
   </div>
+
 </section>
 
 <div class="flex items-center space-x-2 mx-60 my-10 px-20">
-  <label for="sort" class="font-bold text-[20px] text-[#1D2C4B] font-montserrat">Ordenar por</label>
-  <select id="sort"  class="p-2 border border-gray-300 rounded-md"
- >
-    <!-- [(ngModel)] ="ordernarPor"
-  (change)="cargarLibros()"-->
-    <option value="autor">Autor</option>
-    <option value="titulo" >Libro</option>
+  <label for="sort" class="
+   mb-2  font-bold text-[20px] text-[#1D2C4B] font-montserrat  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+  >Ordenar por</label>
+  <p>You select your team {{ opcionSeleccionada }} using change event</p>
+  <select id="sort" class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          #filtro (change)="onSelected(filtro.value)">
+    <option default>Pick a team</option>
+    <option  value="autor">Autor</option>
+    <option value="titulo">Libro</option>
     <option value="fecha">Fecha edición</option>
     <option value="precio">Precio</option>
   </select>
+
 </div>
+
+
 
 
 
