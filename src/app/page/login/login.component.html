@@ -1,6 +1,4 @@
 <div class="min-h-screen flex flex-col">
-
-
   <!-- Main Content -->
   <main class="flex-grow flex flex-col items-center bg-white">
     <!-- Encabezado -->
@@ -10,13 +8,13 @@
     </div>
 
     <!-- Contenedor del Formulario -->
-    <div class="form-container bg-[#BBCCDD] p-8 rounded-lg shadow-md mt-8 w-full max-w-md">
-      <form class="space-y-6" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <div class="form-container bg-[#BBCCDD] p-16 rounded-lg shadow-lg w-full max-w-xl mx-auto mt-24">
+      <form class="space-y-12" [formGroup]="loginForm" (ngSubmit)="onLogin()">
 
         <!-- Campo de Nombre -->
         <div class="relative">
           <input id="username" type="text" formControlName="username" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
+                 class="block w-full pl-12 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-lg"
                  placeholder="Username">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <i class="fa-solid fa-user text-gray-400"></i>
@@ -29,7 +27,7 @@
         <!-- Campo de contraseña -->
         <div class="relative">
           <input id="password" type="password" formControlName="password" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
+                 class="block w-full pl-12 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-lg"
                  placeholder="Password">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <i class="fa-solid fa-lock text-gray-400"></i>
@@ -39,30 +37,21 @@
           </div>
         </div>
 
-
-        <button type="submit" class="w-full bg-[#009688] text-white py-3 rounded-md font-semibold hover:bg-[#00796B]">
-          Iniciar Sesion
+        <button type="submit" class="w-full bg-[#009688] text-white py-4 rounded-md font-semibold text-lg hover:bg-[#00796B]">
+          Iniciar Sesión
         </button>
       </form>
 
-
-
-
-
-
-      <p class="login-link text-center text-sm mt-8 text-gray-600">
-        ¿Aun no tienes Cuenta? <a href="/registro" class="text-[#009688] font-bold">Registrate aquí.</a>
+      <p class="login-link text-center text-base mt-8 text-gray-600">
+        ¿Aún no tienes Cuenta? <a href="/registro" class="text-[#009688] font-bold">Regístrate aquí.</a>
       </p>
 
       <!-- Mostrar mensaje de error -->
       <div>
         <p *ngIf="errorMessage" class="alert alert-error p-4 mb-4 bg-red-100 text-red-800 border border-red-400 rounded">
-        {{ errorMessage }}
-      </p>
+          {{ errorMessage }}
+        </p>
       </div>
     </div>
   </main>
-
-
-
 </div>

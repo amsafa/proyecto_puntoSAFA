@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from '../../environments/environment';
 
 export interface Autor {
   id: number;
@@ -15,7 +16,7 @@ export interface Autor {
   providedIn: 'root'
 })
 export class AutorService {
-  private apiUrl = 'http://localhost:8000/autor'; // Ajusta la URL según tu configuración
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -26,4 +27,17 @@ export class AutorService {
   getAutorById(id: number): Observable<Autor> {
     return this.http.get<Autor>(`${this.apiUrl}/${id}`);
   }
+
+  crearAutor(autor: Autor): Observable<Autor> {
+    return this.http.post<Autor>(`${this.apiUrl}/guardar`, autor);
+  }
+
+  editarAutor(id: number, autor: Autor): Observable<Autor> {
+    return this.http.put<Autor>(`${this.apiUrl}/editar/${id}`, autor);
+  }
+
+  eliminarAutor(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/eliminar/${id}`);
+  }
+
 }

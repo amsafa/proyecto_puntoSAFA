@@ -94,6 +94,7 @@ export class RegistroComponent implements OnInit {
   }
 
   // Alerta de éxito usando SweetAlert2
+  selectedFileName: string | undefined;
   mostrarAlertaExito() {
     Swal.fire({
       title: '¡Registro Exitoso!',
@@ -106,5 +107,9 @@ export class RegistroComponent implements OnInit {
     }).then(() => {
       this.registroForm.reset();  // Limpia el formulario después de la alerta
     });
+  }
+
+  onFileSelected($event: Event) {
+
   }
 }

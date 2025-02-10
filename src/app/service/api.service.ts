@@ -8,7 +8,7 @@ import {Usuario} from '../interface/usuario'
 export class ApiService {
 
 
-  private baseUrl: string = "http://127.0.0.1:8000/usuario/all";
+  private baseUrl: string = "http://127.0.0.1:8000/";
   async getUsers(): Promise<Usuario> {
 
     const response = await fetch(this.baseUrl);

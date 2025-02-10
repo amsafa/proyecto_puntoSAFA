@@ -1,4 +1,5 @@
 export class RegistroCliente {
+  //id?:number;
   email?:string;
   nick?:string
   nombre?:string;

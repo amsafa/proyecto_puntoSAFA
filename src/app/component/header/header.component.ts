@@ -1,33 +1,50 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {NgIf} from '@angular/common';
+import {AuthService} from '../../service/auth.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   imports: [
-    NgIf
+    NgIf,
+    RouterLink
   ],
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  isLoggedIn = false;  // Variable para controlar el estado de la sesión
-  isMenuOpen = false;  // Para el menú en móviles
+  isLoggedIn = false;
+  isMenuOpen = false;
+  showMenu= false;
+  userData: any = null;
 
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = !!localStorage.getItem('token');  // Verifica si hay un token guardado
+    // Suscribirse al estado de autenticación
+    this.authService.getAuthState().subscribe((state) => {
+      this.isLoggedIn = state;
+    });
+    this.authService.getUserData().subscribe(user => {
+      this.userData = user; // 🔹 Guardar los datos del usuario
+    });
+
+    if (this.isLoggedIn) {
+      this.authService.fetchUserData(); // 🔹 Obtener los datos si ya está logueado
+    }
   }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
+  toggleAccountMenu() {
+    this.showMenu = !this.showMenu;  // 🔹 Abre o cierra el menú de "Mi Cuenta"
+  }
+
   logout() {
-    localStorage.removeItem('token');  // Elimina el token
-    this.isLoggedIn = false;
-    this.router.navigate(['/login']);  // Redirige al login después de cerrar sesión
+    this.authService.logout();
+    this.showMenu = false;
   }
 }

@@ -18,23 +18,33 @@
       <li><a href="/home" class="hover:text-gray-300">Inicio</a></li>
       <li><a href="/catalogo" class="hover:text-gray-300">Catálogo</a></li>
 
-        <!-- Mostrar dependiendo del estado de la sesión -->
-        <li *ngIf="!isLoggedIn">
-            <a href="/login" class="bg-white text-blue-900 px-4 py-2 rounded hover:bg-gray-200">
-                Iniciar sesión o registrarse
-            </a>
-        </li>
-        <li *ngIf="isLoggedIn" class="relative group">
-            <button class="bg-white text-blue-900 px-4 py-4 rounded hover:bg-gray-200">
-                Mi Cuenta
+      <!-- Mostrar dependiendo del estado de la sesión -->
+      <li *ngIf="!isLoggedIn">
+        <a href="/login" class="bg-white text-blue-900 px-4 py-2 rounded hover:bg-gray-200">
+          Iniciar sesión o registrarse
+        </a>
+      </li>
+
+      <li *ngIf="isLoggedIn" class="relative">
+        <button (click)="toggleAccountMenu()" class="flex items-center space-x-2">
+          <img *ngIf="userData?.foto" [src]="userData.foto" alt="Foto de perfil" class="w-10 h-10 rounded-full">
+          <span *ngIf="!userData?.foto" class="bg-gray-300 w-10 h-10 flex items-center justify-center rounded-full text-white">
+      ?
+    </span>
+        </button>
+
+        <!-- Submenú desplegable -->
+        <ul *ngIf="showMenu" class="absolute bg-white text-blue-900 shadow-md rounded mt-3 w-40">
+          <li><a href="/perfil" class="block px-4 py-2 hover:bg-gray-100">Perfil</a></li>
+          <li><a routerLink="/mis-pedidos" class="block px-4 py-2 hover:bg-gray-100">Mis Pedidos</a></li>
+          <li>
+            <button (click)="logout()" class="block w-full text-left px-4 py-2 hover:bg-red-100 text-red-600">
+              Cerrar Sesión
             </button>
-            <!-- Submenú desplegable -->
-            <ul class="absolute hidden group-hover:block bg-white text-blue-900 shadow-md rounded mt-3 w-40">
-                <li><a href="/perfil" class="block px-4 py-2 hover:bg-gray-100">Perfil</a></li>
-                <li><a href="/mis-pedidos" class="block px-4 py-2 hover:bg-gray-100">Mis Pedidos</a></li>
-                <li><button (click)="logout()" class="block w-full text-left px-4 py-2 hover:bg-red-100 text-red-600">Cerrar Sesión</button></li>
-            </ul>
-        </li>
+          </li>
+        </ul>
+      </li>
+
 
     </ul>
   </nav>

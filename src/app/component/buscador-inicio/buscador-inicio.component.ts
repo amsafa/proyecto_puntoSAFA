@@ -10,35 +10,13 @@ import {Libro} from '../../interface/libro';
 })
 export class BuscadorInicioComponent {
 
-  constructor(private libroService: LibroService) {
+  constructor() {
+
   }
-
-  // @Output() resultadoBusqueda: EventEmitter<Libro[]> = new EventEmitter<Libro[]>();
-  //
-  query: string = '';
-  libros: Libro[] = [];
+  ngOnInit(): void {}
 
 
-  // async searchLibros(): Promise<void> {
-  //   if(this.query){
-  //     const libros = await this.libroService.searchLibros(this.query);
-  //     this.resultadoBusqueda.emit(libros);
-  //   }else {
-  //     this.resultadoBusqueda.emit([]);
-  //   }
 
-  // }
 
-  async searchLibros(): Promise<void> {
-
-    if (this.query) {
-
-      this.libros = await this.libroService.searchLibros(this.query);
-
-    } else {
-
-      this.libros = []; // Clear results if search term is empty
-    }
-  }
 
 }

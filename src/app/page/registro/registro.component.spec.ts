@@ -10,7 +10,7 @@ describe('RegistroComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RegistroComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(RegistroComponent);
     component = fixture.componentInstance;

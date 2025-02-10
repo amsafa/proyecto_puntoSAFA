@@ -1,16 +1,19 @@
+import {Categoria} from './categoria';
+import {Autor} from './autor';
+
 export interface Libro {
-  id: number;
+  category: string;
+
+
   titulo: string;
-  remunen: string;
-  anioPublicacion: Date;
-  precio:number;
-  ISBN:string;
-  editorial:string;
-  imagen:string;
-  idioma:string;
-  numPaginas:number;
-  categoria:string;
-  autor:string;
-
-
+  resumen: string;
+  anio_publicacion: string;
+  precio: number;
+  ISBN: string;
+  editorial: string;
+  imagen: string;
+  idioma: string;
+  num_paginas: number;
+  autor: Autor; // ID del autor
+  categoria: Categoria; // ID de la categoría
 }

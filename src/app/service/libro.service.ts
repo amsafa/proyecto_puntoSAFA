@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import {Observable} from 'rxjs';
-import {Libro} from '../interface/libro';
-import {Usuario} from '../interface/usuario';
+import {LoginService} from './login.service';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,25 +12,29 @@ import {Usuario} from '../interface/usuario';
 export class LibroService {
   private baseUrl: string = "http://127.0.0.1:8000/libro";
 
-  constructor() { }
 
-  async getLibros(): Promise<Libro[]> {
-    const response = await fetch(`${this.baseUrl}/all`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+  constructor(private http: HttpClient, private loginService: LoginService) { }
+
+  // Método para obtener todos los libros
+  getBooks(): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/all`);  }
+
+  // Método para obtener libros por categoría (desde el backend)
+  getBooksByCategory(id: number): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
+
+    async getLibros(): Promise<Libro[]> {
+        const response = await fetch(`${this.baseUrl}/all`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return await response.json();
     }
-    return await response.json();
-  }
 
-  async searchLibros(q:string): Promise<Libro[]> {
-    const response = await fetch(`${this.baseUrl}/search?q=${encodeURIComponent(q)}`);
-
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
+    getLibrosByPrecio(range:string):Observable<Libro[]> {
+        return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}`);
     }
 
-    return await response.json();
-  }
 
 
 }
