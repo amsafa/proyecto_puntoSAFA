@@ -1,9 +1,8 @@
 export interface Autor {
   id: number;
   nombre: string;
-  apellido: string;
+  apellidos: string;
   biografia: string;
-  nacionalidad: string;
-  fecha_nacimiento:Date;
-
+  nacionalidad: string | null;
+  fechaNacimiento: string | null; // Fecha de nacimiento del autor (opcional)
 }

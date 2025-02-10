@@ -1,0 +1,134 @@
+<div class="cart-icon-container" (click)="toggleCart()">
+  <svg class="icon-cart" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+    <path d="M240-80q-33 0-56.5-23.5T160-160v-480q0-33 23.5-56.5T240-720h80q0-66 47-113t113-47q66 0 113 47t47 113h80q33 0 56.5 23.5T800-640v480q0 33-23.5 56.5T720-80H240Zm0-80h480v-480h-80v80q0 17-11.5 28.5T600-520q-17 0-28.5-11.5T560-560v-80H400v80q0 17-11.5 28.5T360-520q-17 0-28.5-11.5T320-560v-80h-80v480Zm160-560h160q0-33-23.5-56.5T480-800q-33 0-56.5 23.5T400-720ZM240-160v-480 480Z"/>
+  </svg>
+  <span class="cantidad">0</span>
+</div>
+<section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <div class="container mx-auto flex flex-col md:flex-row items-center
+   px-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">
+
+    <div class="mt-10 md:mt-0 md:ml-0 lg:ml-0">
+      <img src="../../../../assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-full max-w-xxs md:max-w-xs mx-auto">
+    </div>
+
+    <!-- Dynamic Text Content (passed from parent) -->
+    <div class="flex items-center justify-center text-center md:text-left max-w-2xl lg:max-w-xl mx-auto">
+      <h1 class="text-4xl font-extrabold text-blue-900 leading-tight">
+        Catálogo
+      </h1>
+    </div>
+  </div>
+</section>
+<section class="bg-white py-4">
+  <div class="container mx-auto flex justify-center items-center space-x-4 relative w-2/3">
+    <div class="relative w-full">
+  <input
+      type="text"
+      placeholder="Buscar libro por autor o título..."
+      class="border border-gray-300 rounded-xl px-4 py-2 w-2/3 text-custom-blue"
+      [(ngModel)]="filter"
+      id="search"
+      name="search"
+    />
+    </div>
+    <!-- Search Button -->
+    <button  (click)="searchBooks()" class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
+      Buscar
+    </button>
+      <button
+        *ngIf="filter"
+        (click)="clearSearch()"
+        class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400"
+      >
+        ✖
+      </button>
+  </div>
+</section>
+
+
+
+
+
+<div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 p-4 bg-customGreen">
+  <!-- Filtro Catalogo -->
+  <div class="flex-shrink-0">
+       <!-- Filtros -->
+    <div class="bg-[#1D2C4B] max-w-[333px] max-h-[65px] text-center rounded-lg text-white">
+      <h1 class="text-2xl font-bold">Filtros</h1>
+    </div>
+    <div class="max-w-[333px] p-4 space-y-4">
+      <!-- Precios -->
+      <div>
+        <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Precios</h3>
+        <ul class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
+          <li><input type="checkbox" (change)="filterByPrice('menor5')" [checked]="selectedPriceRange ==='menor5'" class="mr-2">Menos de 5 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('5-10')" [checked]="selectedPriceRange ==='5-10'" class="mr-2">De 5 a 10 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('10-15')" [checked]="selectedPriceRange ==='10-15'" class="mr-2">De 10 a 15 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('15-40')" [checked]="selectedPriceRange ==='15-40'" class="mr-2">De 15 a 40 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('mayor40')" [checked]="selectedPriceRange ==='mayor40'" class="mr-2">Más de 40 euros</li>
+        </ul>
+      </div>
+
+      <!-- Categoría -->
+      <div>
+        <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Categoría</h3>
+        <ul class="flex flex-col space-y-2 text-[#1D2C4B] font-bold text-md font-[Montserrat]">
+          <li><input type="checkbox" class="mr-2">Lógica e inteligencia</li>
+          <li><input type="checkbox" class="mr-2">Temáticas del universo</li>
+          <li><input type="checkbox" class="mr-2">Psicología</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Book List -->
+  <div class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+    <!-- Iteramos los libros -->
+    <div
+      *ngFor="let libro of filteredBooks"
+      class="bg-white rounded-lg shadow-lg p-4 flex flex-col items-center "
+    >
+      <div class="image-container">
+      <img [src]="libro.imagen" [alt]="libro.titulo" class="w-40 h-60 object-cover rounded" />
+      <div class="overlay">
+        <button class="cart-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+            <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>
+          </svg>
+          Añadir al carrito
+        </button>
+      </div>
+      </div>
+      <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
+      <p class="text-sm text-gray-600 text-center">por {{ libro.autor }}</p>
+      <p class="mt-2 text-xl font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ff9c1a"><path d="m354-287 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-350Z"/></svg>'
+      <button class="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-700">Ver detalles</button>
+    </div>
+  </div>
+</div>
+
+<div class="cart" *ngIf="showCart">
+  <h2 class="text-xl font-bold mb-4">Cart</h2>
+  <ul class="cart-items border-b">
+    <li>
+      <p class="cart-image">Imagen</p>
+      <p class="cart-item">Producto</p>
+
+    </li>
+  </ul>
+  <p class="mt-4 text-right font-bold text-lg">Total</p>
+  <button (click)="toggleCart()">Hide Cart</button>
+</div>
+
+
+
+
+
+
+
+
+

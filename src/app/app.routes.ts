@@ -6,22 +6,22 @@ import {BuscadorInicioComponent} from './component/buscador-inicio/buscador-inic
 import {
   CajasCategoriaInicioComponent
 } from './component/Inicio_componentes_propios/cajas-categoria-inicio/cajas-categoria-inicio.component';
-import {Carousel} from 'primeng/carousel';
 import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
 import {
   RecomendacionLibroComponent
 } from './component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component';
+import {CatalogoComponent} from './page/catalogo/catalogo/catalogo.component';
 import {RegistroComponent} from './page/registro/registro.component';
 import {LoginComponent} from './page/login/login.component';
 import {HomeComponent} from './page/home/home.component';
 import {AutorComponent} from './page/autor/autor.component';
-import {CatalogoComponent} from './page/catalogo/catalogo/catalogo.component';
 import {PerfilComponent} from './page/perfil/perfil.component';
+
 
 
 export const routes: Routes = [
 
-  //Comprobación de componentes de Alba
+  //Comprobación de componentes
   {path: 'header', component:HeaderComponent, pathMatch: 'full'},
   {path: 'footer', component: FooterComponent, pathMatch: 'full'},
   {path: 'heroInicio', component: HeroSectionInicioComponent, pathMatch: 'full'},

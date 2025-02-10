@@ -106,4 +106,7 @@ export class AuthService {
     Swal.fire('Error', errorMessage, 'error');
     return throwError(() => new Error(errorMessage));
   }
+
+
+
 }
