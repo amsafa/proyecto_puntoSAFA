@@ -49,10 +49,13 @@
 </section>
 
 <div class="flex items-center space-x-2 mx-60 my-10 px-20">
-  <span class="font-bold text-[20px] text-[#1D2C4B] font-montserrat">Ordenar por</span>
-  <select  class="p-2 border border-gray-300 rounded-md">
+  <label for="sort" class="font-bold text-[20px] text-[#1D2C4B] font-montserrat">Ordenar por</label>
+  <select id="sort"  class="p-2 border border-gray-300 rounded-md"
+ >
+    <!-- [(ngModel)] ="ordernarPor"
+  (change)="cargarLibros()"-->
     <option value="autor">Autor</option>
-    <option value="titulo" selected>Libro</option>
+    <option value="titulo" >Libro</option>
     <option value="fecha">Fecha edición</option>
     <option value="precio">Precio</option>
   </select>
@@ -82,15 +85,18 @@
 
       <!-- Categoría -->
       <div class="max-w-[333px] p-4 space-y-4 mt-4 border-t border-custom-blue">
-      <div>
         <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Categoría</h3>
-        <ul class="flex flex-col space-y-2 text-[#1D2C4B] font-bold text-md font-[Montserrat]">
-          <li><input type="checkbox" class="mr-2">Lógica e inteligencia</li>
-          <li><input type="checkbox" class="mr-2">Temáticas del universo</li>
-          <li><input type="checkbox" class="mr-2">Psicología</li>
+        <ul class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
+          <li *ngFor="let category of categories">
+            <input
+              type="checkbox"
+              [checked]="selectedCategoryId === category.id"
+              (change)="filterByCategory(category.id)"
+              class="mr-2">
+            {{ category.nombre }}
+          </li>
         </ul>
       </div>
-    </div>
   </div>
   </div>
 
@@ -140,7 +146,7 @@
         </div>
       </div>
       <h3 class="mt-3 text-base font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
-      <p class="text-xs text-gray-600 text-center">por {{ libro.autor }}</p>
+      <p class="text-xs text-gray-600 text-center">por {{ libro.autor.nombre }} {{libro.autor.apellidos}}</p>
       <p class="mt-1 text-lg font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
 
       <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ff9c1a" class="mt-1">
@@ -152,8 +158,12 @@
   </div>
 </div>
 
+
+
+
+
 <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-  <div></div>
+
   <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
 
     <!-- Previous Button (Only visible on page 2 or greater) -->
@@ -176,6 +186,8 @@
     </a>
   </nav>
 </div>
+
+
 
 
 

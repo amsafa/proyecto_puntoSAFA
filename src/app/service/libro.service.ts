@@ -18,6 +18,8 @@ export class LibroService {
   getBooks(): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/all`);  }
 
+
+
   // Método para obtener libros por categoría (desde el backend)
   getBooksByCategory(id: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
@@ -36,8 +38,38 @@ export class LibroService {
     return await response.json();  // Make sure it returns an array of books
   }
 
+  async sortLibros(params: {ordenarPor: string }): Promise<Libro[]> {
+    debugger
+    console.log("Base URL:", this.baseUrl); // Check if baseUrl is defined
+
+    if (!this.baseUrl) {
+      throw new Error("Base URL is not defined");
+    }
+    const url = new URL(`${this.baseUrl}/ordenar`);
+    url.searchParams.append('ordenarPor', params.ordenarPor);
+
+    try {
+      const response = await fetch(url.toString());
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      return await response.json(); // Convert response to JSON
+    } catch (error) {
+      console.error("Error fetching sorted books:", error);
+      throw error;
+    }
+  }
+
+
+
     getLibrosByPrecio(range:string):Observable<Libro[]> {
         return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}`);
+    }
+
+    getLibrosByCategoria():Observable<Categoria[]> {
+          return this.http.get<Categoria[]>(`${this.baseUrl}/categoria`);
     }
 
     // getLibrosOrdenados(ordenarPor:string, page:number, limit:number):Observable<Libro[]> {
