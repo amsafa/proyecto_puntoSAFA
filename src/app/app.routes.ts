@@ -15,7 +15,8 @@ import {RegistroComponent} from './page/registro/registro.component';
 import {LoginComponent} from './page/login/login.component';
 import {HomeComponent} from './page/home/home.component';
 import {AutorComponent} from './page/autor/autor.component';
-import {CatalogoComponent} from './page/catalogo/catalogo/catalogo.component';
+import {CatalogoComponent} from './page/catalogo/catalogo.component';
+
 
 
 export const routes: Routes = [
