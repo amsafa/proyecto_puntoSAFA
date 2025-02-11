@@ -6,5 +6,4 @@ export interface Cliente {
   foto: string;
   direccion: string;
   telefono: string;
-  id_usuario: number;
 }
