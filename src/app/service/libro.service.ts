@@ -5,7 +5,6 @@ import { Categoria } from '../interface/categoria'; // Importar la interfaz de c
 import {Observable} from 'rxjs';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -20,18 +19,26 @@ export class LibroService {
 
   // Método para obtener libros por categoría (desde el backend)
   getBooksByCategory(id: number): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
+    return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`); }
 
-    async getLibros(): Promise<Libro[]> {
-        const response = await fetch(`${this.baseUrl}/all`);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return await response.json();
-    }
+  //Métdo para obtener el libro por id
+  getLibroById(id: number): Observable<Libro> {
+    return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
 
-    getLibrosByPrecio(range:string):Observable<Libro[]> {
-        return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}`);
-    }
+
+//Método para obtener todos los libros
+  async getLibros(): Promise<Libro[]> {
+      const response = await fetch(`${this.baseUrl}/all`);
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return await response.json();
+  }
+//Método para obtener libros por precio (desde el backend)
+  getLibrosByPrecio(range:string):Observable<Libro[]> {
+      return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}`);
+  }
+
+
 
 }
