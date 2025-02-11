@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {LibroService} from '../../service/libro.service';
+import {Libro} from '../../interface/libro';
 
 @Component({
   selector: 'app-buscador-inicio',
@@ -6,10 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./buscador-inicio.component.css'],
   standalone: true,
 })
-export class BuscadorInicioComponent  implements OnInit {
+export class BuscadorInicioComponent {
 
-  constructor() { }
+  constructor() {
 
-  ngOnInit() {}
+  }
+  ngOnInit(): void {}
+
+
+
+
 
 }

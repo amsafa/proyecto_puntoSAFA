@@ -8,7 +8,6 @@ export interface Libro {
   titulo: string;
   resumen: string;
   anio_publicacion: string;
-  //  anioPublicacion: Date;
   precio: number;
   ISBN: string;
   editorial: string;

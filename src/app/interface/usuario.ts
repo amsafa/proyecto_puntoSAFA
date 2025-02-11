@@ -1,7 +1,7 @@
-
 export interface Usuario {
-  id: number;
+  id: number; // Assuming you have an ID
   nick: string;
-  contrasena: string;
+  contrasena:string;
+  rol:string;
   email: string;
 }

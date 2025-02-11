@@ -27,74 +27,49 @@ import {CategoriaService} from '../../service/categoria.service';
 export class CatalogoComponent  implements OnInit {
   libros: Libro[] = [];
   filteredBooks: Libro[] = [];
-  categories: Categoria[] = [];
   filter: string = '';
-  currentPage: number = 1;
-  itemsPerPage: number = 9;
-  totalPagesArray: number[] = [];
-  selectedCategoryId: number | null = null;
 
-  ordenarPor = 'titulo';  // Default sorting option
-  fechaFiltro: string | null = null; // Date filter
+  constructor(private libroService: LibroService) {}
 
-  opcionSeleccionada = ''
-  onSelected(value:string): void {
-    this.opcionSeleccionada = value;
-  }
-
-
-
-    constructor(private libroService: LibroService, private route:ActivatedRoute, private categoriaService: CategoriaService) { }
-
+ @Input() categoriaId!: number;
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.filter = params['search'] || '';
-      this.cargarLibros().then(() => {
-        if (this.filter) {
-          this.searchBooks();
-        }
-      });
+    this.cargarLibros().then(libros => {
+      this.libros = libros;
+      this.filteredBooks = libros; //
+      // Initialize with all books
+      console.log("Estos son los libros de catalogo", this.libros);
+    }).catch(error => {
+      console.error('Error fetching books:', error);
     });
 
-    this.categoriaService.getCategorias().subscribe(categorias => {
-      this.categories = categorias;
-    });
 
   }
 
-  async cargarLibros(): Promise<void> {
+  async cargarLibros(): Promise<Libro[]> {
     try {
-     const params = {
-       page: this.currentPage,
-       limit: this.itemsPerPage,
-       ordenarPor:this.ordenarPor,
-       fecha: this.fechaFiltro ? this.fechaFiltro : undefined
-     };
-
-        this.libros = await this.libroService.getLibrosCatalogo(params);
-        this.filteredBooks = [...this.libros];
-        this.setupPagination();
+      return await this.libroService.getLibros();
     } catch (error) {
-      console.error('Error fetching books:', error);
+      console.error('Error in cargarLibros:', error);
+      throw error;
     }
   }
-
-
 
   searchBooks(): void {
-    const searchTerm = this.filter.toLowerCase().trim();
+    const searchTerm = this.filter?.toLowerCase().trim() || '';
 
     if (!searchTerm) {
-      this.filteredBooks = this.libros;
-    } else {
-      this.filteredBooks = this.libros.filter(libro =>
-        libro.titulo?.toLowerCase().includes(searchTerm) ||
-        libro.autor?.apellidos?.toLowerCase().includes(searchTerm) ||
-        libro.autor?.nombre?.toLowerCase().includes(searchTerm)
-      );
+      this.filteredBooks = this.libros; // Reset filter if empty
+      return;
     }
+
+    this.filteredBooks = this.libros.filter(libro =>
+      (libro.titulo?.toLowerCase().includes(searchTerm) ||'') ||
+      (libro.autor?.apellidos?.toLowerCase().includes(searchTerm) || '') ||
+      (libro.autor?.nombre?.toLowerCase().includes(searchTerm) || '')
+    );
   }
+
   clearSearch(): void {
     this.filter = '';
     this.filteredBooks = this.libros;
@@ -116,46 +91,11 @@ export class CatalogoComponent  implements OnInit {
     }
 
   }
-
-  filterByCategory(categoryId:number):void{
-    if(this.selectedCategoryId === categoryId){
-      this.selectedCategoryId = null;
-      this.filteredBooks = this.libros;
-
-    }else{
-      this.selectedCategoryId = categoryId;
-      this.libroService.getBooksByCategory(categoryId).subscribe(books => {
-        this.filteredBooks = books;
-      },
-        error => {
-        console.error('Error fetching books by category:', error);
-        })
-    }
-  }
-
-
-
-
   showCart = false;
   toggleCart() {
     this.showCart = !this.showCart;
   }
 
-  changePage(page: number): void {
-    this.currentPage = page;
-    this.cargarLibros();
-  }
-
-  setupPagination(): void {
-    const totalBooks = this.libros.length; // This should ideally come from the API
-    const totalPages = Math.ceil(totalBooks / this.itemsPerPage);
-    this.totalPagesArray = Array(totalPages).fill(0).map((_, i) => i + 1);
-  }
-
-  applyFilters(): void {
-    this.currentPage = 1; // Reset to first page on filter change
-    this.cargarLibros();
-  }
 
 
 }
