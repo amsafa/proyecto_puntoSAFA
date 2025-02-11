@@ -1,4 +1,8 @@
-<div class="container mx-auto p-4">
+<div class="bg-customAzulito">
+
+<section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
   <div class="container mx-auto flex flex-col md:flex-row items-center
    px-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">
 
@@ -7,22 +11,26 @@
     </div>
 
     <!-- Dynamic Text Content (passed from parent) -->
-    <div class=" bg-customAzulito flex items-center justify-center text-center md:text-left max-w-2xl lg:max-w-xl mx-auto">
+    <div class="flex items-center justify-center text-center md:text-left max-w-2xl lg:max-w-xl mx-auto">
       <h1 class="text-4xl font-extrabold text-blue-900 leading-tight">
-        Información del libro
+        Información de libro
       </h1>
     </div>
   </div>
-  <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden flex flex-col md:flex-row">
+</section>
+
+
+
+<div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden flex flex-col md:flex-row mt-4 md:mt-8 lg:mt-12 mb-4 md:mb-8 lg:mb-12">
     <!-- Imagen del libro -->
-    <div class="md:w-1/3">
-      <img [src]="libro?.imagen" [alt]="libro?.titulo" class="w-full h-full object-cover">
-    </div>
+ <div class="md:w-1/2 flex items-center justify-center my-10 mx-8">
+   <img [src]="libro!.imagen" [alt]="libro?.titulo" class="w-full h-auto object-contain my-auto">
+ </div>
 
     <!-- Contenido del libro -->
     <div class="p-6 md:w-2/3">
       <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ libro?.titulo }}</h1>
-      <p class="text-gray-600 text-sm">Por {{ libro?.autor }}</p>
+      <p class="text-gray-600 text-sm">Por {{ libro!.autor }}</p>
       <p class="text-gray-700 mt-4 leading-relaxed">{{ libro?.resumen }}</p>
 
       <div class="mt-4 space-y-2">
@@ -54,4 +62,7 @@
       </div>
     </div>
   </div>
+
+
+
 </div>

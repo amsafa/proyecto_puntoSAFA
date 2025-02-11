@@ -15,7 +15,7 @@ import {Autor} from '../../interface/autor';
   imports: [
     CurrencyPipe,
     FormsModule,
-    NgIf
+
   ],
   standalone: true,
   templateUrl: './detalle-de-libro.component.html',
