@@ -1,5 +1,4 @@
-<div class="bg-customAzulito">
-
+<div class="bg-customAzulito mb-2">
 <section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
@@ -21,16 +20,16 @@
 
 
 
-<div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden flex flex-col md:flex-row mt-4 md:mt-8 lg:mt-12 mb-4 md:mb-8 lg:mb-12">
+<div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden flex flex-col md:flex-row mt-4 md:mt-8 lg:mt-12 mb-4 md:mb-8 lg:mb-12 gap-x-8">
     <!-- Imagen del libro -->
  <div class="md:w-1/2 flex items-center justify-center my-10 mx-8">
-   <img [src]="libro!.imagen" [alt]="libro?.titulo" class="w-full h-auto object-contain my-auto">
+   <img [src]="libro?.imagen" [alt]="libro?.titulo" class="w-full h-auto object-contain my-auto">
  </div>
 
     <!-- Contenido del libro -->
     <div class="p-6 md:w-2/3">
       <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ libro?.titulo }}</h1>
-      <p class="text-gray-600 text-sm">Por {{ libro!.autor }}</p>
+      <p class="text-gray-600 text-sm">Por {{ libro?.autor }}</p>
       <p class="text-gray-700 mt-4 leading-relaxed">{{ libro?.resumen }}</p>
 
       <div class="mt-4 space-y-2">
@@ -40,6 +39,15 @@
         <p class="text-gray-600"><span class="font-semibold">Idioma:</span> {{ libro?.idioma }}</p>
         <p class="text-gray-600"><span class="font-semibold">Páginas:</span> {{ libro?.numPaginas }}</p>
         <p class="text-gray-600"><span class="font-semibold">Categoría:</span> {{ libro?.categoria }}</p>
+
+      </div>
+      <!-- Calificación media -->
+      <div class="flex items-center mt-2">
+        <p class="text-gray-600 font-semibold">Calificación media:</p>
+
+        <span class="text-gray-600 ml-2">
+          ({{ media_calificacion !== null && !isNaN(media_calificacion) ? media_calificacion?.toFixed(1) : '0' }}/5)
+        </span>
       </div>
 
       <div class="mt-4">
@@ -63,6 +71,32 @@
     </div>
   </div>
 
+  <!-- RESEÑAS -->
+
+  <div class="max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-lg p-8">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">RESEÑAS</h2>
+
+    <!-- Mensaje si no hay reseñas -->
+    <p *ngIf="resenas.length === 0" class="text-gray-600 text-center">No hay reseñas para este libro.</p>
+
+    <!-- Lista de reseñas -->
+    <div *ngFor="let resena of resenas" class="bg-white p-6 rounded-lg shadow-md mb-6 hover:shadow-lg transition-shadow duration-300">
+      <div class="flex items-center justify-between mb-4">
+        <!-- Nombre del usuario -->
+        <p class="text-gray-800 font-semibold text-lg">{{ resena.usuario }}</p>
+        <!-- Calificación con estrellas -->
+        <div class="flex items-center space-x-1">
+          <span class="text-yellow-400 text-xl">⭐</span>
+          <span class="text-gray-700 font-medium">{{ resena.calificacion }}/5</span>
+        </div>
+      </div>
+      <!-- Comentario -->
+      <p class="text-gray-600 leading-relaxed">{{ resena.comentario }}</p>
+      <!-- Fecha -->
+      <p class="text-gray-500 text-sm mt-3">Publicado el {{ resena.fecha }}</p>
+    </div>
+  </div>
 
 
 </div>
+

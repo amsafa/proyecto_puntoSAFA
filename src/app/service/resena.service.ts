@@ -17,7 +17,11 @@ export class ResenaService {
   constructor(private http: HttpClient) { }
 
   obtenerResenasPorLibro(idLibro: number): Observable<Resena[]> {
-    return this.http.get<Resena[]>(`${this.baseUrlResena}/${idLibro}`);
+    return this.http.get<Resena[]>(`${this.baseUrlResena}/resenas/${idLibro}`);
   }
 
+  obtenerMediaCalificacion(idLibro: number): Observable<number> {
+    return this.http.get<number>(`${this.baseUrlResena}/media-calificacion/${idLibro}`);
+
   }
+}

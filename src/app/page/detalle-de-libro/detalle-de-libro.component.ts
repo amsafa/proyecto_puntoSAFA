@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
 import {Libro} from '../../interface/libro';
-import {CurrencyPipe, NgIf} from '@angular/common';
+import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {LibroService} from '../../service/libro.service';
 import {HttpClientModule} from '@angular/common/http';
@@ -8,6 +8,8 @@ import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {Categoria} from '../../interface/categoria';
 import {Autor} from '../../interface/autor';
+import {Resena} from '../../interface/resena';
+import {ResenaService} from '../../service/resena.service';
 
 
 @Component({
@@ -15,21 +17,25 @@ import {Autor} from '../../interface/autor';
   imports: [
     CurrencyPipe,
     FormsModule,
+    NgForOf,
+    NgIf,
 
   ],
-  standalone: true,
+  standalone: true, // tengo que comprobar esto
   templateUrl: './detalle-de-libro.component.html',
   styleUrl: './detalle-de-libro.component.css'
 })
 export class DetalleDeLibroComponent {
   libro?: Libro   // Variable para almacenar los detalles del libro
   quantity: number = 1; // Variable para la cantidad
-
+  resenas: Resena[] = []; // Variable para las reseñas
+  media_calificacion: number | null = null; // Variable para la calificación media
 
   constructor(
     private route: ActivatedRoute, // Para obtener el ID de la ruta
-    private libroService: LibroService // Para obtener los detalles del libro
-
+    private libroService: LibroService, // Para obtener los detalles del libro
+    private resenaService: ResenaService, // Para obtener las reseñas
+    private cdr: ChangeDetectorRef // Agregado
   ) {}
 
   // Método para inicializar el componente
@@ -37,6 +43,8 @@ export class DetalleDeLibroComponent {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!isNaN(id)) {
       this.obtenerLibro(id);
+      this.obtenerResenas(id);
+      this.obtenerMediaCalificacion(id);
       console.log('ID del libro:', id);
     }
   }
@@ -53,6 +61,44 @@ export class DetalleDeLibroComponent {
       }
     });
   }
+
+
+  // Método para obtener las reseñas
+  obtenerResenas(id: number): void {
+    this.resenaService.obtenerResenasPorLibro(id).subscribe({
+      next: (data) => {
+        this.resenas = data;
+        console.log('Resenas obtenidas:', this.resenas);
+        this.cdr.detectChanges(); // Asegurar actualización
+
+      },
+      error: (error) => {
+        console.error('Error al obtener las reseñas:', error);
+        this.resenas = []; // Para que el frontend no muestre las reseñas si hay un error
+        this.cdr.detectChanges(); // Asegurar actualización
+
+      }
+    });
+  }
+
+  //Método para obtener la calificación media
+  obtenerMediaCalificacion(id: number): void {
+    this.resenaService.obtenerMediaCalificacion(id).subscribe({
+      next: (data) => {
+        this.media_calificacion = data; // Acceder a la propiedad correcta
+        console.log('Consola-> Calificación media:', this.media_calificacion);
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error al obtener la calificación media:', error);
+        this.media_calificacion = null;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+
+
 
   // Método para disminuir la cantidad
   decreaseQuantity(): void {
@@ -77,6 +123,9 @@ export class DetalleDeLibroComponent {
       });
     }
   }
+
+
+  protected readonly isNaN = isNaN;
 }
 
 
