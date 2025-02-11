@@ -15,6 +15,7 @@ import { ActualizarService } from './actualizar.service';
 export class AuthService {
   private authState = new BehaviorSubject<boolean>(this.isLoggedIn());
   private userData = new BehaviorSubject<RegistroCliente | null>(null);
+  userData$ = this.userData.asObservable();
   private apiUrl = 'http://127.0.0.1:8000/api';
 
 
@@ -22,7 +23,9 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private actualizar: ActualizarService
-  ) {}
+  ) {
+    this.fetchUserDetails();
+  }
 
 
   // Iniciar sesión
@@ -30,9 +33,9 @@ export class AuthService {
     localStorage.removeItem('token');
     return this.http.post<{ token: string }>(`${this.apiUrl}/login_check`, credentials).pipe(
       tap(response => {
-        localStorage.setItem('token', response.token);
+        localStorage.setItem('token', response.token.trim());
         this.authState.next(true);
-        this.fetchUserData(); // Cargar datos del usuario autenticado
+        this.fetchUserDetails();
       }),
       catchError(this.handleError)
     );
@@ -40,22 +43,22 @@ export class AuthService {
 
 
   // Obtener datos del usuario autenticado
-  fetchUserData(): void {
-    const token = this.getToken();
-    if (token) {
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-      this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/all`, { headers }).subscribe({
-        next: user => {
-          console.log('Datos recibidos:', user);  // 👈 Verifica si se imprimen datos en la consola
-          this.userData.next(user);
-        },
-        error: err => {
-          console.error('Error obteniendo datos:', err);
-          this.userData.next(null);
-        }
-      });
-    }
-  }
+  // fetchUserData(): void {
+  //   const token = this.getToken();
+  //   if (token) {
+  //     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //     this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/all`, { headers }).subscribe({
+  //       next: user => {
+  //         console.log('Datos recibidos:', user);  // 👈 Verifica si se imprimen datos en la consola
+  //         this.userData.next(user);
+  //       },
+  //       error: err => {
+  //         console.error('Error obteniendo datos:', err);
+  //         this.userData.next(null);
+  //       }
+  //     });
+  //   }
+  // }
 
 
 
@@ -63,6 +66,27 @@ export class AuthService {
   // Obtener datos del usuario autenticado como Observable
   getUserData(): Observable<RegistroCliente | null> {
     return this.userData.asObservable();
+  }
+
+  fetchUserDetails(): void{
+    const token = this.getToken();
+    if(!token) {
+      console.error('No token found');
+      this.userData.next(null);
+      return;
+    }
+
+    const headers = new HttpHeaders().set('Authorization',`Bearer ${token.trim()}`);
+    this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/auth/user`, { headers }).subscribe({
+      next: user => {
+        console.error('Datos recibidos del usuario:', user);
+        this.userData.next(user);
+      },
+      error: err => {
+        console.error('Error obteniendo datos del usuario:', err);
+        this.userData.next(null);
+      }
+    })
   }
 
 
