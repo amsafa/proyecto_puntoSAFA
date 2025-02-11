@@ -1,0 +1,43 @@
+<div class="container mx-auto p-4">
+  <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden flex flex-col md:flex-row">
+    <!-- Imagen del libro -->
+    <div class="md:w-1/3">
+      <img [src]="libro?.imagen" [alt]="libro?.titulo" class="w-full h-full object-cover">
+    </div>
+
+    <!-- Contenido del libro -->
+    <div class="p-6 md:w-2/3">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ libro?.titulo }}</h1>
+      <p class="text-gray-600 text-sm">Por {{ libro?.autor }}</p>
+      <p class="text-gray-700 mt-4 leading-relaxed">{{ libro?.resumen }}</p>
+
+      <div class="mt-4 space-y-2">
+        <p class="text-gray-600"><span class="font-semibold">Año de publicación:</span> {{ libro?.anioPublicacion }}</p>
+        <p class="text-gray-600"><span class="font-semibold">ISBN:</span> {{ libro?.ISBN }}</p>
+        <p class="text-gray-600"><span class="font-semibold">Editorial:</span> {{ libro?.editorial }}</p>
+        <p class="text-gray-600"><span class="font-semibold">Idioma:</span> {{ libro?.idioma }}</p>
+        <p class="text-gray-600"><span class="font-semibold">Páginas:</span> {{ libro?.numPaginas }}</p>
+        <p class="text-gray-600"><span class="font-semibold">Categoría:</span> {{ libro?.categoria }}</p>
+      </div>
+
+      <div class="mt-4">
+        <span class="text-2xl font-bold text-gray-900">{{ libro?.precio | currency }}</span>
+      </div>
+
+      <div class="mt-6">
+        <label for="cantidad" class="block text-sm font-medium text-gray-700">Cantidad</label>
+        <div class="mt-1 flex items-center">
+          <button (click)="decreaseQuantity()" class="bg-customGreen text-gray-700 px-3 py-1 rounded-l-md hover:bg-gray-300">-</button>
+          <input id="cantidad" type="number" [(ngModel)]="quantity" class=" text-gray-800 w-16 text-center border-t border-b border-gray-200">
+          <button (click)="increaseQuantity()" class="bg-customAzulito text-gray-700 px-3 py-1 rounded-r-md hover:bg-gray-300">+</button>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <button (click)="addToCart()" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300">
+          Agregar al carrito
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
