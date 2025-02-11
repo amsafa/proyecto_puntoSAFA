@@ -1,15 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { BookCardComponent } from '../book-card/book-card.component';
-import { NgForOf } from '@angular/common';
 import { LibroService } from '../../../service/libro.service';
 import { Libro } from '../../../interface/libro';
+import { NgFor } from '@angular/common';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css'],
   standalone: true,
-  imports: [BookCardComponent, NgForOf],
+  imports: [NgFor], // Importa NgFor para usar *ngFor
 })
 export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('carousel', { static: false }) carousel!: ElementRef<HTMLDivElement>;
@@ -19,7 +19,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   loading = true;
   errorMessage = '';
 
-  constructor(private apiService: LibroService) {}
+  constructor(private apiService: LibroService, private router: Router) {}
 
   ngOnInit() {
     console.log('CarouselComponent cargado');
@@ -50,11 +50,15 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   scrollLeft() {
-    this.carousel.nativeElement.scrollBy({ left: -300, behavior: 'smooth' });
+    const carouselElement = this.carousel.nativeElement;
+    const itemWidth = carouselElement.querySelector('div')?.offsetWidth || 300; // Ancho de un libro (valor predeterminado si no se encuentra)
+    carouselElement.scrollBy({ left: -itemWidth, behavior: 'smooth' });
   }
 
   scrollRight() {
-    this.carousel.nativeElement.scrollBy({ left: 300, behavior: 'smooth' });
+    const carouselElement = this.carousel.nativeElement;
+    const itemWidth = carouselElement.querySelector('div')?.offsetWidth || 300; // Ancho de un libro (valor predeterminado si no se encuentra)
+    carouselElement.scrollBy({ left: itemWidth, behavior: 'smooth' });
   }
 
   startAutoScroll() {
@@ -69,5 +73,9 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
         this.scrollRight();
       }
     }, 3000);
+  }
+
+  verDetallesLibro(idLibro: number): void {
+    this.router.navigate(['/detalle-libro', idLibro]);
   }
 }
