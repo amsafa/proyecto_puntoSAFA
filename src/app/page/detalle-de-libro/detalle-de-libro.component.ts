@@ -30,6 +30,8 @@ export class DetalleDeLibroComponent {
   quantity: number = 1; // Variable para la cantidad
   resenas: Resena[] = []; // Variable para las reseñas
   media_calificacion: number | null = null; // Variable para la calificación media
+  starsArray: number[] = [];
+  hasHalfStar: boolean = false;
 
   constructor(
     private route: ActivatedRoute, // Para obtener el ID de la ruta
@@ -85,14 +87,12 @@ export class DetalleDeLibroComponent {
   obtenerMediaCalificacion(id: number): void {
     this.resenaService.obtenerMediaCalificacion(id).subscribe({
       next: (data) => {
-        this.media_calificacion = data; // Acceder a la propiedad correcta
-        console.log('Consola-> Calificación media:', this.media_calificacion);
-        this.cdr.detectChanges();
+        this.media_calificacion = Number(data) || 0;
+        this.actualizarEstrellas(); // Llamar al método para actualizar las estrellas
       },
       error: (error) => {
         console.error('Error al obtener la calificación media:', error);
         this.media_calificacion = null;
-        this.cdr.detectChanges();
       }
     });
   }
@@ -126,6 +126,14 @@ export class DetalleDeLibroComponent {
 
 
   protected readonly isNaN = isNaN;
+
+  actualizarEstrellas(): void {
+    if (this.media_calificacion !== null) {
+      const rating = this.media_calificacion;
+      this.starsArray = Array(Math.floor(rating)).fill(0); // Crear array con el número entero de estrellas
+      this.hasHalfStar = rating % 1 >= 0.5; // Determinar si hay media estrella
+    }
+  }
 }
 
 
