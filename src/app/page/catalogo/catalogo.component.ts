@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
-import {FormsModule} from '@angular/forms';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {Categoria} from '../../interface/categoria';
 import {CategoriaService} from '../../service/categoria.service';
@@ -19,7 +19,8 @@ import {CategoriaService} from '../../service/categoria.service';
     NgForOf,
     FormsModule,
     NgIf,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
 
   ]
 })
@@ -31,10 +32,19 @@ export class CatalogoComponent  implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 9;
   totalPagesArray: number[] = [];
-  // ordernarPor:string ='titulo'
   selectedCategoryId: number | null = null;
 
-    constructor(private libroService: LibroService, private route:ActivatedRoute, private categoriaService: CategoriaService, private http: HttpClient) { }
+  ordenarPor = 'titulo';  // Default sorting option
+  fechaFiltro: string | null = null; // Date filter
+
+  opcionSeleccionada = ''
+  onSelected(value:string): void {
+    this.opcionSeleccionada = value;
+  }
+
+
+
+    constructor(private libroService: LibroService, private route:ActivatedRoute, private categoriaService: CategoriaService) { }
 
 
   ngOnInit(): void {
@@ -55,18 +65,16 @@ export class CatalogoComponent  implements OnInit {
 
   async cargarLibros(): Promise<void> {
     try {
-      // const params = { ordenarPor: this.ordernarPor  };
-      // this.libros = await this.libroService.sortLibros(params);
-      // this.libroService.sortLibros({ordenarPor: this.ordernarPor}).then(
-      //   libros => {
-      //     this.libros = libros;
-      //   }
-      // )
+     const params = {
+       page: this.currentPage,
+       limit: this.itemsPerPage,
+       ordenarPor:this.ordenarPor,
+       fecha: this.fechaFiltro ? this.fechaFiltro : undefined
+     };
 
-      const params = { page: this.currentPage, limit: this.itemsPerPage };
-      this.libros = await this.libroService.getLibros(params);
-      this.filteredBooks = [...this.libros];
-      this.setupPagination();
+        this.libros = await this.libroService.getLibrosCatalogo(params);
+        this.filteredBooks = [...this.libros];
+        this.setupPagination();
     } catch (error) {
       console.error('Error fetching books:', error);
     }
@@ -142,6 +150,11 @@ export class CatalogoComponent  implements OnInit {
     const totalBooks = this.libros.length; // This should ideally come from the API
     const totalPages = Math.ceil(totalBooks / this.itemsPerPage);
     this.totalPagesArray = Array(totalPages).fill(0).map((_, i) => i + 1);
+  }
+
+  applyFilters(): void {
+    this.currentPage = 1; // Reset to first page on filter change
+    this.cargarLibros();
   }
 
 
