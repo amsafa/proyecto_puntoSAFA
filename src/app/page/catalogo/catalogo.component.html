@@ -28,6 +28,7 @@
     <input
       type="text"
       [(ngModel)]="filter"
+      (ngModelChange)="searchBooks()"
       id="search"
       name="search"
       placeholder="Buscar libro por autor o título..."
@@ -47,21 +48,21 @@
 
 </section>
 
-<div class="flex items-center space-x-2 mx-60 my-10 px-20">
-  <label for="sort" class="
-   mb-2  font-bold text-[20px] text-[#1D2C4B] font-montserrat  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-  >Ordenar por</label>
-  <p>You select your team {{ opcionSeleccionada }} using change event</p>
-  <select id="sort" class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          #filtro (change)="onSelected(filtro.value)">
-    <option default>Pick a team</option>
-    <option  value="autor">Autor</option>
-    <option value="titulo">Libro</option>
-    <option value="fecha">Fecha edición</option>
-    <option value="precio">Precio</option>
-  </select>
+<!--<div class="flex items-center space-x-2 mx-60 my-10 px-20">-->
+<!--  <label for="sort" class="-->
+<!--   mb-2  font-bold text-[20px] text-[#1D2C4B] font-montserrat  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"-->
+<!--  >Ordenar por</label>-->
+<!--  <p>You select your team {{ opcionSeleccionada }} using change event</p>-->
+<!--  <select id="sort" class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"-->
+<!--          #filtro (change)="onSelected(filtro.value)">-->
+<!--    <option default>Pick a team</option>-->
+<!--    <option  value="autor">Autor</option>-->
+<!--    <option value="titulo">Libro</option>-->
+<!--    <option value="fecha">Fecha edición</option>-->
+<!--    <option value="precio">Precio</option>-->
+<!--  </select>-->
 
-</div>
+<!--</div>-->
 
 
 
@@ -104,35 +105,6 @@
   </div>
   </div>
 
-  <!-- Book List -->
-<!--  <div class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4 bg-gray-800">-->
-<!--    <div *ngIf="!libros || libros.length === 0" class="loading">-->
-<!--      <p>Cargando libros...</p>-->
-<!--    </div>-->
-<!--    <div-->
-<!--      *ngFor="let libro of filteredBooks"-->
-<!--      class="bg-white rounded-lg shadow-lg p-4  flex flex-col items-center "-->
-<!--    >-->
-<!--      <div class="image-container">-->
-<!--      <img [src]="libro.imagen" [alt]="libro.titulo" class="w-40 h-60 object-cover rounded" />-->
-<!--      <div class="overlay">-->
-<!--        <button class="cart-btn">-->
-<!--          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">-->
-<!--            <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>-->
-<!--          </svg>-->
-<!--          Añadir al carrito-->
-<!--        </button>-->
-<!--      </div>-->
-<!--      </div>-->
-<!--      <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>-->
-<!--      <p class="text-sm text-gray-600 text-center">por {{ libro.autor }}</p>-->
-<!--      <p class="mt-2 text-xl font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>-->
-<!--      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ff9c1a"><path d="m354-287 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-350Z"/></svg>'-->
-<!--      <button class="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-700">Ver detalles</button>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
   <div class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-3 bg-gray-800">
     <div *ngIf="!libros || libros.length === 0" class="loading text-white text-center">
       <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
@@ -154,7 +126,7 @@
         </div>
       </div>
       <h3 class="mt-3 text-base font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
-      <p class="text-xs text-gray-600 text-center">por {{ libro.autor.nombre }} {{libro.autor.apellidos}}</p>
+      <p class="text-xs text-gray-600 text-center">por {{ libro.autor }}</p>
       <p class="mt-1 text-lg font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
 
       <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ff9c1a" class="mt-1">
@@ -204,19 +176,100 @@
 
 
 
+<div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
 
-<div class="cart" *ngIf="showCart">
-  <h2 class="text-xl font-bold mb-4">Cart</h2>
-  <ul class="cart-items border-b">
-    <li>
-      <p class="cart-image">Imagen</p>
-      <p class="cart-item">Producto</p>
+  <!--
+  Background backdrop, show/hide based on slide-over state.
 
-    </li>
-  </ul>
-  <p class="mt-4 text-right font-bold text-lg">Total</p>
-  <button (click)="toggleCart()">Hide Cart</button>
-</div>
+  Entering: "ease-in-out duration-500"
+    From: "opacity-0"
+    To: "opacity-100"
+  Leaving: "ease-in-out duration-500"
+    From: "opacity-100"
+    To: "opacity-0"
+-->
+  <div class="cart" *ngIf="showCart">
+  <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+  <div class="fixed inset-0 overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+
+        <!--
+       Slide-over panel, show/hide based on slide-over state.
+
+       Entering: "transform transition ease-in-out duration-500 sm:duration-700"
+         From: "translate-x-full"
+         To: "translate-x-0"
+       Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
+         From: "translate-x-0"
+         To: "translate-x-full"
+     -->
+
+        <div class="pointer-events-auto w-screen max-w-md">
+          <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+            <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+              <div class="flex items-start justify-between">
+                <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
+                <div class="ml-3 flex h-7 items-center">
+                  <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleCart()">Hide Cart</button>
+                </div>
+              </div>
+
+              <div class="mt-8">
+                <div class="flow-root">
+                  <ul role="list" class="-my-6 divide-y divide-gray-200">
+                    <li class="flex py-6">
+                      <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
+                        <img src="https://tailwindui.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="size-full object-cover">
+                      </div>
+
+                      <div class="ml-4 flex flex-1 flex-col">
+                        <div>
+                          <div class="flex justify-between text-base font-medium text-gray-900">
+                            <h3>
+                              <a href="#">Throwback Hip Bag</a>
+                            </h3>
+                            <p class="ml-4">$90.00</p>
+                          </div>
+                          <p class="mt-1 text-sm text-gray-500">Salmon</p>
+                        </div>
+                        <div class="flex flex-1 items-end justify-between text-sm">
+                          <p class="text-gray-500">Qty 1</p>
+                          <div class="flex">
+                            <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+              <div class="flex justify-between text-base font-medium text-gray-900">
+                <p>Subtotal</p>
+                <p>$262.00</p>
+              </div>
+              <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+              <div class="mt-6">
+                <a href="#" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700">Checkout</a>
+              </div>
+              <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
+                <p>
+                  or
+                  <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">
+                    Continue Shopping
+                    <span aria-hidden="true"> &rarr;</span>
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 
 
