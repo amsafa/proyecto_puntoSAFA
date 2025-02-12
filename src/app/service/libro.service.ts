@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import { Categoria } from '../interface/categoria'; // Importar la interfaz de categoría
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 
 
 @Injectable({
@@ -15,8 +15,13 @@ export class LibroService {
 
   // Método para obtener todos los libros
   getBooks(): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/all`);  }
-
+    return this.http.get<Libro[]>(`${this.baseUrl}/all`).pipe(
+      map(libros => libros.map(libro => ({
+        ...libro,
+        mediaCalificacion: parseFloat(String(libro.mediaCalificacion)) // Convierte a número
+      })))
+    );
+  }
   // Método para obtener libros por categoría (desde el backend)
   getBooksByCategory(id: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`); }

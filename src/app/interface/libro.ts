@@ -3,6 +3,8 @@ import {Autor} from './autor';
 
 export interface Libro {
   calificacion: any;
+  mediaCalificacion: number;  // Asegúrate de que está aquí y es un número
+
 
 
   id: number,
