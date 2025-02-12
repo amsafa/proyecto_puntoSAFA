@@ -1,14 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
 import {RegistroCliente} from '../interface/RegistroCliente';
 import {AuthService} from '../service/auth.service';
-import {AsyncPipe, NgIf} from '@angular/common';
-import {Usuario} from '../interface/usuario';
+import {NgIf} from '@angular/common';
+
 
 @Component({
   selector: 'app-perfil-prueba',
   imports: [
-    AsyncPipe,
     NgIf
   ],
   templateUrl: './perfil-prueba.component.html',
