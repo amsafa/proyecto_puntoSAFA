@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { RegistroCliente } from '../../interface/RegistroCliente';
 import { PerfilService } from '../../service/perfil.service';
@@ -27,7 +27,6 @@ export class PerfilComponent implements OnInit {
     private perfilService: PerfilService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
   ) {
     this.perfilForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],

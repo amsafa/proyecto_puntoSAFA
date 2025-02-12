@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import { Categoria } from '../interface/categoria'; // Importar la interfaz de categoría
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 
 
 
@@ -27,12 +27,6 @@ export class LibroService {
   getBooksByCategory(id: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
 
-  getLibros(page: number, limit: number): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/all`, {
-      params: { page: page.toString(), limit: limit.toString() },
-    });
-  }
-
     // async getLibrosCatalogo(params: { page: number, limit: number }): Promise<Libro[]> {
     //   const response = await fetch(`${this.baseUrl}/all?page=${params.page}&limit=${params.limit}`);
     //   return await response.json();
@@ -51,16 +45,9 @@ export class LibroService {
 
 
 
-
-
-
-
     getLibrosByPrecio(range:string):Observable<Libro[]> {
         return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}`);
     }
-  //Métdo para obtener el libro por id
-  getLibroById(id: number): Observable<Libro> {
-    return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
 
 
 //Método para obtener todos los libros
@@ -71,12 +58,8 @@ export class LibroService {
       }
       return await response.json();
   }
-//Método para obtener libros por precio (desde el backend)
-  getLibrosByPrecio(range:string):Observable<Libro[]> {
-      return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}`);
-  }
 
-    getLibrosByCategoria():Observable<Categoria[]> {
+  getLibrosByCategoria():Observable<Categoria[]> {
           return this.http.get<Categoria[]>(`${this.baseUrl}/categoria`);
     }
 

@@ -5,7 +5,7 @@ import {CarouselComponent} from "../../component/Inicio_componentes_propios/caro
 import {
   RecomendacionLibroComponent
 } from "../../component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component";
-import {Libro} from '../../interface/./libro';
+import {Libro} from '../../interface/libro';
 
 import {Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';

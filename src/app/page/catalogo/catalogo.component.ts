@@ -2,8 +2,11 @@
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
-import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+ import {Categoria} from '../../interface/categoria';
+ import {ActivatedRoute, Router} from '@angular/router';
+ import {CategoriaService} from '../../service/categoria.service';
 
 
 @Component({
@@ -32,7 +35,9 @@ export class CatalogoComponent  implements OnInit {
 
   ordenarPor = 'titulo';  // Default sorting option
 
-  constructor(private libroService: LibroService) {}
+  constructor(private libroService: LibroService, private http:HttpClient,
+              private router:Router, private route:ActivatedRoute,
+              private categoriaService:CategoriaService,) {}
 
  @Input() categoriaId!: number;
 
@@ -46,6 +51,9 @@ export class CatalogoComponent  implements OnInit {
       });
     });
 
+    this.categoriaService.getCategorias().subscribe(categorias => {
+      this.categories = categorias;
+    });
 
   }
 
@@ -127,18 +135,6 @@ export class CatalogoComponent  implements OnInit {
   toggleCart() {
     this.showCart = !this.showCart;
   }
-
-  verDetallesLibro(idLibro: number): void {
-    debugger;
-    this.router.navigate(['/detalle-libro', idLibro]);
-  }
-
-
-
-
-
-
-
 
   changePage(page: number): void {
     this.currentPage = page;

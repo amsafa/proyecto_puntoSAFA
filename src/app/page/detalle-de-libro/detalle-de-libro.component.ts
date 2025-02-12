@@ -2,13 +2,10 @@ import {Libro} from '../../interface/libro';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {LibroService} from '../../service/libro.service';
-import {HttpClientModule} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {Categoria} from '../../interface/categoria';
-import {Autor} from '../../interface/autor';
 import {Resena} from '../../interface/resena';
 import {ResenaService} from '../../service/resena.service';
+import {ChangeDetectorRef, Component} from '@angular/core';
 
 
 @Component({

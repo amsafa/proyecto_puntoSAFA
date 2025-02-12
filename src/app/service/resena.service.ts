@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
-import { Categoria } from '../interface/categoria'; // Importar la interfaz de categoría
 import {Observable} from 'rxjs';
 import { Resena } from '../interface/resena';
 

@@ -1,10 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {LibroService} from '../../../service/libro.service';
 import {Libro} from '../../../interface/./libro';
-import {BookCardComponent} from '../book-card/book-card.component';
 import {NgForOf, NgIf} from '@angular/common';
-import {data} from 'autoprefixer';
-import {count} from 'rxjs';
 import {BookCardCategoriaComponent} from '../book-card-categoria/book-card-categoria.component';
 
 
