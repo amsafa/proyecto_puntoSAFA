@@ -10,6 +10,7 @@ import {CatalogoComponent} from './page/catalogo/catalogo.component';
 import {CarritoPruebaComponent} from './component/carrito-prueba/carrito-prueba.component';
 import {CarritoComponent} from './component/carrito/carrito.component';
 import {PerfilPruebaComponent} from './perfil-prueba/perfil-prueba.component';
+import {DetalleDeLibroComponent} from './page/detalle-de-libro/detalle-de-libro.component';
 
 
 
@@ -33,6 +34,7 @@ export const routes: Routes = [
   {path:'perfil-prueba', component:PerfilPruebaComponent, pathMatch: 'full'},
   {path:'carritoprueba', component:CarritoPruebaComponent, pathMatch: 'full'},
   {path:'carrito-test', component:CarritoComponent, pathMatch: 'full'},
+  {path:'detalle-libro', component:DetalleDeLibroComponent, pathMatch: 'full'},
 
 
 ];
