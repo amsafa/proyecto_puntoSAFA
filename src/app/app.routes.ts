@@ -9,7 +9,6 @@ import {PerfilComponent} from './page/perfil/perfil.component';
 import {CatalogoComponent} from './page/catalogo/catalogo.component';
 import {CarritoPruebaComponent} from './component/carrito-prueba/carrito-prueba.component';
 import {CarritoComponent} from './component/carrito/carrito.component';
-import {PerfilPruebaComponent} from './perfil-prueba/perfil-prueba.component';
 
 
 
@@ -30,7 +29,6 @@ export const routes: Routes = [
   {path:'autor', component:AutorComponent, pathMatch: 'full'},
   {path:'catalogo', component: CatalogoComponent, pathMatch: 'full'},
   {path:'perfil', component:PerfilComponent, pathMatch: 'full'},
-  {path:'perfil-prueba', component:PerfilPruebaComponent, pathMatch: 'full'},
   {path:'carritoprueba', component:CarritoPruebaComponent, pathMatch: 'full'},
   {path:'carrito-test', component:CarritoComponent, pathMatch: 'full'},
 
