@@ -4,7 +4,7 @@ import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Categoria} from '../../interface/categoria';
 import {CategoriaService} from '../../service/categoria.service';
 
@@ -45,7 +45,8 @@ export class CatalogoComponent  implements OnInit {
 
 
     constructor(private libroService: LibroService, private route:ActivatedRoute,
-                private categoriaService: CategoriaService, private http:HttpClient) { }
+                private categoriaService: CategoriaService, private http:HttpClient,
+                private router:Router) { }
 
 
   ngOnInit(): void {
@@ -161,6 +162,11 @@ export class CatalogoComponent  implements OnInit {
   //   this.currentPage = 1; // Reset to first page on filter change
   //   this.cargarLibros();
   // }
+
+  verDetallesLibro(idLibro: number): void {
+    debugger;
+    this.router.navigate(['/detalle-libro', idLibro]);
+  }
 
 
 }
