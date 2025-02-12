@@ -1,12 +1,21 @@
-<section class="py-10 bg-customTeal text-white text-center">
-
-  <h2 class="text-3xl font-bold">Recomendaciones</h2>
+<section class="py-6 bg-customTeal text-white text-center">
+  <h2 class="text-3xl font-bold">Los mejores calificados:</h2>
   <div class="container mx-auto my-20 flex justify-center">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-4">
       <div *ngFor="let libro of libros" class="bg-white rounded-lg shadow-md flex flex-col md:flex-row max-w-lg mx-auto">
-        <div class="md:w-1/2 relative h-64 md:h-auto overflow-hidden">
+        <!-- Contenedor de la imagen con overlay -->
+        <div class="md:w-1/2 relative h-64 md:h-auto overflow-hidden group">
           <img [src]="libro.imagen" alt="{{ libro.titulo }}" class="object-cover w-full h-full md:rounded-l-lg md:rounded-t-none">
+
+          <!-- Overlay con el botón "Ver detalles" -->
+          <div class="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button (click)="verDetallesLibro(libro.id)" class="bg-blue-900 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+              Ver detalles
+            </button>
+          </div>
         </div>
+
+        <!-- Contenido del libro -->
         <div class="md:w-1/2 p-6 flex flex-col justify-between">
           <div>
             <div class="font-bold text-xl mb-2 text-gray-900">{{ libro.titulo }}</div>
@@ -14,7 +23,8 @@
           </div>
           <div class="flex items-center">
             <div class="text-sm">
-              <p class="text-gray-900 leading-none">{{ libro.autor }}</p>
+              <p class="text-gray-900 leading-none">
+                {{ libro!.autorNombre }} {{ libro!.autorApellidos }}
             </div>
           </div>
         </div>

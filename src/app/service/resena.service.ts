@@ -24,4 +24,8 @@ export class ResenaService {
     return this.http.get<number>(`${this.baseUrlResena}/media-calificacion/${idLibro}`);
 
   }
+
+  obtener3topLibros(): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrlResena}/top-libros`);
+  }
 }
