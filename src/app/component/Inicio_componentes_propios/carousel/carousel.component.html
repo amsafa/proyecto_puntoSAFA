@@ -1,27 +1,45 @@
-<section class="py-10 bg-customAzulito ">
+<section class="py-10 bg-customAzulito">
   <div class="container mx-auto relative">
     <h2 class="text-2xl font-bold text-center text-blue-900">EXPLORA NUESTROS LIBROS</h2>
 
     <!-- Botón para ir al anterior -->
     <button
-      class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-900 text-white p-2 rounded shadow-md z-10"
+      class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-900 text-white p-2 rounded shadow-md z-10 hover:bg-blue-700 transition-colors duration-200"
+      (mousedown)="onMouseDown($event)"
+      (mouseup)="onMouseUp()"
+      (mouseleave)="onMouseUp()"
       (click)="scrollLeft()"
+
     >
       ‹
     </button>
 
-    <!-- Carrusel usando las tarjetas bookcard -->
-    <div #carousel class="flex overflow-hidden space-x-6 mt-6 transition-all duration-200">
-      <app-book-card
-        *ngFor="let book of books"
-        [book]="book"
-        class="min-w-[300px] flex-shrink-0"
-      ></app-book-card>
+    <!-- Carrusel -->
+    <div #carousel class="flex overflow-hidden space-x-6 mt-6  transition-all duration-300 ">
+      <div *ngFor="let libro of books" class=" hover:scale-110 min-w-[200px] w-[200px] h-[300px] flex-shrink-0 relative group">
+        <img [src]="libro.imagen" alt="Portada del libro" class="w-full h-full object-cover rounded-lg shadow-md">
+
+        <!-- Overlay con información del libro -->
+        <div class="absolute inset-0 bg-black bg-opacity-75 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
+          <h3 class="text-white text-xl font-bold text-center">{{ libro.titulo }}</h3>
+          <p class="text-white text-sm">{{ libro.autor }}</p>
+          <p class="text-white text-lg font-semibold">{{ libro.precio }} €</p>
+          <button
+            (click)="verDetallesLibro(libro.id)"
+            class="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-700"
+          >
+            Ver detalles
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Botón para ir al siguiente -->
     <button
-      class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-900 text-white p-2 rounded shadow-md z-10"
+      class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-900 text-white p-2 rounded shadow-md z-10 hover:bg-blue-700 transition-colors duration-200"
+      (mousedown)="onMouseDown($event)"
+      (mouseup)="onMouseUp()"
+      (mouseleave)="onMouseUp()"
       (click)="scrollRight()"
     >
       ›
