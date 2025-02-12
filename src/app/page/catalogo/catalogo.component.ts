@@ -3,7 +3,8 @@ import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
 import {FormsModule} from '@angular/forms';
-
+import {HttpClientModule} from '@angular/common/http';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,8 +15,8 @@ import {FormsModule} from '@angular/forms';
     CurrencyPipe,
     NgForOf,
     FormsModule,
-    NgIf
-
+    NgIf,
+    HttpClientModule
 
   ]
 })
@@ -24,8 +25,7 @@ export class CatalogoComponent  implements OnInit {
   filteredBooks: Libro[] = [];
   filter: string = '';
 
-  constructor(private libroService: LibroService) {}
-
+  constructor(private libroService: LibroService, private router: Router) {}
  @Input() categoriaId!: number;
 
   ngOnInit(): void {
@@ -90,6 +90,18 @@ export class CatalogoComponent  implements OnInit {
   toggleCart() {
     this.showCart = !this.showCart;
   }
+
+  verDetallesLibro(idLibro: number): void {
+    debugger;
+    this.router.navigate(['/detalle-libro', idLibro]);
+  }
+
+
+
+
+
+
+
 
 
 
