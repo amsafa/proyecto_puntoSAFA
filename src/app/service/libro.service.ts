@@ -43,6 +43,9 @@ export class LibroService {
     return await response.json();
   }
 
+  getLibroById(id: number): Observable<Libro> {
+    return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
+
 
 
 
