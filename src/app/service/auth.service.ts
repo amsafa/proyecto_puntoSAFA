@@ -44,7 +44,7 @@ export class AuthService {
     const token = this.getToken();
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-      this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/all`, { headers }).subscribe({
+      this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/auth/user`, { headers }).subscribe({
         next: user => {
           console.log('Datos recibidos:', user);  // 👈 Verifica si se imprimen datos en la consola
           this.userData.next(user);
@@ -117,5 +117,9 @@ export class AuthService {
     }
     Swal.fire('Error', errorMessage, 'error');
     return throwError(() => new Error(errorMessage));
+  }
+
+  actualizarUsuario(usuarioEditado: any) {
+
   }
 }

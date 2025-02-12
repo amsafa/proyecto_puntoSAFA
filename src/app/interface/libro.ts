@@ -2,18 +2,25 @@ import {Categoria} from './categoria';
 import {Autor} from './autor';
 
 export interface Libro {
-  category: string;
+  calificacion: any;
+  mediaCalificacion: number;  // Asegúrate de que está aquí y es un número
 
 
+
+  id: number,
   titulo: string;
   resumen: string;
-  anio_publicacion: string;
+  anioPublicacion: string;
   precio: number;
   ISBN: string;
   editorial: string;
   imagen: string;
   idioma: string;
-  num_paginas: number;
+  numPaginas: number;
   autor: Autor; // ID del autor
   categoria: Categoria; // ID de la categoría
+
+  // Esto es para la parte de los libros recomendados
+  autorNombre: string;
+  autorApellidos: string;
 }
