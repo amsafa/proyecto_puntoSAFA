@@ -15,8 +15,8 @@
     </button>
 
     <!-- Carrusel -->
-    <div #carousel class="flex overflow-hidden space-x-6 mt-6 transition-all duration-300">
-      <div *ngFor="let libro of books" class="min-w-[200px] w-[200px] h-[300px] flex-shrink-0 relative group">
+    <div #carousel class="flex overflow-hidden space-x-6 mt-6  transition-all duration-300 ">
+      <div *ngFor="let libro of books" class=" hover:scale-110 min-w-[200px] w-[200px] h-[300px] flex-shrink-0 relative group">
         <img [src]="libro.imagen" alt="Portada del libro" class="w-full h-full object-cover rounded-lg shadow-md">
 
         <!-- Overlay con información del libro -->
