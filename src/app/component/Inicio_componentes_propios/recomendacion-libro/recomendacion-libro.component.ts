@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {BookCardComponent} from '../book-card/book-card.component';
 import {NgForOf, NgIf} from '@angular/common';
 import {BookCardCategoriaComponent} from '../book-card-categoria/book-card-categoria.component';
@@ -6,9 +6,8 @@ import {Libro} from '../../../interface/libro';
 import {book} from 'ionicons/icons';
 import {LibroService} from '../../../service/libro.service';
 import {Router} from '@angular/router';
+import {forkJoin, map} from 'rxjs';
 import {ResenaService} from '../../../service/resena.service';
-
-
 
 @Component({
   selector: 'app-recomendacion-libro',

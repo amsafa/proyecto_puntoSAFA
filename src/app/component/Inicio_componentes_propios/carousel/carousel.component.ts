@@ -1,15 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { NgForOf } from '@angular/common';
-import {LibroService} from '../../../service/libro.service';
-import {Libro} from '../../../interface/libro';
-import {Router} from '@angular/router';
+import { LibroService } from '../../../service/libro.service';
+import { Libro } from '../../../interface/libro';
+import { NgFor } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css'],
   standalone: true,
-  imports: [NgForOf],
+  imports: [NgFor],
 })
 export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('carousel', { static: false }) carousel!: ElementRef<HTMLDivElement>;
@@ -39,7 +39,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (this.books.length && this.carousel) {
+    if (this.books.length) {
       this.startAutoScroll();
     }
   }

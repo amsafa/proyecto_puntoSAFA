@@ -1,13 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+ import {Component, Input, OnInit} from '@angular/core';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Categoria} from '../../interface/categoria';
-import {CategoriaService} from '../../service/categoria.service';
-
+import {FormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @Component({
@@ -36,18 +32,9 @@ export class CatalogoComponent  implements OnInit {
 
   ordenarPor = 'titulo';  // Default sorting option
 
+  constructor(private libroService: LibroService) {}
 
-  // opcionSeleccionada = ''
-  // onSelected(value:string): void {
-  //   this.opcionSeleccionada = value;
-  // }
-
-
-
-    constructor(private libroService: LibroService, private route:ActivatedRoute,
-                private categoriaService: CategoriaService, private http:HttpClient,
-                private router:Router) { }
-
+ @Input() categoriaId!: number;
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -59,9 +46,6 @@ export class CatalogoComponent  implements OnInit {
       });
     });
 
-    this.categoriaService.getCategorias().subscribe(categorias => {
-      this.categories = categorias;
-    });
 
   }
 
@@ -85,8 +69,6 @@ export class CatalogoComponent  implements OnInit {
     }
   }
 
-
-
   searchBooks(): void {
     const searchTerm = this.filter.trim();
 
@@ -99,7 +81,6 @@ export class CatalogoComponent  implements OnInit {
       this.filteredBooks = response; // Use the API response
     });
   }
-
 
   clearSearch(): void {
     this.filter = '';
@@ -146,6 +127,18 @@ export class CatalogoComponent  implements OnInit {
   toggleCart() {
     this.showCart = !this.showCart;
   }
+
+  verDetallesLibro(idLibro: number): void {
+    debugger;
+    this.router.navigate(['/detalle-libro', idLibro]);
+  }
+
+
+
+
+
+
+
 
   changePage(page: number): void {
     this.currentPage = page;

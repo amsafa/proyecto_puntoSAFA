@@ -23,5 +23,4 @@ export interface Libro {
   // Esto es para la parte de los libros recomendados
   autorNombre: string;
   autorApellidos: string;
-
-  }
+}

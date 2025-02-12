@@ -1,20 +1,25 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
 import {Libro} from '../../interface/libro';
-import {Resena} from '../../interface/resena';
-import {ActivatedRoute} from '@angular/router';
-import {LibroService} from '../../service/libro.service';
-import {ResenaService} from '../../service/resena.service';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {LibroService} from '../../service/libro.service';
+import {HttpClientModule} from '@angular/common/http';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {Categoria} from '../../interface/categoria';
+import {Autor} from '../../interface/autor';
+import {Resena} from '../../interface/resena';
+import {ResenaService} from '../../service/resena.service';
+
 
 @Component({
   selector: 'app-detalle-de-libro',
   imports: [
     CurrencyPipe,
     FormsModule,
+    NgForOf,
     NgIf,
-    NgForOf
   ],
+  standalone: true, // tengo que comprobar esto
   templateUrl: './detalle-de-libro.component.html',
   styleUrl: './detalle-de-libro.component.css'
 })
@@ -127,5 +132,9 @@ export class DetalleDeLibroComponent {
       this.hasHalfStar = rating % 1 >= 0.5; // Determinar si hay media estrella
     }
   }
-
 }
+
+
+
+
+
