@@ -13,7 +13,7 @@ export class LibroService {
   private baseUrl: string = "http://127.0.0.1:8000/libro";
 
 
-  constructor(private http: HttpClient, private loginService: LoginService) { }
+  constructor(private http: HttpClient) { }
 
   // Método para obtener todos los libros
   getBooks(): Observable<Libro[]> {
