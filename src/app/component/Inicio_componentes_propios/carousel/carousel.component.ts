@@ -2,18 +2,19 @@ import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy } fr
 import { LibroService } from '../../../service/libro.service';
 import { Libro } from '../../../interface/libro';
 import { NgFor } from '@angular/common';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css'],
   standalone: true,
-  imports: [NgFor], // Importa NgFor para usar *ngFor
+  imports: [NgFor],
 })
 export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('carousel', { static: false }) carousel!: ElementRef<HTMLDivElement>;
   autoScrollInterval!: any;
+  continuousScrollInterval!: any;
 
   books: Libro[] = [];
   loading = true;
@@ -47,6 +48,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.autoScrollInterval) {
       clearInterval(this.autoScrollInterval);
     }
+    this.stopContinuousScroll();
   }
 
   scrollLeft() {
@@ -77,5 +79,34 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
 
   verDetallesLibro(idLibro: number): void {
     this.router.navigate(['/detalle-libro', idLibro]);
+  }
+
+  onMouseDown(event: MouseEvent) {
+    if (event.target instanceof HTMLElement && event.target.tagName === 'BUTTON') {
+      const direction = event.target.textContent?.trim() === '‹' ? 'left' : 'right';
+      this.scrollContinuously(direction);
+    }
+  }
+
+  onMouseUp() {
+    this.stopContinuousScroll();
+  }
+
+  scrollContinuously(direction: 'left' | 'right') {
+    this.stopContinuousScroll(); // Detener cualquier desplazamiento continuo previo
+    this.continuousScrollInterval = setInterval(() => {
+      if (direction === 'left') {
+        this.scrollLeft();
+      } else {
+        this.scrollRight();
+      }
+    }, 200); // Desplazamiento cada 200 ms
+  }
+
+  stopContinuousScroll() {
+    if (this.continuousScrollInterval) {
+      clearInterval(this.continuousScrollInterval);
+      this.continuousScrollInterval = null;
+    }
   }
 }
