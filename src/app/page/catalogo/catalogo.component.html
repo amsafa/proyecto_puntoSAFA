@@ -90,26 +90,42 @@
       </div>
 
 
-        <div *ngIf="!noResults" class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-        <a *ngFor="let libro of filteredBooks" href="#" class="group">
-          <button class="cart-btn bg-white p-2 rounded-full shadow-md">
-          <img [src]="libro.imagen" [alt]="libro.titulo"  class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
-          <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
-            <p class="text-sm text-gray-600 text-center">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
-            <p class="mt-2 text-xl font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
-            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#5f6368">-->
-              <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>-->
-            </svg>
-            <button (click)="verDetallesLibro(libro.id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">Ver detalles</button>
-          </button>
-        </a>
-
+        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+          <div *ngIf="!noResults" class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+            <a *ngFor="let libro of filteredBooks" href="#" class="group">
+              <img [src]="libro.imagen" [alt]="libro.titulo"  class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+              <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
+              <p class="text-sm text-gray-600 text-center">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
+              <p class="mt-2 text-xl font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#5f6368">-->
+                <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>-->
+              </svg>
+              <button (click)="verDetallesLibro(libro.id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">Ver detalles</button>
+            </a>
+            <a href="#" class="group">
+              <img src="https://tailwindui.com/plus-assets/img/ecommerce-images/category-page-04-image-card-02.jpg" alt="Olive drab green insulated bottle with flared screw lid and flat top." class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+              <h3 class="mt-4 text-sm text-gray-700">Nomad Tumbler</h3>
+              <p class="mt-1 text-lg font-medium text-gray-900">$35</p>
+            </a>
+            <a href="#" class="group">
+              <img src="https://tailwindui.com/plus-assets/img/ecommerce-images/category-page-04-image-card-03.jpg" alt="Person using a pen to cross a task off a productivity paper card." class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+              <h3 class="mt-4 text-sm text-gray-700">Focus Paper Refill</h3>
+              <p class="mt-1 text-lg font-medium text-gray-900">$89</p>
+            </a>
+            <a href="#" class="group">
+              <img src="https://tailwindui.com/plus-assets/img/ecommerce-images/category-page-04-image-card-04.jpg" alt="Hand holding black machined steel mechanical pencil with brass tip and top." class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+              <h3 class="mt-4 text-sm text-gray-700">Machined Mechanical Pencil</h3>
+              <p class="mt-1 text-lg font-medium text-gray-900">$35</p>
+            </a>
+          </div>
+        </div>
       </div>
+
+
     </div>
 
   </div>
 
-</div>
 <div class="flex items-center justify-center border-t border-gray-200 bg-customTeal px-4 py-3 sm:px-6">
 
   <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
@@ -141,6 +157,103 @@
       <h1 class="text-xl md:text-7xl font-bold flex items-center">Cargand
       </h1>
       <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-100"></div>
+    </div>
+  </div>
+</div>
+
+
+<div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+
+  <!--
+  Background backdrop, show/hide based on slide-over state.
+
+  Entering: "ease-in-out duration-500"
+    From: "opacity-0"
+    To: "opacity-100"
+  Leaving: "ease-in-out duration-500"
+    From: "opacity-100"
+    To: "opacity-0"
+-->
+  <div class="cart" *ngIf="showCart">
+    <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+    <div class="fixed inset-0 overflow-hidden">
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+
+          <!--
+         Slide-over panel, show/hide based on slide-over state.
+
+         Entering: "transform transition ease-in-out duration-500 sm:duration-700"
+           From: "translate-x-full"
+           To: "translate-x-0"
+         Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
+           From: "translate-x-0"
+           To: "translate-x-full"
+       -->
+
+          <div class="pointer-events-auto w-screen max-w-md">
+            <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+              <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+                <div class="flex items-start justify-between">
+                  <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
+                  <div class="ml-3 flex h-7 items-center">
+                    <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleCart()">Hide Cart</button>
+                  </div>
+                </div>
+
+                <div class="mt-8">
+                  <div class="flow-root">
+                    <ul role="list" class="-my-6 divide-y divide-gray-200">
+                      <li class="flex py-6">
+                        <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
+                          <img src="https://tailwindui.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="size-full object-cover">
+                        </div>
+
+                        <div class="ml-4 flex flex-1 flex-col">
+                          <div>
+                            <div class="flex justify-between text-base font-medium text-gray-900">
+                              <h3>
+                                <a href="#">Throwback Hip Bag</a>
+                              </h3>
+                              <p class="ml-4">$90.00</p>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500">Salmon</p>
+                          </div>
+                          <div class="flex flex-1 items-end justify-between text-sm">
+                            <p class="text-gray-500">Qty 1</p>
+                            <div class="flex">
+                              <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+                <div class="flex justify-between text-base font-medium text-gray-900">
+                  <p>Subtotal</p>
+                  <p>$262.00</p>
+                </div>
+                <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                <div class="mt-6">
+                  <a href="#" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700">Checkout</a>
+                </div>
+                <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
+                  <p>
+                    or
+                    <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">
+                      Continue Shopping
+                      <span aria-hidden="true"> &rarr;</span>
+                    </button>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
