@@ -8,4 +8,4 @@ bootstrapApplication(AppComponent,
   {
     providers:[importProvidersFrom(HttpClientModule), ...appConfig.providers],
   })
-  .catch((err) => console.error(err));
+  .catch((err) => console.error());

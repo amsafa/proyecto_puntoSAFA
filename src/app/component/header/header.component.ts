@@ -33,8 +33,11 @@ export class HeaderComponent implements OnInit {
     this.authService.getUserData().subscribe(user => {
       this.userData = user; // 🔹 Guardar los datos del usuario
     });
-  }
 
+    // if (this.isLoggedIn) {
+    //   this.authService.fetchUserData(); // 🔹 Obtener los datos si ya está logueado
+    // }
+  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;

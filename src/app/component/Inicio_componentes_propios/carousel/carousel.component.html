@@ -22,7 +22,7 @@
         <!-- Overlay con información del libro -->
         <div class="absolute inset-0 bg-black bg-opacity-75 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
           <h3 class="text-white text-xl font-bold text-center">{{ libro.titulo }}</h3>
-          <p class="text-white text-sm">{{ libro.autor }}</p>
+          <p class="text-white text-sm">{{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
           <p class="text-white text-lg font-semibold">{{ libro.precio }} €</p>
           <button
             (click)="verDetallesLibro(libro.id)"

@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/home']);
         },
         error: (e) => {
-          console.error(e);
+          console.error();
           this.errorMessage = 'Error en el inicio de sesión. Verifica tus credenciales.';
         }
       });

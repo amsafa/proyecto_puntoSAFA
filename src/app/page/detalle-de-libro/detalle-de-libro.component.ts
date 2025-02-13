@@ -3,11 +3,7 @@ import {Libro} from '../../interface/libro';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {LibroService} from '../../service/libro.service';
-import {HttpClientModule} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {Categoria} from '../../interface/categoria';
-import {Autor} from '../../interface/autor';
 import {Resena} from '../../interface/resena';
 import {ResenaService} from '../../service/resena.service';
 
@@ -19,7 +15,6 @@ import {ResenaService} from '../../service/resena.service';
     FormsModule,
     NgForOf,
     NgIf,
-
   ],
   standalone: true, // tengo que comprobar esto
   templateUrl: './detalle-de-libro.component.html',
@@ -59,7 +54,7 @@ export class DetalleDeLibroComponent {
         console.log('Libro obtenido:', this.libro);
       },
       error: (error) => {
-        console.error('Error al obtener el libro:', error);
+        console.error(error);
       }
     });
   }

@@ -1,12 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {BookCardComponent} from '../book-card/book-card.component';
-import {NgForOf, NgIf} from '@angular/common';
-import {BookCardCategoriaComponent} from '../book-card-categoria/book-card-categoria.component';
+import {Component, OnInit} from '@angular/core';
+import {NgForOf} from '@angular/common';
 import {Libro} from '../../../interface/libro';
-import {book} from 'ionicons/icons';
-import {LibroService} from '../../../service/libro.service';
 import {Router} from '@angular/router';
-import {forkJoin, map} from 'rxjs';
 import {ResenaService} from '../../../service/resena.service';
 
 @Component({
@@ -22,7 +17,7 @@ import {ResenaService} from '../../../service/resena.service';
 export class RecomendacionLibroComponent implements OnInit {
   libros: Libro[] = [];
 
-  constructor(private apiService: LibroService, private router: Router, private apiServiceCalificacion: ResenaService) {}
+  constructor(private router: Router, private apiServiceCalificacion: ResenaService) {}
 
   ngOnInit(): void {
     this.loadRandomBooks();
@@ -39,7 +34,7 @@ export class RecomendacionLibroComponent implements OnInit {
         this.libros = [topBooks[randomIndex]];
         console.log('Libros recomendados:', this.libros);
       } else {
-        console.error('No hay suficientes libros para recomendar.');
+        console.error();
       }
     });
   }
