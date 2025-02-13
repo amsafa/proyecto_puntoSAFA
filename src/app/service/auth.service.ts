@@ -32,7 +32,7 @@ export class AuthService {
       tap(response => {
         localStorage.setItem('token', response.token.trim());
         this.authState.next(true);
-        this.fetchUserDetails();
+        this.fetchUserData();
       }),
       catchError(this.handleError)
     );

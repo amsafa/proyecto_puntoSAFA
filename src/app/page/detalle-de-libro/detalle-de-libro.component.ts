@@ -54,11 +54,11 @@ export class DetalleDeLibroComponent {
   // Método para obtener los detalles del libro
   obtenerLibro(id: number): void {
     this.libroService.getLibroById(id).subscribe({
-      next: (data) => {
+      next: (data:any) => {
         this.libro = data;
         console.log('Libro obtenido:', this.libro);
       },
-      error: (error) => {
+      error: (error:any) => {
         console.error('Error al obtener el libro:', error);
       }
     });

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import {Observable} from 'rxjs';
 import {LoginService} from './login.service';
+import {Categoria} from '../interface/categoria';
 
 
 
@@ -22,6 +23,10 @@ export class LibroService {
   // Método para obtener libros por categoría (desde el backend)
   getBooksByCategory(id: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
+
+  getLibroById(id: number): Observable<Libro> {
+    return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
+
 
   getLibros(page: number, limit: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/all`, {
