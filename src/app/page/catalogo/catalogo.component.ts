@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
@@ -84,8 +84,6 @@ export class CatalogoComponent  implements OnInit {
     }
   }
 
-
-
   searchBooks(): void {
     const searchTerm = this.filter.trim();
 
@@ -98,7 +96,6 @@ export class CatalogoComponent  implements OnInit {
       this.filteredBooks = response; // Use the API response
     });
   }
-
 
   clearSearch(): void {
     this.filter = '';

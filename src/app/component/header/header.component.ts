@@ -7,8 +7,7 @@ import {AuthService} from '../../service/auth.service';
   selector: 'app-header',
   templateUrl: './header.component.html',
   imports: [
-    NgIf,
-    RouterLink
+    NgIf
   ],
   styleUrls: ['./header.component.css']
 })
@@ -25,14 +24,15 @@ export class HeaderComponent implements OnInit {
     // Suscribirse al estado de autenticación
     this.authService.getAuthState().subscribe((state) => {
       this.isLoggedIn = state;
+      if (this.isLoggedIn) {
+        this.authService.fetchUserData(); // 🔹 Obtener los datos si ya está logueado
+      }
     });
+
+    // Suscribirse a los datos del usuario
     this.authService.getUserData().subscribe(user => {
       this.userData = user; // 🔹 Guardar los datos del usuario
     });
-
-    // if (this.isLoggedIn) {
-    //   this.authService.fetchUserData(); // 🔹 Obtener los datos si ya está logueado
-    // }
   }
 
   toggleMenu() {

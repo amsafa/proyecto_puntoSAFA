@@ -22,8 +22,8 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-registro',
   imports: [
-      CommonModule,
-      ReactiveFormsModule
+    CommonModule,
+    ReactiveFormsModule
   ],
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css']
@@ -40,7 +40,7 @@ export class RegistroComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       dni: ['', [Validators.required, Validators.minLength(9)]],
       apellidos: ['', [Validators.required, Validators.minLength(3)]],
-      foto: [''],
+      foto: ['', [Validators.required, Validators.pattern('https?://.+')]],
       direccion: [''],
       telefono: ['', [Validators.required, Validators.minLength(9)]],
       contrasena: ['', [Validators.required, Validators.minLength(6)]],

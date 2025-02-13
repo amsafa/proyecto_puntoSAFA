@@ -25,18 +25,18 @@
         </a>
       </li>
 
-      <li *ngIf="isLoggedIn" class="relative">
+
+        <li *ngIf="isLoggedIn" class="relative">
         <button (click)="toggleAccountMenu()" class="flex items-center space-x-2">
-          <img *ngIf="userData?.foto" [src]="userData.foto" alt="Foto de perfil" class="w-10 h-10 rounded-full">
-          <span *ngIf="!userData?.foto" class="bg-gray-300 w-10 h-10 flex items-center justify-center rounded-full text-white">
-      ?
-    </span>
+          <img [src]="userData?.foto || 'assets/logo_puntosafa.png'" alt="Foto de perfil" class="w-20 h-20 rounded-full flex items-center justify-center ">
+
+
         </button>
 
         <!-- Submenú desplegable -->
         <ul *ngIf="showMenu" class="absolute bg-white text-blue-900 shadow-md rounded mt-3 w-40">
           <li><a href="/perfil" class="block px-4 py-2 hover:bg-gray-100">Perfil</a></li>
-          <li><a routerLink="/mis-pedidos" class="block px-4 py-2 hover:bg-gray-100">Mis Pedidos</a></li>
+          <li><a href="/mis-pedidos" class="block px-4 py-2 hover:bg-gray-100">Mis Pedidos</a></li>
           <li>
             <button (click)="logout()" class="block w-full text-left px-4 py-2 hover:bg-red-100 text-red-600">
               Cerrar Sesión
