@@ -3,9 +3,9 @@
   <header class="w-full bg-[#F0F4EF] flex items-center p-4 shadow">
     <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-40 h-auto ml-10">
     <h2 class="flex-grow text-center text-2xl md:text-4xl font-bold text-[#1F2D3D]">
-      Bienvenido a PuntoSafa
+      ¡ A Trabajar !
     </h2>
-    <h1 class="text-lg font-semibold text-blue-600 mr-10">¡HOLA! {{ userData?.nombre }}</h1>
+    <h1 class="text-lg font-semibold text-blue-600 mr-10">¡HOLA! {{ userData?.nombre }} a ponerse al Día!</h1>
   </header>
 
   <!-- Main Content -->
@@ -36,12 +36,6 @@
         <div class="space-y-3">
           <p><strong class="text-gray-600">Email:</strong> {{ userData?.usuario?.email }}</p>
           <p><strong class="text-gray-600">Nick:</strong> {{ userData?.usuario?.nick }}</p>
-          <p><strong class="text-gray-600">Nombre:</strong> {{ userData?.nombre }}</p>
-          <p><strong class="text-gray-600">Apellidos:</strong> {{ userData?.apellidos }}</p>
-          <p><strong class="text-gray-600">DNI:</strong> {{ userData?.DNI }}</p>
-          <p><strong class="text-gray-600">Dirección:</strong> {{ userData?.direccion }}</p>
-          <p><strong class="text-gray-600">Teléfono:</strong> {{ userData?.telefono }}</p>
-          <p><strong class="text-gray-600">Foto:</strong> {{ userData?.foto }}</p>
           <p><strong class="text-gray-600">Contraseña:</strong> ••••••••••</p>
         </div>
 
@@ -59,25 +53,7 @@
           <input [(ngModel)]="usuarioEditado.usuario.email" class="w-full border p-2 rounded" disabled />
 
           <label>Nick:</label>
-          <input [(ngModel)]="usuarioEditado.usuario.nick" class="w-full border p-2 rounded" disabled />
-
-          <label>Nombre:</label>
-          <input [(ngModel)]="usuarioEditado.nombre" class="w-full border p-2 rounded" />
-
-          <label>Apellidos:</label>
-          <input [(ngModel)]="usuarioEditado.apellidos" class="w-full border p-2 rounded" />
-
-          <label>DNI:</label>
-          <input [(ngModel)]="usuarioEditado.DNI" class="w-full border p-2 rounded" />
-
-          <label>Dirección:</label>
-          <input [(ngModel)]="usuarioEditado.direccion" class="w-full border p-2 rounded" />
-
-          <label>Teléfono:</label>
-          <input [(ngModel)]="usuarioEditado.telefono" class="w-full border p-2 rounded" />
-
-          <label>Foto:</label>
-          <input [(ngModel)]="usuarioEditado.foto" class="w-full border p-2 rounded" />
+          <input [(ngModel)]="usuarioEditado.usuario.nick" class="w-full border p-2 rounded" />
 
           <label>Contraseña:</label>
           <input type="password" [(ngModel)]="usuarioEditado.contrasena" class="w-full border p-2 rounded"
@@ -93,8 +69,8 @@
 
     <!-- Información del Carrito de Compras -->
     <div class="mt-8 bg-gray-100 p-4 rounded-lg shadow-md">
-      <h2 class="text-lg font-semibold text-gray-700 mb-2">Carrito de Compras</h2>
-      <p class="text-gray-600">Aquí se muestra la información del carrito de compras...</p>
+      <h2 class="text-lg font-semibold text-gray-700 mb-2">Estado de Clientes</h2>
+      <p class="text-gray-600">Aquí se muestra el estado de la compra de los Clientes...</p>
     </div>
 
   </main>

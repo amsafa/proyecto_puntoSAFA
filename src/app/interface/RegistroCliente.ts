@@ -1,7 +1,7 @@
 export class RegistroCliente {
   id?:number;
   email?:string;
-  nick?:string
+  nick?:string;
   nombre?:string;
   apellidos?:string;
   dni?:string;
@@ -9,4 +9,5 @@ export class RegistroCliente {
   telefono?:string;
   direccion?:string;
   contrasena?:string;
+  rol?: string;
 }
