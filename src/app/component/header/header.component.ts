@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
+import {Router} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {AuthService} from '../../service/auth.service';
 
@@ -7,8 +7,7 @@ import {AuthService} from '../../service/auth.service';
   selector: 'app-header',
   imports: [
     NgIf,
-    RouterLink
-  ],
+      ],
   templateUrl: './header.component.html',
 
   styleUrls: ['./header.component.css']

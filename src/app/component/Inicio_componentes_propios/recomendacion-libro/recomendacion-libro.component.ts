@@ -34,7 +34,7 @@ export class RecomendacionLibroComponent implements OnInit {
         this.libros = [topBooks[randomIndex]];
         console.log('Libros recomendados:', this.libros);
       } else {
-        console.error('No hay suficientes libros para recomendar.');
+        console.error();
       }
     });
   }

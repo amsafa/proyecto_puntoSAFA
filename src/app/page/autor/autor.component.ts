@@ -51,7 +51,7 @@ export class AutorComponent implements OnInit {
         console.log("Datos del autor recibidos:", this.autor);
       },
       (error) => {
-        console.error("Error al obtener el autor:", error);
+        console.error(error);
       }
     );
   }

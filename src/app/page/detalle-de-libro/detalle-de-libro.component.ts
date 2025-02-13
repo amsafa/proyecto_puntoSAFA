@@ -54,7 +54,7 @@ export class DetalleDeLibroComponent {
         console.log('Libro obtenido:', this.libro);
       },
       error: (error) => {
-        console.error('Error al obtener el libro:', error);
+        console.error(error);
       }
     });
   }
@@ -70,7 +70,7 @@ export class DetalleDeLibroComponent {
 
       },
       error: (error) => {
-        console.error('Error al obtener las reseñas:', error);
+        console.error(error);
         this.resenas = []; // Para que el frontend no muestre las reseñas si hay un error
         this.cdr.detectChanges(); // Asegurar actualización
 
@@ -86,7 +86,7 @@ export class DetalleDeLibroComponent {
         this.actualizarEstrellas(); // Llamar al método para actualizar las estrellas
       },
       error: (error) => {
-        console.error('Error al obtener la calificación media:', error);
+        console.error(error);
         this.media_calificacion = null;
       }
     });

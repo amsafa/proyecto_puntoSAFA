@@ -5,7 +5,7 @@
     <h2 class="flex-grow text-center text-2xl md:text-4xl font-bold text-[#1F2D3D]">
       Bienvenido a PuntoSafa
     </h2>
-    <h2 class="text-lg font-semibold text-blue-600 mr-10">¡HOLA! {{ cliente?.nombre }}</h2>
+    <h1 class="text-lg font-semibold text-blue-600 mr-10">¡HOLA! {{ userData?.nombre }}</h1>
   </header>
 
   <!-- Main Content -->
@@ -14,61 +14,80 @@
       <!-- Foto del Cliente -->
       <div class="flex-shrink-0">
         <img
-          [src]="cliente?.foto || 'assets/default-user.png'"
+          [src]="userData.foto || 'assets/logo_puntosafa.png'"
           alt="Foto del Cliente"
-          class="w-40 h-40 rounded-full object-cover border-4 border-blue-500"
+          class="w-80 h-80 rounded-full object-cover border-4 border-blue-500"
         >
       </div>
 
       <!-- Información del Cliente -->
       <div class="flex-grow bg-gray-50 p-4 rounded-lg shadow-md">
         <h2 class="text-xl font-semibold text-gray-700 mb-4">Perfil del Cliente</h2>
-        <form [formGroup]="perfilForm" (ngSubmit)="guardarCambios()" class="space-y-4">
-          <div class="flex flex-col">
-            <label for="email" class="font-medium text-gray-600">Email:</label>
-            <input id="email" formControlName="email" type="email" class="input-field">
+
+        <!-- Mensajes de éxito y error -->
+        <p *ngIf="successMessage" class="text-green-600 mt-2 p-3 bg-green-100 border border-green-600 rounded">
+          {{ successMessage }}
+        </p>
+
+        <p *ngIf="errorMessage" class="text-red-600 mt-2 p-3 bg-red-100 border border-red-600 rounded">
+          {{ errorMessage }}
+        </p>
+
+        <div class="space-y-3">
+          <p><strong class="text-gray-600">Email:</strong> {{ userData?.usuario?.email }}</p>
+          <p><strong class="text-gray-600">Nick:</strong> {{ userData?.usuario?.nick }}</p>
+          <p><strong class="text-gray-600">Nombre:</strong> {{ userData?.nombre }}</p>
+          <p><strong class="text-gray-600">Apellidos:</strong> {{ userData?.apellidos }}</p>
+          <p><strong class="text-gray-600">DNI:</strong> {{ userData?.DNI }}</p>
+          <p><strong class="text-gray-600">Dirección:</strong> {{ userData?.direccion }}</p>
+          <p><strong class="text-gray-600">Teléfono:</strong> {{ userData?.telefono }}</p>
+          <p><strong class="text-gray-600">Foto:</strong> {{ userData?.foto }}</p>
+          <p><strong class="text-gray-600">Contraseña:</strong> ••••••••••</p>
+        </div>
+
+        <button (click)="abrirFormulario()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
+          Editar Perfil
+        </button>
+      </div>
+
+      <!-- Modal / Formulario de Edición -->
+      <div *ngIf="mostrandoFormulario" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-6 rounded shadow-lg w-1/3">
+          <h2 class="text-lg font-semibold mb-4">Editar Perfil</h2>
+
+          <label>Email:</label>
+          <input [(ngModel)]="usuarioEditado.usuario.email" class="w-full border p-2 rounded" disabled />
+
+          <label>Nick:</label>
+          <input [(ngModel)]="usuarioEditado.usuario.nick" class="w-full border p-2 rounded" disabled />
+
+          <label>Nombre:</label>
+          <input [(ngModel)]="usuarioEditado.nombre" class="w-full border p-2 rounded" />
+
+          <label>Apellidos:</label>
+          <input [(ngModel)]="usuarioEditado.apellidos" class="w-full border p-2 rounded" />
+
+          <label>DNI:</label>
+          <input [(ngModel)]="usuarioEditado.DNI" class="w-full border p-2 rounded" />
+
+          <label>Dirección:</label>
+          <input [(ngModel)]="usuarioEditado.direccion" class="w-full border p-2 rounded" />
+
+          <label>Teléfono:</label>
+          <input [(ngModel)]="usuarioEditado.telefono" class="w-full border p-2 rounded" />
+
+          <label>Foto:</label>
+          <input [(ngModel)]="usuarioEditado.foto" class="w-full border p-2 rounded" />
+
+          <label>Contraseña:</label>
+          <input type="password" [(ngModel)]="usuarioEditado.contrasena" class="w-full border p-2 rounded"
+                 placeholder="Nueva contraseña (opcional)" />
+
+          <div class="flex justify-end mt-4">
+            <button (click)="guardarCambios()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">Guardar</button>
+            <button (click)="cerrarFormulario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
           </div>
-
-          <div class="flex flex-col">
-            <label for="nick" class="font-medium text-gray-600">Nick:</label>
-            <input id="nick" formControlName="nick" type="text" class="input-field">
-          </div>
-
-          <div class="flex flex-col">
-            <label for="nombre" class="font-medium text-gray-600">Nombre:</label>
-            <input id="nombre" formControlName="nombre" type="text" class="input-field">
-          </div>
-
-          <div class="flex flex-col">
-            <label for="apellidos" class="font-medium text-gray-600">Apellidos:</label>
-            <input id="apellidos" formControlName="apellidos" type="text" class="input-field">
-          </div>
-
-          <div class="flex flex-col">
-            <label for="dni" class="font-medium text-gray-600">DNI:</label>
-            <input id="dni" formControlName="dni" type="text" class="input-field">
-          </div>
-
-          <div class="flex flex-col">
-            <label for="direccion" class="font-medium text-gray-600">Dirección:</label>
-            <input id="direccion" formControlName="direccion" type="text" class="input-field">
-          </div>
-
-          <div class="flex flex-col">
-            <label for="telefono" class="font-medium text-gray-600">Teléfono:</label>
-            <input id="telefono" formControlName="telefono" type="text" class="input-field">
-          </div>
-
-          <button
-            type="submit"
-            [disabled]="!perfilForm.valid"
-            class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-          >
-            Guardar Cambios
-          </button>
-        </form>
-
-        <p *ngIf="errorMessage" class="text-red-600 mt-2">{{ errorMessage }}</p>
+        </div>
       </div>
     </div>
 
@@ -77,5 +96,6 @@
       <h2 class="text-lg font-semibold text-gray-700 mb-2">Carrito de Compras</h2>
       <p class="text-gray-600">Aquí se muestra la información del carrito de compras...</p>
     </div>
+
   </main>
 </div>

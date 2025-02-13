@@ -34,7 +34,7 @@ export class BookListComponent implements OnInit, OnChanges {
         console.log('Libros cargados en book-list:', this.books);
       },
       error: (error) => {
-        console.error('Error al cargar los libros:', error);
+        console.error(error);
         this.errorMessage = 'Error al cargar los libros';
         this.loading = false;
       }

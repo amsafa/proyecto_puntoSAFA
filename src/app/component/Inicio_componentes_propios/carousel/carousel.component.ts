@@ -31,7 +31,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error al cargar libros:', error);
+        console.error(error);
         this.errorMessage = 'Error al cargar los libros. Inténtalo de nuevo.';
         this.loading = false;
       }
