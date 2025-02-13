@@ -14,7 +14,7 @@
       <!-- Foto del Cliente -->
       <div class="flex-shrink-0">
         <img
-          [src]="userData.foto || 'assets/logo_puntosafa.png'"
+          [src]="userData?.foto || 'assets/logo_puntosafa.png'"
           alt="Foto del Cliente"
           class="w-80 h-80 rounded-full object-cover border-4 border-blue-500"
         >
@@ -87,7 +87,32 @@
             <button (click)="guardarCambios()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">Guardar</button>
             <button (click)="cerrarFormulario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
           </div>
-        </div>
+
+          <div class="flex flex-col">
+            <label for="dni" class="font-medium text-gray-600">DNI:</label>
+            <input id="dni" formControlName="dni" type="text" class="input-field">
+          </div>
+
+          <div class="flex flex-col">
+            <label for="direccion" class="font-medium text-gray-600">Dirección:</label>
+            <input id="direccion" formControlName="direccion" type="text" class="input-field">
+          </div>
+
+          <div class="flex flex-col">
+            <label for="telefono" class="font-medium text-gray-600">Teléfono:</label>
+            <input id="telefono" formControlName="telefono" type="text" class="input-field">
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="!perfilForm.valid"
+            class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >
+            Guardar Cambios
+          </button>
+        </form>
+
+        <p *ngIf="errorMessage" class="text-red-600 mt-2">{{ errorMessage }}</p>
       </div>
     </div>
 
@@ -96,6 +121,5 @@
       <h2 class="text-lg font-semibold text-gray-700 mb-2">Carrito de Compras</h2>
       <p class="text-gray-600">Aquí se muestra la información del carrito de compras...</p>
     </div>
-
   </main>
 </div>

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import { Categoria } from '../interface/categoria'; // Importar la interfaz de categoría
-import {map, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 
 
 
@@ -26,6 +26,12 @@ export class LibroService {
   // Método para obtener libros por categoría (desde el backend)
   getBooksByCategory(id: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
+
+  getLibros(page: number, limit: number): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/all`, {
+      params: { page: page.toString(), limit: limit.toString() },
+    });
+  }
 
     // async getLibrosCatalogo(params: { page: number, limit: number }): Promise<Libro[]> {
     //   const response = await fetch(`${this.baseUrl}/all?page=${params.page}&limit=${params.limit}`);

@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { RegistroCliente } from '../../interface/RegistroCliente';
 import { PerfilService } from '../../service/perfil.service';
-import { AuthService } from '../../service/auth.service';
-import {NgIf} from '@angular/common';
+import { NgIf } from '@angular/common';
+import {AuthService} from '../../service/auth.service';
+import {data} from 'autoprefixer';
+
+
+
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
-  imports: [
-    NgIf,
-    ReactiveFormsModule,
-    FormsModule
-  ],
+  imports: [NgIf, ReactiveFormsModule, FormsModule],
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
@@ -69,9 +69,6 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-
-
-
   cargarCliente(id: number): void {
     // Llama al servicio para obtener los datos del cliente
     this.perfilService.getClienteById(id).subscribe({
@@ -87,11 +84,11 @@ export class PerfilComponent implements OnInit {
 
   cargarUsuarioAutenticado(): void {
     this.perfilService.obtenerUsuarioAutenticado().subscribe({
-      next: (data: RegistroCliente | null) => {
+      next: (data) => {
         console.log('Datos obtenidos:', data); // Verifica los datos en la consola
 
         if (Array.isArray(data)) {
-          console.error();
+          console.error('⚠️ Error: Se recibió un array en lugar de un objeto.');
         }
         this.cliente = data;
         this.userData = data;
@@ -99,14 +96,11 @@ export class PerfilComponent implements OnInit {
         // @ts-ignore
         this.perfilForm.patchValue(data);
       },
-      error: () => {
+      error: (err) => {
         this.errorMessage = 'Error al cargar los datos del usuario autenticado.';
       }
     });
   }
-
-
-
 
   guardarCambios(): void {
     let successMessage;
@@ -116,8 +110,6 @@ export class PerfilComponent implements OnInit {
         ...this.perfilForm.value,
         id: this.clienteId
       };
-
-
 
       this.perfilService.editarCliente(this.clienteId, clienteActualizado).subscribe({
         next: () => {
@@ -194,5 +186,6 @@ export class PerfilComponent implements OnInit {
   cerrarFormulario(): void {
     this.mostrandoFormulario = false;
   }
+
 
 }

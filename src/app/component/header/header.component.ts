@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {AuthService} from '../../service/auth.service';
 
 @Component({
   selector: 'app-header',
-  imports: [
-    NgIf,
-      ],
   templateUrl: './header.component.html',
-
+  imports: [
+    NgIf
+  ],
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
@@ -25,7 +24,12 @@ export class HeaderComponent implements OnInit {
     // Suscribirse al estado de autenticación
     this.authService.getAuthState().subscribe((state) => {
       this.isLoggedIn = state;
+      if (this.isLoggedIn) {
+        this.authService.fetchUserData(); // 🔹 Obtener los datos si ya está logueado
+      }
     });
+
+    // Suscribirse a los datos del usuario
     this.authService.getUserData().subscribe(user => {
       this.userData = user; // 🔹 Guardar los datos del usuario
     });

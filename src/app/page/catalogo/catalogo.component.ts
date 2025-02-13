@@ -1,4 +1,4 @@
- import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
@@ -7,6 +7,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
  import {Categoria} from '../../interface/categoria';
  import {ActivatedRoute, Router} from '@angular/router';
  import {CategoriaService} from '../../service/categoria.service';
+
 
 
 @Component({
@@ -98,6 +99,7 @@ export class CatalogoComponent  implements OnInit {
     }
   }
 
+
   clearSearch(): void {
     this.filter = '';
     this.filteredBooks = this.libros;
@@ -113,7 +115,7 @@ export class CatalogoComponent  implements OnInit {
       this.libroService.getLibrosByPrecio(range).subscribe(libros => {
         this.filteredBooks = libros;
       },error => {
-        console.error(error);
+        console.error('Error fetching books by price:', error);
         }
       )
     }
@@ -131,7 +133,7 @@ export class CatalogoComponent  implements OnInit {
         this.filteredBooks = books;
       },
         error => {
-        console.error(error);
+        console.error('Error fetching books by category:', error);
         })
     }
   }
