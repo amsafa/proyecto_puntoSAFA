@@ -14,12 +14,12 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
   templateUrl: '/catalogo.component.html',
   styleUrls: ['./catalogo.component.css'],
   imports: [
-    CurrencyPipe,
-    NgForOf,
     FormsModule,
-    NgIf,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgIf,
+    NgForOf,
+    CurrencyPipe
 
   ]
 })
@@ -71,23 +71,31 @@ export class CatalogoComponent  implements OnInit {
       this.libros = await this.libroService.getLibrosCatalogo(params);
       this.filteredBooks = [...this.libros];
       this.setupPagination();
-      console.error(this.libros);
+      console.error();
     } catch (error) {
-      console.error('Error fetching books:', error);
+      console.error(error);
     }
   }
 
+  noResults: boolean = false;
+
   searchBooks(): void {
-    const searchTerm = this.filter.trim();
+    const searchTerm = this.filter.toLowerCase().trim();
 
     if (!searchTerm) {
-      this.filteredBooks = this.libros; // Reset if no search term
-      return;
+      this.filteredBooks = this.libros;
+      this.noResults = false;
+    } else {
+      this.filteredBooks = this.libros.filter(libro => {
+        const { nombre, apellidos } = libro.autor || {}; // Destructure author object
+        return (
+          libro.titulo?.toLowerCase().includes(searchTerm) ||
+          (apellidos && apellidos.toLowerCase().includes(searchTerm)) || // Check surname
+          (nombre && nombre.toLowerCase().includes(searchTerm)) // Check name
+        );
+      });
+      this.noResults = this.filteredBooks.length === 0;
     }
-
-    this.http.get<Libro[]>(`http://127.0.0.1:8000/libro/search?q=${searchTerm}`).subscribe((response: Libro[]) => {
-      this.filteredBooks = response; // Use the API response
-    });
   }
 
   clearSearch(): void {
@@ -105,7 +113,7 @@ export class CatalogoComponent  implements OnInit {
       this.libroService.getLibrosByPrecio(range).subscribe(libros => {
         this.filteredBooks = libros;
       },error => {
-        console.error('Error fetching books by price:', error);
+        console.error(error);
         }
       )
     }
@@ -123,7 +131,7 @@ export class CatalogoComponent  implements OnInit {
         this.filteredBooks = books;
       },
         error => {
-        console.error('Error fetching books by category:', error);
+        console.error(error);
         })
     }
   }
