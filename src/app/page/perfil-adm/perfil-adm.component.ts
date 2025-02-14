@@ -74,7 +74,7 @@ export class PerfilAdmComponent {
         this.perfilForm.patchValue(data); // Carga los datos en el formulario
       },
       error: (err) => {
-        console.error("Error al cargar perfil:", err);
+        console.error(err);
         this.errorMessage = 'No se pudo cargar el perfil. Intente nuevamente.';
       }
     });
@@ -85,7 +85,7 @@ export class PerfilAdmComponent {
         console.log('Datos obtenidos:', data); // Verifica los datos en la consola
 
         if (Array.isArray(data)) {
-          console.error('⚠️ Error: Se recibió un array en lugar de un objeto.');
+          console.error();
         }
         this.admin = data;
         this.userData = data;

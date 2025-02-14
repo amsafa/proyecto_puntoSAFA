@@ -41,7 +41,7 @@ export class PerfiladmService {
 
     return this.http.get<adm>(`${this.apiUrl}/api/cliente/auth/user`, { headers }).pipe(
       catchError(error => {
-        console.error('Error obteniendo usuario autenticado:', error);
+        console.error(error);
         return of(null);
       })
     );

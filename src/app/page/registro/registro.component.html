@@ -1,182 +1,158 @@
-<div class="min-h-screen flex flex-col">
 
-  <!-- Main Content -->
-  <main class="flex-grow flex flex-col items-center bg-white">
-    <!-- Encabezado -->
-    <div class="w-full flex items-center bg-[#F0F4EF] p-2">
-      <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-60 h-auto ml-60">
-      <h2 class="flex-2 text-center text-4xl font-bold text-[#1F2D3D]">REGISTRO</h2>
+<div class="min-h-screen flex flex-col">
+<section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <div class="container mx-auto flex flex-col md:flex-row items-centerpx-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">
+    <div class="mt-10 md:mt-0 md:ml-0 lg:ml-0">
+      <img src="../../../../assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-full max-w-xxs md:max-w-xs mx-auto">
     </div>
 
-    <!-- Contenedor del Formulario -->
-    <div class="form-container bg-[#BBCCDD] p-4 rounded-lg shadow-md mt-4 w-full max-w-md">
-      <form class="space-y-10" [formGroup]="registroForm" (ngSubmit)="onRegister()">
+    <div class="flex items-center justify-center text-center md:text-left max-w-2xl lg:max-w-xl mx-auto">
+      <h1 class="text-4xl font-extrabold text-blue-900 leading-tight">
+        Registro
+      </h1>
+    </div>
+  </div>
+</section>
 
+  <!-- Contenedor Principal -->
+  <main class="flex-grow flex flex-col items-center justify-center bg-white">
+    <div class="bg-blue-50 p-12 rounded-lg shadow-lg w-2/4">
+      <h3 class="text-3xl font-semibold text-gray-800 text-center mb-6">Ingresa tu datos</h3>
+      <form class="space-y-6" [formGroup]="registroForm" (ngSubmit)="onRegister()">
 
-        <!-- Campo de Nick -->
-        <div class="relative">
-          <input id="username" type="text" formControlName="nick" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="Username o Nick">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa-solid fa-user text-gray-400"></i>
+        <div class="grid grid-cols-2 gap-6">
+          <!-- Username -->
+          <div class="relative flex flex-col">
+            <div class="relative flex items-center">
+              <i class="fa-solid fa-user input-icon"></i>
+              <input id="username" type="text" formControlName="nick" required class="input" placeholder="Username o Nick">
+            </div>
+            <div *ngIf="registroForm.get('nick')?.invalid && registroForm.get('nick')?.touched" class="text-red-500">
+              Nombre de usuario inválido.
+            </div>
           </div>
-          <div *ngIf="registroForm.get('nick')?.invalid && registroForm.get('nick')?.touched" class="absolute text-red-500">
-            Nombre de usuario inválido.
-          </div>
-        </div>
 
-        <!-- Campo de Nombre -->
-        <div class="relative">
-          <input id="nombre" type="text" formControlName="nombre" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="Nombre">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa-solid fa-user text-gray-400"></i>
-          </div>
-          <div *ngIf="registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched" class="absolute text-red-500">
-            Nombre inválido.
-          </div>
-        </div>
-
-
-
-        <!-- Campo de Apellido -->
-        <div class="relative">
-          <input id="apellidos" type="text" formControlName="apellidos" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="Apellidos">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa-solid fa-user text-gray-400"></i>
-          </div>
-          <div *ngIf="registroForm.get('apellidos')?.invalid && registroForm.get('apellidos')?.touched" class="absolute text-red-500">
-            Apellidos inválido.
+          <!-- Nombre -->
+          <div class="relative flex flex-col">
+            <div class="relative flex items-center">
+              <i class="fa-solid fa-user input-icon"></i>
+              <input id="nombre" type="text" formControlName="nombre" required class="input" placeholder="Nombre">
+            </div>
+            <div *ngIf="registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched" class="text-red-500">
+              Nombre inválido.
+            </div>
           </div>
         </div>
 
-        <!-- Campo de email -->
-        <div class="relative">
-          <input id="email" type="email" formControlName="email" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="Email">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fas fa-envelope text-gray-400"></i>
+        <!-- Apellidos -->
+        <div class="relative flex flex-col">
+          <div class="relative flex items-center">
+            <i class="fa-solid fa-user input-icon"></i>
+            <input id="apellidos" type="text" formControlName="apellidos" required class="input" placeholder="Apellidos">
           </div>
-          <div *ngIf="registroForm.get('email')?.invalid && registroForm.get('email')?.touched" class="absolute text-red-500">
+          <div *ngIf="registroForm.get('apellidos')?.invalid && registroForm.get('apellidos')?.touched" class="text-red-500">
+            Apellidos inválidos.
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="relative flex flex-col">
+          <div class="relative flex items-center">
+            <i class="fas fa-envelope input-icon"></i>
+            <input id="email" type="email" formControlName="email" required class="input" placeholder="Email">
+          </div>
+          <div *ngIf="registroForm.get('email')?.invalid && registroForm.get('email')?.touched" class="text-red-500">
             Email inválido.
           </div>
         </div>
 
-
-        <!-- Campo de DNI -->
-        <div class="relative">
-          <input id="dni" type="text"  formControlName="dni" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="DNI">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa-solid fa-id-card text-gray-400"></i>
-          </div>
-          <div *ngIf="registroForm.get('dni')?.invalid && registroForm.get('dni')?.touched" class="absolute text-red-500">
-            DNI inválido.
-          </div>
-        </div>
-
-        <!-- Campo de Foto -->
-        <div class="relative">
-          <!-- Input de texto para ingresar la URL de la imagen -->
-          <input id="foto" type="text" formControlName="foto" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm
-                ring-1 ring-inset ring-gray-300 placeholder:text-gray-400
-                focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="URL de la foto">
-
-          <!-- Ícono de Cámara dentro del input -->
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa-solid fa-camera text-gray-400"></i>
+        <div class="grid grid-cols-2 gap-4">
+          <!-- DNI -->
+          <div class="relative flex flex-col">
+            <div class="relative flex items-center">
+              <i class="fa-solid fa-id-card input-icon"></i>
+              <input id="dni" type="text" formControlName="dni" required class="input" placeholder="DNI">
+            </div>
+            <div *ngIf="registroForm.get('dni')?.invalid && registroForm.get('dni')?.touched" class="text-red-500">
+              DNI inválido (Debe contener 8 números y 1 letra).
+            </div>
           </div>
 
-          <!-- Mensaje de error si el campo es inválido -->
-          <div *ngIf="registroForm.get('foto')?.invalid && registroForm.get('foto')?.touched"
-               class="text-red-500">
-            Foto inválida.
+          <!-- URL Foto -->
+          <div class="relative flex flex-col">
+            <div class="relative flex items-center">
+              <i class="fa-solid fa-camera input-icon"></i>
+              <input id="foto" type="text" formControlName="foto" required class="input" placeholder="URL de la foto">
+            </div>
+            <div *ngIf="registroForm.get('foto')?.invalid && registroForm.get('foto')?.touched" class="text-red-500">
+              URL de foto inválida.
+            </div>
           </div>
         </div>
 
-
-
-
-
-        <!-- Campo de Dirección -->
-        <div class="relative">
-          <input id="direccion" type="text" formControlName="direccion" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="Dirección">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa-solid fa-map-marker-alt text-gray-400"></i>
+        <!-- Dirección -->
+        <div class="relative flex flex-col">
+          <div class="relative flex items-center">
+            <i class="fa-solid fa-map-marker-alt input-icon"></i>
+            <input id="direccion" type="text" formControlName="direccion" required class="input" placeholder="Dirección">
           </div>
-          <div *ngIf="registroForm.get('direccion')?.invalid && registroForm.get('direccion')?.touched" class="absolute text-red-500">
+          <div *ngIf="registroForm.get('direccion')?.invalid && registroForm.get('direccion')?.touched" class="text-red-500">
             Dirección inválida.
           </div>
         </div>
 
-        <!-- Campo de Teléfono -->
-        <div class="relative">
-          <input id="telefono" type="text" formControlName="telefono" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="Teléfono">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa-solid fa-phone text-gray-400"></i>
+        <!-- Teléfono -->
+        <div class="relative flex flex-col">
+          <div class="relative flex items-center">
+            <i class="fa-solid fa-phone input-icon"></i>
+            <input id="telefono" type="text" formControlName="telefono" required class="input" placeholder="Teléfono">
           </div>
-          <div *ngIf="registroForm.get('telefono')?.invalid && registroForm.get('telefono')?.touched" class="absolute text-red-500">
+          <div *ngIf="registroForm.get('telefono')?.invalid && registroForm.get('telefono')?.touched" class="text-red-500">
             Teléfono inválido.
           </div>
         </div>
 
-
-
-        <!-- Campo de contraseña -->
-        <div class="relative">
-          <input id="password" type="password" formControlName="contrasena" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="Password">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa-solid fa-lock text-gray-400"></i>
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Contraseña -->
+          <div class="relative flex flex-col">
+            <div class="relative flex items-center">
+              <i class="fa-solid fa-lock input-icon"></i>
+              <input id="password" type="password" formControlName="contrasena" required class="input" placeholder="Password">
+            </div>
+            <div *ngIf="registroForm.get('contrasena')?.invalid && registroForm.get('contrasena')?.touched" class="text-red-500">
+              La contraseña debe tener al menos 6 caracteres.
+            </div>
           </div>
-          <div *ngIf="registroForm.get('contrasena')?.invalid && registroForm.get('contrasena')?.touched" class="absolute text-red-500">
-            Contraseña inválida.
-          </div>
-        </div>
 
-        <!-- Campo de repetir contraseña -->
-        <div class="relative">
-          <input id="repeatPassword" type="password" formControlName="repetircontrasena" required
-                 class="block w-full pl-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm/6"
-                 placeholder="Password again">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa-solid fa-lock text-gray-400"></i>
-          </div>
-          <div *ngIf="registroForm.errors?.['passwordMismatch'] && registroForm.get('repetircontrasena')?.touched" class="absolute text-red-500">
-            Las contraseñas no coinciden.
+          <!-- Repetir Contraseña -->
+          <div class="relative flex flex-col">
+            <div class="relative flex items-center">
+              <i class="fa-solid fa-lock input-icon"></i>
+              <input id="repeatPassword" type="password" formControlName="repetircontrasena" required class="input" placeholder="Password again">
+            </div>
+            <div *ngIf="registroForm.errors?.['passwordMismatch'] && registroForm.get('repetircontrasena')?.touched" class="text-red-500">
+              Las contraseñas no coinciden.
+            </div>
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-[#009688] text-white py-3 rounded-md font-semibold hover:bg-[#00796B]">
+        <!-- Botón de registro -->
+        <button type="submit" class="w-full bg-blue-600  text-white py-3 rounded-md font-semibold hover:bg-teal-700 transition-all">
           Registrarme
         </button>
       </form>
 
-
-      <!-- Mostrar mensaje de error -->
-      <div *ngIf="errorMessage" class="alert alert-error p-4 mb-4 bg-red-100 text-red-800 border border-red-400 rounded">
+      <!-- Mensaje de error -->
+      <div *ngIf="errorMessage" class="mt-4 p-3 text-red-600 bg-red-100 border border-red-400 rounded">
         {{ errorMessage }}
       </div>
 
-
-      <p class="login-link text-center text-sm mt-8 text-gray-600">
-        ¿Ya tienes cuenta? <a href="/login" class="text-[#009688] font-bold">Inicia sesión aquí.</a>
+      <!-- Enlace a iniciar sesión -->
+      <p class="text-center text-sm mt-6 text-gray-600">
+        ¿Ya tienes cuenta? <a href="/login" class="text-blue-600  font-bold hover:underline">Inicia sesión aquí.</a>
       </p>
     </div>
+
   </main>
-
-
 </div>
