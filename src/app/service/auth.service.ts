@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import {BehaviorSubject, lastValueFrom, Observable, throwError} from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -26,35 +26,59 @@ export class AuthService {
 
 
   // Iniciar sesión
-  login(credentials: Login): Observable<any> {
-    localStorage.removeItem('token');
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login_check`, credentials).pipe(
-      tap(response => {
-        localStorage.setItem('token', response.token);
-        this.authState.next(true);
-        this.fetchUserData(); // Cargar datos del usuario autenticado
-      }),
-      catchError(this.handleError)
-    );
+  async login(credentials: Login): Promise<void> {
+    localStorage.removeItem('token'); // Limpiar token anterior
+    try {
+      const response = await lastValueFrom(
+        this.http.post<{ token: string }>(`${this.apiUrl}/login_check`, credentials)
+      );
+
+      localStorage.setItem('token', response.token);
+      this.authState.next(true);
+
+      // Obtener datos del usuario
+      const user = await this.fetchUserData();
+      console.log("Datos de usuario obtenidos:", user); // ✅ Depuración
+
+      if (user && user.usuario) { // 🔹 Verifica que usuario exista
+        localStorage.setItem('userData', JSON.stringify(user));
+
+        // Redirigir según el rol dentro de usuario
+        if (user.usuario.rol === 'admin') {
+          console.log("Redirigiendo a perfil-admin");
+          this.router.navigate(['/perfil-adm']);
+        } else if (user.usuario.rol === 'cliente') {
+          console.log("Redirigiendo a home");
+          this.router.navigate(['/home']);
+        }
+      }
+    } catch (error) {
+      console.error("Error en login:", error);
+      // @ts-ignore
+      this.handleError(error);
+    }
   }
 
 
+
+
+
   // Obtener datos del usuario autenticado
-  fetchUserData(): void {
+  fetchUserData(): Promise<RegistroCliente | null> {
     const token = this.getToken();
-    if (token) {
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-      this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/auth/user`, { headers }).subscribe({
-        next: user => {
-          console.log('Datos recibidos:', user);  // 👈 Verifica si se imprimen datos en la consola
-          this.userData.next(user);
-        },
-        error: err => {
-          console.error('Error obteniendo datos:', err);
-          this.userData.next(null);
-        }
-      });
-    }
+    if (!token) return Promise.resolve(null);
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return lastValueFrom(
+      this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/auth/user`, { headers })
+    ).then(userData => {
+      this.userData.next(userData);
+      return userData; // Devuelve el usuario con su rol
+    }).catch(err => {
+      console.error(err);
+      this.userData.next(null);
+      return null;
+    });
   }
 
 

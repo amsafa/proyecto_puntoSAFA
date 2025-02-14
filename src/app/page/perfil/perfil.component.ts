@@ -6,6 +6,7 @@ import { RegistroCliente } from '../../interface/RegistroCliente';
 import { PerfilService } from '../../service/perfil.service';
 import { NgIf } from '@angular/common';
 import {AuthService} from '../../service/auth.service';
+import {distinctUntilChanged, filter, switchMap} from 'rxjs';
 
 
 
@@ -55,19 +56,18 @@ export class PerfilComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // Suscribirse al estado de autenticación
-    this.authService.getAuthState().subscribe((state) => {
-      this.isLoggedIn = state;
-      if (this.isLoggedIn) {
-        this.authService.fetchUserData(); // 🔹 Obtener los datos si ya está logueado
+    this.authService.getAuthState().pipe(
+      filter(authState => authState), // Asegurar que está autenticado
+      switchMap(() => this.authService.getUserData()), // Obtener datos del usuariodistinctUntilChanged() // Evitar que emita datos repetidos
+    ).subscribe(userData => {
+      if (userData) {
+        console.log('Datos únicos obtenidos:', userData);
+        this.userData = userData;
+        this.isLoggedIn = true;
       }
     });
-
-    // Suscribirse a los datos del usuario
-    this.authService.getUserData().subscribe(user => {
-      this.userData = user; // 🔹 Guardar los datos del usuario
-    });
   }
+
 
   cargarCliente(id: number): void {
     // Llama al servicio para obtener los datos del cliente
@@ -88,7 +88,7 @@ export class PerfilComponent implements OnInit {
         console.log('Datos obtenidos:', data); // Verifica los datos en la consola
 
         if (Array.isArray(data)) {
-          console.error('⚠️ Error: Se recibió un array en lugar de un objeto.');
+          console.error();
         }
         this.cliente = data;
         this.userData = data;

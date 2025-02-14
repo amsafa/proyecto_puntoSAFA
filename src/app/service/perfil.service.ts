@@ -40,7 +40,7 @@ export class PerfilService {
 
     return this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers }).pipe(
       catchError(error => {
-        console.error('Error obteniendo usuario autenticado:', error);
+        console.error(error);
         return of(null);
       })
     );
