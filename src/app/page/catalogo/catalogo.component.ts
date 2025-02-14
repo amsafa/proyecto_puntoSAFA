@@ -44,8 +44,11 @@ export class CatalogoComponent  implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.filter = params['search'] || '';
-      this.cargarLibros().then(() => {
+      this.filter = params['search'] || ''; // Get search parameter from query params
+      const page = params['page'] ? parseInt(params['page'], 10) : 1;
+      const limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
+
+      this.cargarLibros(page, limit).then(() => {
         if (this.filter) {
           this.searchBooks();
         }
@@ -58,24 +61,20 @@ export class CatalogoComponent  implements OnInit {
 
   }
 
-  async cargarLibros(): Promise<void> {
-    try {
-      // const params = { ordenarPor: this.ordernarPor  };
-      // this.libros = await this.libroService.sortLibros(params);
-      // this.libroService.sortLibros({ordenarPor: this.ordernarPor}).then(
-      //   libros => {
-      //     this.libros = libros;
-      //   }
-      // )
-
-      const params = { page: this.currentPage, limit: this.itemsPerPage };
-      this.libros = await this.libroService.getLibrosCatalogo(params);
-      this.filteredBooks = [...this.libros];
-      this.setupPagination();
-      console.error();
-    } catch (error) {
-      console.error(error);
-    }
+  cargarLibros(page: number = 1, limit: number = 9): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.libroService.getBooks(page, limit).subscribe(
+        (data: Libro[]) => {
+          this.libros = data;
+          this.filteredBooks = [...this.libros]; // Ensure filtered list updates
+          resolve(); // Resolve the promise once books are loaded
+        },
+        (error) => {
+          console.error('Error fetching books:', error);
+          reject(error);
+        }
+      );
+    });
   }
 
   noResults: boolean = false;
@@ -98,7 +97,6 @@ export class CatalogoComponent  implements OnInit {
       this.noResults = this.filteredBooks.length === 0;
     }
   }
-
 
   clearSearch(): void {
     this.filter = '';

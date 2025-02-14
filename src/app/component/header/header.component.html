@@ -7,63 +7,70 @@
     </div>
 
     <!-- Botón de menú en móvil -->
-    <button (click)="toggleMenu()" class="block md:hidden text-white focus:outline-none">
+    <button
+      (click)="toggleMenu($event)"
+      class="block md:hidden text-white focus:outline-none"
+      aria-label="Abrir menú"
+      [attr.aria-expanded]="isMenuOpen"
+    >
       <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
       </svg>
     </button>
 
     <!-- Menú de navegación para pantallas grandes -->
-    <ul class="hidden md:flex space-x-6 text-lg md:text-white">
-      <li><a href="/home" class="hover:text-gray-300">Inicio</a></li>
-      <li><a href="/catalogo" class="hover:text-gray-300">Catálogo</a></li>
+    <ul class="hidden md:flex space-x-12 ">
+      <li><a routerLink="/home" class=" text-2xl text-gray-50 hover:text-customAzulito">Inicio</a></li>
+      <li><a routerLink="/catalogo" class=" text-2xl text-gray-50 hover:text-customAzulito">Catálogo</a></li>
 
       <!-- Mostrar dependiendo del estado de la sesión -->
       <li *ngIf="!isLoggedIn">
-        <a href="/login" class="bg-white text-blue-900 px-4 py-2 rounded hover:bg-gray-200">
+        <a routerLink="/login" class="bg-white text-custom-blue px-4 py-2 rounded hover:bg-gray-200">
           Iniciar sesión o registrarse
         </a>
       </li>
 
-
-        <li *ngIf="isLoggedIn" class="relative">
-        <button (click)="toggleAccountMenu()" class="flex items-center space-x-2">
-          <img [src]="userData?.foto || 'assets/logo_puntosafa.png'" alt="Foto de perfil" class="w-20 h-20 rounded-full flex items-center justify-center ">
-
-
+      <li *ngIf="isLoggedIn" class="relative">
+        <button (click)="toggleAccountMenu($event)" class="flex items-center space-x-2">
+          <img
+            [src]="userData?.foto || 'assets/logo_puntosafa.png'"
+            [alt]="'Foto de perfil de ' + (userData?.nombre || 'Usuario')"
+            class="w-10 h-10 rounded-full"
+          >
         </button>
 
         <!-- Submenú desplegable -->
-        <ul *ngIf="showMenu" class="absolute bg-white text-blue-900 shadow-md rounded mt-3 w-40">
-          <li><a href="/perfil" class="block px-4 py-2 hover:bg-gray-100">Perfil</a></li>
-          <li><a href="/mis-pedidos" class="block px-4 py-2 hover:bg-gray-100">Mis Pedidos</a></li>
+        <ul [ngClass]="{'block': showMenu, 'hidden': !showMenu}"
+            class="absolute bg-white  shadow-md rounded mt-2 w-40 right-0">
+          <li><a routerLink="/perfil" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Perfil</a></li>
+          <li><a routerLink="/mis-pedidos" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Mis Pedidos</a></li>
           <li>
-            <button (click)="logout()" class="block w-full text-left px-4 py-2 hover:bg-red-100 text-red-600">
+            <button (click)="logout()" class=" text-l block w-full text-left px-4 py-2 hover:bg-red-100 text-red-600">
               Cerrar Sesión
             </button>
           </li>
         </ul>
       </li>
-
-
     </ul>
   </nav>
 
   <!-- Menú desplegable para móviles -->
-  <div *ngIf="isMenuOpen" class="md:hidden bg-custom-blue text-white text-center py-4">
-    <a href="/" class="block py-2 hover:text-gray-300">Inicio</a>
-    <a href="/catalogo" class="block py-2 hover:text-gray-300">Catálogo</a>
+  <div [ngClass]="{'block': isMenuOpen, 'hidden': !isMenuOpen}" class="md:hidden bg-custom-blue text-white text-center py-4">
+    <a routerLink="/" class="block py-2 text-customAzulito   hover:text-customBlanco">Inicio</a>
+    <a routerLink="/catalogo" class="block py-2 text-customAzulito hover:text-customBlanco">Catálogo</a>
 
     <ng-container *ngIf="!isLoggedIn; else loggedInMenu">
-      <a href="/login" class="block bg-white text-blue-900 px-4 py-2 rounded hover:bg-gray-200">
+      <a routerLink="/login" class="block bg-white text-custom-blue  px-4 py-2 rounded hover:text-customAzulito">
         Iniciar sesión o registrarse
       </a>
     </ng-container>
 
     <ng-template #loggedInMenu>
-      <a href="/perfil" class="block py-2 hover:text-gray-300">Perfil</a>
-      <a href="/mis-pedidos" class="block py-2 hover:text-gray-300">Mis Pedidos</a>
-      <button (click)="logout()" class="block w-full py-2 text-red-400 hover:bg-red-100">Cerrar Sesión</button>
+      <a routerLink="/perfil" class="block py-2  text-customAzulito hover:text-customBlanco">Perfil</a>
+      <a routerLink="/mis-pedidos" class="block py-2 text-customAzulito hover:text-customBlanco">Mis Pedidos</a>
+      <button (click)="logout()" class="block w-full py-2 text-red-400 text:bg-red-100 hover:bg-red-100">
+        Cerrar Sesión
+      </button>
     </ng-template>
   </div>
 </header>

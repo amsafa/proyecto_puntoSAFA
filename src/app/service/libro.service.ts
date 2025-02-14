@@ -15,8 +15,10 @@ export class LibroService {
   constructor(private http: HttpClient) { }
 
   // Método para obtener todos los libros
-  getBooks(): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/all`).pipe(
+  getBooks(page:number =1, limit:number=9): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/all`, {
+      params: { page: page.toString(), limit: limit.toString()}
+    }).pipe(
       map(libros => libros.map(libro => ({
         ...libro,
         mediaCalificacion: parseFloat(String(libro.mediaCalificacion)) // Convierte a número
@@ -38,13 +40,7 @@ export class LibroService {
     //   return await response.json();
     // }
 
-  async getLibrosCatalogo(params: { page: number, limit: number }): Promise<Libro[]> {
-    const response = await fetch(`${this.baseUrl}/all?page=${params.page}&limit=${params.limit}`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return await response.json();
-  }
+
 
   getLibroById(id: number): Observable<Libro> {
     return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
