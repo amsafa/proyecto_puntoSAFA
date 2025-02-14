@@ -1,6 +1,6 @@
 
 <div class="min-h-screen flex flex-col">
-<section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
+<section class="bg-customGreen py-2 md:py-3 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <div class="container mx-auto flex flex-col md:flex-row items-centerpx-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">
     <div class="mt-10 md:mt-0 md:ml-0 lg:ml-0">
@@ -16,9 +16,10 @@
 </section>
 
   <!-- Contenedor Principal -->
-  <main class="flex-grow flex flex-col items-center justify-center bg-white">
-    <div class="bg-blue-50 p-12 rounded-lg shadow-lg w-2/4">
-      <h3 class="text-3xl font-semibold text-gray-800 text-center mb-6">Ingresa tu datos</h3>
+  <main class="flex-grow flex flex-col items-center justify-center bg-white mt-8 mb-8">
+
+  <div class="bg-blue-50 p-12 rounded-lg shadow-lg w-2/4 mt-8">
+    <h3 class="text-3xl font-semibold text-gray-800 text-center mb-6">Ingresa tu datos</h3>
       <form class="space-y-6" [formGroup]="registroForm" (ngSubmit)="onRegister()">
 
         <div class="grid grid-cols-2 gap-6">
