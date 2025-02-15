@@ -1,25 +1,20 @@
-import {ChangeDetectorRef, Component, Input} from '@angular/core';
 import {Libro} from '../../interface/libro';
-import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {LibroService} from '../../service/libro.service';
-import {HttpClientModule} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {Categoria} from '../../interface/categoria';
-import {Autor} from '../../interface/autor';
 import {Resena} from '../../interface/resena';
 import {ResenaService} from '../../service/resena.service';
 import {ChangeDetectorRef, Component} from '@angular/core';
+import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 
 
 @Component({
   selector: 'app-detalle-de-libro',
   imports: [
-    CurrencyPipe,
     FormsModule,
-    NgForOf,
+    CurrencyPipe,
     NgIf,
+    NgForOf,
   ],
   standalone: true, // tengo que comprobar esto
   templateUrl: './detalle-de-libro.component.html',
@@ -32,6 +27,7 @@ export class DetalleDeLibroComponent {
   media_calificacion: number | null = null; // Variable para la calificación media
   starsArray: number[] = [];
   hasHalfStar: boolean = false;
+
 
   constructor(
     private route: ActivatedRoute, // Para obtener el ID de la ruta
@@ -51,6 +47,7 @@ export class DetalleDeLibroComponent {
     }
   }
 
+
   // Método para obtener los detalles del libro
   obtenerLibro(id: number): void {
     this.libroService.getLibroById(id).subscribe({
@@ -69,16 +66,21 @@ export class DetalleDeLibroComponent {
   obtenerResenas(id: number): void {
     this.resenaService.obtenerResenasPorLibro(id).subscribe({
       next: (data) => {
-        this.resenas = data;
-        console.log('Resenas obtenidas:', this.resenas);
-        this.cdr.detectChanges(); // Asegurar actualización
+        console.log('Tipo de data:', typeof data, 'Contenido:', data); // Verificar la estructura
 
+        if (data && typeof data === 'object') {
+          this.resenas = Object.values(data); // Convertir el objeto en array
+        } else {
+          this.resenas = []; // Si hay un error, dejar el array vacío
+        }
+
+        console.log('Resenas obtenidas:', this.resenas);
+        this.cdr.detectChanges(); // Forzar actualización de la vista
       },
       error: (error) => {
         console.error('Error al obtener las reseñas:', error);
-        this.resenas = []; // Para que el frontend no muestre las reseñas si hay un error
-        this.cdr.detectChanges(); // Asegurar actualización
-
+        this.resenas = []; // Evitar errores en el *ngFor si falla la API
+        this.cdr.detectChanges();
       }
     });
   }
