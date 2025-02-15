@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { RegistroCliente } from '../../interface/RegistroCliente';
 import { PerfilService } from '../../service/perfil.service';
 import { NgIf } from '@angular/common';
 import {AuthService} from '../../service/auth.service';
-import {data} from 'autoprefixer';
+
 
 
 
@@ -69,6 +69,9 @@ export class PerfilComponent implements OnInit {
     });
   }
 
+
+
+
   cargarCliente(id: number): void {
     // Llama al servicio para obtener los datos del cliente
     this.perfilService.getClienteById(id).subscribe({
@@ -102,6 +105,9 @@ export class PerfilComponent implements OnInit {
     });
   }
 
+
+
+
   guardarCambios(): void {
     let successMessage;
     let errorMessage;
@@ -110,6 +116,8 @@ export class PerfilComponent implements OnInit {
         ...this.perfilForm.value,
         id: this.clienteId
       };
+
+
 
       this.perfilService.editarCliente(this.clienteId, clienteActualizado).subscribe({
         next: () => {
@@ -186,6 +194,4 @@ export class PerfilComponent implements OnInit {
   cerrarFormulario(): void {
     this.mostrandoFormulario = false;
   }
-
-
 }
