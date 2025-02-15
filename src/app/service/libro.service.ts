@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import { Categoria } from '../interface/categoria'; // Importar la interfaz de categoría
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 
 
@@ -15,36 +16,22 @@ export class LibroService {
   constructor(private http: HttpClient) { }
 
   // Método para obtener todos los libros
-  getBooks(): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/all`).pipe(
-      map(libros => libros.map(libro => ({
-        ...libro,
-        mediaCalificacion: parseFloat(String(libro.mediaCalificacion)) // Convierte a número
-      })))
+  getBooks(page: number = 1, limit: number = 9): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/all?page=${page}&limit=${limit}`).pipe(
+      tap(data =>console.error("Libro getBooks", data)),
+      map(libros =>
+        libros.map(libro => ({
+          ...libro,
+          mediaCalificacion: parseFloat(String(libro.mediaCalificacion)) // Ensure proper number conversion
+        }))
+      )
     );
   }
+
+
   // Método para obtener libros por categoría (desde el backend)
   getBooksByCategory(id: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
-
-  getLibros(page: number, limit: number): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/all`, {
-      params: { page: page.toString(), limit: limit.toString() },
-    });
-  }
-
-    // async getLibrosCatalogo(params: { page: number, limit: number }): Promise<Libro[]> {
-    //   const response = await fetch(`${this.baseUrl}/all?page=${params.page}&limit=${params.limit}`);
-    //   return await response.json();
-    // }
-
-  async getLibrosCatalogo(params: { page: number, limit: number }): Promise<Libro[]> {
-    const response = await fetch(`${this.baseUrl}/all?page=${params.page}&limit=${params.limit}`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return await response.json();
-  }
 
   getLibroById(id: number): Observable<Libro> {
     return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
@@ -56,14 +43,7 @@ export class LibroService {
     }
 
 
-//Método para obtener todos los libros
-  async getLibros(): Promise<Libro[]> {
-      const response = await fetch(`${this.baseUrl}/all`);
-      if (!response.ok) {
-          throw new Error('Network response was not ok');
-      }
-      return await response.json();
-  }
+
 
   getLibrosByCategoria():Observable<Categoria[]> {
           return this.http.get<Categoria[]>(`${this.baseUrl}/categoria`);
