@@ -163,7 +163,6 @@ export class CatalogoComponent  implements OnInit {
   // }
 
   verDetallesLibro(idLibro: number): void {
-    debugger;
     this.router.navigate(['/detalle-libro', idLibro]);
   }
 
