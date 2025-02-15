@@ -1,12 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
- import {Categoria} from '../../interface/categoria';
- import {ActivatedRoute, Router} from '@angular/router';
- import {CategoriaService} from '../../service/categoria.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CategoriaService} from '../../service/categoria.service';
+import {Categoria} from '../../interface/categoria';
+import {CarritoService} from '../../service/carrito.service';
+
+
+
 
 
 
@@ -20,7 +24,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
     ReactiveFormsModule,
     NgIf,
     NgForOf,
-    CurrencyPipe
+    CurrencyPipe,
 
   ]
 })
@@ -30,26 +34,24 @@ export class CatalogoComponent  implements OnInit {
   categories: Categoria[] = [];
   filter: string = '';
   currentPage: number = 1;
-  itemsPerPage: number = 9;
-  totalPagesArray: number[] = [];
+  totalPages: number = 1; // Placeholder, will be set dynamically
+  limit: number = 9;
   selectedCategoryId: number | null = null;
+  @Input() categoriaId!: number;
 
-  ordenarPor = 'titulo';  // Default sorting option
-
-  constructor(private libroService: LibroService, private http:HttpClient,
+  constructor(private libroService: LibroService,
               private router:Router, private route:ActivatedRoute,
-              private categoriaService:CategoriaService,) {}
+              private categoriaService:CategoriaService) {}
 
- @Input() categoriaId!: number;
+
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.filter = params['search'] || '';
-      this.cargarLibros().then(() => {
-        if (this.filter) {
-          this.searchBooks();
-        }
-      });
+      this.filter = params['search'] || ''; // Get search parameter from query params
+      this.currentPage = params['page'] ? parseInt(params['page'], 10) : 1;
+      this.limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
+
+      this.cargarLibros(this.currentPage, this.limit);
     });
 
     this.categoriaService.getCategorias().subscribe(categorias => {
@@ -58,25 +60,31 @@ export class CatalogoComponent  implements OnInit {
 
   }
 
-  async cargarLibros(): Promise<void> {
-    try {
-      // const params = { ordenarPor: this.ordernarPor  };
-      // this.libros = await this.libroService.sortLibros(params);
-      // this.libroService.sortLibros({ordenarPor: this.ordernarPor}).then(
-      //   libros => {
-      //     this.libros = libros;
-      //   }
-      // )
-
-      const params = { page: this.currentPage, limit: this.itemsPerPage };
-      this.libros = await this.libroService.getLibrosCatalogo(params);
-      this.filteredBooks = [...this.libros];
-      this.setupPagination();
-      console.error();
-    } catch (error) {
-      console.error(error);
-    }
+  cargarLibros(page: number = 1, limit: number = 9): void {
+      this.libroService.getBooks(page, limit).subscribe({
+        next:(data) =>{
+          console.error("cargarLibros", data);
+          this.libros = data;
+          this.filteredBooks = [...this.libros];
+          this.totalPages = Math.ceil(50 / limit);
+        }
+      })
   }
+
+  cambiarPagina(pagina:number):void{
+    if(pagina >=1 && pagina <= this.totalPages){
+      this.router.navigate([], {
+        queryParams: {page: pagina, limit: this.limit, search: this.filter || null},
+        queryParamsHandling: 'merge'
+      })
+    }
+
+  }
+
+  // addToCart(libro: Libro) {
+  //   this.carritoService.addToCart(libro);
+  // }
+
 
   noResults: boolean = false;
 
@@ -99,23 +107,22 @@ export class CatalogoComponent  implements OnInit {
     }
   }
 
-
   clearSearch(): void {
     this.filter = '';
     this.filteredBooks = this.libros;
   }
 
   selectedPriceRange: string | null = null;
-  filterByPrice(range: string): void{
+  filterByPrice(range: string, page:number=1, limit:number=9): void{
     if (this.selectedPriceRange === range){
       this.selectedPriceRange = null;
       this.filteredBooks = this.libros;
     }else{
       this.selectedPriceRange = range;
       this.libroService.getLibrosByPrecio(range).subscribe(libros => {
-        this.filteredBooks = libros;
-      },error => {
-        console.error('Error fetching books by price:', error);
+          this.filteredBooks = libros;
+        },error => {
+          console.error(error);
         }
       )
     }
@@ -130,10 +137,10 @@ export class CatalogoComponent  implements OnInit {
     }else{
       this.selectedCategoryId = categoryId;
       this.libroService.getBooksByCategory(categoryId).subscribe(books => {
-        this.filteredBooks = books;
-      },
+          this.filteredBooks = books;
+        },
         error => {
-        console.error('Error fetching books by category:', error);
+          console.error(error);
         })
     }
   }
@@ -146,16 +153,7 @@ export class CatalogoComponent  implements OnInit {
     this.showCart = !this.showCart;
   }
 
-  changePage(page: number): void {
-    this.currentPage = page;
-    this.cargarLibros();
-  }
 
-  setupPagination(): void {
-    const totalBooks = this.libros.length; // This should ideally come from the API
-    const totalPages = Math.ceil(totalBooks / this.itemsPerPage);
-    this.totalPagesArray = Array(totalPages).fill(0).map((_, i) => i + 1);
-  }
 
   // applyFilters(): void {
   //   this.currentPage = 1; // Reset to first page on filter change
@@ -163,9 +161,11 @@ export class CatalogoComponent  implements OnInit {
   // }
 
   verDetallesLibro(idLibro: number): void {
-    debugger;
     this.router.navigate(['/detalle-libro', idLibro]);
   }
+
+
+
 
 
 }
