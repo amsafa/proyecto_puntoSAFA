@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
@@ -107,6 +107,7 @@ export class CatalogoComponent  implements OnInit {
     }
   }
 
+
   clearSearch(): void {
     this.filter = '';
     this.filteredBooks = this.libros;
@@ -153,7 +154,16 @@ export class CatalogoComponent  implements OnInit {
     this.showCart = !this.showCart;
   }
 
+  changePage(page: number): void {
+    this.currentPage = page;
+    this.cargarLibros();
+  }
 
+  setupPagination(): void {
+    const totalBooks = this.libros.length; // This should ideally come from the API
+    const totalPages = Math.ceil(totalBooks / this.itemsPerPage);
+    this.totalPagesArray = Array(totalPages).fill(0).map((_, i) => i + 1);
+  }
 
   // applyFilters(): void {
   //   this.currentPage = 1; // Reset to first page on filter change

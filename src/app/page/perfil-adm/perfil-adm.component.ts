@@ -1,30 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import Swal from 'sweetalert2';
-import { RegistroCliente } from '../../interface/RegistroCliente';
-import { PerfilService } from '../../service/perfil.service';
-import { NgIf } from '@angular/common';
+import { Component } from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
+import {NgIf} from "@angular/common";
+import {RegistroCliente} from '../../interface/RegistroCliente';
+import {PerfilService} from '../../service/perfil.service';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
-import {distinctUntilChanged, filter, switchMap} from 'rxjs';
-import { UsuarioService } from '../../service/usuario.service';
-
-
-
-
-
+import Swal from 'sweetalert2';
+import {adm} from '../../interface/adm';
 
 @Component({
-  selector: 'app-perfil',
-  templateUrl: './perfil.component.html',
-  imports: [NgIf, ReactiveFormsModule, FormsModule, FormsModule],
-  styleUrls: ['./perfil.component.css']
+  selector: 'app-perfil-adm',
+    imports: [
+        FormsModule,
+        NgIf
+    ],
+  templateUrl: './perfil-adm.component.html',
+  styleUrl: './perfil-adm.component.css'
 })
-export class PerfilComponent implements OnInit {
+export class PerfilAdmComponent {
   perfilForm: FormGroup;
-  cliente: RegistroCliente | null = null;
+  admin: adm | null = null;
   errorMessage: string = '';
-  clienteId: number | null | undefined = null;
+  admId: number | null | undefined = null;
   userData: any | string;
   isLoggedIn = false;
   usuario: RegistroCliente | null = null;
@@ -37,57 +34,51 @@ export class PerfilComponent implements OnInit {
 
 
 
-
-
   constructor(
     private fb: FormBuilder,
     private perfilService: PerfilService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService,
-    private miServicioUsuario: UsuarioService
-
-) {
+    private authService: AuthService
+  ) {
     this.perfilForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       nick: ['', [Validators.required, Validators.minLength(3)]],
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      apellidos: ['', [Validators.required, Validators.minLength(3)]],
-      dni: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
-      foto: [''],
-      direccion: [''],
-      telefono: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(15)]],
     });
   }
 
 
   ngOnInit(): void {
-    this.authService.getAuthState().pipe(
-      filter(authState => authState), // Asegurar que está autenticado
-      switchMap(() => this.authService.getUserData()), // Obtener datos del usuariodistinctUntilChanged() // Evitar que emita datos repetidos
-    ).subscribe(userData => {
-      if (userData) {
-        console.log('Datos únicos obtenidos:', userData);
-        this.userData = userData;
-        this.isLoggedIn = true;
+    // Suscribirse al estado de autenticación
+    this.authService.getAuthState().subscribe((state) => {
+      this.isLoggedIn = state;
+      if (this.isLoggedIn) {
+        this.authService.fetchUserData(); // 🔹 Obtener los datos si ya está logueado
       }
     });
+
+    // Suscribirse a los datos del usuario
+    this.authService.getUserData().subscribe(user => {
+      this.userData = user; // 🔹 Guardar los datos del usuario
+    });
   }
+
+
 
 
   cargarCliente(id: number): void {
-    // Llama al servicio para obtener los datos del cliente
+    // Llama al servicio para obtener los datos
     this.perfilService.getClienteById(id).subscribe({
       next: (data) => {
-        this.cliente = data; // Asigna los datos del cliente
+        this.admin = data; // Asigna los datos
         this.perfilForm.patchValue(data); // Carga los datos en el formulario
       },
-      error: () => {
-        this.errorMessage = 'Error al cargar los datos del perfil.';
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'No se pudo cargar el perfil. Intente nuevamente.';
       }
     });
   }
-
   cargarUsuarioAutenticado(): void {
     this.perfilService.obtenerUsuarioAutenticado().subscribe({
       next: (data) => {
@@ -96,9 +87,9 @@ export class PerfilComponent implements OnInit {
         if (Array.isArray(data)) {
           console.error();
         }
-        this.cliente = data;
+        this.admin = data;
         this.userData = data;
-        this.clienteId = data?.id;
+        this.admId = data?.id;
         // @ts-ignore
         this.perfilForm.patchValue(data);
       },
@@ -108,21 +99,37 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  guardarCambios() {
-    if (!this.userData?.id) {
-      console.error("❌ No se encontró el ID del usuario.");
-      return;
-    }
 
-    this.miServicioUsuario.actualizarUsuario(this.userData.id, this.userData).subscribe(
-      (respuesta) => {
-        console.log("✅ Usuario actualizado correctamente:", respuesta);
-        this.mostrandoFormulario = false; // Cerrar modal
-      },
-      (error) => {
-        console.error("❌ Error en la actualización:", error);
-      }
-    );
+
+
+  guardarCambios(): void {
+    let successMessage;
+    let errorMessage;
+    if (this.perfilForm.valid && this.admId) {
+      const clienteActualizado: RegistroCliente = {
+        ...this.perfilForm.value,
+        id: this.admId
+      };
+
+
+
+      this.perfilService.editarCliente(this.admId, clienteActualizado).subscribe({
+        next: () => {
+          Swal.fire({
+            title: '¡Perfil Actualizado!',
+            text: 'Los datos del perfil se han actualizado correctamente.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+          this.successMessage = '¡Datos actualizados correctamente!';
+        },
+        error: () => {
+          this.errorMessage = 'Error al guardar los cambios.';
+        }
+      });
+    } else {
+      this.errorMessage = 'Por favor, verifica los datos ingresados.';
+    }
   }
 
 
@@ -150,8 +157,8 @@ export class PerfilComponent implements OnInit {
 
 
   eliminarCliente(): void {
-    if (this.clienteId) {
-      this.perfilService.eliminarCliente(this.clienteId).subscribe({
+    if (this.admId) {
+      this.perfilService.eliminarCliente(this.admId).subscribe({
         next: () => {
           Swal.fire({
             title: '¡Perfil Eliminado!',

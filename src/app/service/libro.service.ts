@@ -16,15 +16,12 @@ export class LibroService {
   constructor(private http: HttpClient) { }
 
   // Método para obtener todos los libros
-  getBooks(page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/all?page=${page}&limit=${limit}`).pipe(
-      tap(data =>console.error("Libro getBooks", data)),
-      map(libros =>
-        libros.map(libro => ({
-          ...libro,
-          mediaCalificacion: parseFloat(String(libro.mediaCalificacion)) // Ensure proper number conversion
-        }))
-      )
+  getBooks(): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/all`).pipe(
+      map(libros => libros.map(libro => ({
+        ...libro,
+        mediaCalificacion: parseFloat(String(libro.mediaCalificacion)) // Convierte a número
+      })))
     );
   }
 

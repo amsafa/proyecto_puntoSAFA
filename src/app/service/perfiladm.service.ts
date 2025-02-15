@@ -4,41 +4,42 @@ import {Observable, of} from 'rxjs';
 import { RegistroCliente } from '../interface/RegistroCliente';
 import { environment } from '../../environments/environment';
 import {catchError} from 'rxjs/operators';
+import {adm} from '../interface/adm';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PerfilService {
-  private apiUrl = `${environment.apiUrl}/cliente`;
+export class PerfiladmService {
+  private apiUrl = `${environment.apiUrl}/usuario`;
 
   constructor(private http: HttpClient) {}
 
-  getAllClientes(): Observable<RegistroCliente[]> {
-    return this.http.get<RegistroCliente[]>(`${this.apiUrl}/all`);
+  getAllUsuario(): Observable<adm[]> {
+    return this.http.get<adm[]>(`${this.apiUrl}/all`);
   }
 
-  getClienteById(id: number): Observable<any> {
+  getById(id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}${id}`);
   }
 
 
-  editarCliente(id: number, cliente: RegistroCliente): Observable<RegistroCliente> {
-    return this.http.put<RegistroCliente>(`${this.apiUrl}/editar/${id}`, cliente);
+  editarUsuario(id: number, usuario: adm): Observable<adm> {
+    return this.http.put<adm>(`${this.apiUrl}/editar/${id}`, usuario);
   }
 
-  crearCliente(cliente: RegistroCliente): Observable<any> {
-    return this.http.post(`${this.apiUrl}/guardar`, cliente);
+  crearUsuario(usuario: adm): Observable<any> {
+    return this.http.post(`${this.apiUrl}/guardar`, usuario);
   }
 
-  eliminarCliente(id: number): Observable<any> {
+  eliminarUsuario(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  obtenerUsuarioAutenticado(): Observable<RegistroCliente | null> {
+  obtenerUsuarioAutenticado(): Observable<adm | null> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers }).pipe(
+    return this.http.get<adm>(`${this.apiUrl}/api/cliente/auth/user`, { headers }).pipe(
       catchError(error => {
         console.error(error);
         return of(null);

@@ -1,20 +1,20 @@
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
 import {Libro} from '../../interface/libro';
+import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {LibroService} from '../../service/libro.service';
 import {ActivatedRoute} from '@angular/router';
 import {Resena} from '../../interface/resena';
 import {ResenaService} from '../../service/resena.service';
-import {ChangeDetectorRef, Component} from '@angular/core';
-import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 
 
 @Component({
   selector: 'app-detalle-de-libro',
   imports: [
-    FormsModule,
     CurrencyPipe,
-    NgIf,
+    FormsModule,
     NgForOf,
+    NgIf,
   ],
   standalone: true, // tengo que comprobar esto
   templateUrl: './detalle-de-libro.component.html',
@@ -27,7 +27,6 @@ export class DetalleDeLibroComponent {
   media_calificacion: number | null = null; // Variable para la calificación media
   starsArray: number[] = [];
   hasHalfStar: boolean = false;
-
 
   constructor(
     private route: ActivatedRoute, // Para obtener el ID de la ruta
@@ -46,7 +45,6 @@ export class DetalleDeLibroComponent {
       console.log('ID del libro:', id);
     }
   }
-
 
   // Método para obtener los detalles del libro
   obtenerLibro(id: number): void {

@@ -8,6 +8,11 @@ import {AutorComponent} from './page/autor/autor.component';
 import {PerfilComponent} from './page/perfil/perfil.component';
 import {CatalogoComponent} from './page/catalogo/catalogo.component';
 import {DetalleDeLibroComponent} from './page/detalle-de-libro/detalle-de-libro.component';
+import {PerfilAdmComponent} from './page/perfil-adm/perfil-adm.component';
+import {
+  RecomendacionLibroComponent
+} from './component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component';
+import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
 
 
 
@@ -18,13 +23,17 @@ export const routes: Routes = [
   {path: 'recomendacionLibro', component: RecomendacionLibroComponent, pathMatch: 'full'},
 
   //Comprobación de componentes
+  {path: '', component: HomeComponent, pathMatch: 'full' },
   {path: 'registro', component:RegistroComponent, pathMatch: 'full'},
   {path: 'login', component:LoginComponent, pathMatch: 'full'},
   {path: 'home', component:HomeComponent, pathMatch: 'full'},
   {path:'autor', component:AutorComponent, pathMatch: 'full'},
   {path:'catalogo', component: CatalogoComponent, pathMatch: 'full'},
   {path:'perfil', component:PerfilComponent, pathMatch: 'full'},
-  { path: 'detalle-libro/:id', component: DetalleDeLibroComponent } // Ruta para detalles del libro
+  {path: 'detalle-libro/:id', component: DetalleDeLibroComponent }, // Ruta para detalles del libro
+  {path: 'perfil-adm', component: PerfilAdmComponent, pathMatch: 'full'},
+
+
 
 
 ];

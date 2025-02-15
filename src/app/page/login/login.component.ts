@@ -30,23 +30,20 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onLogin(): void {
+  async onLogin(): Promise<void> {
     if (this.loginForm.valid) {
       this.login = { ...this.login, ...this.loginForm.value };
-      this.authService.login(this.login).subscribe({
-        next: (respuesta) => {
-          const token = respuesta.token;
-          sessionStorage.setItem("authToken", token);
-          this.authService.getToken();
-          this.router.navigate(['/home']);
-        },
-        error: (e) => {
-          console.error();
-          this.errorMessage = 'Error en el inicio de sesión. Verifica tus credenciales.';
-        }
-      });
+
+      try {
+        await this.authService.login(this.login);
+        console.log("Login exitoso"); // ✅ Depuración
+      } catch (error) {
+        this.errorMessage = 'Error en el inicio de sesión. Verifica tus credenciales.';
+      }
     } else {
       this.errorMessage = 'Formulario inválido. Verifica los datos.';
     }
   }
+
+
 }
