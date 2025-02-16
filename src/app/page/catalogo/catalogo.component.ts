@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {Categoria} from '../../interface/categoria';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CategoriaService} from '../../service/categoria.service';
-import {Categoria} from '../../interface/categoria';
 import {CarritoService} from '../../service/carrito.service';
-
-
+import {LibroCarrito} from '../../interface/libro-carrito';
+import {Observable} from 'rxjs';
 
 
 
@@ -25,65 +25,134 @@ import {CarritoService} from '../../service/carrito.service';
     NgIf,
     NgForOf,
     CurrencyPipe,
-
-  ]
+      ]
 })
 export class CatalogoComponent  implements OnInit {
+  // libros: Libro[] = [];
+  // filteredBooks: Libro[] = [];
+  // categories: Categoria[] = [];
+  // filter: string = '';
+  // currentPage: number = 1;
+  // itemsPerPage: number = 9;
+  // totalPagesArray: number[] = [];
+  // selectedCategoryId: number | null = null;
+
   libros: Libro[] = [];
+  librosCarrito: LibroCarrito[] = [];
   filteredBooks: Libro[] = [];
-  categories: Categoria[] = [];
   filter: string = '';
+  categories: Categoria[] = [];
+  selectedCategoryId: number | null = null;
   currentPage: number = 1;
   totalPages: number = 1; // Placeholder, will be set dynamically
-  limit: number = 9;
-  selectedCategoryId: number | null = null;
+  limit: number = 12;
+  cartItems: LibroCarrito[] = [];
+  emptyCart: boolean = true;
+  cartQuantity: number = 0;
+
+
+
+
+
+  ordenarPor = 'titulo';  // Default sorting option
+
+  constructor(private libroService: LibroService, private http:HttpClient,
+              private router:Router, private route:ActivatedRoute,
+              private categoriaService:CategoriaService, private carritoService:CarritoService) {}
+
   @Input() categoriaId!: number;
 
-  constructor(private libroService: LibroService,
-              private router:Router, private route:ActivatedRoute,
-              private categoriaService:CategoriaService) {}
 
+
+
+  // ngOnInit(): void {
+  //   this.route.queryParams.subscribe(params => {
+  //     this.filter = params['search'] || ''; // Get search parameter from query params
+  //     const page = params['page'] ? parseInt(params['page'], 10) : 1;
+  //     const limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
+  //
+  //     this.cargarLibros(page, limit).then(() => {
+  //       if (this.filter) {
+  //         this.searchBooks();
+  //       }
+  //     });
+  //   });
+  //
+  //   this.categoriaService.getCategorias().subscribe(categorias => {
+  //     this.categories = categorias;
+  //   });
+  //
+  // }
 
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.filter = params['search'] || ''; // Get search parameter from query params
+      this.filter = params['search'] || '';
       this.currentPage = params['page'] ? parseInt(params['page'], 10) : 1;
       this.limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
 
       this.cargarLibros(this.currentPage, this.limit);
     });
-
     this.categoriaService.getCategorias().subscribe(categorias => {
-      this.categories = categorias;
-    });
-
+          this.categories = categorias;
+        });
   }
+
+
+
+
+
+  // cargarLibros(page: number = 1, limit: number = 9): Promise<void> {
+  //   return new Promise((resolve, reject) => {
+  //     this.libroService.getBooks(page, limit).subscribe(
+  //       (data: Libro[]) => {
+  //         this.libros = data;
+  //         this.filteredBooks = [...this.libros]; // Ensure filtered list updates
+  //         resolve(); // Resolve the promise once books are loaded
+  //       },
+  //       (error) => {
+  //         console.error('Error fetching books:', error);
+  //         reject(error);
+  //       }
+  //     );
+  //   });
+  // }
+
+  // cargarLibros(page: number = 1, limit: number = 9): void {
+  //   this.libroService.getBooks(page, limit).subscribe({
+  //     next: (data) => {
+  //       this.libros = data;
+  //       this.filteredBooks = [...this.libros]; // Preserve filtered state
+  //       this.totalPages = Math.ceil(50 / this.limit); // Example: Assume total books are 50 (adjust based on API)
+  //     },
+  //     error: (error) => {
+  //       console.error('Error fetching books:', error);
+  //     }
+  //   });
+  // }
 
   cargarLibros(page: number = 1, limit: number = 9): void {
+    this.currentPage = page;
+
+    if (this.selectedPriceRange) {
+      this.filterByPrice(this.selectedPriceRange, page, limit);
+    } else if (this.selectedCategoryId) {
+      this.filterByCategory(this.selectedCategoryId, page, limit);
+    } else {
       this.libroService.getBooks(page, limit).subscribe({
-        next:(data) =>{
-          console.error("cargarLibros", data);
+        next: (data) => {
           this.libros = data;
           this.filteredBooks = [...this.libros];
-          this.totalPages = Math.ceil(50 / limit);
-        }
-      })
-  }
-
-  cambiarPagina(pagina:number):void{
-    if(pagina >=1 && pagina <= this.totalPages){
-      this.router.navigate([], {
-        queryParams: {page: pagina, limit: this.limit, search: this.filter || null},
-        queryParamsHandling: 'merge'
-      })
+          this.totalPages = Math.ceil(50 / limit); // Update based on backend response
+        },
+        error: (error) => console.error(error)
+      });
     }
-
   }
 
-  // addToCart(libro: Libro) {
-  //   this.carritoService.addToCart(libro);
-  // }
+
+
+
 
 
   noResults: boolean = false;
@@ -107,75 +176,114 @@ export class CatalogoComponent  implements OnInit {
     }
   }
 
-
   clearSearch(): void {
     this.filter = '';
     this.filteredBooks = this.libros;
   }
 
   selectedPriceRange: string | null = null;
-  filterByPrice(range: string, page:number=1, limit:number=9): void{
-    if (this.selectedPriceRange === range){
+  // filterByPrice(range: string): void{
+  //   if (this.selectedPriceRange === range){
+  //     this.selectedPriceRange = null;
+  //     this.filteredBooks = this.libros;
+  //   }else{
+  //     this.selectedPriceRange = range;
+  //     this.libroService.getLibrosByPrecio(range).subscribe(libros => {
+  //         this.filteredBooks = libros;
+  //       },error => {
+  //         console.error('Error fetching books by price:', error);
+  //       }
+  //     )
+  //   }
+
+  filterByPrice(range: string, page: number = 1, limit: number = 9): void {
+    if (this.selectedPriceRange === range) {
       this.selectedPriceRange = null;
       this.filteredBooks = this.libros;
-    }else{
+    } else {
       this.selectedPriceRange = range;
-      this.libroService.getLibrosByPrecio(range).subscribe(libros => {
+      this.libroService.getLibrosByPrecio(range, page, limit).subscribe({
+        next: (libros) => {
           this.filteredBooks = libros;
-        },error => {
-          console.error(error);
-        }
-      )
+          this.totalPages = Math.ceil(libros.length / limit); // Update total pages
+          this.currentPage = page;
+        },
+        error: (error) => console.error(error)
+      });
     }
-
   }
 
-  filterByCategory(categoryId:number):void{
-    if(this.selectedCategoryId === categoryId){
+
+
+
+  // filterByCategory(categoryId:number):void{
+  //   if(this.selectedCategoryId === categoryId){
+  //     this.selectedCategoryId = null;
+  //     this.filteredBooks = this.libros;
+  //
+  //   }else{
+  //     this.selectedCategoryId = categoryId;
+  //     this.libroService.getBooksByCategory(categoryId).subscribe(books => {
+  //         this.filteredBooks = books;
+  //       },
+  //       error => {
+  //         console.error('Error fetching books by category:', error);
+  //       })
+  //   }
+  // }
+
+  filterByCategory(categoryId: number, page: number = 1, limit: number = 9): void {
+    if (this.selectedCategoryId === categoryId) {
       this.selectedCategoryId = null;
       this.filteredBooks = this.libros;
-
-    }else{
+    } else {
       this.selectedCategoryId = categoryId;
-      this.libroService.getBooksByCategory(categoryId).subscribe(books => {
+      this.libroService.getBooksByCategory(categoryId, page, limit).subscribe({
+        next: (books) => {
           this.filteredBooks = books;
+          this.totalPages = Math.ceil(books.length / limit);
+          this.currentPage = page;
         },
-        error => {
-          console.error(error);
-        })
+        error: (error) => console.error(error)
+      });
     }
   }
+
+
 
 
 
 
   showCart = false;
   toggleCart() {
-    this.showCart = !this.showCart;
+    this.carritoService.toggleCart();
   }
-
-  changePage(page: number): void {
-    this.currentPage = page;
-    this.cargarLibros();
-  }
-
-  setupPagination(): void {
-    const totalBooks = this.libros.length; // This should ideally come from the API
-    const totalPages = Math.ceil(totalBooks / this.itemsPerPage);
-    this.totalPagesArray = Array(totalPages).fill(0).map((_, i) => i + 1);
-  }
-
-  // applyFilters(): void {
-  //   this.currentPage = 1; // Reset to first page on filter change
-  //   this.cargarLibros();
+  // loadCart(): void {
+  //   this.carritoService.getCartItems().subscribe(cartItems => {
+  //     this.cartItems = cartItems; // ✅ Assign the resolved array
+  //     this.emptyCart = this.cartItems.length === 0; // ✅ Update emptyCart
+  //   });
   // }
+
+  addToCart(libro: Libro) {
+    this.carritoService.addToCart(libro);
+  }
+
+  increaseQuantity(item: LibroCarrito) {
+    this.carritoService.increaseQuantity(item);
+  }
+
+  decreaseQuantity(item: LibroCarrito) {
+    this.carritoService.decreaseQuantity(item);
+  }
+
+  getTotalAmount(): number {
+    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  }
 
   verDetallesLibro(idLibro: number): void {
     this.router.navigate(['/detalle-libro', idLibro]);
   }
-
-
-
 
 
 }
