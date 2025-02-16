@@ -15,4 +15,10 @@ export class UsuarioService {
     return this.http.post<any>(this.apiUrl, usuario);
   }
 
+  // Método para actualizar usuario
+  actualizarUsuario(id: number, usuario: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/usuario/editar/${id}`, usuario);
+  }
+
+
 }

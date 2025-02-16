@@ -64,19 +64,25 @@ export class DetalleDeLibroComponent {
   obtenerResenas(id: number): void {
     this.resenaService.obtenerResenasPorLibro(id).subscribe({
       next: (data) => {
-        this.resenas = data;
-        console.log('Resenas obtenidas:', this.resenas);
-        this.cdr.detectChanges(); // Asegurar actualización
+        console.log('Tipo de data:', typeof data, 'Contenido:', data); // Verificar la estructura
 
+        if (data && typeof data === 'object') {
+          this.resenas = Object.values(data); // Convertir el objeto en array
+        } else {
+          this.resenas = []; // Si hay un error, dejar el array vacío
+        }
+
+        console.log('Resenas obtenidas:', this.resenas);
+        this.cdr.detectChanges(); // Forzar actualización de la vista
       },
       error: (error) => {
         console.error('Error al obtener las reseñas:', error);
-        this.resenas = []; // Para que el frontend no muestre las reseñas si hay un error
-        this.cdr.detectChanges(); // Asegurar actualización
-
+        this.resenas = []; // Evitar errores en el *ngFor si falla la API
+        this.cdr.detectChanges();
       }
     });
   }
+
 
   //Método para obtener la calificación media
   obtenerMediaCalificacion(id: number): void {

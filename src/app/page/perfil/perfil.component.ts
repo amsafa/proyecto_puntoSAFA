@@ -7,6 +7,8 @@ import { PerfilService } from '../../service/perfil.service';
 import { NgIf } from '@angular/common';
 import {AuthService} from '../../service/auth.service';
 import {distinctUntilChanged, filter, switchMap} from 'rxjs';
+import { UsuarioService } from '../../service/usuario.service';
+
 
 
 
@@ -35,13 +37,17 @@ export class PerfilComponent implements OnInit {
 
 
 
+
+
   constructor(
     private fb: FormBuilder,
     private perfilService: PerfilService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
-  ) {
+    private authService: AuthService,
+    private miServicioUsuario: UsuarioService
+
+) {
     this.perfilForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       nick: ['', [Validators.required, Validators.minLength(3)]],
@@ -102,56 +108,28 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  guardarCambios(): void {
-    let successMessage;
-    let errorMessage;
-    if (this.perfilForm.valid && this.clienteId) {
-      const clienteActualizado: RegistroCliente = {
-        ...this.perfilForm.value,
-        id: this.clienteId
-      };
-
-      this.perfilService.editarCliente(this.clienteId, clienteActualizado).subscribe({
-        next: () => {
-          Swal.fire({
-            title: '¡Perfil Actualizado!',
-            text: 'Los datos del perfil se han actualizado correctamente.',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          });
-          this.successMessage = '¡Datos actualizados correctamente!';
-        },
-        error: () => {
-          this.errorMessage = 'Error al guardar los cambios.';
-        }
-      });
-    } else {
-      this.errorMessage = 'Por favor, verifica los datos ingresados.';
+  guardarCambios() {
+    if (!this.userData?.id) {
+      console.error("❌ No se encontró el ID del usuario.");
+      return;
     }
+
+    this.miServicioUsuario.actualizarUsuario(this.userData.id, this.userData).subscribe(
+      (respuesta) => {
+        console.log("✅ Usuario actualizado correctamente:", respuesta);
+        this.mostrandoFormulario = false; // Cerrar modal
+      },
+      (error) => {
+        console.error("❌ Error en la actualización:", error);
+      }
+    );
   }
 
 
-  crearCliente(): void {
-    if (this.perfilForm.valid) {
-      this.perfilService.crearCliente(this.perfilForm.value).subscribe({
-        next: () => {
-          Swal.fire({
-            title: '¡Cliente Creado!',
-            text: 'El perfil se ha creado correctamente.',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          }).then(() => {
-            this.router.navigate(['/clientes']);
-          });
-        },
-        error: () => {
-          this.errorMessage = 'Error al crear el perfil.';
-        }
-      });
-    } else {
-      this.errorMessage = 'Por favor, verifica los datos ingresados.';
-    }
-  }
+
+
+
+
 
 
   eliminarCliente(): void {

@@ -55,6 +55,7 @@
         <div class="bg-white p-6 rounded shadow-lg w-1/3">
           <h2 class="text-lg font-semibold mb-4">Editar Perfil</h2>
 
+
           <label>Email:</label>
           <input [(ngModel)]="usuarioEditado.usuario.email" class="w-full border p-2 rounded" disabled />
 
@@ -62,13 +63,7 @@
           <input [(ngModel)]="usuarioEditado.usuario.nick" class="w-full border p-2 rounded" disabled />
 
           <label>Nombre:</label>
-          <input [(ngModel)]="usuarioEditado.nombre" class="w-full border p-2 rounded" />
-
-          <label>Apellidos:</label>
-          <input [(ngModel)]="usuarioEditado.apellidos" class="w-full border p-2 rounded" />
-
-          <label>DNI:</label>
-          <input [(ngModel)]="usuarioEditado.DNI" class="w-full border p-2 rounded" />
+          <input [(ngModel)]="usuarioEditado.nombre" class="w-full border p-2 rounded" disabled />
 
           <label>Dirección:</label>
           <input [(ngModel)]="usuarioEditado.direccion" class="w-full border p-2 rounded" />
@@ -83,8 +78,13 @@
           <input type="password" [(ngModel)]="usuarioEditado.contrasena" class="w-full border p-2 rounded"
                  placeholder="Nueva contraseña (opcional)" />
 
+
+
           <div class="flex justify-end mt-4">
-            <button (click)="guardarCambios()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">Guardar</button>
+            <button (click)="guardarCambios()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">
+              Guardar
+            </button>
+
             <button (click)="cerrarFormulario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
           </div>
         </div>
