@@ -2,11 +2,13 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import { NgClass, NgIf } from '@angular/common';
 import { AuthService } from '../../service/auth.service';
+import {CarritoService} from '../../service/carrito.service';
+import {CarritoCompraComponent} from '../carrito-compra/carrito-compra.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  imports: [NgIf, NgClass, RouterLink],
+  imports: [NgIf, NgClass, RouterLink, CarritoCompraComponent],
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
@@ -14,8 +16,10 @@ export class HeaderComponent implements OnInit {
   isMenuOpen = false;
   showMenu = false;
   userData: any = null;
+  cartQuantity: number = 0;
+  showCart: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private carritoService:CarritoService) { }
 
   ngOnInit(): void {
     this.authService.getAuthState().subscribe((state) => {
@@ -28,6 +32,15 @@ export class HeaderComponent implements OnInit {
     this.authService.getUserData().subscribe((user) => {
       this.userData = user;
     });
+    this.carritoService.cartItems$.subscribe(items => {
+      this.cartQuantity = items.reduce((total, item) => total + item.quantity, 0);  // Sum up all item quantities
+    });
+
+    // Subscribe to cart visibility
+    this.carritoService.showCart$.subscribe(show => {
+      this.showCart = show; // Update cart visibility in header
+    });
+
   }
 
   toggleMenu(event: Event) {
@@ -55,5 +68,11 @@ export class HeaderComponent implements OnInit {
       this.isMenuOpen = false;
       this.showMenu = false;
     }
+  }
+
+
+
+  toggleCart() {
+    this.carritoService.toggleCart(); // Toggle cart visibility
   }
 }
