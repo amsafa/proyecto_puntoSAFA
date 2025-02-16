@@ -10,6 +10,7 @@ import {CategoriaService} from '../../service/categoria.service';
 import {CarritoService} from '../../service/carrito.service';
 import {LibroCarrito} from '../../interface/libro-carrito';
 import {Observable} from 'rxjs';
+import {AuthService} from '../../service/auth.service';
 
 
 
@@ -38,7 +39,6 @@ export class CatalogoComponent  implements OnInit {
   // selectedCategoryId: number | null = null;
 
   libros: Libro[] = [];
-  librosCarrito: LibroCarrito[] = [];
   filteredBooks: Libro[] = [];
   filter: string = '';
   categories: Categoria[] = [];
@@ -46,9 +46,9 @@ export class CatalogoComponent  implements OnInit {
   currentPage: number = 1;
   totalPages: number = 1; // Placeholder, will be set dynamically
   limit: number = 12;
-  cartItems: LibroCarrito[] = [];
-  emptyCart: boolean = true;
-  cartQuantity: number = 0;
+  isLoggedIn: boolean = false;
+  showAlert: boolean = false;
+
 
 
 
@@ -58,7 +58,7 @@ export class CatalogoComponent  implements OnInit {
 
   constructor(private libroService: LibroService, private http:HttpClient,
               private router:Router, private route:ActivatedRoute,
-              private categoriaService:CategoriaService, private carritoService:CarritoService) {}
+              private categoriaService:CategoriaService, private carritoService:CarritoService, private authService:AuthService) {}
 
   @Input() categoriaId!: number;
 
@@ -96,6 +96,9 @@ export class CatalogoComponent  implements OnInit {
     this.categoriaService.getCategorias().subscribe(categorias => {
           this.categories = categorias;
         });
+    this.authService.getAuthState().subscribe(state => {
+      this.isLoggedIn = state;
+    });
   }
 
 
@@ -266,19 +269,23 @@ export class CatalogoComponent  implements OnInit {
   // }
 
   addToCart(libro: Libro) {
-    this.carritoService.addToCart(libro);
+    if (!this.isLoggedIn) {
+      this.showLoginAlert();
+      return;
+    }
+      this.carritoService.addToCart(libro);
+
   }
 
-  increaseQuantity(item: LibroCarrito) {
-    this.carritoService.increaseQuantity(item);
-  }
 
-  decreaseQuantity(item: LibroCarrito) {
-    this.carritoService.decreaseQuantity(item);
-  }
 
-  getTotalAmount(): number {
-    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  showLoginAlert() {
+    this.showAlert = true;
+
+    // Hide the alert after 3 seconds
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 3000);
   }
 
   verDetallesLibro(idLibro: number): void {
