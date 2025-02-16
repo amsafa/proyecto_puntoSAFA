@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
-import { Categoria } from '../interface/categoria'; // Importar la interfaz de categoría
 import {map, Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
 
 
 
@@ -15,36 +13,63 @@ export class LibroService {
 
   constructor(private http: HttpClient) { }
 
-  // Método para obtener todos los libros
-  getBooks(): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/all`).pipe(
-      map(libros => libros.map(libro => ({
-        ...libro,
-        mediaCalificacion: parseFloat(String(libro.mediaCalificacion)) // Convierte a número
-      })))
+  getBooks(page: number = 1, limit: number = 9): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/all?page=${page}&limit=${limit}`).pipe(
+      map(libros =>
+        libros.map(libro => ({
+          ...libro,
+          mediaCalificacion: parseFloat(String(libro.mediaCalificacion)) // Ensure proper number conversion
+        }))
+      )
     );
   }
 
 
-  // Método para obtener libros por categoría (desde el backend)
-  getBooksByCategory(id: number): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
+
+
+
+
+
+
+
+  getLibros(page: number, limit: number): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/all`, {
+      params: { page: page.toString(), limit: limit.toString() },
+    });
+  }
+
 
   getLibroById(id: number): Observable<Libro> {
     return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
 
 
 
-    getLibrosByPrecio(range:string):Observable<Libro[]> {
-        return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}`);
-    }
+  // getLibrosByPrecio(range:string):Observable<Libro[]> {
+  //   return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}`);
+  // }
+
+  getLibrosByPrecio(range: string, page: number = 1, limit: number = 9): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}?page=${page}&limit=${limit}`).pipe(
+      map(libros => libros.map(libro => ({
+        ...libro,
+        mediaCalificacion: parseFloat(String(libro.mediaCalificacion))
+      })))
+    );
+  }
 
 
+  // Método para obtener libros por categoría (desde el backend)
+  // getBooksByCategory(id: number): Observable<Libro[]> {
+  //   return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
 
-
-  getLibrosByCategoria():Observable<Categoria[]> {
-          return this.http.get<Categoria[]>(`${this.baseUrl}/categoria`);
-    }
+  getBooksByCategory(id: number, page: number = 1, limit: number = 9): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}?page=${page}&limit=${limit}`).pipe(
+      map(libros => libros.map(libro => ({
+        ...libro,
+        mediaCalificacion: parseFloat(String(libro.mediaCalificacion))
+      })))
+    );
+  }
 
 
 }
