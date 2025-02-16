@@ -83,6 +83,7 @@ export class DetalleDeLibroComponent {
     });
   }
 
+
   //Método para obtener la calificación media
   obtenerMediaCalificacion(id: number): void {
     this.resenaService.obtenerMediaCalificacion(id).subscribe({
@@ -135,8 +136,3 @@ export class DetalleDeLibroComponent {
     }
   }
 }
-
-
-
-
-

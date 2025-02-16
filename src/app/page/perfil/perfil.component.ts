@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { RegistroCliente } from '../../interface/RegistroCliente';
@@ -47,7 +47,7 @@ export class PerfilComponent implements OnInit {
     private authService: AuthService,
     private miServicioUsuario: UsuarioService
 
-) {
+  ) {
     this.perfilForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       nick: ['', [Validators.required, Validators.minLength(3)]],
@@ -126,27 +126,10 @@ export class PerfilComponent implements OnInit {
   }
 
 
-  crearCliente(): void {
-    if (this.perfilForm.valid) {
-      this.perfilService.crearCliente(this.perfilForm.value).subscribe({
-        next: () => {
-          Swal.fire({
-            title: '¡Cliente Creado!',
-            text: 'El perfil se ha creado correctamente.',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          }).then(() => {
-            this.router.navigate(['/clientes']);
-          });
-        },
-        error: () => {
-          this.errorMessage = 'Error al crear el perfil.';
-        }
-      });
-    } else {
-      this.errorMessage = 'Por favor, verifica los datos ingresados.';
-    }
-  }
+
+
+
+
 
 
   eliminarCliente(): void {

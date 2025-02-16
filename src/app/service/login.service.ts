@@ -4,35 +4,40 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Login } from '../interface/Login';
 import { RegistroCliente } from '../interface/RegistroCliente';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from './auth.service';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = environment.apiUrl;
-  private authState = new BehaviorSubject<boolean>(!!sessionStorage.getItem('authToken'));
-  authState$ = this.authState.asObservable();
+  loginForm: FormGroup;
+  errorMessage = '';
+  login: Login = new Login();  // Se inicializa el objeto Login
 
-  constructor(private http: HttpClient) {}
-
-  setAuthState(isAuthenticated: boolean): void {
-    this.authState.next(isAuthenticated);
-  }
-
-  loguear(login: Login): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, login);
-  }
-
-  registrar(registro: RegistroCliente): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/registro`, registro);
-  }
-
-  autorizarPeticion(){
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token'),
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    this.loginForm = this.fb.group({
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(4)]]
     });
-
-    return {headers:headers}
   }
+
+  ngOnInit(): void {}
+
+  async onLogin(): Promise<void> {
+    if (this.loginForm.valid) {
+      this.login = { ...this.login, ...this.loginForm.value };
+
+      try {
+        await this.authService.login(this.login);
+        console.log("Login exitoso"); // ✅ Depuración
+      } catch (error) {
+        this.errorMessage = 'Error en el inicio de sesión. Verifica tus credenciales.';
+      }
+    } else {
+      this.errorMessage = 'Formulario inválido. Verifica los datos.';
+    }
+  }
+
 }
