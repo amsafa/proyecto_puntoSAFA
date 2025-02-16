@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {LibroCarrito} from '../../interface/libro-carrito';
 import {CarritoService} from '../../service/carrito.service';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -16,17 +17,16 @@ import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 })
 export class CarritoCompraComponent implements OnInit {
   cartItems: LibroCarrito[] = [];
-  totalAmount: number = 0;
   totalPrice: number = 0;
   showCart: boolean = false;
 
-  constructor(private carritoService: CarritoService) {}
+  constructor(private carritoService: CarritoService, private router: Router) { }
 
   ngOnInit(): void {
     // Subscribe to cart items to update the cart
     this.carritoService.getCartItems().subscribe(items => {
       this.cartItems = items;
-      this.calculateTotalPrice();  // Calculate total price when cart items are updated
+      this.totalPrice = this.carritoService.getTotalPrice();  // Calculate total price when cart items are updated
     });
 
     // Subscribe to cart visibility
@@ -51,6 +51,10 @@ export class CarritoCompraComponent implements OnInit {
   // Remove item from cart
   removeItem(itemId: number) {
     this.carritoService.removeItem(itemId);
+  }
+
+  pagarPedido(): void {
+    this.router.navigate(['/pagar-pedido']);
   }
 
   // Close the cart
