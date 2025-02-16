@@ -64,7 +64,7 @@ export class CarritoService {
 
   // Get cart items
   getCartItems(): Observable<LibroCarrito[]> {
-    return this.cartSubject.asObservable(); // Return the observable of the cart items
+    return this.cartItems$; // Allow components to subscribe
   }
   getTotalQuantity(): number {
     return this.cartItems.reduce((total, item) => total + item.cantidad, 0);
