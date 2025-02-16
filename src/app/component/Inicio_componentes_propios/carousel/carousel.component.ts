@@ -32,7 +32,8 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
         next: (data: Libro[]) => {
           this.books = data;
           this.loading = false;
-          setTimeout(() => this.startAutoScroll(), 500);
+          setTimeout(() => this.startAutoScroll(), 500); // Iniciar el desplazamiento automático después de 500ms
+          this.books = this.getRandomBooks(data, 10);
         },
         error: (error) => {
           console.error(error);
@@ -64,9 +65,15 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   startAutoScroll(): void {
+    // Detener el intervalo existente si ya está activo
+    if (this.autoScrollInterval) {
+      clearInterval(this.autoScrollInterval);
+    }
+
+    const scrollInterval = 3000;  // Intervalo en milisegundos para cada scroll
     this.autoScrollInterval = window.setInterval(() => {
       this.scroll('right');
-    }, 2000);
+    }, scrollInterval);
   }
 
   setupScrollLoop(): void {
@@ -119,5 +126,18 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     this.continuousScrollInterval = window.setInterval(() => {
       this.scroll(direction);
     }, 100);
+  }
+
+  onMouseEnter(): void {
+    clearInterval(this.autoScrollInterval); // Detener el desplazamiento automático
+  }
+
+  onMouseLeave(): void {
+    this.startAutoScroll(); // Reanudar el desplazamiento automático
+  }
+
+  // Obtiene libros aleatorios
+  getRandomBooks(data: Libro[], count: number): Libro[] {
+    return data.sort(() => 0.5 - Math.random()).slice(0, count);
   }
 }
