@@ -65,24 +65,6 @@ export class CatalogoComponent  implements OnInit {
 
 
 
-  // ngOnInit(): void {
-  //   this.route.queryParams.subscribe(params => {
-  //     this.filter = params['search'] || ''; // Get search parameter from query params
-  //     const page = params['page'] ? parseInt(params['page'], 10) : 1;
-  //     const limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
-  //
-  //     this.cargarLibros(page, limit).then(() => {
-  //       if (this.filter) {
-  //         this.searchBooks();
-  //       }
-  //     });
-  //   });
-  //
-  //   this.categoriaService.getCategorias().subscribe(categorias => {
-  //     this.categories = categorias;
-  //   });
-  //
-  // }
 
 
   ngOnInit(): void {
@@ -98,38 +80,6 @@ export class CatalogoComponent  implements OnInit {
         });
   }
 
-
-
-
-
-  // cargarLibros(page: number = 1, limit: number = 9): Promise<void> {
-  //   return new Promise((resolve, reject) => {
-  //     this.libroService.getBooks(page, limit).subscribe(
-  //       (data: Libro[]) => {
-  //         this.libros = data;
-  //         this.filteredBooks = [...this.libros]; // Ensure filtered list updates
-  //         resolve(); // Resolve the promise once books are loaded
-  //       },
-  //       (error) => {
-  //         console.error('Error fetching books:', error);
-  //         reject(error);
-  //       }
-  //     );
-  //   });
-  // }
-
-  // cargarLibros(page: number = 1, limit: number = 9): void {
-  //   this.libroService.getBooks(page, limit).subscribe({
-  //     next: (data) => {
-  //       this.libros = data;
-  //       this.filteredBooks = [...this.libros]; // Preserve filtered state
-  //       this.totalPages = Math.ceil(50 / this.limit); // Example: Assume total books are 50 (adjust based on API)
-  //     },
-  //     error: (error) => {
-  //       console.error('Error fetching books:', error);
-  //     }
-  //   });
-  // }
 
   cargarLibros(page: number = 1, limit: number = 9): void {
     this.currentPage = page;
@@ -182,19 +132,7 @@ export class CatalogoComponent  implements OnInit {
   }
 
   selectedPriceRange: string | null = null;
-  // filterByPrice(range: string): void{
-  //   if (this.selectedPriceRange === range){
-  //     this.selectedPriceRange = null;
-  //     this.filteredBooks = this.libros;
-  //   }else{
-  //     this.selectedPriceRange = range;
-  //     this.libroService.getLibrosByPrecio(range).subscribe(libros => {
-  //         this.filteredBooks = libros;
-  //       },error => {
-  //         console.error('Error fetching books by price:', error);
-  //       }
-  //     )
-  //   }
+
 
   filterByPrice(range: string, page: number = 1, limit: number = 9): void {
     if (this.selectedPriceRange === range) {
@@ -216,21 +154,6 @@ export class CatalogoComponent  implements OnInit {
 
 
 
-  // filterByCategory(categoryId:number):void{
-  //   if(this.selectedCategoryId === categoryId){
-  //     this.selectedCategoryId = null;
-  //     this.filteredBooks = this.libros;
-  //
-  //   }else{
-  //     this.selectedCategoryId = categoryId;
-  //     this.libroService.getBooksByCategory(categoryId).subscribe(books => {
-  //         this.filteredBooks = books;
-  //       },
-  //       error => {
-  //         console.error('Error fetching books by category:', error);
-  //       })
-  //   }
-  // }
 
   filterByCategory(categoryId: number, page: number = 1, limit: number = 9): void {
     if (this.selectedCategoryId === categoryId) {
@@ -258,12 +181,7 @@ export class CatalogoComponent  implements OnInit {
   toggleCart() {
     this.carritoService.toggleCart();
   }
-  // loadCart(): void {
-  //   this.carritoService.getCartItems().subscribe(cartItems => {
-  //     this.cartItems = cartItems; // ✅ Assign the resolved array
-  //     this.emptyCart = this.cartItems.length === 0; // ✅ Update emptyCart
-  //   });
-  // }
+
 
   addToCart(libro: Libro) {
     this.carritoService.addToCart(libro);

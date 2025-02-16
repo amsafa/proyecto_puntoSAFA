@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BookListComponent } from '../book-list/book-list.component';
 
 @Component({
@@ -10,10 +10,13 @@ import { BookListComponent } from '../book-list/book-list.component';
     BookListComponent
   ]
 })
-export class CajasCategoriaInicioComponent implements OnInit {
-  categories = ['fiction', 'nonFiction'];
+export class CajasCategoriaInicioComponent {
+  // Constantes para los nombres e IDs de las categorías
+  readonly category1Name = 'Ciencia y Divulgación';
+  readonly category1Id = 1;
 
-  constructor() {}
+  readonly category2Name = 'Literatura y Clásicos';
+  readonly category2Id = 2;
 
-  ngOnInit(): void {}
+
 }
