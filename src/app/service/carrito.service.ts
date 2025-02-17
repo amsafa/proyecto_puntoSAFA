@@ -72,11 +72,12 @@ export class CarritoService {
   // getCartItems(): Observable<LibroCarrito[]> {
   //   return this.cartSubject.asObservable(); // Return the observable of the cart items
   // }
-  getTotalPrice(): { baseTotal: number, totalWithTaxes: number } {
+  getTotalPrice(): { baseTotal: number, totalWithTaxes: number, shipping:number } {
     const baseTotal = this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
     const taxes = 0.21;
-    const totalWithTaxes = baseTotal + baseTotal * taxes;
-    return { baseTotal, totalWithTaxes } ;
+    const shipping=2.5;
+    const totalWithTaxes = baseTotal + (baseTotal * taxes) + shipping;
+    return { baseTotal, totalWithTaxes, shipping } ;
   }
 
 

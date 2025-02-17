@@ -17,7 +17,6 @@ import {Router} from "@angular/router";
 })
 export class CarritoCompraComponent implements OnInit {
   cartItems: LibroCarrito[] = [];
-  totalPrice: number = 0;
   showCart: boolean = false;
   baseTotal:number =0;
   totalWithTaxes:number = 0;
@@ -59,16 +58,13 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   pagarPedido(): void {
+    this.carritoService.setCartVisibility(false)
     this.router.navigate(['/pagar-pedido']);
   }
 
   // Close the cart
   closeCart() {
     this.carritoService.setCartVisibility(false);
-  }
-
-  calculateTotalPrice() {
-    this.totalPrice = this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   }
 
 }
