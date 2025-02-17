@@ -45,9 +45,9 @@
 
                 <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div class="flex justify-between text-base font-medium text-gray-900">
-                    <p>Subtotal</p>
+                    <p>Subtotal: {{baseTotal.toFixed(2)}}</p>
                     <div class="cart-total">
-                      <h3>Total Price: {{ totalPrice | currency }}</h3>
+                      <h3>Total Price: {{ totalWithTaxes.toFixed(2) | currency }}</h3>
                     </div>
                   </div>
                   <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
