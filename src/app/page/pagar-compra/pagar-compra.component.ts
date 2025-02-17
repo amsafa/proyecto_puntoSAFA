@@ -5,6 +5,7 @@ import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Pedido} from '../../interface/pedido';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Cliente} from '../../interface/cliente';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-pagar-compra',
@@ -20,7 +21,7 @@ import {Cliente} from '../../interface/cliente';
 })
 export class PagarCompraComponent implements OnInit{
   cartItems: LibroCarrito[] = [];
-  totalPrice: number = 0;
+  shipping: number = 0;
   userData: Cliente | undefined;
   address: string = '';
   showModal: boolean = false;
@@ -31,15 +32,16 @@ export class PagarCompraComponent implements OnInit{
 
 
 
-  constructor(private carritoService:CarritoService, private fb:FormBuilder) {
+  constructor(private carritoService:CarritoService, private fb:FormBuilder, private router:Router) {
   }
 
   ngOnInit() {
     this.carritoService.getCartItems().subscribe(items => {
       this.cartItems = items;
-      const {baseTotal, totalWithTaxes} = this.carritoService.getTotalPrice();
+      const {baseTotal, totalWithTaxes, shipping} = this.carritoService.getTotalPrice();
       this.baseTotal = baseTotal;
       this.totalWithTaxes = totalWithTaxes;
+      this.shipping = shipping;
 
     });
 
@@ -48,7 +50,7 @@ export class PagarCompraComponent implements OnInit{
       apellidos: ['', [Validators.required]],
       direccion: ['', [Validators.required]],
       cardNumber: ['', [Validators.required, Validators.pattern(/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})$/)]], // Visa or Mastercard format
-      expiryDate: ['', [Validators.required, this.expiryDateValidator]],
+      expiryDate: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/), this.expiryDateValidator]],
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]]
     });
 
@@ -108,7 +110,7 @@ export class PagarCompraComponent implements OnInit{
 
     const pedido: Pedido = {
       fecha: new Date().toISOString(), // Current date
-      total: this.totalPrice,
+      total: this.totalWithTaxes,
       estado: "procesado",
       direccion: this.address,
       cliente: this.userData.id, // Ensure this is the correct client ID
@@ -123,8 +125,12 @@ export class PagarCompraComponent implements OnInit{
       next: (response) => {
         console.log('Order saved:', response);
         this.showAlert('Order placed successfully!');
-        localStorage.removeItem('cart'); // Clear cart after successful order
-      },
+        localStorage.removeItem('cart');
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 2000);
+
+        },
       error: (error) => {
         console.error('Error saving order:', error);
         this.showAlert('Failed to place order');

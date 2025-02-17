@@ -59,6 +59,7 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   pagarPedido(): void {
+    this.carritoService.setCartVisibility(false)
     this.router.navigate(['/pagar-pedido']);
   }
 

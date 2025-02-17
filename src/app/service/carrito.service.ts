@@ -76,6 +76,8 @@ export class CarritoService {
     return this.cartItems.reduce((total, item) => total + item.precio * item.cantidad, 0);
   }
 
+
+
   getCartItems(): Observable<LibroCarrito[]> {
     return this.cartItems$; // Allow components to subscribe
   }
