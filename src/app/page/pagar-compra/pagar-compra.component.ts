@@ -3,7 +3,7 @@ import {LibroCarrito} from '../../interface/libro-carrito';
 import {CarritoService} from '../../service/carrito.service';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Pedido} from '../../interface/pedido';
-import {FormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Cliente} from '../../interface/cliente';
 
 @Component({
@@ -12,7 +12,8 @@ import {Cliente} from '../../interface/cliente';
     NgForOf,
     CurrencyPipe,
     FormsModule,
-    NgIf
+    NgIf,
+    ReactiveFormsModule
   ],
   templateUrl: './pagar-compra.component.html',
   styleUrl: './pagar-compra.component.css'
@@ -24,15 +25,31 @@ export class PagarCompraComponent implements OnInit{
   address: string = '';
   showModal: boolean = false;
   modalMessage: string = '';
+  baseTotal:number =0;
+  totalWithTaxes:number = 0;
+  paymentForm!: FormGroup;
 
 
-  constructor(private carritoService:CarritoService) {
+
+  constructor(private carritoService:CarritoService, private fb:FormBuilder) {
   }
 
   ngOnInit() {
     this.carritoService.getCartItems().subscribe(items => {
       this.cartItems = items;
-      this.totalPrice = this.carritoService.getTotalPrice();
+      const {baseTotal, totalWithTaxes} = this.carritoService.getTotalPrice();
+      this.baseTotal = baseTotal;
+      this.totalWithTaxes = totalWithTaxes;
+
+    });
+
+    this.paymentForm = this.fb.group({
+      nombre: ['', [Validators.required]],
+      apellidos: ['', [Validators.required]],
+      direccion: ['', [Validators.required]],
+      cardNumber: ['', [Validators.required, Validators.pattern(/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})$/)]], // Visa or Mastercard format
+      expiryDate: ['', [Validators.required, this.expiryDateValidator]],
+      cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]]
     });
 
     const userDataString = localStorage.getItem('userData');
@@ -77,6 +94,11 @@ export class PagarCompraComponent implements OnInit{
   }
 
   makePayment() {
+    if (this.paymentForm.invalid) {
+      this.paymentForm.markAllAsTouched(); // Show all errors
+      return;
+    }
+
     if (!this.userData || !this.userData || !this.userData.id) {
       this.showAlert("User not logged in or client data is missing");
       return;
@@ -109,6 +131,16 @@ export class PagarCompraComponent implements OnInit{
       }
     });
 
+  }
+
+  expiryDateValidator(control: any) {
+    if (!control.value) return { invalidDate: true };
+
+    const today = new Date();
+    const [month, year] = control.value.split('/');
+    const expiry = new Date(Number(`20${year}`), Number(month), 1);
+
+    return expiry < today ? { expired: true } : null;
   }
 
   showAlert(message: string) {
