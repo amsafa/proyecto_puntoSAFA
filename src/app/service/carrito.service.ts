@@ -2,12 +2,18 @@ import { Injectable } from '@angular/core';
 import {LibroCarrito} from '../interface/libro-carrito';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Libro} from '../interface/libro';
+import {Pedido} from '../interface/pedido';
+import {HttpClient} from '@angular/common/http';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarritoService {
+  private baseUrl: string = "http://127.0.0.1:8000/pedido";
+
+  constructor(private http: HttpClient) { }
+
   private cartItems: LibroCarrito[] = [];
   private cartSubject = new BehaviorSubject<LibroCarrito[]>([]);
   private showCartSubject = new BehaviorSubject<boolean>(false);
@@ -70,6 +76,10 @@ export class CarritoService {
     return this.cartItems.reduce((total, item) => total + item.cantidad, 0);
   }
 
+
+  savePedido(pedido: Pedido): Observable<any> {
+    return this.http.post(`${this.baseUrl}/save`, pedido);
+  }
 
 
 
