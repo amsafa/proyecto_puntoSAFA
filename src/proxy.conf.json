@@ -1,10 +1,10 @@
 {
-  "/api": {
+  "/back": {
     "target": "http://localhost:8000",
     "secure": false,
     "changeOrigin": true,
     "pathRewrite": {
-      "^/api": ""
+      "^/back": ""
     },
     "logLevel": "debug"
   }
