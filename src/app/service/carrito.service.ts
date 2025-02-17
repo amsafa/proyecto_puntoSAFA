@@ -49,7 +49,7 @@ export class CarritoService {
   }
 
   increaseQuantity(item: LibroCarrito) {
-    item.quantity++;
+    item.cantidad++;
     this.cartSubject.next(this.cartItems);
   }
 

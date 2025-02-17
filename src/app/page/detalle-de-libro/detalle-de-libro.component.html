@@ -40,13 +40,18 @@
         <p class="text-lg font-semibold text-gray-800">Calificación media:</p>
         <div class="flex items-center ml-2 space-x-1 text-yellow-400 text-xl">
           <ng-container *ngFor="let star of starsArray">
-            <span>★</span>
+            <span class="text-yellow-500">★</span>
           </ng-container>
           <ng-container *ngIf="hasHalfStar">
-            <span>½</span>
+            <span class="text-yellow-500">½</span>
           </ng-container>
         </div>
+
+        <span class="text-gray-700 text-lg font-medium ml-3">
+<!--    ({{ media_calificacion !== null && !isNaN(media_calificacion) ? media_calificacion?.toFixed(1) : '0' }}/5)-->
+  </span>
       </div>
+
 
 
       <div class="mt-4">

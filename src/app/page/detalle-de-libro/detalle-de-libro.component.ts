@@ -1,13 +1,12 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { Libro } from '../../interface/libro';
-import { FormsModule } from '@angular/forms';
-import { LibroService } from '../../service/libro.service';
-import { ActivatedRoute } from '@angular/router';
-import { Resena } from '../../interface/resena';
-import { ResenaService } from '../../service/resena.service';
-import { AuthService } from '../../service/auth.service';
-import { CurrencyPipe, NgForOf, NgIf } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
+import {Libro} from '../../interface/libro';
+import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {LibroService} from '../../service/libro.service';
+import {ActivatedRoute} from '@angular/router';
+import {Resena} from '../../interface/resena';
+import {ResenaService} from '../../service/resena.service';
+
 
 @Component({
   selector: 'app-detalle-de-libro',
@@ -44,12 +43,16 @@ export class DetalleDeLibroComponent {
     this.libroId = Number(this.route.snapshot.paramMap.get('id')); // Obtener el ID del libro desde la ruta
   }
 
+  // Método para inicializar el componente
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!isNaN(id)) {
       this.obtenerLibro(id);
       this.obtenerResenas(id);
       this.obtenerMediaCalificacion(id);
+      console.log('ID del libro:', id);
+    }
+  }
 
       // Verificar si el usuario está logueado
       this.usuarioLogueado = this.authService.isLoggedIn();
