@@ -2,7 +2,7 @@
   <div class="grid lg:grid-cols-2 gap-12">
     <div>
       <div class="bg-gray-100 p-6 rounded-md">
-        <h2 class="text-2xl font-bold text-gray-800">Your Cart</h2>
+        <h2 class="text-2xl font-bold text-gray-800">Su cesta</h2>
         <div *ngFor="let item of cartItems"  class="space-y-4 mt-8">
           <div class="flex items-center gap-4">
             <div class="w-24 h-24 shrink-0 bg-white p-2 rounded-md">
@@ -65,30 +65,30 @@
 
 
     <form [formGroup]="paymentForm" (ngSubmit)="makePayment()">
-      <h2 class="text-2xl font-bold text-gray-800">Payment Details</h2>
+      <h2 class="text-2xl font-bold text-gray-800">Datos de pago</h2>
       <div class="grid gap-4 mt-8">
         <div>
           <label class="block text-base text-gray-800 mb-2">Nombre</label>
-          <input type="text"  formControlName="nombre" placeholder="John Doe"
+          <input type="text"  formControlName="nombre" placeholder="Introduzca su nombre"
                  class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-purple-500 outline-none" />
           <p class="text-red-500 text-sm mt-1" *ngIf="paymentForm.get('nombre')?.invalid && paymentForm.get('nombre')?.touched">Este campo es obligatorio.</p>
         </div>
         <div>
           <label class="block text-base text-gray-800 mb-2">Apellidos</label>
-          <input type="text" formControlName="apellidos" placeholder="John Doe"
+          <input type="text" formControlName="apellidos" placeholder="Introduzca sus apellidos"
                  class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-purple-500 outline-none" />
           <p class="text-red-500 text-sm mt-1" *ngIf="paymentForm.get('apellidos')?.invalid && paymentForm.get('apellidos')?.touched">Este campo es obligatorio.</p>
         </div>
 
         <div>
           <label class="block text-base text-gray-800 mb-2">Dirección:</label>
-          <input type="text" formControlName="direccion" [(ngModel)]="address" name="address"  placeholder="John Doe"
+          <input type="text" formControlName="direccion" [(ngModel)]="address" name="address"  placeholder="Introduzca su dirección"
                  class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-purple-500 outline-none" />
           <p class="text-red-500 text-sm mt-1" *ngIf="paymentForm.get('direccion')?.invalid && paymentForm.get('direccion')?.touched">Este campo es obligatorio.</p>
         </div>
 
         <div>
-          <label class="block text-base text-gray-800 mb-2">Card Number</label>
+          <label class="block text-base text-gray-800 mb-2">Número de tarjeta</label>
           <div class="flex bg-transparent border border-gray-300 rounded-md focus-within:border-purple-500 overflow-hidden">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 ml-3" viewBox="0 0 32 20">
               <circle cx="10" cy="10" r="10" fill="#f93232" data-original="#f93232" />
@@ -106,8 +106,8 @@
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-base text-gray-800 mb-2">Expiry Date</label>
-            <input type="number" formControlName="expiryDate" placeholder="08/27"
+            <label class="block text-base text-gray-800 mb-2">Fecha de caducidad</label>
+            <input type="text" formControlName="expiryDate" placeholder="08/27"
                    class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-purple-500 outline-none" />
             <p class="text-red-500 text-sm mt-1" *ngIf="paymentForm.get('expiryDate')?.invalid && paymentForm.get('expiryDate')?.touched">
               Fecha de expiración no válida.
@@ -126,14 +126,14 @@
       </div>
 
       <ul class="text-gray-800 mt-8 space-y-4">
-        <li class="flex flex-wrap gap-4 text-sm">Subtotal <span class="ml-auto font-bold">{{baseTotal.toFixed(2) | currency}}</span></li>
-        <li class="flex flex-wrap gap-4 text-sm">Shipping <span class="ml-auto font-bold">{{shipping.toFixed(1) | currency}}</span></li>
-        <li class="flex flex-wrap gap-4 text-sm">Tax <span class="ml-auto font-bold">21%</span></li>
+        <li class="flex flex-wrap gap-4 text-sm">Subtotal <span class="ml-auto font-bold">{{baseTotal.toFixed(2) | currency:'EUR':true}}</span></li>
+        <li class="flex flex-wrap gap-4 text-sm">Gastos de envío <span class="ml-auto font-bold">{{shipping.toFixed(1) | currency:'EUR':true}}</span></li>
+        <li class="flex flex-wrap gap-4 text-sm">IVA <span class="ml-auto font-bold">21%</span></li>
         <hr class="border-gray-300" />
-        <li class="flex flex-wrap gap-4 text-sm font-bold">Total <span class="ml-auto">{{totalWithTaxes.toFixed(2)| currency}}</span></li>
+        <li class="flex flex-wrap gap-4 text-sm font-bold">Total <span class="ml-auto">{{totalWithTaxes.toFixed(2)| currency:'EUR':true}}</span></li>
       </ul>
 
-      <button (click)="makePayment()" type="button" class="mt-8 text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-purple-600 hover:bg-purple-700 text-white rounded-md">Make Payment  </button>
+      <button (click)="makePayment()" type="button" class="mt-8 text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-purple-600 hover:bg-purple-700 text-white rounded-md">Pagar</button>
     </form>
   </div>
 </div>
