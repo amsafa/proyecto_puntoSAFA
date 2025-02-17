@@ -19,6 +19,8 @@ export class CarritoCompraComponent implements OnInit {
   cartItems: LibroCarrito[] = [];
   totalPrice: number = 0;
   showCart: boolean = false;
+  baseTotal:number =0;
+  totalWithTaxes:number = 0;
 
   constructor(private carritoService: CarritoService, private router: Router) { }
 
@@ -26,7 +28,10 @@ export class CarritoCompraComponent implements OnInit {
     // Subscribe to cart items to update the cart
     this.carritoService.getCartItems().subscribe(items => {
       this.cartItems = items;
-      this.totalPrice = this.carritoService.getTotalPrice();  // Calculate total price when cart items are updated
+      const {baseTotal, totalWithTaxes} = this.carritoService.getTotalPrice();
+      this.baseTotal = baseTotal;
+      this.totalWithTaxes = totalWithTaxes;
+
     });
 
     // Subscribe to cart visibility
