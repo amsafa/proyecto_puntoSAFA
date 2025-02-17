@@ -8,12 +8,12 @@
           <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
             <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
               <div class="flex items-start justify-between">
-                <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
+                <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Su cesta</h2>
                 <div class="ml-3 flex h-7 items-center">
                   <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleCart()">Hide Cart</button>
                 </div>
               </div>
-  <div *ngIf="cartItems.length === 0">Your cart is empty.</div>
+  <div *ngIf="cartItems.length === 0">Su cesta está vacía.</div>
 
               <div *ngIf="cartItems.length > 0" class="mt-8">
   <div *ngFor="let item of cartItems" class="cart-item">
@@ -36,7 +36,7 @@
         <div class="flex flex-1 items-end justify-between text-sm">
 
           <div class="flex">
-            <button (click)="removeItem(item.id)" type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
+            <button (click)="removeItem(item.id)" type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Eliminar</button>
           </div>
         </div>
       </div>
@@ -44,10 +44,12 @@
   </div>
 
                 <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
-                  <div class="flex justify-between text-base font-medium text-gray-900">
-                    <p>Subtotal: {{baseTotal.toFixed(2)}}</p>
-                    <div class="cart-total">
-                      <h3>Total Price: {{ totalWithTaxes.toFixed(2) | currency }}</h3>
+                  <div class="flex justify-between text-base  cart-total font-medium text-gray-900">
+                    <p>Subtotal: {{baseTotal.toFixed(2) | currency:'EUR':true}}</p>
+                    <p>Precio IVA inc.: {{ totalWithTaxes.toFixed(2) | currency:'EUR':true }}</p>
+
+                    <div class="flex justify-between text-base font-medium cart-total">
+
                     </div>
                   </div>
                   <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
