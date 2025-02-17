@@ -107,7 +107,7 @@
         <div class="relative flex flex-col">
           <div class="relative flex items-center">
             <i class="fa-solid fa-phone input-icon"></i>
-            <input id="telefono" type="text" formControlName="telefono" required class="input" placeholder="Teléfono">
+            <input id="telefono" type="text" formControlName="telefono" required class="input" placeholder="Teléfono +34">
           </div>
           <div *ngIf="registroForm.get('telefono')?.invalid && registroForm.get('telefono')?.touched" class="text-red-500">
             Teléfono inválido.

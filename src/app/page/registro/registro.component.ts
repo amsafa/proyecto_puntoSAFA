@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 
 import {
   AbstractControl,
@@ -33,52 +35,88 @@ export class RegistroComponent implements OnInit {
   errorMessage = '';
   registroCliente: RegistroCliente = new RegistroCliente();
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute // ✅ Capturar parámetros de la URL
+  ) {
     this.registroForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      nick: ['', [Validators.required, Validators.minLength(3)]],
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      dni: ['', [Validators.required, Validators.minLength(9)]],
-      apellidos: ['', [Validators.required, Validators.minLength(3)]],
-      foto: ['', [Validators.required, Validators.pattern('https?://.+')]],
-      direccion: [''],
-      telefono: ['', [Validators.required, Validators.minLength(9)]],
-      contrasena: ['', [Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required, Validators.email, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+(com|es)$')]],
+      nick: ['', [Validators.required, Validators.minLength(4)]],
+      nombre: ['', [Validators.required, Validators.minLength(3), Validators.pattern('^[a-zA-ZÀ-ÿ ]+$')]],
+      apellidos: ['', [Validators.required, Validators.minLength(3), Validators.pattern('^[a-zA-ZÀ-ÿ ]+$')]],
+      dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}[A-Z]$')]],
+      foto: ['', [Validators.required, Validators.pattern('^(https?:\\/\\/)?([\\w.-]+)\\.([a-z]{2,6}\\.?)(\\/.*)?$')]],
+      direccion: ['', Validators.required],
+      telefono: ['', [Validators.required, Validators.pattern('^[67][0-9]{8}$')]],
+      contrasena: ['', [Validators.required, Validators.minLength(6), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,}$')]],
       repetircontrasena: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });
+    console.log(this.registroForm);
   }
 
-  ngOnInit(): void {}
 
-  passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const formGroup = control as FormGroup; // Hace casting a FormGroup
+  passwordMatchValidator: ValidatorFn = (formGroup: AbstractControl): ValidationErrors | null => {
     const contrasena = formGroup.get('contrasena')?.value;
     const repetircontrasena = formGroup.get('repetircontrasena')?.value;
     return contrasena === repetircontrasena ? null : { passwordMismatch: true };
   };
 
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      const token = params['token'];
+      if (token) {
+        this.authService.confirmarVerificacion(token).subscribe({
+          next: () => {
+            Swal.fire('¡Cuenta verificada!', 'Tu cuenta ha sido activada. Ahora puedes iniciar sesión.', 'success');
+            this.router.navigate(['/login']);
+          },
+          error: () => {
+            Swal.fire('Error', 'El enlace de verificación no es válido o ha expirado.', 'error');
+          }
+        });
+      }
+    });
+  }
+
+
+
 
   onRegister() {
     if (this.registroForm.valid) {
       this.rellenarDatos();
-      localStorage.removeItem('token');
       this.authService.registro(this.registroCliente).subscribe({
         next: () => {
-          this.mostrarAlertaExito();  // Muestra alerta de éxito
-          this.errorMessage = '';     // Limpia errores anteriores
+          this.authService.verificarEmail(this.registroCliente.email).subscribe({
+            next: () => {
+              Swal.fire({
+                title: '¡Registro Exitoso!',
+                text: 'Te hemos enviado un correo para verificar tu cuenta. Por favor revisa tu bandeja de entrada.',
+                icon: 'success',
+                confirmButtonColor: '#009688',
+                confirmButtonText: 'Aceptar'
+              });
+            },
+            error: () => {
+              Swal.fire({
+                title: 'Error',
+                text: 'No se pudo enviar el correo de verificación.',
+                icon: 'error'
+              });
+            }
+          });
         },
         error: () => {
           this.errorMessage = 'Error en el registro. Intenta nuevamente.';
-        },
-        complete: () => {
-          if (!this.errorMessage) {
-          }
         }
       });
     } else {
       this.errorMessage = 'Verifica los datos ingresados.';
     }
   }
+
+
 
   // Función para rellenar el objeto con los datos del formulario
   rellenarDatos() {

@@ -81,6 +81,21 @@ export class AuthService {
     });
   }
 
+  verificarEmail(email: string | undefined): Observable<any> {
+    return this.http.post(`${this.apiUrl}/solicitar-verificacion`, { email }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  confirmarVerificacion(token: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/verificar-email/${token}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
+
+
 
 
 
