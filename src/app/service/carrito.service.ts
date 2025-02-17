@@ -30,23 +30,42 @@ export class CarritoService {
   }
 
 
-  addToCart(libro: Libro) {
-    const existingItem = this.cartItems.find(item => item.id === libro.id);
+  // addToCart(libro: Libro){
+  //   const existingItem = this.cartItems.find(item => item.id === libro.id);
+  //
+  //   if (existingItem) {
+  //     existingItem.quantity += 1; // Increment quantity if item already exists
+  //   } else {
+  //     this.cartItems.push({
+  //       id: libro.id,
+  //       name: libro.titulo,
+  //       image: libro.imagen,
+  //       price: libro.precio,
+  //       quantity: 1
+  //     });
+  //   }
+  //
+  //   this.cartSubject.next(this.cartItems); // Notify subscribers with the updated cart
+  // }
+
+  addToCart(libro: Libro |undefined, quantity: number=1) {
+    const existingItem:LibroCarrito | undefined = this.cartItems.find(item => item.id === libro!.id);
 
     if (existingItem) {
-      existingItem.quantity += 1; // Increment quantity if item already exists
+      existingItem.quantity += quantity; // Add the specified quantity
     } else {
       this.cartItems.push({
-        id: libro.id,
-        name: libro.titulo,
-        image: libro.imagen,
-        price: libro.precio,
-        quantity: 1
+        id: libro!.id,
+        name: libro!.titulo,
+        image: libro!.imagen,
+        price: libro!.precio!,
+        quantity: quantity // Use provided quantity
       });
     }
 
     this.cartSubject.next(this.cartItems); // Notify subscribers with the updated cart
   }
+
 
   increaseQuantity(item: LibroCarrito) {
     item.quantity++;

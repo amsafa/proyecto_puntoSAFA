@@ -6,6 +6,8 @@ import {LibroService} from '../../service/libro.service';
 import {ActivatedRoute} from '@angular/router';
 import {Resena} from '../../interface/resena';
 import {ResenaService} from '../../service/resena.service';
+import {CarritoService} from '../../service/carrito.service';
+import {AuthService} from '../../service/auth.service';
 
 
 @Component({
@@ -27,12 +29,16 @@ export class DetalleDeLibroComponent {
   media_calificacion: number | null = null; // Variable para la calificación media
   starsArray: number[] = [];
   hasHalfStar: boolean = false;
+  isLoggedIn: boolean = false;
+  showAlert: boolean = false;
 
   constructor(
     private route: ActivatedRoute, // Para obtener el ID de la ruta
     private libroService: LibroService, // Para obtener los detalles del libro
     private resenaService: ResenaService, // Para obtener las reseñas
-    private cdr: ChangeDetectorRef // Agregado
+    private cdr: ChangeDetectorRef, // Agregado
+    private carritoService:CarritoService,
+    private authService: AuthService,
   ) {}
 
   // Método para inicializar el componente
@@ -44,6 +50,9 @@ export class DetalleDeLibroComponent {
       this.obtenerMediaCalificacion(id);
       console.log('ID del libro:', id);
     }
+    this.authService.getAuthState().subscribe(state => {
+      this.isLoggedIn = state;
+    });
   }
 
   // Método para obtener los detalles del libro
@@ -116,14 +125,12 @@ export class DetalleDeLibroComponent {
   }
 
   // Método para agregar al carrito
-  addToCart(): void {
-    if (this.libro) {
-      console.log('Libro agregado al carrito:', {
-        ...this.libro,
-        quantity: this.quantity
-      });
-    }
+  addToCart(libro?: Libro) {
+    this.carritoService.addToCart(libro, this.quantity);
+
   }
+
+
 
 
   protected readonly isNaN = isNaN;
