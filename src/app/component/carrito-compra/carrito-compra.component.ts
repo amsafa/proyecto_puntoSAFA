@@ -62,9 +62,6 @@ export class CarritoCompraComponent implements OnInit {
     this.router.navigate(['/pagar-pedido']);
   }
 
-  // Close the cart
-  closeCart() {
-    this.carritoService.setCartVisibility(false);
-  }
+
 
 }
