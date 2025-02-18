@@ -124,8 +124,21 @@ export class DetalleDeLibroComponent {
     console.log('Cantidad:', this.quantity);
   }
 
+  showLoginAlert() {
+    this.showAlert = true;
+
+    // Hide the alert after 3 seconds
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 3000);
+  }
+
   // Método para agregar al carrito
   addToCart(libro?: Libro) {
+    if (!this.isLoggedIn) {
+      this.showLoginAlert();
+      return;
+    }
     this.carritoService.addToCart(libro, this.quantity);
 
   }
