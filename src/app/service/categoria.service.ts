@@ -8,7 +8,7 @@ import {Categoria} from '../interface/categoria';
 })
 
 export class CategoriaService {
-  private baseUrl: string = "http://127.0.0.1:8000/categoria";
+  private baseUrl: string = "api/categoria";
 
   constructor(private http: HttpClient) { }
 

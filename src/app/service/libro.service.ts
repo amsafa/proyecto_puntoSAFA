@@ -3,6 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import { Categoria } from '../interface/categoria'; // Importar la interfaz de categoría
 import {map, Observable} from 'rxjs';
+import {environment} from '../../environments/environment';
 
 
 
@@ -10,7 +11,7 @@ import {map, Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class LibroService {
-  private baseUrl: string = "http://127.0.0.1:8000/libro";
+  private baseUrl: string =  `${environment.apiUrl}/libro`;
 
   constructor(private http: HttpClient) { }
 
