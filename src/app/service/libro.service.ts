@@ -27,11 +27,6 @@ export class LibroService {
 
 
 
-
-
-
-
-
   getLibros(page: number, limit: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/all`, {
       params: { page: page.toString(), limit: limit.toString() },
@@ -65,6 +60,26 @@ export class LibroService {
       })))
     );
   }
+
+  getFilteredBooks(priceRanges: string[], categoryId: number | null, page: number = 1, limit: number = 9): Observable<Libro[]> {
+    let params: any = { page, limit };
+
+    if (priceRanges.length) {
+      params.priceRanges = priceRanges.join(',');
+    }
+    if (categoryId !== null) {
+      params.categoryId = categoryId;
+    }
+
+    return this.http.get<Libro[]>(`${this.baseUrl}/filtered-books`, { params }).pipe(
+      map(libros => libros.map(libro => ({
+        ...libro,
+        mediaCalificacion: parseFloat(String(libro.mediaCalificacion))
+      })))
+    );
+  }
+
+
 
 
 }

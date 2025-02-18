@@ -9,7 +9,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CategoriaService} from '../../service/categoria.service';
 import {CarritoService} from '../../service/carrito.service';
 import {LibroCarrito} from '../../interface/libro-carrito';
-import {Observable} from 'rxjs';
 
 
 
@@ -28,17 +27,8 @@ import {Observable} from 'rxjs';
       ]
 })
 export class CatalogoComponent  implements OnInit {
-  // libros: Libro[] = [];
-  // filteredBooks: Libro[] = [];
-  // categories: Categoria[] = [];
-  // filter: string = '';
-  // currentPage: number = 1;
-  // itemsPerPage: number = 9;
-  // totalPagesArray: number[] = [];
-  // selectedCategoryId: number | null = null;
 
   libros: Libro[] = [];
-  librosCarrito: LibroCarrito[] = [];
   filteredBooks: Libro[] = [];
   filter: string = '';
   categories: Categoria[] = [];
@@ -47,14 +37,14 @@ export class CatalogoComponent  implements OnInit {
   totalPages: number = 1; // Placeholder, will be set dynamically
   limit: number = 12;
   cartItems: LibroCarrito[] = [];
-  emptyCart: boolean = true;
-  cartQuantity: number = 0;
+
+  selectedPriceRanges: string[] = [];
 
 
 
 
 
-  ordenarPor = 'titulo';  // Default sorting option
+
 
   constructor(private libroService: LibroService, private http:HttpClient,
               private router:Router, private route:ActivatedRoute,
@@ -133,54 +123,37 @@ export class CatalogoComponent  implements OnInit {
 
   selectedPriceRange: string | null = null;
 
-
   filterByPrice(range: string, page: number = 1, limit: number = 9): void {
-    if (this.selectedPriceRange === range) {
-      this.selectedPriceRange = null;
-      this.filteredBooks = this.libros;
+    if (this.selectedPriceRanges.includes(range)) {
+      // Si ya está seleccionado, lo quitamos
+      this.selectedPriceRanges = this.selectedPriceRanges.filter(p => p !== range);
     } else {
-      this.selectedPriceRange = range;
-      this.libroService.getLibrosByPrecio(range, page, limit).subscribe({
-        next: (libros) => {
-          this.filteredBooks = libros;
-          this.totalPages = Math.ceil(libros.length / limit); // Update total pages
-          this.currentPage = page;
-        },
-        error: (error) => console.error(error)
-      });
+      // Si no está seleccionado, lo agregamos
+      this.selectedPriceRanges.push(range);
     }
+    this.applyFilters(page, limit);
   }
-
-
-
-
 
   filterByCategory(categoryId: number, page: number = 1, limit: number = 9): void {
-    if (this.selectedCategoryId === categoryId) {
-      this.selectedCategoryId = null;
-      this.filteredBooks = this.libros;
-    } else {
-      this.selectedCategoryId = categoryId;
-      this.libroService.getBooksByCategory(categoryId, page, limit).subscribe({
-        next: (books) => {
-          this.filteredBooks = books;
-          this.totalPages = Math.ceil(books.length / limit);
-          this.currentPage = page;
-        },
-        error: (error) => console.error(error)
-      });
-    }
+    // Si la categoría ya está seleccionada, la deseleccionamos
+    this.selectedCategoryId = this.selectedCategoryId === categoryId ? null : categoryId;
+    this.applyFilters(page, limit);
+  }
+
+  applyFilters(page: number = 1, limit: number = 9): void {
+    this.libroService.getFilteredBooks(this.selectedPriceRanges, this.selectedCategoryId, page, limit).subscribe({
+      next: (books) => {
+        this.filteredBooks = books;
+        this.totalPages = Math.ceil(books.length / limit);
+        this.currentPage = page;
+      },
+      error: (error) => console.error(error)
+    });
   }
 
 
 
 
-
-
-  showCart = false;
-  toggleCart() {
-    this.carritoService.toggleCart();
-  }
 
 
   addToCart(libro: Libro) {

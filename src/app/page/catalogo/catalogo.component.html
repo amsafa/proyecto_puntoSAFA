@@ -76,20 +76,35 @@
       <h1 class="text-2xl font-bold">Filtros</h1>
     </div>
 
-    <!--###################   FILTRO PRECIO ####################################-->
+    <!-- FILTRO PRECIO -->
     <div class="border-b border-gray-200 py-6">
-      <!-- Precios -->
       <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9 border-t border-custom-blue">
         <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Precios</h3>
         <ul class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
-          <li><input type="checkbox" (change)="filterByPrice('menor5')" [checked]="selectedPriceRange ==='menor5'" class="mr-2">Menos de 5 euros</li>
-          <li><input type="checkbox" (change)="filterByPrice('5-10')" [checked]="selectedPriceRange ==='5-10'" class="mr-2">De 5 a 10 euros</li>
-          <li><input type="checkbox" (change)="filterByPrice('10-15')" [checked]="selectedPriceRange ==='10-15'" class="mr-2">De 10 a 15 euros</li>
-          <li><input type="checkbox" (change)="filterByPrice('15-40')" [checked]="selectedPriceRange ==='15-40'" class="mr-2">De 15 a 40 euros</li>
-          <li><input type="checkbox" (change)="filterByPrice('mayor40')" [checked]="selectedPriceRange ==='mayor40'" class="mr-2">Más de 40 euros</li>
+          <li>
+            <input type="checkbox" (change)="filterByPrice('menor5')" [checked]="selectedPriceRanges.includes('menor5')" class="mr-2">
+            Menos de 5 euros
+          </li>
+          <li>
+            <input type="checkbox" (change)="filterByPrice('5-10')" [checked]="selectedPriceRanges.includes('5-10')" class="mr-2">
+            De 5 a 10 euros
+          </li>
+          <li>
+            <input type="checkbox" (change)="filterByPrice('10-15')" [checked]="selectedPriceRanges.includes('10-15')" class="mr-2">
+            De 10 a 15 euros
+          </li>
+          <li>
+            <input type="checkbox" (change)="filterByPrice('15-40')" [checked]="selectedPriceRanges.includes('15-40')" class="mr-2">
+            De 15 a 40 euros
+          </li>
+          <li>
+            <input type="checkbox" (change)="filterByPrice('mayor40')" [checked]="selectedPriceRanges.includes('mayor40')" class="mr-2">
+            Más de 40 euros
+          </li>
         </ul>
       </div>
-      <!--#################################3 FILTRO CATEGORÍA ############################## -->
+
+      <!-- FILTRO CATEGORÍA -->
       <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9 border-t border-custom-blue">
         <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Categoría</h3>
         <ul class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
@@ -104,6 +119,9 @@
         </ul>
       </div>
     </div>
+
+
+
   </div>
 
 
