@@ -18,7 +18,7 @@
   <div class="container mx-auto flex justify-center items-center space-x-4">
     <input
       type="text"
-      [(ngModel)]="filter"
+      [(ngModel)]="searchTerm"
       (ngModelChange)="searchBooks()"
       id="search"
       name="search"
@@ -29,7 +29,7 @@
       Buscar
     </button>
     <button
-      *ngIf="filter"
+      *ngIf="searchTerm"
       (click)="clearSearch()"
       class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400"
     >
@@ -106,6 +106,19 @@
 
     <div class="max-w-2xl px-4 sm:px-6  lg:max-w-7xl lg:px-8">
       <div *ngIf="!noResults" class="card--1 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+        <div *ngFor="let libro of filteredBooks" class="group  group cursor-pointer group overflow-hidden relative">
+    <div class="card relative max-h-100 max-w-sm rounded overflow-hidden shadow-lg bg-white">
+      <div class="relative">
+        <img [src]="libro.imagen" [alt]="libro.titulo"  class=" aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+        <button  (click)="addToCart(libro)" class="add-to-cart absolute top-0 right-0 mt-4 mr-4 py-2 px-4 bg-blue-500 text-white rounded opacity-0 transition-opacity duration-300">
+
+                          Añadir al carrito
+                        </button>
+      </div>
+      <div class="px-6 py-4 flex flex-col items-center">
+        <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
+                  <p class="text-sm text-gray-600 text-center">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
+                  <p class="mt-2 text-xl text-center font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
         <div *ngFor="let libro of filteredBooks" href="#" class="group  group cursor-pointer group overflow-hidden relative">
           <img [src]="libro.imagen" [alt]="libro.titulo"  class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
           <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
@@ -149,7 +162,6 @@
 
   <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
 
-<!--     Previous Button (Only visible on page 2 or greater)-->
     <button *ngIf="currentPage > 1"
        (click)="cargarLibros(currentPage - 1)" [disabled]="currentPage === 1"
        class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
@@ -169,8 +181,6 @@
     </button>
   </nav>
 </div>
-
-
 
 <div *ngIf="!libros || libros.length === 0" class="text-black text-center">
   No hay libros disponibles
