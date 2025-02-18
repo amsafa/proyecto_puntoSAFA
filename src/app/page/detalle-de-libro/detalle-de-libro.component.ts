@@ -6,6 +6,8 @@ import {LibroService} from '../../service/libro.service';
 import {ActivatedRoute} from '@angular/router';
 import {Resena} from '../../interface/resena';
 import {ResenaService} from '../../service/resena.service';
+import {CarritoService} from '../../service/carrito.service';
+import {AuthService} from '../../service/auth.service';
 
 
 @Component({
@@ -13,7 +15,7 @@ import {ResenaService} from '../../service/resena.service';
   imports: [FormsModule, NgForOf, NgIf, CurrencyPipe],
   standalone: true,
   templateUrl: './detalle-de-libro.component.html',
-  styleUrl: './detalle-de-libro.component.css',
+  styleUrl: './detalle-de-libro.component.css'
 })
 export class DetalleDeLibroComponent {
   libro?: Libro; // Variable para almacenar los detalles del libro
@@ -21,7 +23,6 @@ export class DetalleDeLibroComponent {
   resenas: Resena[] = []; // Variable para las reseñas
   media_calificacion: number | null = null; // Variable para la calificación media
   starsArray: number[] = [];
-
   hasHalfStar: boolean = false;
   usuarioLogueado: boolean = false; // Verifica si el usuario está logueado
   calificacionSeleccionada: number = 0; // Calificación seleccionada por el usuario
@@ -38,10 +39,7 @@ export class DetalleDeLibroComponent {
     private libroService: LibroService,
     private resenaService: ResenaService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.libroId = Number(this.route.snapshot.paramMap.get('id')); // Obtener el ID del libro desde la ruta
-  }
+  ) {}
 
   // Método para inicializar el componente
   ngOnInit(): void {
@@ -59,9 +57,8 @@ export class DetalleDeLibroComponent {
     }
   }
 
-  /**
-   * Obtener las reseñas de un libro.
-   */
+
+  // Método para obtener las reseñas
   obtenerResenas(id: number): void {
     this.resenaService.obtenerResenasPorLibro(id).subscribe({
       next: (data) => {
@@ -82,9 +79,8 @@ export class DetalleDeLibroComponent {
     });
   }
 
-  /**
-   * Obtener la calificación media de un libro.
-   */
+
+  //Método para obtener la calificación media
   obtenerMediaCalificacion(id: number): void {
     this.resenaService.obtenerMediaCalificacion(id).subscribe({
       next: (data) => {
@@ -174,20 +170,6 @@ export class DetalleDeLibroComponent {
     }
   }
 
-  /**
-   * Obtener los detalles de un libro.
-   */
-  obtenerLibro(id: number): void {
-    this.libroService.getLibroById(id).subscribe({
-      next: (data) => {
-        this.libro = data;
-        console.log('Libro obtenido:', this.libro);
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
-  }
 
   /**
    * Disminuir la cantidad de libros a comprar.
@@ -207,21 +189,14 @@ export class DetalleDeLibroComponent {
     console.log('Cantidad:', this.quantity);
   }
 
-  /**
-   * Agregar un libro al carrito.
-   */
-  addToCart(): void {
-    if (this.libro) {
-      console.log('Libro agregado al carrito:', {
-        ...this.libro,
-        quantity: this.quantity,
-      });
-    }
+  // Método para agregar al carrito
+  addToCart(libro?: Libro) {
+    this.carritoService.addToCart(libro, this.quantity);
+
   }
 
-  /**
-   * Actualizar la visualización de las estrellas según la calificación media.
-   */
+  protected readonly isNaN = isNaN;
+
   actualizarEstrellas(): void {
     if (this.media_calificacion !== null) {
       const rating = this.media_calificacion;
