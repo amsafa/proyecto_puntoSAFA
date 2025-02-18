@@ -124,10 +124,12 @@ export class PagarCompraComponent implements OnInit{
     this.carritoService.savePedido(pedido).subscribe({
       next: (response) => {
         console.log('Order saved:', response);
-        this.showAlert('Order placed successfully!');
-        localStorage.removeItem('cart');
+        this.showAlert('Pedido realizado con éxito');
+        this.clearCart();
         setTimeout(() => {
-          this.router.navigate(['/home']);
+          this.router.navigateByUrl('/home').then(()=>{
+            window.location.reload();
+          });
         }, 2000);
 
         },
@@ -137,6 +139,11 @@ export class PagarCompraComponent implements OnInit{
       }
     });
 
+  }
+
+  clearCart() {
+    this.cartItems = []; // Empty the cart array
+    localStorage.removeItem('cart'); // Remove cart from localStorage
   }
 
   expiryDateValidator(control: any) {
