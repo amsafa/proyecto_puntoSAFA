@@ -10,7 +10,7 @@
               <div class="flex items-start justify-between">
                 <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Su cesta</h2>
                 <div class="ml-3 flex h-7 items-center">
-                  <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleCart()">Hide Cart</button>
+                  <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleCart()">Cerrar</button>
                 </div>
               </div>
   <div *ngIf="cartItems.length === 0">Su cesta está vacía.</div>
@@ -52,18 +52,11 @@
 
                     </div>
                   </div>
-                  <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                  <p class="mt-0.5 text-sm text-gray-500">Costes de envío calculados al pagar.</p>
                   <div class="mt-6">
-                    <button (click)="pagarPedido()" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700">Checkout</button>
+                    <button (click)="pagarPedido()" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700">Finalizar compra</button>
                   </div>
                   <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
-                    <p>
-                      or
-                      <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">
-                        Continue Shopping
-                        <span aria-hidden="true"> &rarr;</span>
-                      </button>
-                    </p>
                   </div>
                 </div>
 
