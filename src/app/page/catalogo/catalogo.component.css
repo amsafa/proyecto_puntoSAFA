@@ -97,6 +97,10 @@
 
 }
 
+.card:hover .add-to-cart {
+  opacity: 1;
+}
+
 
 
 
