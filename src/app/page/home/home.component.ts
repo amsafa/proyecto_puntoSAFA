@@ -7,8 +7,9 @@ import {
 } from "../../component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component";
 import {Libro} from '../../interface/libro';
 
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
+import {LibroService} from '../../service/libro.service';
 
 @Component({
   selector: 'app-home',
@@ -25,38 +26,61 @@ import {FormsModule} from '@angular/forms';
 })
 export class HomeComponent  implements OnInit {
 
+  limit: number = 9;
+  libros: Libro[] = [];
+  filteredBooks: Libro[] = [];
+  searchTerm: string = '';
+  noResults: boolean = false;
+  filterB: string = '';
 
-  constructor(private  router:Router) {}
+
+
+  constructor(private  router:Router, private route:ActivatedRoute, private libroService:LibroService) {}
 
   //Esta función se ejecuta al cargar la página
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.filterB = params['search'] || '';
+      console.log('Search term from query params:', this.filterB);
+      if (this.filterB) {
+        this.searchLibros();
+      }
+    });
 
   }
 
 
-  libros: Libro[] = [];
-  filteredBooks: Libro[] = [];
-  filter: string = '';
 
 
-  searchBooks(): void {
-    const searchTerm = this.filter.toLowerCase().trim();
+  onSearch(): void {
+    if (!this.searchTerm || this.searchTerm.trim() === '') {
+      return; // Prevents navigation if search term is empty
+    }
+    const trimmedSearchTerm = this.searchTerm.trim(); // Ensure searchTerm is trimmed
+    console.log('Search term:', trimmedSearchTerm);
+    this.router.navigate(['/catalogo'], { queryParams: { search: trimmedSearchTerm } });
+  }
 
-    if (!searchTerm) {
+  searchLibros(): void {
+    const busqueda = this.filterB.toLowerCase().trim();
+    console.log('Filtered term:', busqueda);
+    if (!busqueda) {
       this.filteredBooks = this.libros;
-    } else {
-      this.filteredBooks = this.libros.filter(libro =>
-        libro.titulo?.toLowerCase().includes(searchTerm) ||
-        libro.autor?.apellidos?.toLowerCase().includes(searchTerm) ||
-        libro.autor?.nombre?.toLowerCase().includes(searchTerm)
-      );
+      this.noResults = false;
+      console.log('No search term, showing all books');
+      return;
     }
 
-    // Redirect with query params
-    this.router.navigate(['/catalogo'], { queryParams: { search: searchTerm } });
+    this.filteredBooks = this.libros.filter(book =>
+      book.titulo?.toLowerCase().includes(busqueda) ||
+      book.autorNombre.toLowerCase().includes(busqueda) ||
+      book.autorApellidos.toLowerCase().includes(busqueda)
+    );
+
+    this.noResults = this.filteredBooks.length === 0;
+    console.log('Filtered books:', this.filteredBooks); // Debugging statement
+    console.log('No results:', this.noResults);
+
   }
-  clearSearch(): void {
-    this.filter = '';
-    this.filteredBooks = this.libros;
-  }
+
 }
