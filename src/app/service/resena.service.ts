@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import {Observable} from 'rxjs';
 import { Resena } from '../interface/resena';
+import {environment} from '../../environments/environment';
 
 
 
@@ -11,7 +12,7 @@ import { Resena } from '../interface/resena';
 })
 
 export class ResenaService {
-  private baseUrlResena: string = "http://127.0.0.1:8000/resena";
+  private baseUrlResena:string =  `${environment.apiUrl}/resena`;
 
   constructor(private http: HttpClient) { }
 

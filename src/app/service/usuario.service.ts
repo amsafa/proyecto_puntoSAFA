@@ -7,7 +7,7 @@ import {environment} from '../../environments/environment';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl =  `${environment.apiUrl}/usuario`;
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +17,7 @@ export class UsuarioService {
 
   // Método para actualizar usuario
   actualizarUsuario(id: number, usuario: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/usuario/editar/${id}`, usuario);
+    return this.http.put<any>(`${this.apiUrl}/editar/${id}`, usuario);
   }
 
 
