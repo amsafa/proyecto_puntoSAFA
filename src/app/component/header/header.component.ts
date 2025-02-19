@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import {Component, OnInit, HostListener, LOCALE_ID} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import { NgClass, NgIf } from '@angular/common';
 import { AuthService } from '../../service/auth.service';
@@ -10,7 +10,8 @@ import {CarritoCompraComponent} from '../carrito-compra/carrito-compra.component
   selector: 'app-header',
   templateUrl: './header.component.html',
   imports: [NgIf, NgClass, RouterLink, CarritoCompraComponent],
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  providers: [{ provide: LOCALE_ID, useValue: 'es' }]
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn = false;
