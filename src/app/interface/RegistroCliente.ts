@@ -19,5 +19,6 @@ export class RegistroCliente {
   direccion?: string;
   contrasena?: string;
   usuario?: Usuario; // 🔹 Ahora usuario tiene su propia estructura
+  mensaje: string | undefined;
 }
 

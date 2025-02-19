@@ -57,7 +57,7 @@
           <div class="absolute inset-y-0 left-0 flex items-center pl-3">
             <i class="fa fa-envelope text-gray-400"></i>
           </div>
-          <input id="email" type="email" formControlName="email" required class="input pl-10" placeholder="(email@ejemplo)">
+          <input id="email" type="email" formControlName="email" required class="input pl-10" placeholder="(email@ejemplo.xx)">
           <div *ngIf="registroForm.get('email')?.invalid && registroForm.get('email')?.touched" class="text-red-500">
             Email inválido (debe contener arroba).
           </div>
@@ -103,7 +103,7 @@
           <div class="absolute inset-y-0 left-0 flex items-center pl-3">
             <i class="fa fa-phone text-gray-400"></i>
           </div>
-          <input id="telefono" type="text" formControlName="telefono" required class="input pl-10" placeholder="+0034 123456789">
+          <input id="telefono" type="text" formControlName="telefono" required class="input pl-10" placeholder="623456789">
           <div *ngIf="registroForm.get('telefono')?.invalid && registroForm.get('telefono')?.touched" class="text-red-500">
             Teléfono inválido.
           </div>
@@ -117,7 +117,7 @@
             </div>
             <input id="password" type="password" formControlName="contrasena" required class="input pl-10" placeholder="(mín 6 carac 1 mayús 1 num)">
             <div *ngIf="registroForm.get('contrasena')?.invalid && registroForm.get('contrasena')?.touched" class="text-red-500">
-              La contraseña debe tener al menos 6 caracteres.
+              La contraseña debe tener al menos 6 caracteres 1 mayuscula 1 múmero.
             </div>
           </div>
 
