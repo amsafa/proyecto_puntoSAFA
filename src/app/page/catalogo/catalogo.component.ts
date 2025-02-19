@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, LOCALE_ID, OnInit} from '@angular/core';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
@@ -24,7 +24,8 @@ import {AuthService} from '../../service/auth.service';
     NgIf,
     NgForOf,
     CurrencyPipe,
-      ]
+      ],
+  providers: [{ provide: LOCALE_ID, useValue: 'es' }]
 })
 export class CatalogoComponent  implements OnInit {
   libros: Libro[] = [];
@@ -48,6 +49,8 @@ export class CatalogoComponent  implements OnInit {
     this.route.queryParams.subscribe(params => {
       console.log('Query Params:', params);
       this.searchTerm = params['search'] || '';
+      this.selectedPriceRange = params['price'] || null;
+      this.selectedCategoryId = params['category'] ? parseInt(params['category'], 10) : null;
       console.log('Received search term from query params:', this.searchTerm);
       this.currentPage = params['page'] ? parseInt(params['page'], 10) : 1;
       this.limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
@@ -125,6 +128,24 @@ export class CatalogoComponent  implements OnInit {
     this.filteredBooks = this.libros;
   }
 
+  // selectedPriceRange: string | null = null;
+  // filterByPrice(range: string, page: number = 1, limit: number = 9): void {
+  //   if (this.selectedPriceRange === range) {
+  //     this.selectedPriceRange = null;
+  //     this.filteredBooks = this.libros;
+  //   } else {
+  //     this.selectedPriceRange = range;
+  //     this.libroService.getLibrosByPrecio(range, page, limit).subscribe({
+  //       next: (libros) => {
+  //         this.filteredBooks = libros;
+  //         this.totalPages = Math.ceil(libros.length / limit); // Update total pages
+  //         this.currentPage = page;
+  //       },
+  //       error: (error) => console.error(error)
+  //     });
+  //   }
+  // }
+
   selectedPriceRange: string | null = null;
   filterByPrice(range: string, page: number = 1, limit: number = 9): void {
     if (this.selectedPriceRange === range) {
@@ -144,6 +165,22 @@ export class CatalogoComponent  implements OnInit {
   }
 
 
+  // filterByCategory(categoryId: number, page: number = 1, limit: number = 9): void {
+  //   if (this.selectedCategoryId === categoryId) {
+  //     this.selectedCategoryId = null;
+  //     this.filteredBooks = this.libros;
+  //   } else {
+  //     this.selectedCategoryId = categoryId;
+  //     this.libroService.getBooksByCategory(categoryId, page, limit).subscribe({
+  //       next: (books) => {
+  //         this.filteredBooks = books;
+  //         this.totalPages = Math.ceil(books.length / limit);
+  //         this.currentPage = page;
+  //       },
+  //       error: (error) => console.error(error)
+  //     });
+  //   }
+  // }
 
   filterByCategory(categoryId: number, page: number = 1, limit: number = 9): void {
     if (this.selectedCategoryId === categoryId) {
@@ -160,6 +197,19 @@ export class CatalogoComponent  implements OnInit {
         error: (error) => console.error(error)
       });
     }
+  }
+
+  goToPage(page: number): void {
+    this.router.navigate([], {
+      queryParams: {
+        page,
+        limit: this.limit,
+        search: this.searchTerm || null,
+        price: this.selectedPriceRange || null,
+        category: this.selectedCategoryId || null
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
 
