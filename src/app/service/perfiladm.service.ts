@@ -10,7 +10,7 @@ import {adm} from '../interface/adm';
   providedIn: 'root'
 })
 export class PerfiladmService {
-  private apiUrl = `${environment.apiUrl}/usuario`;
+  private apiUrl = `${environment.apiUrl}/cliente`;
 
   constructor(private http: HttpClient) {}
 
@@ -39,7 +39,7 @@ export class PerfiladmService {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<adm>(`${this.apiUrl}/api/cliente/auth/user`, { headers }).pipe(
+    return this.http.get<adm>(`${this.apiUrl}/auth/user`, { headers }).pipe(
       catchError(error => {
         console.error(error);
         return of(null);

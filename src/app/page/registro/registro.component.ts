@@ -35,19 +35,15 @@ export class RegistroComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.registroForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|es)$/)]],
-      nick: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z0-9_]+$/)]],
-      nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZÀ-ÿ ]{3,}$/)]],
-      apellidos: ['', [Validators.required, Validators.pattern(/^[a-zA-ZÀ-ÿ ]{3,}$/)]],
-      dni: ['', [Validators.required, Validators.pattern(/^[0-9]{8}[A-Z]$/)]],
-      foto: ['', [Validators.required, Validators.pattern(/https?:\/\/.+/)]],
+      nick: ['', Validators.required],
+      nombre: ['', Validators.required],
+      apellidos: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}[A-Za-z]$')]],
+      foto: ['', [Validators.required, Validators.pattern('https?://.+')]],
       direccion: ['', Validators.required],
-      telefono: ['', [Validators.required, Validators.pattern(/^[67][0-9]{8}$/)]],
-      contrasena: ['', [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/)
-      ]],
+      telefonoUsuario: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]], // Asumiendo que el nombre del campo para el teléfono es "telefonoUsuario"
+      contrasena: ['', [Validators.required, Validators.minLength(6)]],
       repetircontrasena: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });
   }
