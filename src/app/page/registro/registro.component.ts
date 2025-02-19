@@ -35,14 +35,14 @@ export class RegistroComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.registroForm = this.fb.group({
+      nick: ['', Validators.required],
+      nombre: ['', Validators.required],
+      apellidos: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      nick: ['', [Validators.required, Validators.minLength(3)]],
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      dni: ['', [Validators.required, Validators.minLength(9)]],
-      apellidos: ['', [Validators.required, Validators.minLength(3)]],
+      dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}[A-Za-z]$')]],
       foto: ['', [Validators.required, Validators.pattern('https?://.+')]],
-      direccion: [''],
-      telefono: ['', [Validators.required, Validators.minLength(9)]],
+      direccion: ['', Validators.required],
+      telefonoUsuario: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]], // Asumiendo que el nombre del campo para el teléfono es "telefonoUsuario"
       contrasena: ['', [Validators.required, Validators.minLength(6)]],
       repetircontrasena: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });

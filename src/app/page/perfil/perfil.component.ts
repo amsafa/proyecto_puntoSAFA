@@ -11,9 +11,6 @@ import { UsuarioService } from '../../service/usuario.service';
 
 
 
-
-
-
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
@@ -31,11 +28,6 @@ export class PerfilComponent implements OnInit {
   mostrandoFormulario: any;
   usuarioEditado: any;
   successMessage: string | null = null;
-
-
-
-
-
 
 
 
@@ -70,6 +62,7 @@ export class PerfilComponent implements OnInit {
         console.log('Datos únicos obtenidos:', userData);
         this.userData = userData;
         this.isLoggedIn = true;
+        this.cargarCliente(this.userData.id);
       }
     });
   }
@@ -88,49 +81,38 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  cargarUsuarioAutenticado(): void {
-    this.perfilService.obtenerUsuarioAutenticado().subscribe({
-      next: (data) => {
-        console.log('Datos obtenidos:', data); // Verifica los datos en la consola
 
-        if (Array.isArray(data)) {
-          console.error();
-        }
-        this.cliente = data;
-        this.userData = data;
-        this.clienteId = data?.id;
-        // @ts-ignore
-        this.perfilForm.patchValue(data);
-      },
-      error: (err) => {
-        this.errorMessage = 'Error al cargar los datos del usuario autenticado.';
-      }
-    });
-  }
 
-  guardarCambios() {
+  guardarCambios(): void {
     if (!this.userData?.id) {
       console.error("❌ No se encontró el ID del usuario.");
       return;
     }
 
-    this.miServicioUsuario.actualizarUsuario(this.userData.id, this.userData).subscribe(
+    const usuarioActualizado = {
+      email: this.perfilForm.value.email,
+      nick: this.perfilForm.value.nick,
+      nombre: this.perfilForm.value.nombre,
+      apellidos: this.perfilForm.value.apellidos,
+      dni: this.perfilForm.value.dni,
+      foto: this.perfilForm.value.foto,
+      direccion: this.perfilForm.value.direccion,
+      telefono: this.perfilForm.value.telefono
+    };
+
+    // Enviar los cambios al servidor
+    this.miServicioUsuario.actualizarUsuario(this.userData.id, usuarioActualizado).subscribe(
       (respuesta) => {
         console.log("✅ Usuario actualizado correctamente:", respuesta);
-        this.mostrandoFormulario = false; // Cerrar modal
+        Swal.fire('Éxito', 'Los datos del perfil se han actualizado correctamente', 'success');
+        this.mostrandoFormulario = false; // Cerrar el formulario
       },
       (error) => {
         console.error("❌ Error en la actualización:", error);
+        Swal.fire('Error', 'Hubo un problema al actualizar el perfil', 'error');
       }
     );
   }
-
-
-
-
-
-
-
 
   eliminarCliente(): void {
     if (this.clienteId) {
@@ -153,6 +135,7 @@ export class PerfilComponent implements OnInit {
   }
 
 
+  // Método para abrir el formulario
   abrirFormulario(): void {
     if (this.userData) {
       // Clonar los datos del usuario sin modificar el original
@@ -161,6 +144,7 @@ export class PerfilComponent implements OnInit {
     }
   }
 
+  // Método para cerrar el formulario
   cerrarFormulario(): void {
     this.mostrandoFormulario = false;
   }
