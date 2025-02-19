@@ -72,9 +72,7 @@
         Iniciar sesión o registrarse
       </a>
     </ng-container>
-    <div *ngIf="isLoggedIn && showCart">
-      <app-carrito-compra></app-carrito-compra>
-    </div>
+
 
     <ng-template #loggedInMenu>
       <a routerLink="/perfil" class="block py-2  text-customAzulito hover:text-customBlanco">Perfil</a>
@@ -87,3 +85,7 @@
 
 
 </header>
+
+<div *ngIf="isLoggedIn && showCart">
+  <app-carrito-compra></app-carrito-compra>
+</div>
