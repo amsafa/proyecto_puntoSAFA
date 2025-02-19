@@ -12,13 +12,19 @@ import {AuthService} from '../../service/auth.service';
 
 @Component({
   selector: 'app-detalle-de-libro',
-  imports: [FormsModule, NgForOf, NgIf, CurrencyPipe],
-  standalone: true,
+  imports: [
+    CurrencyPipe,
+    FormsModule,
+    NgForOf,
+    NgIf,
+  ],
+  providers: [{ provide: LOCALE_ID, useValue: 'es' }],
+  standalone: true, // tengo que comprobar esto
   templateUrl: './detalle-de-libro.component.html',
   styleUrl: './detalle-de-libro.component.css'
 })
 export class DetalleDeLibroComponent {
-  libro?: Libro; // Variable para almacenar los detalles del libro
+  libro?: Libro   // Variable para almacenar los detalles del libro
   quantity: number = 1; // Variable para la cantidad
   resenas: Resena[] = []; // Variable para las reseñas
   media_calificacion: number | null = null; // Variable para la calificación media
@@ -35,9 +41,11 @@ export class DetalleDeLibroComponent {
 
 
   constructor(
-    private route: ActivatedRoute,
-    private libroService: LibroService,
-    private resenaService: ResenaService,
+    private route: ActivatedRoute, // Para obtener el ID de la ruta
+    private libroService: LibroService, // Para obtener los detalles del libro
+    private resenaService: ResenaService, // Para obtener las reseñas
+    private cdr: ChangeDetectorRef, // Agregado
+    private carritoService:CarritoService,
     private authService: AuthService,
   ) {}
 
@@ -62,20 +70,22 @@ export class DetalleDeLibroComponent {
   obtenerResenas(id: number): void {
     this.resenaService.obtenerResenasPorLibro(id).subscribe({
       next: (data) => {
-        console.log('Datos recibidos del servicio:', data);
-        if (data && Array.isArray(data)) {
-          this.resenas = data;
+        console.log('Tipo de data:', typeof data, 'Contenido:', data); // Verificar la estructura
+
+        if (data && typeof data === 'object') {
+          this.resenas = Object.values(data); // Convertir el objeto en array
         } else {
-          this.resenas = [];
+          this.resenas = []; // Si hay un error, dejar el array vacío
         }
-        console.log('Resenas después de la asignación:', this.resenas);
-        this.cdr.detectChanges();
+
+        console.log('Resenas obtenidas:', this.resenas);
+        this.cdr.detectChanges(); // Forzar actualización de la vista
       },
       error: (error) => {
         console.error('Error al obtener las reseñas:', error);
-        this.resenas = [];
+        this.resenas = []; // Evitar errores en el *ngFor si falla la API
         this.cdr.detectChanges();
-      },
+      }
     });
   }
 
@@ -84,19 +94,8 @@ export class DetalleDeLibroComponent {
   obtenerMediaCalificacion(id: number): void {
     this.resenaService.obtenerMediaCalificacion(id).subscribe({
       next: (data) => {
-        console.log('Respuesta del backend:', data); // Verificar la estructura de data
-        console.log('Tipo de data:', typeof data); // Verificar el tipo de data
-
-        // Verificar si data es un objeto y tiene la propiedad mediaCalificacion
-        if (data && typeof data === 'object' && 'mediaCalificacion' in data) {
-          this.media_calificacion = Number(data.mediaCalificacion) || 0;
-          console.log('media_calificacion:', this.media_calificacion); // Verificar el valor de media_calificacion
-        } else {
-          console.error('La respuesta del backend no tiene la estructura esperada:', data);
-          this.media_calificacion = 0; // Asignar un valor por defecto
-        }
-
-        this.actualizarEstrellas();
+        this.media_calificacion = Number(data) || 0;
+        this.actualizarEstrellas(); // Llamar al método para actualizar las estrellas
       },
       error: (error) => {
         console.error('Error al obtener la calificación media:', error);
@@ -189,24 +188,35 @@ export class DetalleDeLibroComponent {
     console.log('Cantidad:', this.quantity);
   }
 
+  showLoginAlert() {
+    this.showAlert = true;
+
+    // Hide the alert after 3 seconds
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 3000);
+  }
+
   // Método para agregar al carrito
   addToCart(libro?: Libro) {
+    if (!this.isLoggedIn) {
+      this.showLoginAlert();
+      return;
+    }
     this.carritoService.addToCart(libro, this.quantity);
 
   }
+
+
+
 
   protected readonly isNaN = isNaN;
 
   actualizarEstrellas(): void {
     if (this.media_calificacion !== null) {
       const rating = this.media_calificacion;
-      this.starsArray = Array(Math.floor(rating)).fill(0); // Llenar el array con estrellas completas
-      this.hasHalfStar = rating % 1 >= 0.5; // Verificar si hay media estrella
-      console.log('starsArray:', this.starsArray); // Verificar el array de estrellas
-      console.log('hasHalfStar:', this.hasHalfStar); // Verificar si hay media estrella
-    } else {
-      this.starsArray = []; // Limpiar el array si no hay calificación
-      this.hasHalfStar = false;
+      this.starsArray = Array(Math.floor(rating)).fill(0); // Crear array con el número entero de estrellas
+      this.hasHalfStar = rating % 1 >= 0.5; // Determinar si hay media estrella
     }
   }
 }
