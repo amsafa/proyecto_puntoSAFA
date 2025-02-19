@@ -1,4 +1,4 @@
-<div class="bg-customAzulito mb-2">
+
   <section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
@@ -19,8 +19,8 @@
   </section>
 
 
-
-  <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden flex flex-col md:flex-row mt-4 md:mt-8 lg:mt-12 mb-4 md:mb-8 lg:mb-12 gap-x-8">
+  <div class="bg-customAzulito pt-8 pb-8 mb-0">
+  <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden flex flex-col md:flex-row   gap-x-8">
     <!-- Imagen del libro -->
     <div class="md:w-1/2 flex items-center justify-center my-10 mx-8">
       <img [src]="libro?.imagen" [alt]="libro?.titulo" class="w-full h-auto object-contain my-auto">
@@ -83,10 +83,10 @@
 
   <!-- RESEÑAS -->
 
-  <div class="max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-lg p-8">
+  <div class="max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 mb-6 mt-6 rounded-xl shadow-lg p-8">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">RESEÑAS</h2>
 
-    <!-- Mensaje si no hay reseñas -->
+<!--    &lt;!&ndash; Mensaje si no hay reseñas &ndash;&gt;-->
     <p *ngIf="resenas.length === 0" class="text-gray-600 text-center">No hay reseñas para este libro.</p>
 
     <!-- Lista de reseñas -->
@@ -109,6 +109,8 @@
 
 
 </div>
+
+
 
 <div *ngIf="showAlert" class="fixed top-0 left-0 right-0 flex justify-center transition-transform duration-500 transform translate-y-0">
   <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 shadow-lg rounded-md w-full max-w-md mx-auto">
