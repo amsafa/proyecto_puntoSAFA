@@ -102,8 +102,6 @@
         <p>No hemos encontrado lo que busca pero si lo desea pude ponerse en contacto con nosotros y solicitarlo, o quizá prefiera volver a intentarlo realizando una búsqueda avanzada que se ajuste mejor a sus criterios.</p>
       </div>
     </div>
-
-
     <div class="max-w-2xl px-4 sm:px-6  lg:max-w-7xl lg:px-8">
       <div *ngIf="!noResults" class="card--1 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
         <div *ngFor="let libro of filteredBooks" class="group  group cursor-pointer group overflow-hidden relative">
@@ -119,24 +117,14 @@
         <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
                   <p class="text-sm text-gray-600 text-center">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
                   <p class="mt-2 text-xl text-center font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
-        <div *ngFor="let libro of filteredBooks" href="#" class="group  group cursor-pointer group overflow-hidden relative">
-          <img [src]="libro.imagen" [alt]="libro.titulo"  class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
-          <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
-          <p class="text-sm text-gray-600 text-center">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
-          <p class="mt-2 text-xl font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
-          <div>
-          <button  (click)="addToCart(libro)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#5f6368">
-            <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>-->
-          </svg>
-            Añadir al carrito
-          </button>
 
-          </div>
 
-          <button (click)="verDetallesLibro(libro.id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">Ver detalles</button>
-          <div class="absolute bg-gray-50 -bottom-24 w-56 p-3 flex flex-col gap-1 group-hover:-bottom-0 group-hover:duration-600 duration-500">
-          </div>
+                  <button (click)="verDetallesLibro(libro.id)" class="my-4 px-6 py-3 bg-blue-900 text-white font-medium rounded-lg">Ver detalles</button>
+                  <div class="absolute bg-gray-50 -bottom-24 w-56 p-3 flex flex-col gap-1">
+                  </div>
+      </div>
+    </div>
+
         </div>
 
 
@@ -162,8 +150,8 @@
 
   <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
 
-    <button *ngIf="currentPage > 1"
-       (click)="cargarLibros(currentPage - 1)" [disabled]="currentPage === 1"
+    <button
+            (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
        class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
       Anterior
       <span class="sr-only"></span>
@@ -171,7 +159,7 @@
         <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
       </svg>
     </button>
-    <button (click)="cargarLibros(currentPage + 1)" [disabled]="currentPage >= totalPages"
+    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages"
        class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
       <span class="sr-only"></span>
       Siguiente
@@ -182,9 +170,7 @@
   </nav>
 </div>
 
-<div *ngIf="!libros || libros.length === 0" class="text-black text-center">
-  No hay libros disponibles
-</div>
+
 
 
 
