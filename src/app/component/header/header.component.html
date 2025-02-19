@@ -72,17 +72,18 @@
         Iniciar sesión o registrarse
       </a>
     </ng-container>
+    <div *ngIf="isLoggedIn && showCart">
+      <app-carrito-compra></app-carrito-compra>
+    </div>
 
     <ng-template #loggedInMenu>
       <a routerLink="/perfil" class="block py-2  text-customAzulito hover:text-customBlanco">Perfil</a>
-      <a routerLink="/mis-pedidos" class="block py-2 text-customAzulito hover:text-customBlanco">Mis Pedidos</a>
+      <a routerLink="/pedidos-cliente" class="block py-2 text-customAzulito hover:text-customBlanco">Mis Pedidos</a>
       <button (click)="logout()" class="block w-full py-2 text-red-400 text:bg-red-100 hover:bg-red-100">
         Cerrar Sesión
       </button>
     </ng-template>
   </div>
-  <div *ngIf="isLoggedIn && showCart">
-    <app-carrito-compra></app-carrito-compra>
-  </div>
+
 
 </header>
