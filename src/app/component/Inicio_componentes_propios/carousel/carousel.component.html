@@ -8,16 +8,20 @@
       (mousedown)="onMouseDown($event)"
       (mouseup)="onMouseUp()"
       (mouseleave)="onMouseUp()"
-      (click)="scrollLeft()"
-
+      (click)="scroll('left')"
     >
       ‹
     </button>
 
     <!-- Carrusel -->
-    <div #carousel class="flex overflow-hidden space-x-6 mt-6  transition-all duration-300 ">
-      <div *ngFor="let libro of books" class=" hover:scale-110 min-w-[200px] w-[200px] h-[300px] flex-shrink-0 relative group">
-        <img [src]="libro.imagen" alt="Portada del libro" class="w-full h-full object-cover rounded-lg shadow-md">
+    <div
+      #carousel
+      class="carousel-container flex overflow-hidden space-x-6 mt-6 transition-all duration-300"
+      (mouseenter)="onMouseEnter()"
+      (mouseleave)="onMouseLeave()"
+    >
+      <div *ngFor="let libro of books" class="carousel-item hover:scale-110 min-w-[200px] w-[200px] h-[300px] flex-shrink-0 relative group">
+        <img [src]="libro.imagen" alt="Portada del libro {{ libro.titulo }}" class="w-full h-full object-cover rounded-lg shadow-md">
 
         <!-- Overlay con información del libro -->
         <div class="absolute inset-0 bg-black bg-opacity-75 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
@@ -40,7 +44,7 @@
       (mousedown)="onMouseDown($event)"
       (mouseup)="onMouseUp()"
       (mouseleave)="onMouseUp()"
-      (click)="scrollRight()"
+      (click)="scroll('right')"
     >
       ›
     </button>

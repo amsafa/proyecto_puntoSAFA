@@ -3,6 +3,7 @@ import { LibroService } from '../../../service/libro.service';
 import { Libro } from '../../../interface/libro';
 import { NgFor } from '@angular/common';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-carousel',
@@ -13,8 +14,10 @@ import { Router } from '@angular/router';
 })
 export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('carousel', { static: false }) carousel!: ElementRef<HTMLDivElement>;
-  autoScrollInterval!: any;
-  continuousScrollInterval!: any;
+
+  private destroy$ = new Subject<void>();
+  private autoScrollInterval!: number;
+  private continuousScrollInterval!: number;
 
   books: Libro[] = [];
   loading = true;
@@ -22,91 +25,119 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private apiService: LibroService, private router: Router) {}
 
-  ngOnInit() {
-    console.log('CarouselComponent cargado');
-    this.apiService.getBooks().subscribe({
-      next: (data: Libro[]) => {
-        this.books = data;
-        console.log('Libros cargados:', this.books);
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error(error);
-        this.errorMessage = 'Error al cargar los libros. Inténtalo de nuevo.';
-        this.loading = false;
-      }
-    });
+  ngOnInit(): void {
+    this.apiService.getBooks()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data: Libro[]) => {
+          this.books = data;
+          this.loading = false;
+          setTimeout(() => this.startAutoScroll(), 500); // Iniciar el desplazamiento automático después de 500ms
+          this.books = this.getRandomBooks(data, 10);
+        },
+        error: (error) => {
+          console.error(error);
+          this.errorMessage = 'Error al cargar los libros. Inténtalo de nuevo.';
+          this.loading = false;
+        }
+      });
   }
 
-  ngAfterViewInit() {
-    if (this.books.length) {
-      this.startAutoScroll();
-    }
+  ngAfterViewInit(): void {
+    this.setupScrollLoop();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    clearInterval(this.autoScrollInterval);
+    clearInterval(this.continuousScrollInterval);
+  }
+
+  scroll(direction: 'left' | 'right'): void {
+    const carouselElement = this.carousel.nativeElement;
+    const itemWidth = carouselElement.querySelector('div')?.offsetWidth || 300;
+    const scrollAmount = direction === 'left' ? -itemWidth : itemWidth;
+
+    carouselElement.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+
+    setTimeout(() => this.checkLoopPosition(direction), 400);
+  }
+
+  startAutoScroll(): void {
+    // Detener el intervalo existente si ya está activo
     if (this.autoScrollInterval) {
       clearInterval(this.autoScrollInterval);
     }
-    this.stopContinuousScroll();
+
+    const scrollInterval = 3000;  // Intervalo en milisegundos para cada scroll
+    this.autoScrollInterval = window.setInterval(() => {
+      this.scroll('right');
+    }, scrollInterval);
   }
 
-  scrollLeft() {
+  setupScrollLoop(): void {
     const carouselElement = this.carousel.nativeElement;
-    const itemWidth = carouselElement.querySelector('div')?.offsetWidth || 300; // Ancho de un libro (valor predeterminado si no se encuentra)
-    carouselElement.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+
+    carouselElement.addEventListener('scroll', () => {
+      this.checkLoopPosition();
+    });
   }
 
-  scrollRight() {
+  checkLoopPosition(direction?: 'left' | 'right'): void {
     const carouselElement = this.carousel.nativeElement;
-    const itemWidth = carouselElement.querySelector('div')?.offsetWidth || 300; // Ancho de un libro (valor predeterminado si no se encuentra)
-    carouselElement.scrollBy({ left: itemWidth, behavior: 'smooth' });
-  }
+    const itemWidth = carouselElement.querySelector('div')?.offsetWidth || 300;
 
-  startAutoScroll() {
-    this.autoScrollInterval = setInterval(() => {
-      const carouselElement = this.carousel.nativeElement;
-
-      if (carouselElement.scrollLeft + carouselElement.offsetWidth >= carouselElement.scrollWidth - 10) {
-        setTimeout(() => {
-          carouselElement.scrollTo({ left: 0, behavior: 'smooth' });
-        }, 1000); // Pausa de 1 segundo antes de reiniciar
-      } else {
-        this.scrollRight();
+    // Si llegamos al final, movemos el primer libro al final
+    if (carouselElement.scrollLeft + carouselElement.offsetWidth >= carouselElement.scrollWidth - itemWidth) {
+      const firstBook = this.books.shift();
+      if (firstBook) {
+        this.books.push(firstBook);
       }
-    }, 3000);
+      carouselElement.scrollLeft -= itemWidth; // Ajustamos para que el scroll sea fluido
+    }
+
+    // Si llegamos al inicio, movemos el último libro al principio
+    if (carouselElement.scrollLeft <= 0) {
+      const lastBook = this.books.pop();
+      if (lastBook) {
+        this.books.unshift(lastBook);
+      }
+      carouselElement.scrollLeft += itemWidth;
+    }
   }
 
   verDetallesLibro(idLibro: number): void {
     this.router.navigate(['/detalle-libro', idLibro]);
   }
 
-  onMouseDown(event: MouseEvent) {
+  onMouseDown(event: MouseEvent): void {
     if (event.target instanceof HTMLElement && event.target.tagName === 'BUTTON') {
       const direction = event.target.textContent?.trim() === '‹' ? 'left' : 'right';
       this.scrollContinuously(direction);
     }
   }
 
-  onMouseUp() {
-    this.stopContinuousScroll();
+  onMouseUp(): void {
+    clearInterval(this.continuousScrollInterval);
   }
 
-  scrollContinuously(direction: 'left' | 'right') {
-    this.stopContinuousScroll(); // Detener cualquier desplazamiento continuo previo
-    this.continuousScrollInterval = setInterval(() => {
-      if (direction === 'left') {
-        this.scrollLeft();
-      } else {
-        this.scrollRight();
-      }
-    }, 200); // Desplazamiento cada 200 ms
+  scrollContinuously(direction: 'left' | 'right'): void {
+    this.continuousScrollInterval = window.setInterval(() => {
+      this.scroll(direction);
+    }, 100);
   }
 
-  stopContinuousScroll() {
-    if (this.continuousScrollInterval) {
-      clearInterval(this.continuousScrollInterval);
-      this.continuousScrollInterval = null;
-    }
+  onMouseEnter(): void {
+    clearInterval(this.autoScrollInterval); // Detener el desplazamiento automático
+  }
+
+  onMouseLeave(): void {
+    this.startAutoScroll(); // Reanudar el desplazamiento automático
+  }
+
+  // Obtiene libros aleatorios
+  getRandomBooks(data: Libro[], count: number): Libro[] {
+    return data.sort(() => 0.5 - Math.random()).slice(0, count);
   }
 }

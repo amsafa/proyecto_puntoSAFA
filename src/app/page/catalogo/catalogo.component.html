@@ -1,9 +1,12 @@
-<div class="cart-icon-container" (click)="toggleCart()">
-  <svg class="icon-cart" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-    <path d="M240-80q-33 0-56.5-23.5T160-160v-480q0-33 23.5-56.5T240-720h80q0-66 47-113t113-47q66 0 113 47t47 113h80q33 0 56.5 23.5T800-640v480q0 33-23.5 56.5T720-80H240Zm0-80h480v-480h-80v80q0 17-11.5 28.5T600-520q-17 0-28.5-11.5T560-560v-80H400v80q0 17-11.5 28.5T360-520q-17 0-28.5-11.5T320-560v-80h-80v480Zm160-560h160q0-33-23.5-56.5T480-800q-33 0-56.5 23.5T400-720ZM240-160v-480 480Z"/>
-  </svg>
-  <span class="cantidad">0</span>
-</div>
+<!--<div class="cart-icon-container" (click)="toggleCart()">-->
+<!--  <svg class="icon-cart" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">-->
+<!--    <path d="M240-80q-33 0-56.5-23.5T160-160v-480q0-33 23.5-56.5T240-720h80q0-66 47-113t113-47q66 0 113 47t47 113h80q33 0 56.5 23.5T800-640v480q0 33-23.5 56.5T720-80H240Zm0-80h480v-480h-80v80q0 17-11.5 28.5T600-520q-17 0-28.5-11.5T560-560v-80H400v80q0 17-11.5 28.5T360-520q-17 0-28.5-11.5T320-560v-80h-80v480Zm160-560h160q0-33-23.5-56.5T480-800q-33 0-56.5 23.5T400-720ZM240-160v-480 480Z"/>-->
+<!--  </svg>-->
+<!--  <span class="cantidad">{{ cartQuantity }}</span>-->
+<!--</div>-->
+
+
+
 <section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <div class="container mx-auto flex flex-col md:flex-row items-centerpx-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">
@@ -68,7 +71,7 @@
 <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 p-4 bg-customGreen">
   <!-- Filtro Catalogo -->
   <div class="flex-shrink-0">
-       <!-- Filtros -->
+    <!-- Filtros -->
     <div class="bg-[#1D2C4B] max-w-[333px] max-h-[65px] text-center rounded-lg text-white">
       <h1 class="text-2xl font-bold">Filtros</h1>
     </div>
@@ -97,7 +100,7 @@
               (change)="filterByCategory(category.id)"
               class="mr-2">
             {{ category.nombre }}
-            </li>
+          </li>
         </ul>
       </div>
     </div>
@@ -115,25 +118,31 @@
     </div>
 
 
-        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <div *ngIf="!noResults" class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            <div *ngFor="let libro of filteredBooks" href="#" class="group">
-              <img [src]="libro.imagen" [alt]="libro.titulo"  class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
-              <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
-              <p class="text-sm text-gray-600 text-center">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
-              <p class="mt-2 text-xl font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
-              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#5f6368">-->
-                <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>-->
-              </svg>
-              <button (click)="verDetallesLibro(libro.id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">Ver detalles</button>
-            </div>
-
+    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+      <div *ngIf="!noResults" class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+        <div *ngFor="let libro of filteredBooks" href="#" class="group">
+          <img [src]="libro.imagen" [alt]="libro.titulo"  class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+          <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
+          <p class="text-sm text-gray-600 text-center">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
+          <p class="mt-2 text-xl font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
+          <div>
+          <button (click)="addToCart(libro)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#5f6368">
+            <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>-->
+          </svg>
+            Añadir al carrito
+          </button>
           </div>
+
+          <button (click)="verDetallesLibro(libro.id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">Ver detalles</button>
         </div>
+
       </div>
-
-
     </div>
+  </div>
+
+
+</div>
 
 
 
@@ -142,130 +151,41 @@
 
   <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
 
-    <!-- Previous Button (Only visible on page 2 or greater) -->
-    <a *ngIf="currentPage > 1"
-       (click)="changePage(currentPage - 1)"
+<!--     Previous Button (Only visible on page 2 or greater)-->
+    <button *ngIf="currentPage > 1"
+       (click)="cargarLibros(currentPage - 1)" [disabled]="currentPage === 1"
        class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
       Anterior
       <span class="sr-only"></span>
       <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
       </svg>
-    </a>
-    <a (click)="changePage(currentPage + 1)"
+    </button>
+    <button (click)="cargarLibros(currentPage + 1)" [disabled]="currentPage >= totalPages"
        class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
       <span class="sr-only"></span>
       Siguiente
       <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
       </svg>
-    </a>
+    </button>
   </nav>
 </div>
 
-<div class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-3 bg-gray-800">
-  <div *ngIf="!libros || libros.length === 0" class="loading text-white text-center">
-    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-      <h1 class="text-xl md:text-7xl font-bold flex items-center">Cargand
-      </h1>
-      <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-100"></div>
-    </div>
-  </div>
+<!--<div class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-3 bg-gray-800">-->
+<!--  <div *ngIf="!libros || libros.length === 0" class="loading text-white text-center">-->
+<!--    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">-->
+<!--      <h1 class="text-xl md:text-7xl font-bold flex items-center">Cargand-->
+<!--      </h1>-->
+<!--      <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-100"></div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<div *ngIf="!libros || libros.length === 0" class="text-black text-center">
+  No hay libros disponibles
 </div>
 
 
-<div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
 
-  <!--
-  Background backdrop, show/hide based on slide-over state.
 
-  Entering: "ease-in-out duration-500"
-    From: "opacity-0"
-    To: "opacity-100"
-  Leaving: "ease-in-out duration-500"
-    From: "opacity-100"
-    To: "opacity-0"
--->
-  <div class="cart" *ngIf="showCart">
-    <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
-    <div class="fixed inset-0 overflow-hidden">
-      <div class="absolute inset-0 overflow-hidden">
-        <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-
-          <!--
-         Slide-over panel, show/hide based on slide-over state.
-
-         Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-           From: "translate-x-full"
-           To: "translate-x-0"
-         Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-           From: "translate-x-0"
-           To: "translate-x-full"
-       -->
-
-          <div class="pointer-events-auto w-screen max-w-md">
-            <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-              <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-                <div class="flex items-start justify-between">
-                  <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
-                  <div class="ml-3 flex h-7 items-center">
-                    <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleCart()">Hide Cart</button>
-                  </div>
-                </div>
-
-                <div class="mt-8">
-                  <div class="flow-root">
-                    <ul role="list" class="-my-6 divide-y divide-gray-200">
-                      <li class="flex py-6">
-                        <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                          <img src="https://tailwindui.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="size-full object-cover">
-                        </div>
-
-                        <div class="ml-4 flex flex-1 flex-col">
-                          <div>
-                            <div class="flex justify-between text-base font-medium text-gray-900">
-                              <h3>
-                                <a href="#">Throwback Hip Bag</a>
-                              </h3>
-                              <p class="ml-4">$90.00</p>
-                            </div>
-                            <p class="mt-1 text-sm text-gray-500">Salmon</p>
-                          </div>
-                          <div class="flex flex-1 items-end justify-between text-sm">
-                            <p class="text-gray-500">Qty 1</p>
-                            <div class="flex">
-                              <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
-                <div class="flex justify-between text-base font-medium text-gray-900">
-                  <p>Subtotal</p>
-                  <p>$262.00</p>
-                </div>
-                <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                <div class="mt-6">
-                  <a href="#" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700">Checkout</a>
-                </div>
-                <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
-                  <p>
-                    or
-                    <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">
-                      Continue Shopping
-                      <span aria-hidden="true"> &rarr;</span>
-                    </button>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

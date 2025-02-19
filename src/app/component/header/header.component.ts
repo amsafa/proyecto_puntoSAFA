@@ -1,54 +1,78 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
-import {NgIf} from '@angular/common';
-import {AuthService} from '../../service/auth.service';
+import { NgClass, NgIf } from '@angular/common';
+import { AuthService } from '../../service/auth.service';
+import {CarritoService} from '../../service/carrito.service';
+import {CarritoCompraComponent} from '../carrito-compra/carrito-compra.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  imports: [
-    NgIf
-  ],
+  imports: [NgIf, NgClass, RouterLink, CarritoCompraComponent],
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn = false;
   isMenuOpen = false;
-  showMenu= false;
+  showMenu = false;
   userData: any = null;
+  cartQuantity: number = 0;
+  showCart: boolean = false;
 
-
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private carritoService:CarritoService) { }
 
   ngOnInit(): void {
-    // Suscribirse al estado de autenticación
     this.authService.getAuthState().subscribe((state) => {
       this.isLoggedIn = state;
       if (this.isLoggedIn) {
-        this.authService.fetchUserData(); // 🔹 Obtener los datos si ya está logueado
+        this.authService.fetchUserData();
       }
     });
 
-    // Suscribirse a los datos del usuario
-    this.authService.getUserData().subscribe(user => {
-      this.userData = user; // 🔹 Guardar los datos del usuario
+    this.authService.getUserData().subscribe((user) => {
+      this.userData = user;
+    });
+    this.carritoService.cartItems$.subscribe(items => {
+      this.cartQuantity = items.reduce((total, item) => total + item.quantity, 0);  // Sum up all item quantities
     });
 
-    // if (this.isLoggedIn) {
-    //   this.authService.fetchUserData(); // 🔹 Obtener los datos si ya está logueado
-    // }
+    // Subscribe to cart visibility
+    this.carritoService.showCart$.subscribe(show => {
+      this.showCart = show; // Update cart visibility in header
+    });
+
   }
 
-  toggleMenu() {
+  toggleMenu(event: Event) {
+    event.stopPropagation();
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  toggleAccountMenu() {
-    this.showMenu = !this.showMenu;  // 🔹 Abre o cierra el menú de "Mi Cuenta"
+  toggleAccountMenu(event: Event) {
+    event.stopPropagation();
+    this.showMenu = !this.showMenu;
   }
 
   logout() {
     this.authService.logout();
+    this.isLoggedIn = false;
     this.showMenu = false;
+    this.isMenuOpen = false;
+    this.router.navigate(['/home']);
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeMenus(event: Event) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('nav')) {
+      this.isMenuOpen = false;
+      this.showMenu = false;
+    }
+  }
+
+
+
+  toggleCart() {
+    this.carritoService.toggleCart(); // Toggle cart visibility
   }
 }

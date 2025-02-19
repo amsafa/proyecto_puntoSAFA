@@ -136,8 +136,3 @@ export class DetalleDeLibroComponent {
     }
   }
 }
-
-
-
-
-

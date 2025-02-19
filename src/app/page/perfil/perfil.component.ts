@@ -39,7 +39,7 @@ export class PerfilComponent implements OnInit {
     private authService: AuthService,
     private miServicioUsuario: UsuarioService
 
-) {
+  ) {
     this.perfilForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       nick: ['', [Validators.required, Validators.minLength(3)]],
