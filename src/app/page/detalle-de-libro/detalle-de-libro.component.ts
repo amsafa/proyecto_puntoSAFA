@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, LOCALE_ID} from '@angular/core';
 import {Libro} from '../../interface/libro';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
@@ -18,6 +18,7 @@ import {AuthService} from '../../service/auth.service';
     NgForOf,
     NgIf,
   ],
+  providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   standalone: true, // tengo que comprobar esto
   templateUrl: './detalle-de-libro.component.html',
   styleUrl: './detalle-de-libro.component.css'
