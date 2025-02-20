@@ -18,10 +18,6 @@ import {CarouselComponent} from './component/Inicio_componentes_propios/carousel
 
 export const routes: Routes = [
 
-  //Comprobación de componentes de Alba
-  {path: 'carrusel', component: CarouselComponent, pathMatch: 'full'},
-  {path: 'recomendacionLibro', component: RecomendacionLibroComponent, pathMatch: 'full'},
-
   //Comprobación de componentes
   {path: '', component: HomeComponent, pathMatch: 'full' },
   {path: 'registro', component:RegistroComponent, pathMatch: 'full'},

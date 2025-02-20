@@ -66,18 +66,23 @@ export class RegistroComponent implements OnInit {
         next: () => {
           this.mostrarAlertaExito();  // Muestra alerta de éxito
           this.errorMessage = '';     // Limpia errores anteriores
+          console.log('Registro exitoso');
         },
         error: () => {
           this.errorMessage = 'Error en el registro. Intenta nuevamente.';
+          console.log('Error en el registro');
         },
         complete: () => {
           if (!this.errorMessage) {
+            console.log('Registro completado');
           }
         }
       });
     } else {
       this.errorMessage = 'Verifica los datos ingresados.';
+      console.log('Verifica los datos ingresados');
     }
+    console.log(this.registroForm.value);
   }
 
   // Función para rellenar el objeto con los datos del formulario
