@@ -7,7 +7,7 @@ import { PerfilService } from '../../service/perfil.service';
 import { NgIf } from '@angular/common';
 import {AuthService} from '../../service/auth.service';
 import {distinctUntilChanged, filter, switchMap} from 'rxjs';
-import { UsuarioService } from '../../service/usuario.service';
+
 
 
 
@@ -37,7 +37,6 @@ export class PerfilComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private miServicioUsuario: UsuarioService
 
   ) {
     this.perfilForm = this.fb.group({
@@ -89,30 +88,30 @@ export class PerfilComponent implements OnInit {
       return;
     }
 
-    const usuarioActualizado = {
-      email: this.perfilForm.value.email,
-      nick: this.perfilForm.value.nick,
-      nombre: this.perfilForm.value.nombre,
-      apellidos: this.perfilForm.value.apellidos,
-      dni: this.perfilForm.value.dni,
-      foto: this.perfilForm.value.foto,
-      direccion: this.perfilForm.value.direccion,
-      telefono: this.perfilForm.value.telefono
-    };
+    // Obtener los valores del formulario
+    const usuarioActualizado = this.perfilForm.value;
 
-    // Enviar los cambios al servidor
-    this.miServicioUsuario.actualizarUsuario(this.userData.id, usuarioActualizado).subscribe(
+    console.log('Datos a enviar:', usuarioActualizado); // Verifica los datos antes de enviarlos
+
+    // Llamada al servicio para actualizar los datos del cliente
+    this.perfilService.editarCliente(this.userData.id, usuarioActualizado).subscribe(
       (respuesta) => {
-        console.log("✅ Usuario actualizado correctamente:", respuesta);
+        console.log("Datos del backend después de la actualización:", respuesta);
         Swal.fire('Éxito', 'Los datos del perfil se han actualizado correctamente', 'success');
-        this.mostrandoFormulario = false; // Cerrar el formulario
+        this.mostrandoFormulario = false;
+
+        // Actualiza los datos en el formulario después de la respuesta exitosa
+        this.perfilForm.patchValue(respuesta);  // Aquí estamos recargando los datos del formulario
       },
       (error) => {
         console.error("❌ Error en la actualización:", error);
         Swal.fire('Error', 'Hubo un problema al actualizar el perfil', 'error');
       }
     );
+
   }
+
+
 
   eliminarCliente(): void {
     if (this.clienteId) {
@@ -145,9 +144,26 @@ export class PerfilComponent implements OnInit {
   }
 
   // Método para cerrar el formulario
+  mostrandoEdicionContrasena: any;
   cerrarFormulario(): void {
     this.mostrandoFormulario = false;
   }
 
+
+  abrirEdicionUsuario(): void {
+    if (this.cliente) {
+      this.usuarioEditado = { ...this.cliente }; // Clonar el usuario actual para edición
+      this.mostrandoEdicionContrasena = true;
+    }
+  }
+
+
+  guardarEdicionContrasena() {
+
+  }
+
+  cerrarEdicionUsuario(): void {
+    this.mostrandoEdicionContrasena = false;
+  }
 
 }

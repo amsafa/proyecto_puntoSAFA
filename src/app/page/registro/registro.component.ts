@@ -42,7 +42,7 @@ export class RegistroComponent implements OnInit {
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}[A-Za-z]$')]],
       foto: ['', [Validators.required, Validators.pattern('https?://.+')]],
       direccion: ['', Validators.required],
-      telefonoUsuario: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]], // Asumiendo que el nombre del campo para el teléfono es "telefonoUsuario"
+      telefono: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
       contrasena: ['', [Validators.required, Validators.minLength(6)]],
       repetircontrasena: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });

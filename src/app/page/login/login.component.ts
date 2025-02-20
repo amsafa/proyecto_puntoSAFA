@@ -31,12 +31,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   async onLogin(): Promise<void> {
-    if (this.loginForm.valid) {
+    if (this.loginForm.valid || true) {
       this.login = { ...this.login, ...this.loginForm.value };
 
+      console.log("Iniciando sesión con:", this.login); // ✅ Depuración
+      this.authService.login(this.login);
       try {
-        await this.authService.login(this.login);
-        console.log("Login exitoso"); // ✅ Depuración
+
       } catch (error) {
         this.errorMessage = 'Error en el inicio de sesión. Verifica tus credenciales.';
       }
