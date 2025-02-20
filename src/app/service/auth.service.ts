@@ -86,9 +86,17 @@ export class AuthService {
     }
   }
 
-
-
-
+  // login(credentials: Login): Observable<any> {
+  //   console.log("🟢 Iniciando sesión con:", credentials);
+  //   return this.http.post(`/api/api/login_check`, credentials).pipe(
+  //     tap((response: any) => {
+  //       console.log("✅ Token recibido:", response.token);
+  //       localStorage.setItem('token', response.token);
+  //       this.authState.next(true);
+  //     }),
+  //       catchError(this.handleError)
+  //   );
+  // }
 
 
   // Obtener datos del usuario autenticado
@@ -107,7 +115,7 @@ export class AuthService {
     });
 
     return lastValueFrom(
-      this.http.get('https://localhost:8000/api/cliente/auth/user', { headers })
+      this.http.get('/api/api/cliente/auth/user', { headers })
     ).then(userData => {
       this.userData.next(userData);
       return userData;
