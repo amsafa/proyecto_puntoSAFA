@@ -7,7 +7,7 @@ import { PerfilService } from '../../service/perfil.service';
 import { NgIf } from '@angular/common';
 import {AuthService} from '../../service/auth.service';
 import {distinctUntilChanged, filter, switchMap} from 'rxjs';
-import { UsuarioService } from '../../service/usuario.service';
+
 
 
 
@@ -37,7 +37,6 @@ export class PerfilComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private miServicioUsuario: UsuarioService
 
   ) {
     this.perfilForm = this.fb.group({
