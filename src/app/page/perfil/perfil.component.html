@@ -74,11 +74,6 @@
           <label>Foto:</label>
           <input [(ngModel)]="usuarioEditado.foto" class="w-full border p-2 rounded" />
 
-          <label>Contraseña:</label>
-          <input type="password" [(ngModel)]="usuarioEditado.contrasena" class="w-full border p-2 rounded"
-                 placeholder="Nueva contraseña (opcional)" />
-
-
 
           <div class="flex justify-end mt-4">
             <button (click)="guardarCambios()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">
@@ -87,6 +82,26 @@
 
             <button (click)="cerrarFormulario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
           </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Modal para editar email y contraseña -->
+    <div *ngIf="mostrandoEdicionContrasena" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+      <div class="bg-white p-6 rounded shadow-lg w-1/3">
+        <h2 class="text-lg font-semibold mb-4">Editar Email y Contraseña</h2>
+
+        <label>Contraseña:</label>
+        <input type="password" [(ngModel)]="usuarioEditado.contrasena" class="w-full border p-2 rounded"
+               placeholder="Nueva contraseña (opcional)" />
+
+        <div class="flex justify-end mt-4">
+          <button (click)="guardarEdicionContrasena()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">
+            Guardar
+          </button>
+          <button (click)="cerrarEdicionUsuario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
         </div>
       </div>
     </div>
