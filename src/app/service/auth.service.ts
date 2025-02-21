@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import { RegistroCliente } from '../interface/RegistroCliente';
 import { Login } from '../interface/Login';
 import { ActualizarService } from './actualizar.service';
-import {environment} from '../../environments/environment';
 
 
 @Injectable({
@@ -16,8 +15,7 @@ import {environment} from '../../environments/environment';
 export class AuthService {
   private authState = new BehaviorSubject<boolean>(this.isLoggedIn());
   private userData = new BehaviorSubject<RegistroCliente | null>(null);
-  private apiUrl =  environment.apiUrl;
-
+  private apiUrl = 'http://127.0.0.1:8000/api';
 
 
   constructor(
@@ -29,111 +27,59 @@ export class AuthService {
 
   // Iniciar sesión
   async login(credentials: Login): Promise<void> {
+    localStorage.removeItem('token'); // Limpiar token anterior
     try {
-      console.log("🟢 Iniciando sesión con:", credentials);
-
       const response = await lastValueFrom(
-        this.http.post<{ token: string }>(`${this.apiUrl}/api/login_check`, credentials)
+        this.http.post<{ token: string }>(`${this.apiUrl}/login_check`, credentials)
       );
 
-      if (!response.token) {
-        throw new Error("❌ Token no recibido en la respuesta del servidor.");
-      }
-
-      console.log("✅ Token recibido:", response.token);
-
-      // Guardar token en localStorage
       localStorage.setItem('token', response.token);
       this.authState.next(true);
 
       // Obtener datos del usuario
       const user = await this.fetchUserData();
-      console.log("🟢 Datos de usuario obtenidos:", user);
+      console.log("Datos de usuario obtenidos:", user); // ✅ Depuración
 
-      if (user?.usuario?.rol) {
+      if (user && user.usuario) { // 🔹 Verifica que usuario exista
         localStorage.setItem('userData', JSON.stringify(user));
 
-        // Redirigir según el rol
-        switch (user.usuario.rol) {
-          case 'admin':
-            console.log("🚀 Redirigiendo a perfil-admin");
-            await this.router.navigate(['/perfil-adm']);
-            break;
-          case 'cliente':
-            console.log("🚀 Redirigiendo a home");
-            await this.router.navigate(['/home']);
-            break;
-          default:
-            console.warn("⚠️ Rol desconocido, redirigiendo a login");
-            await this.router.navigate(['/login']);
+        // Redirigir según el rol dentro de usuario
+        if (user.usuario.rol === 'admin') {
+          console.log("Redirigiendo a perfil-admin");
+          this.router.navigate(['/perfil-adm']);
+        } else if (user.usuario.rol === 'cliente') {
+          console.log("Redirigiendo a home");
+          this.router.navigate(['/home']);
         }
-      } else {
-        console.warn("⚠️ No se pudo determinar el rol del usuario");
-        await this.router.navigate(['/login']);
       }
-    } catch (error: any) {
-      console.error("❌ Error en login:", error);
-
-      if (error instanceof HttpErrorResponse && error.status === 401) {
-        console.warn("⚠️ Credenciales incorrectas.");
-        Swal.fire("Error", "Usuario o contraseña incorrectos.", "error");
-      } else {
-        Swal.fire("Error", "No se pudo iniciar sesión. Inténtelo más tarde.", "error");
-      }
-
-      localStorage.removeItem('token'); // Eliminar token inválido si falla
-      this.authState.next(false);
+    } catch (error) {
+      console.error("Error en login:", error);
+      // @ts-ignore
+      this.handleError(error);
     }
   }
 
-  // login(credentials: Login): Observable<any> {
-  //   console.log("🟢 Iniciando sesión con:", credentials);
-  //   return this.http.post(`/api/api/login_check`, credentials).pipe(
-  //     tap((response: any) => {
-  //       console.log("✅ Token recibido:", response.token);
-  //       localStorage.setItem('token', response.token);
-  //       this.authState.next(true);
-  //     }),
-  //       catchError(this.handleError)
-  //   );
-  // }
+
+
 
 
   // Obtener datos del usuario autenticado
   fetchUserData(): Promise<RegistroCliente | null> {
     const token = this.getToken();
-    if (!token) {
-      console.error("❌ No hay token en el localStorage");
-      return Promise.resolve(null);
-    }
+    if (!token) return Promise.resolve(null);
 
-    console.log("🟢 Enviando token:", token);
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return lastValueFrom(
-      this.http.get('/api/cliente/auth/user', { headers })
+      this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/auth/user`, { headers })
     ).then(userData => {
       this.userData.next(userData);
-      return userData;
-    }).catch((err: any) => {
-      console.error("❌ Error al obtener datos del usuario:", err);
-
-      if (err instanceof HttpErrorResponse) {
-        console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
-      } else {
-        console.error("❌ Error inesperado:", err);
-      }
-
+      return userData; // Devuelve el usuario con su rol
+    }).catch(err => {
+      console.error(err);
       this.userData.next(null);
       return null;
     });
   }
-
-
 
 
 
@@ -152,7 +98,7 @@ export class AuthService {
 
   // Registrar un nuevo usuario
   registro(userData: RegistroCliente): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/registro`, userData).pipe(catchError(this.handleError));
+    return this.http.post(`${this.apiUrl}/registro`, userData).pipe(catchError(this.handleError));
   }
 
 
