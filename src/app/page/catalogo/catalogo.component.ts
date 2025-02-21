@@ -37,6 +37,8 @@ export class CatalogoComponent  implements OnInit {
   totalPages: number = 1; // Placeholder, will be set dynamically
   limit: number = 12;
   cartItems: LibroCarrito[] = [];
+  private categoryId: number = 0;
+
 
   selectedPriceRanges: string[] = [];
 
@@ -56,38 +58,62 @@ export class CatalogoComponent  implements OnInit {
 
 
 
-
+// Esto es para que Angular sepa cómo rastrear los libros por su ID
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.filter = params['search'] || '';
       this.currentPage = params['page'] ? parseInt(params['page'], 10) : 1;
       this.limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
 
-      this.cargarLibros(this.currentPage, this.limit);
-    });
-    this.categoriaService.getCategorias().subscribe(categorias => {
-          this.categories = categorias;
-        });
-  }
+      // Lee el parámetro categoryId
+      const categoryId = params['categoryId'] ? parseInt(params['categoryId'], 10) : null;
 
+      // Si hay un categoryId, aplicamos el filtro directamente
+      if (categoryId) {
+        this.libroService.getFilteredBooks([], categoryId, this.currentPage, this.limit).subscribe({
+          next: (books) => {
+            this.filteredBooks = books;
+            this.totalPages = Math.ceil(books.length / this.limit);
+          },
+          error: (error) => console.error(error)
+        });
+      } else {
+        // Si no hay categoryId, cargamos todos los libros
+        this.cargarLibros(this.currentPage, this.limit);
+      }
+    });
+
+    // Obtén las categorías disponibles
+    this.categoriaService.getCategorias().subscribe(categorias => {
+      this.categories = categorias;
+    });
+  }
 
   cargarLibros(page: number = 1, limit: number = 9): void {
     this.currentPage = page;
 
+    // Si hay un rango de precios seleccionado, aplica el filtro por precio
     if (this.selectedPriceRange) {
       this.filterByPrice(this.selectedPriceRange, page, limit);
-    } else if (this.selectedCategoryId) {
+    }
+    // Si hay una categoría seleccionada, aplica el filtro por categoría
+    else if (this.selectedCategoryId) {
       this.filterByCategory(this.selectedCategoryId, page, limit);
-    } else {
+    }
+    // Si no hay filtros, carga todos los libros
+    else {
       this.libroService.getBooks(page, limit).subscribe({
         next: (data) => {
           this.libros = data;
           this.filteredBooks = [...this.libros];
-          this.totalPages = Math.ceil(50 / limit); // Update based on backend response
+          this.totalPages = Math.ceil(50 / limit); // Actualiza según la respuesta del backend
         },
         error: (error) => console.error(error)
       });
     }
+    console.log('Selected Category ID:', this.selectedCategoryId);
+
+
   }
 
 
@@ -137,7 +163,10 @@ export class CatalogoComponent  implements OnInit {
   filterByCategory(categoryId: number, page: number = 1, limit: number = 9): void {
     // Si la categoría ya está seleccionada, la deseleccionamos
     this.selectedCategoryId = this.selectedCategoryId === categoryId ? null : categoryId;
+
+    // Aplicamos los filtros
     this.applyFilters(page, limit);
+
   }
 
   applyFilters(page: number = 1, limit: number = 9): void {
@@ -148,6 +177,12 @@ export class CatalogoComponent  implements OnInit {
         this.currentPage = page;
       },
       error: (error) => console.error(error)
+    });
+    console.log('Applying filters with:', {
+      priceRanges: this.selectedPriceRanges,
+      categoryId: this.selectedCategoryId,
+      page: page,
+      limit: limit
     });
   }
 

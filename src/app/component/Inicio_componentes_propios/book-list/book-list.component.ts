@@ -51,6 +51,6 @@ export class BookListComponent implements OnInit {
 
   // Esto es para que Angular sepa cómo rastrear los libros por su ID
   trackByBookId(index: number, book: Libro): number {
-    return book.id; // Asegúrate de que `id` es una propiedad única de `Libro`
+    return book.id;
   }
 }

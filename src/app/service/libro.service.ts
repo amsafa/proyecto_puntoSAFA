@@ -62,7 +62,7 @@ export class LibroService {
     );
   }
 
-  getFilteredBooks(priceRanges: string[], categoryId: number | null, page: number = 1, limit: number = 9): Observable<Libro[]> {
+  getFilteredBooks(priceRanges: string[], categoryId: number | null, page: number, limit: number): Observable<Libro[]> {
     let params: any = { page, limit };
 
     if (priceRanges.length) {

@@ -1,11 +1,3 @@
-<!--<div class="cart-icon-container" (click)="toggleCart()">-->
-<!--  <svg class="icon-cart" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">-->
-<!--    <path d="M240-80q-33 0-56.5-23.5T160-160v-480q0-33 23.5-56.5T240-720h80q0-66 47-113t113-47q66 0 113 47t47 113h80q33 0 56.5 23.5T800-640v480q0 33-23.5 56.5T720-80H240Zm0-80h480v-480h-80v80q0 17-11.5 28.5T600-520q-17 0-28.5-11.5T560-560v-80H400v80q0 17-11.5 28.5T360-520q-17 0-28.5-11.5T320-560v-80h-80v480Zm160-560h160q0-33-23.5-56.5T480-800q-33 0-56.5 23.5T400-720ZM240-160v-480 480Z"/>-->
-<!--  </svg>-->
-<!--  <span class="cantidad">{{ cartQuantity }}</span>-->
-<!--</div>-->
-
-
 
 <section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -47,24 +39,6 @@
   </div>
 
 </section>
-
-<!--<div class="flex items-center space-x-2 mx-60 my-10 px-20">-->
-<!--  <label for="sort" class="-->
-<!--   mb-2  font-bold text-[20px] text-[#1D2C4B] font-montserrat  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"-->
-<!--  >Ordenar por</label>-->
-<!--  <p>You select your team {{ opcionSeleccionada }} using change event</p>-->
-<!--  <select id="sort" class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"-->
-<!--          #filtro (change)="onSelected(filtro.value)">-->
-<!--    <option default>Pick a team</option>-->
-<!--    <option  value="autor">Autor</option>-->
-<!--    <option value="titulo">Libro</option>-->
-<!--    <option value="fecha">Fecha edición</option>-->
-<!--    <option value="precio">Precio</option>-->
-<!--  </select>-->
-
-<!--</div>-->
-
-
 
 
 
@@ -190,15 +164,7 @@
   </nav>
 </div>
 
-<!--<div class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-3 bg-gray-800">-->
-<!--  <div *ngIf="!libros || libros.length === 0" class="loading text-white text-center">-->
-<!--    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">-->
-<!--      <h1 class="text-xl md:text-7xl font-bold flex items-center">Cargand-->
-<!--      </h1>-->
-<!--      <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-100"></div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+
 
 <div *ngIf="!libros || libros.length === 0" class="text-black text-center">
   No hay libros disponibles

@@ -10,21 +10,20 @@
         <h3 class="text-lg font-bold text-blue-800 text-center">{{ category1Name }}</h3>
         <app-book-list [categoryId]="category1Id"></app-book-list>
         <div class="flex justify-center mt-6">
-          <button class="btn-primary">
-            Abrir
-          </button>
+
+          <button class="btn-primary" (click)="redirectToCatalog(category1Id)"> Abrir</button>
         </div>
       </div>
 
       <!-- Bloque 2: Literatura y Clásicos -->
       <div class="bg-blue-50 p-3 rounded shadow-sm">
-        <h3 class="text-lg font-bold text-blue-800 text-center">{{ category2Name }}</h3>
-        <app-book-list [categoryId]="category2Id"></app-book-list>
+        <h3 class="text-lg font-bold text-blue-800 text-center">{{ category3Name }}</h3>
+        <app-book-list [categoryId]="category3Id"></app-book-list>
         <div class="flex justify-center mt-6">
-          <button class="btn-primary"
-          >
-            Abrir
-          </button>
+          <div class="flex justify-center mt-6">
+
+            <button class="btn-primary" (click)="redirectToCatalog(category3Id)"> Abrir</button>
+          </div>
         </div>
       </div>
     </div>
