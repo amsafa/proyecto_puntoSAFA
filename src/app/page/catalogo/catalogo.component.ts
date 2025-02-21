@@ -49,8 +49,6 @@ export class CatalogoComponent  implements OnInit {
     this.route.queryParams.subscribe(params => {
       console.log('Query Params:', params);
       this.searchTerm = params['search'] || '';
-      this.selectedPriceRange = params['price'] || null;
-      this.selectedCategoryId = params['category'] ? parseInt(params['category'], 10) : null;
       console.log('Received search term from query params:', this.searchTerm);
       this.currentPage = params['page'] ? parseInt(params['page'], 10) : 1;
       this.limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
@@ -126,6 +124,11 @@ export class CatalogoComponent  implements OnInit {
   clearSearch(): void {
     this.searchTerm = '';
     this.filteredBooks = this.libros;
+    const newUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, newUrl);
+
+    // Reload the page
+    window.location.reload();
   }
 
   // selectedPriceRange: string | null = null;
