@@ -109,15 +109,21 @@ export class PagarCompraComponent implements OnInit{
     console.log("Sending Pedido with Cliente ID:", this.userData.id);
 
     const pedido: Pedido = {
-      fecha: new Date().toISOString(), // Current date
+      fecha: new Date().toISOString(),
       total: this.totalWithTaxes,
       estado: "procesado",
-      direccion: this.address,
-      cliente: this.userData.id, // Ensure this is the correct client ID
+      direccion_entrega: this.address,
+      cliente: this.userData.id,
       lineaPedidos: this.cartItems.map(item => ({
         cantidad: item.quantity,
         precio_unitario: item.price,
-        libro: item.id, // Assuming 'id' is the book ID
+        libro: {
+          id: item.id,
+          titulo: item.titulo,
+          imagen: item.imagen,
+          price: item.price,
+          quantity: item.quantity
+        }, // Pass the full object
       })),
     };
 
