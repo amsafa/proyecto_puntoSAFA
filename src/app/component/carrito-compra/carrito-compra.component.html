@@ -18,13 +18,13 @@
               <div *ngIf="cartItems.length > 0" class="mt-8">
   <div *ngFor="let item of cartItems" class="cart-item">
     <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-      <img [src]="item.image" alt="" class="size-full object-cover">
+      <img [src]="item.imagen" alt="" class="size-full object-cover">
     </div>
     <div class="ml-4 flex flex-1 flex-col">
       <div>
         <div class="flex justify-between text-base font-medium text-gray-900">
           <h3>
-            <a href="http://localhost:4200/detalle-libro/{{item.id}}">{{ item.name }}</a>
+            <a href="http://localhost:4200/detalle-libro/{{item.id}}">{{ item.titulo }}</a>
           </h3>
           <p class="ml-4">{{ item.price | currency: 'EUR' }}</p>
         </div>

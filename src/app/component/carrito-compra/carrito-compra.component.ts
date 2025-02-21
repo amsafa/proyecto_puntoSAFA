@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, LOCALE_ID, OnInit} from '@angular/core';
 import {LibroCarrito} from '../../interface/libro-carrito';
 import {CarritoService} from '../../service/carrito.service';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
-import {Route, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {AuthService} from '../../service/auth.service';
 
 
@@ -13,6 +13,7 @@ import {AuthService} from '../../service/auth.service';
     NgForOf,
     CurrencyPipe,
   ],
+  providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   templateUrl: './carrito-compra.component.html',
   styleUrl: './carrito-compra.component.css'
 })
@@ -32,6 +33,10 @@ export class CarritoCompraComponent implements OnInit {
       if (this.isLoggedIn) {
         this.authService.fetchUserData();
       }
+    });
+    this.carritoService.showCart$.subscribe(show => {
+      console.log("Cart visibility updated:", show);
+      this.showCart = show;
     });
 
     this.carritoService.getCartItems().subscribe(items => {
