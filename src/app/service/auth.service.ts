@@ -73,6 +73,7 @@ export class AuthService {
       this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/auth/user`, { headers })
     ).then(userData => {
       this.userData.next(userData);
+      console.log(userData)
       return userData; // Devuelve el usuario con su rol
     }).catch(err => {
       console.error(err);
