@@ -24,6 +24,7 @@ export class PagarCompraComponent implements OnInit{
   shipping: number = 0;
   userData: Cliente | undefined;
   address: string = '';
+  codigo:string='';
   showModal: boolean = false;
   modalMessage: string = '';
   baseTotal:number =0;
@@ -112,6 +113,7 @@ export class PagarCompraComponent implements OnInit{
       fecha: new Date().toISOString(),
       total: this.totalWithTaxes,
       estado: "procesado",
+      codigo:this.codigo,
       direccion_entrega: this.address,
       cliente: this.userData.id,
       lineaPedidos: this.cartItems.map(item => ({
