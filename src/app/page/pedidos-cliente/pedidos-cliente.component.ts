@@ -25,7 +25,11 @@ export class PedidosClienteComponent implements OnInit{
   loading = true;
   errorMessage = '';
   showReviewForm: { [libroId: number]: boolean } = {};
-  orderStats: EstadisticasPedidos | undefined;
+  orderStats: EstadisticasPedidos | null =null;
+  procesados:number = 0;
+  totales:number = 0;
+  entregados:number =0;
+
 
   constructor(private pedidoService:PedidoService, private authService:AuthService) {}
 
@@ -46,6 +50,9 @@ export class PedidosClienteComponent implements OnInit{
         this.pedidoService.getOrderStatsByClient(userData.id, token).subscribe( {
           next:(data)=>{
             this.orderStats = data;
+            this.animateCount('totales', data.totales);
+            this.animateCount('entregados', data.entregados);
+            this.animateCount('procesados', data.procesados);
           },error:(error)=>{
             this.errorMessage = 'Error fetching stats';
 
@@ -61,6 +68,18 @@ export class PedidosClienteComponent implements OnInit{
   toggleReviewForm(libroId: number) {
     this.showReviewForm[libroId] = !this.showReviewForm[libroId];
   }
+
+  animateCount(property: 'totales' | 'entregados' | 'procesados', targetValue: number) {
+    let currentValue = 0;
+    const interval = setInterval(() => {
+      if (currentValue < targetValue) {
+        this[property] = ++currentValue;
+      } else {
+        clearInterval(interval);
+      }
+    }, 80); // Adjust speed here (lower = faster)
+  }
+
 
 
 
