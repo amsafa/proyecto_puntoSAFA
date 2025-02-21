@@ -34,14 +34,14 @@ export class CarritoService {
     const existingItem = this.cartItems.find(item => item.id === libro.id);
 
     if (existingItem) {
-      existingItem.cantidad += 1; // Increment quantity if item already exists
+      existingItem.quantity += quantity; // Add the specified quantity
     } else {
       this.cartItems.push({
-        id: libro.id,
-        titulo: libro.titulo,
-        imagen: libro.imagen,
-        precio: libro.precio,
-        cantidad: 1
+        id: libro!.id,
+        name: libro!.titulo,
+        image: libro!.imagen,
+        price: libro!.precio!,
+        quantity: quantity // Use provided quantity
       });
     }
 
