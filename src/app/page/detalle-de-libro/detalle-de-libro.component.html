@@ -65,11 +65,8 @@
   </div>
 
   <!-- RESEÑAS -->
-  <div class="max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-lg p-8">
+  <div *ngIf="resenas.length > 0; else noResenas" class="max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-lg p-8">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">RESEÑAS</h2>
-
-    <p *ngIf="resenas.length === 0" class="text-gray-600 text-center">No hay reseñas para este libro.</p>
-
     <div *ngFor="let resena of resenas" class="bg-white p-6 rounded-lg shadow-md mb-6 hover:shadow-lg transition-shadow duration-300">
       <div class="flex items-center justify-between mb-4">
         <p class="text-gray-800 font-semibold text-lg">{{ resena.usuario }}</p>
@@ -82,4 +79,8 @@
       <p class="text-gray-500 text-sm mt-3">Publicado el {{ resena.fecha }}</p>
     </div>
   </div>
+
+  <ng-template #noResenas>
+    <p class="text-gray-600 text-center text-m">No hay reseñas para este libro.</p>
+  </ng-template>
 </div>

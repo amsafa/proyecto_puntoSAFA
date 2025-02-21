@@ -64,20 +64,18 @@ export class DetalleDeLibroComponent {
   obtenerResenas(id: number): void {
     this.resenaService.obtenerResenasPorLibro(id).subscribe({
       next: (data) => {
-        console.log('Tipo de data:', typeof data, 'Contenido:', data); // Verificar la estructura
-
-        if (data && typeof data === 'object') {
-          this.resenas = Object.values(data); // Convertir el objeto en array
+        console.log('Datos recibidos del servicio:', data); // Verifica los datos recibidos
+        if (data && Array.isArray(data)) {
+          this.resenas = data; // Asigna directamente si es un array
         } else {
-          this.resenas = []; // Si hay un error, dejar el array vacío
+          this.resenas = []; // Si no es un array, asigna un array vacío
         }
-
-        console.log('Resenas obtenidas:', this.resenas);
-        this.cdr.detectChanges(); // Forzar actualización de la vista
+        console.log('Resenas después de la asignación:', this.resenas); // Verifica el contenido de resenas
+        this.cdr.detectChanges(); // Forzar la detección de cambios
       },
       error: (error) => {
         console.error('Error al obtener las reseñas:', error);
-        this.resenas = []; // Evitar errores en el *ngFor si falla la API
+        this.resenas = []; // En caso de error, asigna un array vacío
         this.cdr.detectChanges();
       }
     });
