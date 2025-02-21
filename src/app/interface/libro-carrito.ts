@@ -1,7 +1,7 @@
 export interface LibroCarrito {
   id: number;
-  name: string;
-  image: string;
+  titulo: string;
+  imagen: string;
   price: number;
   quantity: number;
 }

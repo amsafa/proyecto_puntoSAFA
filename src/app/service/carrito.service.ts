@@ -56,8 +56,8 @@ export class CarritoService {
     } else {
       this.cartItems.push({
         id: libro!.id,
-        name: libro!.titulo,
-        image: libro!.imagen,
+        titulo: libro!.titulo,
+        imagen: libro!.imagen,
         price: libro!.precio!,
         quantity: quantity // Use provided quantity
       });
