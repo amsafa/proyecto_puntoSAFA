@@ -3,6 +3,7 @@ import {Pedido} from '../../interface/pedido';
 import {PedidoService} from '../../service/pedido.service';
 import {AuthService} from '../../service/auth.service';
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {EstadisticasPedidos} from '../../interface/estadisticas-pedidos';
 
 @Component({
   selector: 'app-pedidos-cliente',
@@ -21,6 +22,8 @@ export class PedidosClienteComponent implements OnInit{
   pedidos: Pedido[] = [];
   loading = true;
   errorMessage = '';
+  showReviewForm: { [libroId: number]: boolean } = {};
+  orderStats: EstadisticasPedidos | undefined;
 
   constructor(private pedidoService:PedidoService, private authService:AuthService) {}
 
@@ -38,12 +41,25 @@ export class PedidosClienteComponent implements OnInit{
             this.loading = false;
         }
         });
+        this.pedidoService.getOrderStatsByClient(userData.id, token).subscribe( {
+          next:(data)=>{
+            this.orderStats = data;
+          },error:(error)=>{
+            this.errorMessage = 'Error fetching stats';
+
+          }
+        });
       }else{
         this.loading = false;
         this.errorMessage = 'Inicar sesión para consultar tus pedidos';
-
       }
     })
   }
+
+  toggleReviewForm(libroId: number) {
+    this.showReviewForm[libroId] = !this.showReviewForm[libroId];
+  }
+
+
 
 }
