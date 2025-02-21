@@ -1,13 +1,55 @@
 <section class="py-24 relative">
   <div class="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
-    <h2 class="font-manrope font-bold text-4xl leading-10 text-black text-center">
-      Mis pedidos
-    </h2>
+    <div class="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32">
+      <div class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-75"></div>
+      <img src="https://www.mundodeportivo.com/urbantecno/hero/2022/07/Venta-de-libros.png?width=768&aspect_ratio=16:9&format=nowebp" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center">
+      <div class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl" aria-hidden="true">
+        <div class="aspect-[1097/845] w-[68.5625rem] bg-gray-700  opacity-20"></div>
+      </div>
+      <div class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0 sm:transform-gpu" aria-hidden="true">
+        <div class="aspect-[1097/845] w-[68.5625rem] bg-gray-700 opacity-20"></div>
+      </div>
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:mx-0">
+          <h2 class="font-bold text-4xl leading-10 text-center tracking-tight text-white sm:text-6xl">Mis pedidos</h2>
+          <!--      <p class="mt-6 text-lg leading-8 text-gray-300">Mis pedidos</p>-->
+        </div>
+      </div>
+    </div>
 
-    <p class="mt-4 font-normal text-lg leading-8 text-gray-500 mb-11 text-center">Aquí puedes consultar tu historial de pedidos</p>
+
+    <div *ngIf="orderStats" class="flex justify-center items-center">
+    <div class="flex flex-col md:flex-row md:space-x-4">
+    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:border-gray-900 transition">
+      <svg class="h-8 w-8 text-sky-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />  <line x1="12" y1="22.08" x2="12" y2="12" /></svg>
+      <a href="#">
+        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Pedidos realizados</h5>
+      </a>
+      <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">{{orderStats.totales}}</p>
+    </div>
+
+    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:border-gray-900 transition">
+      <svg class="h-8 w-8 text-yellow-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />  <line x1="12" y1="22.08" x2="12" y2="12" /></svg>
+      <a href="#">
+        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Pedidos procesados</h5>
+      </a>
+      <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">23</p>
+    </div>
+
+    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:border-gray-900 transition">
+      <svg class="h-8 w-8 text-emerald-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />  <line x1="12" y1="22.08" x2="12" y2="12" /></svg>
+      <a href="#">
+        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Pedidos entregados</h5>
+      </a>
+      <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">23</p>
+    </div>
+  </div>
+  </div>
+
     <div *ngIf="loading">
 
     </div>
+
     <div *ngIf="errorMessage">{{ errorMessage }}</div>
     <div *ngFor="let pedido of pedidos" class="border-4 border-custom-blue mt-20 main-box rounded-xl pt-6 max-w-xl max-lg:mx-auto lg:max-w-full">
       <div *ngFor="let linea of pedido.lineaPedidos">
@@ -46,7 +88,7 @@
                 <div class="col-span-5 lg:col-span-1 flex items-center max-lg:mt-3">
                   <div class="flex gap-3 lg:block">
                     <p class="font-medium text-sm leading-7 text-black">Precio</p>
-                    <p class="lg:mt-4 font-medium text-sm leading-7 text-indigo-600">  {{linea.precio_unitario}}</p>
+                    <p class="lg:mt-4 font-medium text-sm leading-7 text-indigo-600">  {{linea.precio_unitario | currency: 'EUR'}}</p>
                   </div>
                 </div>
                 <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3 ">
@@ -92,7 +134,40 @@
             Cancel Order
           </button>
         </div>
+        <button
+          *ngIf="!showReviewForm[linea.libro.id] && pedido.estado === 'entregado'"
+          class="mt-4 px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+          (click)="toggleReviewForm(linea.libro.id)"
+        >
+          Añadir reseña
+        </button>
         <p class="font-semibold text-lg text-black py-6">Importe total: <span class="text-indigo-600"> {{pedido.total | currency: 'EUR'}}</span></p>
+        <div *ngIf="showReviewForm[linea.libro.id]" class="mt-6 p-6 bg-gray-100 rounded-lg shadow-md w-full">
+          <h3 class="font-semibold text-xl text-black mb-3">Escribir reseña</h3>
+
+          <!-- Review Text Area -->
+          <textarea
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200"
+            rows="4"
+            placeholder="Puede dejar una reseña, si lo desea"
+          ></textarea>
+
+          <!-- Buttons: Submit & Close -->
+          <div class="flex justify-between mt-4">
+            <button
+              class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+              (click)="toggleReviewForm(linea.libro.id)"
+            >
+              Cerrar
+            </button>
+
+            <button
+              class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+            >
+              Enviar
+            </button>
+          </div>
+        </div>
       </div>
 
 
