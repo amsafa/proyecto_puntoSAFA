@@ -61,16 +61,17 @@ export class RegistroComponent implements OnInit {
   onRegister() {
     if (this.registroForm.valid) {
       this.rellenarDatos();
+      console.log('Datos enviados:', this.registroCliente); // Imprime el payload
       localStorage.removeItem('token');
       this.authService.registro(this.registroCliente).subscribe({
         next: () => {
-          this.mostrarAlertaExito();  // Muestra alerta de éxito
-          this.errorMessage = '';     // Limpia errores anteriores
+          this.mostrarAlertaExito();
+          this.errorMessage = '';
           console.log('Registro exitoso');
         },
-        error: () => {
+        error: (error) => {
           this.errorMessage = 'Error en el registro. Intenta nuevamente.';
-          console.log('Error en el registro');
+          console.error('Error en el registro:', error); // Imprime el error
         },
         complete: () => {
           if (!this.errorMessage) {
@@ -82,7 +83,6 @@ export class RegistroComponent implements OnInit {
       this.errorMessage = 'Verifica los datos ingresados.';
       console.log('Verifica los datos ingresados');
     }
-    console.log(this.registroForm.value);
   }
 
   // Función para rellenar el objeto con los datos del formulario
