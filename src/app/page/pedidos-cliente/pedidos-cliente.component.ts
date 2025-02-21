@@ -4,6 +4,7 @@ import {PedidoService} from '../../service/pedido.service';
 import {AuthService} from '../../service/auth.service';
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {EstadisticasPedidos} from '../../interface/estadisticas-pedidos';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-pedidos-cliente',
@@ -13,6 +14,7 @@ import {EstadisticasPedidos} from '../../interface/estadisticas-pedidos';
     CurrencyPipe,
     DatePipe,
     NgClass,
+    RouterLink,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   templateUrl: './pedidos-cliente.component.html',
