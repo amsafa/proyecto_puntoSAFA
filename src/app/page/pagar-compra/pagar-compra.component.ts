@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, LOCALE_ID, OnInit} from '@angular/core';
 import {LibroCarrito} from '../../interface/libro-carrito';
 import {CarritoService} from '../../service/carrito.service';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
@@ -16,6 +16,7 @@ import {Router} from '@angular/router';
     NgIf,
     ReactiveFormsModule
   ],
+  providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   templateUrl: './pagar-compra.component.html',
   styleUrl: './pagar-compra.component.css'
 })
@@ -23,13 +24,14 @@ export class PagarCompraComponent implements OnInit{
   cartItems: LibroCarrito[] = [];
   shipping: number = 0;
   userData: Cliente | undefined;
-  address: string = '';
-  codigo:string='';
+  direccion_entrega: string = '';
   showModal: boolean = false;
   modalMessage: string = '';
   baseTotal:number =0;
   totalWithTaxes:number = 0;
   paymentForm!: FormGroup;
+  // codigo:string = "PO" + new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  codigo:string='';
 
 
 
@@ -49,7 +51,7 @@ export class PagarCompraComponent implements OnInit{
     this.paymentForm = this.fb.group({
       nombre: ['', [Validators.required]],
       apellidos: ['', [Validators.required]],
-      direccion: ['', [Validators.required]],
+      direccion_entrega: ['', [Validators.required]],
       cardNumber: ['', [Validators.required, Validators.pattern(/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})$/)]], // Visa or Mastercard format
       expiryDate: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/), this.expiryDateValidator]],
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]]
@@ -74,14 +76,16 @@ export class PagarCompraComponent implements OnInit{
       }
     } else {
       console.error('No userData found in localStorage.');
-      this.showAlert('You need to log in before making a purchase.');
+      this.showAlert('Debe iniciar sesión para hacer un pedido');
       return;
     }
+
 
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       this.cartItems = JSON.parse(storedCart);
     }
+
   }
 
   increaseQuantity(item: LibroCarrito) {
@@ -96,6 +100,10 @@ export class PagarCompraComponent implements OnInit{
     this.carritoService.removeItem(itemId);
   }
 
+  get direccion() {
+    return this.paymentForm.get('direccion_entrega');
+  }
+
   makePayment() {
     if (this.paymentForm.invalid) {
       this.paymentForm.markAllAsTouched(); // Show all errors
@@ -103,7 +111,7 @@ export class PagarCompraComponent implements OnInit{
     }
 
     if (!this.userData || !this.userData || !this.userData.id) {
-      this.showAlert("User not logged in or client data is missing");
+      this.showAlert("Debes iniciar sesión para realizar esta acción");
       return;
     }
 
@@ -113,18 +121,18 @@ export class PagarCompraComponent implements OnInit{
       fecha: new Date().toISOString(),
       total: this.totalWithTaxes,
       estado: "procesado",
-      codigo:this.codigo,
-      direccion_entrega: this.address,
+      // codigo:this.codigo,
+      direccion_entrega: this.paymentForm.get('direccion_entrega')?.value,
       cliente: this.userData.id,
       lineaPedidos: this.cartItems.map(item => ({
-        cantidad: item.quantity,
-        precio_unitario: item.price,
+        cantidad: item.cantidad,
+        precio_unitario: item.precio,
         libro: {
           id: item.id,
           titulo: item.titulo,
           imagen: item.imagen,
-          price: item.price,
-          quantity: item.quantity
+          precio: item.precio,
+          cantidad: item.cantidad
         }, // Pass the full object
       })),
     };
@@ -143,7 +151,7 @@ export class PagarCompraComponent implements OnInit{
         },
       error: (error) => {
         console.error('Error saving order:', error);
-        this.showAlert('Failed to place order');
+        this.showAlert('Error al procesar el pedido');
       }
     });
 

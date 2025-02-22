@@ -11,7 +11,7 @@
 
             <div class="w-full">
               <h3 class="text-base font-semibold text-gray-800">{{ item.titulo }}</h3>
-              <h6 class="text-sm text-gray-800 font-bold cursor-pointer mt-0.5">{{ item.price | currency }}</h6>
+              <h6 class="text-sm text-gray-800 font-bold cursor-pointer mt-0.5">{{ item.precio |  currency: 'EUR' }}</h6>
 
               <div class="flex gap-4 mt-4">
 
@@ -31,7 +31,7 @@
                     </svg>
                   </button>
 
-                    <span class="mx-2.5">{{item.quantity}}</span>
+                    <span class="mx-2.5">{{item.cantidad}}</span>
                   <button (click)="increaseQuantity(item)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-2.5 fill-current" viewBox="0 0 42 42">
                       <path d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z" data-original="#000000"></path>
@@ -82,9 +82,9 @@
 
         <div>
           <label class="block text-base text-gray-800 mb-2">Dirección:</label>
-          <input type="text" formControlName="direccion" [(ngModel)]="address" name="address"  placeholder="Introduzca su dirección"
+          <input type="text" formControlName="direccion_entrega" placeholder="Introduzca su dirección"
                  class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-purple-500 outline-none" />
-          <p class="text-red-500 text-sm mt-1" *ngIf="paymentForm.get('direccion')?.invalid && paymentForm.get('direccion')?.touched">Este campo es obligatorio.</p>
+          <p class="text-red-500 text-sm mt-1" *ngIf="paymentForm.get('direccion_entrega')?.invalid && paymentForm.get('direccion_entrega')?.touched">Este campo es obligatorio.</p>
         </div>
 
         <div>
