@@ -30,36 +30,18 @@ export class CarritoService {
   }
 
 
-  // addToCart(libro: Libro){
-  //   const existingItem = this.cartItems.find(item => item.id === libro.id);
-  //
-  //   if (existingItem) {
-  //     existingItem.quantity += 1; // Increment quantity if item already exists
-  //   } else {
-  //     this.cartItems.push({
-  //       id: libro.id,
-  //       name: libro.titulo,
-  //       image: libro.imagen,
-  //       price: libro.precio,
-  //       quantity: 1
-  //     });
-  //   }
-  //
-  //   this.cartSubject.next(this.cartItems); // Notify subscribers with the updated cart
-  // }
-
-  addToCart(libro: Libro |undefined, quantity: number=1) {
+  addToCart(libro: Libro |undefined, cantidad: number=1) {
     const existingItem:LibroCarrito | undefined = this.cartItems.find(item => item.id === libro!.id);
 
     if (existingItem) {
-      existingItem.quantity += quantity; // Add the specified quantity
+      existingItem.cantidad += cantidad; // Add the specified quantity
     } else {
       this.cartItems.push({
         id: libro!.id,
         titulo: libro!.titulo,
         imagen: libro!.imagen,
-        price: libro!.precio!,
-        quantity: quantity // Use provided quantity
+        precio: libro!.precio!,
+        cantidad: cantidad // Use provided quantity
       });
     }
 
@@ -68,14 +50,14 @@ export class CarritoService {
 
 
   increaseQuantity(item: LibroCarrito) {
-    item.quantity++;
+    item.cantidad++;
     this.cartSubject.next(this.cartItems);
   }
 
   // Decrease quantity
   decreaseQuantity(item: LibroCarrito) {
-    if (item.quantity > 1) {
-      item.quantity--;
+    if (item.cantidad > 1) {
+      item.cantidad--;
     } else {
       this.removeItem(item.id); // Remove the item if quantity is 1 and the user decreases it
     }
@@ -92,7 +74,7 @@ export class CarritoService {
   //   return this.cartSubject.asObservable(); // Return the observable of the cart items
   // }
   getTotalPrice(): { baseTotal: number, totalWithTaxes: number, shipping:number } {
-    const baseTotal = this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    const baseTotal = this.cartItems.reduce((total, item) => total + item.precio * item.cantidad, 0);
     const taxes = 0.21;
     const shipping=2.5;
     const totalWithTaxes = baseTotal + (baseTotal * taxes) + shipping;
