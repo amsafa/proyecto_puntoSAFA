@@ -28,14 +28,14 @@ export class CarritoService {
     const existingItem = this.cartItems.find(item => item.id === libro.id);
 
     if (existingItem) {
-      existingItem.quantity += 1; // Increment quantity if item already exists
+      existingItem.cantidad += 1; // Increment quantity if item already exists
     } else {
       this.cartItems.push({
         id: libro.id,
-        name: libro.titulo,
-        image: libro.imagen,
-        price: libro.precio,
-        quantity: 1
+        titulo: libro.titulo,
+        imagen: libro.imagen,
+        precio: libro.precio,
+        cantidad: 1
       });
     }
 
@@ -43,14 +43,14 @@ export class CarritoService {
   }
 
   increaseQuantity(item: LibroCarrito) {
-    item.quantity++;
+    item.cantidad++;
     this.cartSubject.next(this.cartItems);
   }
 
   // Decrease quantity
   decreaseQuantity(item: LibroCarrito) {
-    if (item.quantity > 1) {
-      item.quantity--;
+    if (item.cantidad > 1) {
+      item.cantidad--;
     } else {
       this.removeItem(item.id); // Remove the item if quantity is 1 and the user decreases it
     }
@@ -67,7 +67,7 @@ export class CarritoService {
     return this.cartSubject.asObservable(); // Return the observable of the cart items
   }
   getTotalQuantity(): number {
-    return this.cartItems.reduce((total, item) => total + item.quantity, 0);
+    return this.cartItems.reduce((total, item) => total + item.cantidad, 0);
   }
 
 
