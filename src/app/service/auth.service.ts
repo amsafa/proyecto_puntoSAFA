@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import {BehaviorSubject, lastValueFrom, Observable, throwError} from 'rxjs';
+import {BehaviorSubject, lastValueFrom, map, Observable, throwError} from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -43,7 +43,9 @@ export class AuthService {
       console.log("✅ Token recibido:", response.token);
 
       // Guardar token en localStorage
-      localStorage.setItem('token', response.token);
+      localStorage.setItem('auth_token', response.token);
+      console.log("Token guardado:", localStorage.getItem('auth_token'));
+
       this.authState.next(true);
 
       // Obtener datos del usuario
@@ -51,7 +53,8 @@ export class AuthService {
       console.log("🟢 Datos de usuario obtenidos:", user);
 
       if (user?.usuario?.rol) {
-        localStorage.setItem('userData', JSON.stringify(user));
+        localStorage.setItem('userData', JSON.stringify(user)); // Guardamos los datos de usuario en localStorage
+        console.log("Datos del usuario guardados:", JSON.parse(localStorage.getItem('userData') || '{}'));
 
         // Redirigir según el rol
         switch (user.usuario.rol) {
@@ -81,10 +84,26 @@ export class AuthService {
         Swal.fire("Error", "No se pudo iniciar sesión. Inténtelo más tarde.", "error");
       }
 
-      localStorage.removeItem('token'); // Eliminar token inválido si falla
+      localStorage.removeItem('auth_token'); // Eliminar token inválido si falla
       this.authState.next(false);
     }
   }
+
+
+  //  Método para determinar el rol del usuario
+  getUserRole(): string {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const user = JSON.parse(userData);
+      if (user && user.roles && Array.isArray(user.roles)) {
+        if (user.roles.includes('ROLE_ADMIN')) {
+          return 'admin';
+        }
+      }
+    }
+    return 'cliente';
+  }
+
 
 
 
@@ -93,9 +112,10 @@ export class AuthService {
 
   // Obtener datos del usuario autenticado
   fetchUserData(): Promise<RegistroCliente | null> {
-    const token = this.getToken();
+    const token = localStorage.getItem('auth_token');
+
     if (!token) {
-      console.error("❌ No hay token en el localStorage");
+      console.error("❌ No hay token en localStorage");
       return Promise.resolve(null);
     }
 
@@ -106,16 +126,27 @@ export class AuthService {
       'Content-Type': 'application/json'
     });
 
+    // Usamos la lógica condicional según el rol del usuario
+    const url = this.getUserRole() === 'admin'
+      ? 'https://localhost:8000/api/admin/auth/user'
+      : 'https://localhost:8000/api/cliente/auth/user';
+
     return lastValueFrom(
-      this.http.get('https://localhost:8000/api/cliente/auth/user', { headers })
-    ).then(userData => {
+      this.http.get(url, {headers})
+    ).then((userData: RegistroCliente) => {
       this.userData.next(userData);
       return userData;
     }).catch((err: any) => {
       console.error("❌ Error al obtener datos del usuario:", err);
 
       if (err instanceof HttpErrorResponse) {
-        console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
+        if (err.status === 401) {
+          console.error("❌ Token inválido o caducado. Requiere autenticación.");
+          this.router.navigate(['/login']);
+          this.userData.next(null);
+        } else {
+          console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
+        }
       } else {
         console.error("❌ Error inesperado:", err);
       }
@@ -125,15 +156,10 @@ export class AuthService {
     });
   }
 
-
-
-
-
-
-  // Obtener datos del usuario autenticado como Observable
   getUserData(): Observable<RegistroCliente | null> {
     return this.userData.asObservable();
   }
+
 
 
   // Obtener el token del localStorage
@@ -189,7 +215,5 @@ export class AuthService {
     return throwError(() => new Error(errorMessage));
   }
 
-  actualizarUsuario(usuarioEditado: any) {
 
-  }
 }
