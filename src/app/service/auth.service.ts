@@ -115,7 +115,7 @@ export class AuthService {
     });
 
     return lastValueFrom(
-      this.http.get('/api/api/cliente/auth/user', { headers })
+      this.http.get('/api/cliente/auth/user', { headers })
     ).then(userData => {
       this.userData.next(userData);
       return userData;

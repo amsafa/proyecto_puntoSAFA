@@ -59,7 +59,7 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   calculateTotalPrice() {
-    this.totalPrice = this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    this.totalPrice = this.cartItems.reduce((total, item) => total + (item.precio * item.cantidad), 0);
   }
 
 }
