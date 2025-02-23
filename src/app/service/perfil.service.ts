@@ -19,18 +19,13 @@ export class PerfilService {
 
   getClienteById(id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/api/cliente/${id}`);
+
   }
+
 
   editarCliente(id: number, cliente: RegistroCliente): Observable<RegistroCliente> {
-    // @ts-ignore
-    return this.http.put<RegistroCliente>(`${this.apiUrl}/api/cliente/editar/${id}`, cliente).pipe(
-      catchError(error => {
-        console.error("❌ Error en la actualización del cliente:", error);
-        return of(null); // Retorna null si hay error
-      })
-    );
+    return this.http.put<RegistroCliente>(`${this.apiUrl}/api/cliente/editar/${id}`, cliente);
   }
-
 
   crearCliente(cliente: RegistroCliente): Observable<any> {
     return this.http.post(`${this.apiUrl}/api/cliente/guardar`, cliente);
@@ -39,6 +34,7 @@ export class PerfilService {
   eliminarCliente(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/api/cliente/eliminar/${id}`);
   }
+
 
   obtenerUsuarioAutenticado(): Observable<RegistroCliente | null> {
     const token = localStorage.getItem('token');
@@ -51,5 +47,4 @@ export class PerfilService {
       })
     );
   }
-
 }
