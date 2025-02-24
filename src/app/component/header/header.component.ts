@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit {
       this.userData = user;
     });
     this.carritoService.cartItems$.subscribe(items => {
-      this.cartQuantity = items.reduce((total, item) => total + item.quantity, 0);  // Sum up all item quantities
+      this.cartQuantity = items.reduce((total, item) => total + item.cantidad, 0);  // Sum up all item quantities
     });
 
     // Subscribe to cart visibility
