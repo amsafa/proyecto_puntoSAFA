@@ -3,6 +3,7 @@
     <!-- Título de la sección -->
     <h2 class="text-xl font-bold text-center text-blue-900 mb-4">CATEGORÍAS</h2>
 
+
     <!-- Contenedor de Categorías -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <!-- Bloque 1: Ciencia y Divulgación -->
@@ -11,9 +12,11 @@
         <app-book-list [categoryId]="category1Id"></app-book-list>
         <div class="flex justify-center mt-6">
 
+
           <button class="btn-primary" (click)="redirectToCatalog(category1Id)"> Abrir</button>
         </div>
       </div>
+
 
       <!-- Bloque 2: Literatura y Clásicos -->
       <div class="bg-blue-50 p-3 rounded shadow-sm">
@@ -22,6 +25,7 @@
         <div class="flex justify-center mt-6">
           <div class="flex justify-center mt-6">
 
+
             <button class="btn-primary" (click)="redirectToCatalog(category3Id)"> Abrir</button>
           </div>
         </div>
@@ -29,3 +33,6 @@
     </div>
   </div>
 </section>
+
+
+
