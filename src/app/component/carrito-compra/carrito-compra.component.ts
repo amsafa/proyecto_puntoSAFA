@@ -4,6 +4,7 @@ import {CarritoService} from '../../service/carrito.service';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Router} from "@angular/router";
 import {AuthService} from '../../service/auth.service';
+import {FormsModule} from '@angular/forms';
 
 
 @Component({
@@ -12,6 +13,7 @@ import {AuthService} from '../../service/auth.service';
     NgIf,
     NgForOf,
     CurrencyPipe,
+    FormsModule,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   templateUrl: './carrito-compra.component.html',

@@ -28,10 +28,10 @@
                         </h3>
                         <p class="ml-4">{{ item.precio | currency: 'EUR' }}</p>
                       </div>
-                      <div class="quantity-controls">
-                        <button (click)="decreaseQuantity(item)" class="bg-customGreen text-gray-700 px-3 py-1 rounded-l-md hover:bg-gray-300">-</button>
-                        <span class="bg-blue-800">{{ item.cantidad }}</span>
-                        <button (click)="increaseQuantity(item)" class="bg-customAzulito text-gray-700 px-3 py-1 rounded-r-md hover:bg-gray-300">+</button>
+                      <div class="mt-6 flex items-center gap-x-">
+                        <button (click)="decreaseQuantity(item)" class="bg-customGreen text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300">-</button>
+                        <span class="w-16 text-center border border-gray-300 rounded-md">{{ item.cantidad }}</span>
+                        <button (click)="increaseQuantity(item)" class="bg-customAzulito text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300">+</button>
                       </div>
                       <div class="flex flex-1 items-end justify-between text-sm">
 
