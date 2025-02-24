@@ -30,8 +30,7 @@ export class PagarCompraComponent implements OnInit{
   baseTotal:number =0;
   totalWithTaxes:number = 0;
   paymentForm!: FormGroup;
-  // codigo:string = "PO" + new Date().toISOString().slice(0, 10).replace(/-/g, '');
-  codigo:string='';
+
 
 
 
@@ -51,7 +50,7 @@ export class PagarCompraComponent implements OnInit{
     this.paymentForm = this.fb.group({
       nombre: ['', [Validators.required]],
       apellidos: ['', [Validators.required]],
-      direccion_entrega: ['', [Validators.required]],
+      direccion: ['', [Validators.required]],
       cardNumber: ['', [Validators.required, Validators.pattern(/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})$/)]], // Visa or Mastercard format
       expiryDate: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/), this.expiryDateValidator]],
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]]
@@ -122,18 +121,12 @@ export class PagarCompraComponent implements OnInit{
       total: this.totalWithTaxes,
       estado: "procesado",
       // codigo:this.codigo,
-      direccion_entrega: this.paymentForm.get('direccion_entrega')?.value,
+      direccion_entrega: this.paymentForm.get('direccion')?.value,
       cliente: this.userData.id,
       lineaPedidos: this.cartItems.map(item => ({
         cantidad: item.cantidad,
         precio_unitario: item.precio,
-        libro: {
-          id: item.id,
-          titulo: item.titulo,
-          imagen: item.imagen,
-          precio: item.precio,
-          cantidad: item.cantidad
-        }, // Pass the full object
+        libro: item.id// Pass the full object
       })),
     };
 
