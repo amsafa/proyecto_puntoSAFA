@@ -39,45 +39,47 @@
 
 </section>
 
-<div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 p-4 bg-customGreen">
+<!--<div class="flex items-center space-x-2 mx-60 my-10 px-20">-->
+<!--  <label for="sort" class="-->
+<!--   mb-2  font-bold text-[20px] text-[#1D2C4B] font-montserrat  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"-->
+<!--  >Ordenar por</label>-->
+<!--  <select id="sort" class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"-->
+<!--          >-->
+<!--    <option default>Pick a team</option>-->
+<!--    <option  value="autor">Autor</option>-->
+<!--    <option value="titulo">Libro</option>-->
+<!--    <option value="fecha">Fecha edición</option>-->
+<!--    <option value="precio">Precio</option>-->
+<!--  </select>-->
 
+<!--</div>-->
+
+
+
+
+
+<div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 p-4 bg-customGreen">
+  <!-- Filtro Catalogo -->
   <div class="flex-shrink-0">
     <!-- Filtros -->
     <div class="bg-[#1D2C4B] max-w-[333px] max-h-[65px] text-center rounded-lg text-white">
       <h1 class="text-2xl font-bold">Filtros</h1>
     </div>
 
-
-    <!-- FILTRO PRECIO -->
+    <!--###################   FILTRO PRECIO ####################################-->
     <div class="border-b border-gray-200 py-6">
+      <!-- Precios -->
       <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9 border-t border-custom-blue">
         <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Precios</h3>
         <ul class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
-          <li>
-            <input type="checkbox" (change)="filterByPrice('menor5')" [checked]="selectedPriceRanges.includes('menor5')" class="mr-2">
-            Menos de 5 euros
-          </li>
-          <li>
-            <input type="checkbox" (change)="filterByPrice('5-10')" [checked]="selectedPriceRanges.includes('5-10')" class="mr-2">
-            De 5 a 10 euros
-          </li>
-          <li>
-            <input type="checkbox" (change)="filterByPrice('10-15')" [checked]="selectedPriceRanges.includes('10-15')" class="mr-2">
-            De 10 a 15 euros
-          </li>
-          <li>
-            <input type="checkbox" (change)="filterByPrice('15-40')" [checked]="selectedPriceRanges.includes('15-40')" class="mr-2">
-            De 15 a 40 euros
-          </li>
-          <li>
-            <input type="checkbox" (change)="filterByPrice('mayor40')" [checked]="selectedPriceRanges.includes('mayor40')" class="mr-2">
-            Más de 40 euros
-          </li>
+          <li><input type="checkbox" (change)="filterByPrice('menor5')" [checked]="selectedPriceRange ==='menor5'" class="mr-2">Menos de 5 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('5-10')" [checked]="selectedPriceRange ==='5-10'" class="mr-2">De 5 a 10 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('10-15')" [checked]="selectedPriceRange ==='10-15'" class="mr-2">De 10 a 15 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('15-40')" [checked]="selectedPriceRange ==='15-40'" class="mr-2">De 15 a 40 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('mayor40')" [checked]="selectedPriceRange ==='mayor40'" class="mr-2">Más de 40 euros</li>
         </ul>
       </div>
-
-
-      <!-- FILTRO CATEGORÍA -->
+      <!--#################################3 FILTRO CATEGORÍA ############################## -->
       <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9 border-t border-custom-blue">
         <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Categoría</h3>
         <ul class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
@@ -92,13 +94,10 @@
         </ul>
       </div>
     </div>
-
-
-
-
-
-
   </div>
+
+
+
 
   <div class="bg-white">
     <div class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
@@ -108,15 +107,11 @@
       </div>
     </div>
 
-
-
     <!--    <div class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">-->
     <!--      <div *ngIf="!libros || libros.length === 0" class="text-center text-black-600 mt-4 bg-white">-->
     <!--        <p>No hay libros disponibles</p>-->
     <!--      </div>-->
     <!--    </div>-->
-
-
 
 
 
