@@ -15,6 +15,7 @@ import {
 import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
 import {authGuard} from './auth.guard';
 import {EmailComponent} from './email/email.component';
+import {RegistroLibroComponent} from './component/registro-libro/registro-libro.component';
 
 
 
@@ -38,6 +39,7 @@ export const routes: Routes = [
   { path: 'perfil', component: PerfilComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'perfil-adm', component: PerfilAdmComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'email', component: EmailComponent, pathMatch: 'full', canActivate: [authGuard] },
+  { path: 'registro-libro', component: RegistroLibroComponent, pathMatch: 'full', canActivate: [authGuard] },
 
 
 
