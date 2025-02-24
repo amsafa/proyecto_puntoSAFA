@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Login } from '../interface/Login';
-import { RegistroCliente } from '../interface/RegistroCliente';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from './auth.service';
-import {Router} from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +12,7 @@ export class LoginService {
   errorMessage = '';
   login: Login = new Login();  // Se inicializa el objeto Login
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(4)]]
