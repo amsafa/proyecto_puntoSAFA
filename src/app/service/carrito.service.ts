@@ -30,18 +30,18 @@ export class CarritoService {
   }
 
 
-  addToCart(libro: Libro) {
-    const existingItem = this.cartItems.find(item => item.id === libro.id);
+  addToCart(libro: Libro |undefined, cantidad: number=1) {
+    const existingItem:LibroCarrito | undefined = this.cartItems.find(item => item.id === libro!.id);
 
     if (existingItem) {
-      existingItem.quantity += quantity; // Add the specified quantity
+      existingItem.cantidad += 1; // Increment quantity if item already exists
     } else {
       this.cartItems.push({
         id: libro!.id,
-        name: libro!.titulo,
-        image: libro!.imagen,
-        price: libro!.precio!,
-        quantity: quantity // Use provided quantity
+        titulo: libro!.titulo,
+        imagen: libro!.imagen,
+        precio: libro!.precio!,
+        cantidad: cantidad // Use provided quantity
       });
     }
 
@@ -72,8 +72,16 @@ export class CarritoService {
   // getCartItems(): Observable<LibroCarrito[]> {
   //   return this.cartSubject.asObservable(); // Return the observable of the cart items
   // }
-  getTotalPrice(): number {
-    return this.cartItems.reduce((total, item) => total + item.precio * item.cantidad, 0);
+  getTotalPrice(): { baseTotal: number, totalWithTaxes: number, shipping:number } {
+    const baseTotal = this.cartItems.reduce((total, item) => total + item.precio * item.cantidad, 0);
+    const taxes = 0.21;
+    const shipping=2.5;
+    const totalWithTaxes = baseTotal + (baseTotal * taxes) + shipping;
+    return { baseTotal, totalWithTaxes, shipping } ;
+  }
+
+  getTotalQuantity(): number {
+    return this.cartItems.reduce((total, item) => total + item.cantidad, 0);
   }
 
 
@@ -81,10 +89,6 @@ export class CarritoService {
   getCartItems(): Observable<LibroCarrito[]> {
     return this.cartItems$; // Allow components to subscribe
   }
-  getTotalQuantity(): number {
-    return this.cartItems.reduce((total, item) => total + item.cantidad, 0);
-  }
-
 
   savePedido(pedido: Pedido): Observable<any> {
     return this.http.post(`${this.baseUrl}/save`, pedido);

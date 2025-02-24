@@ -6,7 +6,6 @@ export interface Pedido {
   total: number;
   estado: string;
   direccion_entrega: string;
-  codigo?:string;
   cliente: number; // Client ID
   estadisticas?: EstadisticasPedidos;
   lineaPedidos: LineaPedido[];

@@ -19,7 +19,6 @@ import {AuthService} from '../../service/auth.service';
 })
 export class CarritoCompraComponent implements OnInit {
   cartItems: LibroCarrito[] = [];
-  totalPrice: number = 0;
   showCart: boolean = false;
   baseTotal:number =0;
   totalWithTaxes:number = 0;
@@ -79,9 +78,5 @@ export class CarritoCompraComponent implements OnInit {
   }
 
 
-
-  calculateTotalPrice() {
-    this.totalPrice = this.cartItems.reduce((total, item) => total + (item.precio * item.cantidad), 0);
-  }
 
 }

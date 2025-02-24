@@ -6,25 +6,20 @@ import {LibroService} from '../../service/libro.service';
 import {ActivatedRoute} from '@angular/router';
 import {Resena} from '../../interface/resena';
 import {ResenaService} from '../../service/resena.service';
-import {CarritoService} from '../../service/carrito.service';
-import {AuthService} from '../../service/auth.service';
+import { AuthService } from '../../service/auth.service';
+import { CarritoService } from '../../service/carrito.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 
 @Component({
   selector: 'app-detalle-de-libro',
-  imports: [
-    CurrencyPipe,
-    FormsModule,
-    NgForOf,
-    NgIf,
-  ],
-  providers: [{ provide: LOCALE_ID, useValue: 'es' }],
-  standalone: true, // tengo que comprobar esto
+  imports: [FormsModule, NgForOf, NgIf, CurrencyPipe],
+  standalone: true,
   templateUrl: './detalle-de-libro.component.html',
-  styleUrl: './detalle-de-libro.component.css'
+  styleUrl: './detalle-de-libro.component.css',
 })
 export class DetalleDeLibroComponent {
-  libro?: Libro   // Variable para almacenar los detalles del libro
+  libro?: Libro; // Variable para almacenar los detalles del libro
   quantity: number = 1; // Variable para la cantidad
   resenas: Resena[] = []; // Variable para las reseñas
   media_calificacion: number | null = null; // Variable para la calificación media
@@ -41,13 +36,15 @@ export class DetalleDeLibroComponent {
 
 
   constructor(
-    private route: ActivatedRoute, // Para obtener el ID de la ruta
-    private libroService: LibroService, // Para obtener los detalles del libro
-    private resenaService: ResenaService, // Para obtener las reseñas
-    private cdr: ChangeDetectorRef, // Agregado
-    private carritoService:CarritoService,
+    private route: ActivatedRoute,
+    private libroService: LibroService,
+    private resenaService: ResenaService,
     private authService: AuthService,
-  ) {}
+    private cdr: ChangeDetectorRef, // Agregado
+    private carritoService:CarritoService) {
+    this.libroId = Number(this.route.snapshot.paramMap.get('id')); // Obtener el ID del libro desde la ruta
+  }
+
 
   // Método para inicializar el componente
   ngOnInit(): void {
@@ -58,44 +55,53 @@ export class DetalleDeLibroComponent {
       this.obtenerMediaCalificacion(id);
       console.log('ID del libro:', id);
     }
-  }
-
-      // Verificar si el usuario está logueado
-      this.usuarioLogueado = this.authService.isLoggedIn();
-    }
+    this.usuarioLogueado = this.authService.isLoggedIn();
   }
 
 
-  // Método para obtener las reseñas
+
+  /**
+   * Obtener las reseñas de un libro.
+   */
   obtenerResenas(id: number): void {
     this.resenaService.obtenerResenasPorLibro(id).subscribe({
       next: (data) => {
-        console.log('Tipo de data:', typeof data, 'Contenido:', data); // Verificar la estructura
-
-        if (data && typeof data === 'object') {
-          this.resenas = Object.values(data); // Convertir el objeto en array
+        console.log('Datos recibidos del servicio:', data);
+        if (data && Array.isArray(data)) {
+          this.resenas = data;
         } else {
-          this.resenas = []; // Si hay un error, dejar el array vacío
+          this.resenas = [];
         }
-
-        console.log('Resenas obtenidas:', this.resenas);
-        this.cdr.detectChanges(); // Forzar actualización de la vista
+        console.log('Resenas después de la asignación:', this.resenas);
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al obtener las reseñas:', error);
-        this.resenas = []; // Evitar errores en el *ngFor si falla la API
+        this.resenas = [];
         this.cdr.detectChanges();
-      }
+      },
     });
   }
 
-
-  //Método para obtener la calificación media
+  /**
+   * Obtener la calificación media de un libro.
+   */
   obtenerMediaCalificacion(id: number): void {
     this.resenaService.obtenerMediaCalificacion(id).subscribe({
       next: (data) => {
-        this.media_calificacion = Number(data) || 0;
-        this.actualizarEstrellas(); // Llamar al método para actualizar las estrellas
+        console.log('Respuesta del backend:', data); // Verificar la estructura de data
+        console.log('Tipo de data:', typeof data); // Verificar el tipo de data
+
+        // Verificar si data es un objeto y tiene la propiedad mediaCalificacion
+        if (data && typeof data === 'object' && 'mediaCalificacion' in data) {
+          this.media_calificacion = Number(data.mediaCalificacion) || 0;
+          console.log('media_calificacion:', this.media_calificacion); // Verificar el valor de media_calificacion
+        } else {
+          console.error('La respuesta del backend no tiene la estructura esperada:', data);
+          this.media_calificacion = 0; // Asignar un valor por defecto
+        }
+
+        this.actualizarEstrellas();
       },
       error: (error) => {
         console.error('Error al obtener la calificación media:', error);
@@ -169,10 +175,22 @@ export class DetalleDeLibroComponent {
     }
   }
 
-
   /**
-   * Disminuir la cantidad de libros a comprar.
+   * Obtener los detalles de un libro.
    */
+  obtenerLibro(id: number): void {
+    this.libroService.getLibroById(id).subscribe({
+      next: (data) => {
+        this.libro = data;
+        console.log('Libro obtenido:', this.libro);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+
+  // Método para disminuir la cantidad
   decreaseQuantity(): void {
     if (this.quantity > 1) {
       this.quantity--;
@@ -180,30 +198,23 @@ export class DetalleDeLibroComponent {
     }
   }
 
-  /**
-   * Aumentar la cantidad de libros a comprar.
-   */
+  // Método para aumentar la cantidad
   increaseQuantity(): void {
     this.quantity++;
     console.log('Cantidad:', this.quantity);
   }
 
-  showLoginAlert() {
-    this.showAlert = true;
-
-    // Hide the alert after 3 seconds
-    setTimeout(() => {
-      this.showAlert = false;
-    }, 3000);
-  }
-
-  // Método para agregar al carrito
-  addToCart(libro?: Libro) {
-    if (!this.isLoggedIn) {
-      this.showLoginAlert();
-      return;
+  /**
+   * Agregar un libro al carrito.
+   */
+  addToCart(): void {
+    if (this.libro) {
+      console.log('Libro agregado al carrito:', {
+        ...this.libro,
+        quantity: this.quantity,
+      });
     }
-    this.carritoService.addToCart(libro, this.quantity);
+    this.carritoService.addToCart(this.libro, this.quantity);
 
   }
 
@@ -215,8 +226,13 @@ export class DetalleDeLibroComponent {
   actualizarEstrellas(): void {
     if (this.media_calificacion !== null) {
       const rating = this.media_calificacion;
-      this.starsArray = Array(Math.floor(rating)).fill(0); // Crear array con el número entero de estrellas
-      this.hasHalfStar = rating % 1 >= 0.5; // Determinar si hay media estrella
+      this.starsArray = Array(Math.floor(rating)).fill(0); // Llenar el array con estrellas completas
+      this.hasHalfStar = rating % 1 >= 0.5; // Verificar si hay media estrella
+      console.log('starsArray:', this.starsArray); // Verificar el array de estrellas
+      console.log('hasHalfStar:', this.hasHalfStar); // Verificar si hay media estrella
+    } else {
+      this.starsArray = []; // Limpiar el array si no hay calificación
+      this.hasHalfStar = false;
     }
   }
 }

@@ -57,15 +57,15 @@ export class CatalogoComponent  implements OnInit {
     });
 
     this.categoriaService.getCategorias().subscribe(categorias => {
-          this.categories = categorias;
-        });
+      this.categories = categorias;
+    });
     this.authService.getAuthState().subscribe(state => {
       this.isLoggedIn = state;
     });
   }
 
 
-    cargarLibros(page: number = 1, limit: number = 9): void {
+  cargarLibros(page: number = 1, limit: number = 9): void {
     this.currentPage = page;
 
     if (this.selectedPriceRange) {
@@ -222,7 +222,7 @@ export class CatalogoComponent  implements OnInit {
       this.showLoginAlert();
       return;
     }
-      this.carritoService.addToCart(libro);
+    this.carritoService.addToCart(libro);
 
   }
 
@@ -240,6 +240,5 @@ export class CatalogoComponent  implements OnInit {
   verDetallesLibro(idLibro: number): void {
     this.router.navigate(['/detalle-libro', idLibro]);
   }
-
 
 }
