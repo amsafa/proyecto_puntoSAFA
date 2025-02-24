@@ -14,8 +14,9 @@ import {
 } from './component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component';
 import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
 import {CarritoComponent} from './component/carrito/carrito.component';
-import {CarritoPruebaComponent} from './component/carrito-prueba/carrito-prueba.component';
 import {PagarCompraComponent} from './page/pagar-compra/pagar-compra.component';
+import {PedidosClienteComponent} from './page/pedidos-cliente/pedidos-cliente.component';
+
 
 
 
@@ -32,10 +33,11 @@ export const routes: Routes = [
   {path: 'detalle-libro/:id', component: DetalleDeLibroComponent }, // Ruta para detalles del libro
   {path: 'perfil-adm', component: PerfilAdmComponent, pathMatch: 'full'},
   {path:'pagar-pedido', component:PagarCompraComponent, pathMatch: 'full'},
+  {path:'pedidos-cliente', component:PedidosClienteComponent, pathMatch: 'full'},
 
 
   {path:'carro', component:CarritoComponent, pathMatch: 'full'},
-  {path:'test', component:CarritoPruebaComponent, pathMatch: 'full'},
+
 
 
 
