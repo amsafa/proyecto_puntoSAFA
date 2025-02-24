@@ -2,12 +2,18 @@ import { Injectable } from '@angular/core';
 import {LibroCarrito} from '../interface/libro-carrito';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Libro} from '../interface/libro';
+import {Pedido} from '../interface/pedido';
+import {HttpClient} from '@angular/common/http';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarritoService {
+  private baseUrl: string = "http://127.0.0.1:8000/pedido";
+
+  constructor(private http: HttpClient) { }
+
   private cartItems: LibroCarrito[] = [];
   private cartSubject = new BehaviorSubject<LibroCarrito[]>([]);
   private showCartSubject = new BehaviorSubject<boolean>(false);
@@ -24,18 +30,18 @@ export class CarritoService {
   }
 
 
-  addToCart(libro: Libro) {
-    const existingItem = this.cartItems.find(item => item.id === libro.id);
+  addToCart(libro: Libro |undefined, cantidad: number=1) {
+    const existingItem:LibroCarrito | undefined = this.cartItems.find(item => item.id === libro!.id);
 
     if (existingItem) {
-      existingItem.cantidad += 1; // Increment quantity if item already exists
+      existingItem.quantity += 1; // Increment quantity if item already exists
     } else {
       this.cartItems.push({
-        id: libro.id,
-        titulo: libro.titulo,
-        imagen: libro.imagen,
-        precio: libro.precio,
-        cantidad: 1
+        id: libro!.id,
+        titulo: libro!.titulo,
+        imagen: libro!.imagen,
+        precio: libro!.precio!,
+        cantidad: cantidad // Use provided quantity
       });
     }
 
@@ -63,13 +69,30 @@ export class CarritoService {
   }
 
   // Get cart items
-  getCartItems(): Observable<LibroCarrito[]> {
-    return this.cartSubject.asObservable(); // Return the observable of the cart items
+  // getCartItems(): Observable<LibroCarrito[]> {
+  //   return this.cartSubject.asObservable(); // Return the observable of the cart items
+  // }
+  getTotalPrice(): { baseTotal: number, totalWithTaxes: number, shipping:number } {
+    const baseTotal = this.cartItems.reduce((total, item) => total + item.precio * item.cantidad, 0);
+    const taxes = 0.21;
+    const shipping=2.5;
+    const totalWithTaxes = baseTotal + (baseTotal * taxes) + shipping;
+    return { baseTotal, totalWithTaxes, shipping } ;
   }
+
   getTotalQuantity(): number {
     return this.cartItems.reduce((total, item) => total + item.cantidad, 0);
   }
 
+
+
+  getCartItems(): Observable<LibroCarrito[]> {
+    return this.cartItems$; // Allow components to subscribe
+  }
+
+  savePedido(pedido: Pedido): Observable<any> {
+    return this.http.post(`${this.baseUrl}/save`, pedido);
+  }
 
 
 

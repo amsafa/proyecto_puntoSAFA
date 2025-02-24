@@ -8,12 +8,12 @@
           <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
             <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
               <div class="flex items-start justify-between">
-                <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
+                <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Su cesta</h2>
                 <div class="ml-3 flex h-7 items-center">
-                  <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleCart()">Hide Cart</button>
+                  <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleCart()">Cerrar</button>
                 </div>
               </div>
-  <div *ngIf="cartItems.length === 0">Your cart is empty.</div>
+  <div *ngIf="cartItems.length === 0">Su cesta está vacía.</div>
 
               <div *ngIf="cartItems.length > 0" class="mt-8">
   <div *ngFor="let item of cartItems" class="cart-item">
@@ -24,19 +24,19 @@
       <div>
         <div class="flex justify-between text-base font-medium text-gray-900">
           <h3>
-            <a href="#">{{ item.titulo }}</a>
+            <a href="http://localhost:4200/detalle-libro/{{item.id}}">{{ item.titulo }}</a>
           </h3>
           <p class="ml-4">{{ item.precio | currency: 'EUR' }}</p>
         </div>
       <div class="quantity-controls">
-        <button (click)="decreaseQuantity(item)">-</button>
-        <span>{{ item.cantidad }}</span>
-        <button (click)="increaseQuantity(item)">+</button>
+        <button (click)="decreaseQuantity(item)" class="bg-customGreen text-gray-700 px-3 py-1 rounded-l-md hover:bg-gray-300">-</button>
+        <span class="bg-blue-800">{{ item.cantidad }}</span>
+        <button (click)="increaseQuantity(item)" class="bg-customAzulito text-gray-700 px-3 py-1 rounded-r-md hover:bg-gray-300">+</button>
       </div>
         <div class="flex flex-1 items-end justify-between text-sm">
 
           <div class="flex">
-            <button (click)="removeItem(item.id)" type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
+            <button (click)="removeItem(item.id)" type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Eliminar</button>
           </div>
         </div>
       </div>
@@ -44,24 +44,19 @@
   </div>
 
                 <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
-                  <div class="flex justify-between text-base font-medium text-gray-900">
-                    <p>Subtotal</p>
-                    <div class="cart-total">
-                      <h3>Total Price: {{ totalPrice | currency }}</h3>
+                  <div class="flex justify-between text-base  cart-total font-medium text-gray-900">
+                    <p>Subtotal: {{baseTotal.toFixed(2) | currency:'EUR':true}}</p>
+                    <p>Precio IVA inc.: {{ totalWithTaxes.toFixed(2) | currency:'EUR':true }}</p>
+
+                    <div class="flex justify-between text-base font-medium cart-total">
+
                     </div>
                   </div>
-                  <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                  <p class="mt-0.5 text-sm text-gray-500">Costes de envío calculados al pagar.</p>
                   <div class="mt-6">
-                    <a href="#" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700">Checkout</a>
+                    <button (click)="pagarPedido()" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700">Finalizar compra</button>
                   </div>
                   <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
-                    <p>
-                      or
-                      <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">
-                        Continue Shopping
-                        <span aria-hidden="true"> &rarr;</span>
-                      </button>
-                    </p>
                   </div>
                 </div>
 

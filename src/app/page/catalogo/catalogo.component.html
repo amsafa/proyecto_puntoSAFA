@@ -1,3 +1,11 @@
+<!--<div class="cart-icon-container" (click)="toggleCart()">-->
+<!--  <svg class="icon-cart" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">-->
+<!--    <path d="M240-80q-33 0-56.5-23.5T160-160v-480q0-33 23.5-56.5T240-720h80q0-66 47-113t113-47q66 0 113 47t47 113h80q33 0 56.5 23.5T800-640v480q0 33-23.5 56.5T720-80H240Zm0-80h480v-480h-80v80q0 17-11.5 28.5T600-520q-17 0-28.5-11.5T560-560v-80H400v80q0 17-11.5 28.5T360-520q-17 0-28.5-11.5T320-560v-80h-80v480Zm160-560h160q0-33-23.5-56.5T480-800q-33 0-56.5 23.5T400-720ZM240-160v-480 480Z"/>-->
+<!--  </svg>-->
+<!--  <span class="cantidad">{{ cartQuantity }}</span>-->
+<!--</div>-->
+
+
 
 <section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -19,7 +27,7 @@
   <div class="container mx-auto flex justify-center items-center space-x-4">
     <input
       type="text"
-      [(ngModel)]="filter"
+      [(ngModel)]="searchTerm"
       (ngModelChange)="searchBooks()"
       id="search"
       name="search"
@@ -30,7 +38,7 @@
       Buscar
     </button>
     <button
-      *ngIf="filter"
+      *ngIf="searchTerm"
       (click)="clearSearch()"
       class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400"
     >
@@ -39,6 +47,24 @@
   </div>
 
 </section>
+
+<!--<div class="flex items-center space-x-2 mx-60 my-10 px-20">-->
+<!--  <label for="sort" class="-->
+<!--   mb-2  font-bold text-[20px] text-[#1D2C4B] font-montserrat  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"-->
+<!--  >Ordenar por</label>-->
+<!--  <p>You select your team {{ opcionSeleccionada }} using change event</p>-->
+<!--  <select id="sort" class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"-->
+<!--          #filtro (change)="onSelected(filtro.value)">-->
+<!--    <option default>Pick a team</option>-->
+<!--    <option  value="autor">Autor</option>-->
+<!--    <option value="titulo">Libro</option>-->
+<!--    <option value="fecha">Fecha edición</option>-->
+<!--    <option value="precio">Precio</option>-->
+<!--  </select>-->
+
+<!--</div>-->
+
+
 
 
 
@@ -50,35 +76,20 @@
       <h1 class="text-2xl font-bold">Filtros</h1>
     </div>
 
-    <!-- FILTRO PRECIO -->
+    <!--###################   FILTRO PRECIO ####################################-->
     <div class="border-b border-gray-200 py-6">
+      <!-- Precios -->
       <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9 border-t border-custom-blue">
         <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Precios</h3>
         <ul class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
-          <li>
-            <input type="checkbox" (change)="filterByPrice('menor5')" [checked]="selectedPriceRanges.includes('menor5')" class="mr-2">
-            Menos de 5 euros
-          </li>
-          <li>
-            <input type="checkbox" (change)="filterByPrice('5-10')" [checked]="selectedPriceRanges.includes('5-10')" class="mr-2">
-            De 5 a 10 euros
-          </li>
-          <li>
-            <input type="checkbox" (change)="filterByPrice('10-15')" [checked]="selectedPriceRanges.includes('10-15')" class="mr-2">
-            De 10 a 15 euros
-          </li>
-          <li>
-            <input type="checkbox" (change)="filterByPrice('15-40')" [checked]="selectedPriceRanges.includes('15-40')" class="mr-2">
-            De 15 a 40 euros
-          </li>
-          <li>
-            <input type="checkbox" (change)="filterByPrice('mayor40')" [checked]="selectedPriceRanges.includes('mayor40')" class="mr-2">
-            Más de 40 euros
-          </li>
+          <li><input type="checkbox" (change)="filterByPrice('menor5')" [checked]="selectedPriceRange ==='menor5'" class="mr-2">Menos de 5 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('5-10')" [checked]="selectedPriceRange ==='5-10'" class="mr-2">De 5 a 10 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('10-15')" [checked]="selectedPriceRange ==='10-15'" class="mr-2">De 10 a 15 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('15-40')" [checked]="selectedPriceRange ==='15-40'" class="mr-2">De 15 a 40 euros</li>
+          <li><input type="checkbox" (change)="filterByPrice('mayor40')" [checked]="selectedPriceRange ==='mayor40'" class="mr-2">Más de 40 euros</li>
         </ul>
       </div>
-
-      <!-- FILTRO CATEGORÍA -->
+      <!--#################################3 FILTRO CATEGORÍA ############################## -->
       <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9 border-t border-custom-blue">
         <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Categoría</h3>
         <ul class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
@@ -93,43 +104,67 @@
         </ul>
       </div>
     </div>
-
-
-
   </div>
 
 
 
 
   <div class="bg-white">
-    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+    <div class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
       <div *ngIf="noResults" class="text-center text-red-600 font-bold mt-4 bg-white">
         <p>No se han encontrado resultados</p>
         <p>No hemos encontrado lo que busca pero si lo desea pude ponerse en contacto con nosotros y solicitarlo, o quizá prefiera volver a intentarlo realizando una búsqueda avanzada que se ajuste mejor a sus criterios.</p>
       </div>
     </div>
 
+<!--    <div class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">-->
+<!--      <div *ngIf="!libros || libros.length === 0" class="text-center text-black-600 mt-4 bg-white">-->
+<!--        <p>No hay libros disponibles</p>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-      <div *ngIf="!noResults" class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-        <div *ngFor="let libro of filteredBooks" href="#" class="group">
-          <img [src]="libro.imagen" [alt]="libro.titulo"  class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
-          <h3 class="mt-4 text-lg font-bold text-gray-800 text-center">{{ libro.titulo }}</h3>
-          <p class="text-sm text-gray-600 text-center">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
-          <p class="mt-2 text-xl font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
-          <div>
-          <button (click)="addToCart(libro)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#5f6368">
-            <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>-->
-          </svg>
-            Añadir al carrito
-          </button>
-          </div>
 
-          <button (click)="verDetallesLibro(libro.id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">Ver detalles</button>
+
+
+
+    <div class="max-w-2xl px-4 sm:px-6  lg:max-w-7xl lg:px-8">
+      <div *ngIf="!noResults" class="card--1 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+        <div *ngFor="let libro of filteredBooks" class="group  group cursor-pointer group overflow-hidden relative">
+    <div class="card relative max-h-100 max-w-sm rounded overflow-hidden shadow-lg bg-white">
+      <div class="relative">
+        <img [src]="libro.imagen" [alt]="libro.titulo"  class=" h-80 aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+        <button  (click)="addToCart(libro)" class="add-to-cart absolute top-0 right-0 mt-4 mr-4 py-2 px-4 bg-blue-500 text-white rounded opacity-0 transition-opacity duration-300">
+
+                          Añadir al carrito
+                        </button>
+      </div>
+      <div class="px-6 py-4 flex flex-col items-center">
+        <h3 class="mt-0 mb-0 text-lg font-bold text-gray-800 text-center line-clamp-2">{{ libro.titulo }}</h3>
+                  <p class=" mt-0 mb-0 text-sm text-gray-600 text-center">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
+                  <p class="mt-2 text-xl text-center font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
+
+
+                  <button (click)="verDetallesLibro(libro.id)" class="my-4 px-6 py-3 bg-blue-900 text-white font-medium rounded-lg">Ver detalles</button>
+                  <div class="absolute bg-gray-50 -bottom-24 w-56 p-3 flex flex-col gap-1">
+                  </div>
+      </div>
+    </div>
+
         </div>
 
+
       </div>
+    </div>
+
+
+
+  </div>
+
+
+  <div *ngIf="showAlert" class="fixed top-0 left-0 right-0 flex justify-center transition-transform duration-500 transform translate-y-0">
+    <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 shadow-lg rounded-md w-full max-w-md mx-auto">
+      <p class="font-bold">Acción no permitida</p>
+      <p class="text-sm">Debes iniciar sesión para agregar al carrito.</p>
     </div>
   </div>
 
@@ -143,9 +178,8 @@
 
   <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
 
-<!--     Previous Button (Only visible on page 2 or greater)-->
-    <button *ngIf="currentPage > 1"
-       (click)="cargarLibros(currentPage - 1)" [disabled]="currentPage === 1"
+    <button
+            (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
        class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
       Anterior
       <span class="sr-only"></span>
@@ -153,7 +187,7 @@
         <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
       </svg>
     </button>
-    <button (click)="cargarLibros(currentPage + 1)" [disabled]="currentPage >= totalPages"
+    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages"
        class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
       <span class="sr-only"></span>
       Siguiente
@@ -165,10 +199,6 @@
 </div>
 
 
-
-<div *ngIf="!libros || libros.length === 0" class="text-black text-center">
-  No hay libros disponibles
-</div>
 
 
 

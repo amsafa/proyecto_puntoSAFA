@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import { RegistroCliente } from '../interface/RegistroCliente';
 import { Login } from '../interface/Login';
 import { ActualizarService } from './actualizar.service';
-import {environment} from '../../environments/environment';
 
 
 @Injectable({
@@ -16,8 +15,7 @@ import {environment} from '../../environments/environment';
 export class AuthService {
   private authState = new BehaviorSubject<boolean>(this.isLoggedIn());
   private userData = new BehaviorSubject<RegistroCliente | null>(null);
-  private apiUrl =  environment.apiUrl;
-
+  private apiUrl = 'http://127.0.0.1:8000/api';
 
 
   constructor(
@@ -29,11 +27,10 @@ export class AuthService {
 
   // Iniciar sesión
   async login(credentials: Login): Promise<void> {
+    sessionStorage.removeItem('token'); // Limpiar token anterior
     try {
-      console.log("🟢 Iniciando sesión con:", credentials);
-
       const response = await lastValueFrom(
-        this.http.post<{ token: string }>(`${this.apiUrl}/api/login_check`, credentials)
+        this.http.post<{ token: string }>(`${this.apiUrl}/login_check`, credentials)
       );
 
       if (!response.token) {
@@ -42,16 +39,14 @@ export class AuthService {
 
       console.log("✅ Token recibido:", response.token);
 
-      // Guardar token en localStorage
-      localStorage.setItem('token', response.token);
+      sessionStorage.setItem('token', response.token);
       this.authState.next(true);
 
       // Obtener datos del usuario
       const user = await this.fetchUserData();
-      console.log("🟢 Datos de usuario obtenidos:", user);
-
+      console.log("Datos de usuario obtenidos:", user); // ✅ Depuración
       if (user?.usuario?.rol) {
-        localStorage.setItem('userData', JSON.stringify(user));
+        sessionStorage.setItem('userData', JSON.stringify(user)); // Guardamos los datos de usuario en sessionStorage
 
         // Redirigir según el rol
         switch (user.usuario.rol) {
@@ -81,33 +76,27 @@ export class AuthService {
         Swal.fire("Error", "No se pudo iniciar sesión. Inténtelo más tarde.", "error");
       }
 
-      localStorage.removeItem('token'); // Eliminar token inválido si falla
+      sessionStorage.removeItem('token'); // Eliminar token inválido si falla
       this.authState.next(false);
     }
   }
 
-  // login(credentials: Login): Observable<any> {
-  //   console.log("🟢 Iniciando sesión con:", credentials);
-  //   return this.http.post(`/api/api/login_check`, credentials).pipe(
-  //     tap((response: any) => {
-  //       console.log("✅ Token recibido:", response.token);
-  //       localStorage.setItem('token', response.token);
-  //       this.authState.next(true);
-  //     }),
-  //       catchError(this.handleError)
-  //   );
-  // }
+
+
 
 
   // Obtener datos del usuario autenticado
   fetchUserData(): Promise<RegistroCliente | null> {
     const token = this.getToken();
+
+    // if (!token) return Promise.resolve(null);
+
     if (!token) {
-      console.error("❌ No hay token en el localStorage");
+      console.error("❌ No hay token en sessionStorage");
       return Promise.resolve(null);
     }
 
-    console.log("🟢 Enviando token:", token);
+    // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
@@ -115,15 +104,22 @@ export class AuthService {
     });
 
     return lastValueFrom(
-      this.http.get('/api/cliente/auth/user', { headers })
+      this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/auth/user`, { headers })
     ).then(userData => {
       this.userData.next(userData);
-      return userData;
-    }).catch((err: any) => {
+      console.log(userData)
+      return userData; // Devuelve el usuario con su rol
+    }).catch(err => {
       console.error("❌ Error al obtener datos del usuario:", err);
 
       if (err instanceof HttpErrorResponse) {
-        console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
+        if (err.status === 401) {
+          console.error("❌ Token inválido o caducado. Requiere autenticación.");
+          this.router.navigate(['/login']);
+          this.userData.next(null);
+        } else {
+          console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
+        }
       } else {
         console.error("❌ Error inesperado:", err);
       }
@@ -136,8 +132,6 @@ export class AuthService {
 
 
 
-
-
   // Obtener datos del usuario autenticado como Observable
   getUserData(): Observable<RegistroCliente | null> {
     return this.userData.asObservable();
@@ -146,13 +140,13 @@ export class AuthService {
 
   // Obtener el token del localStorage
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
   }
 
 
   // Registrar un nuevo usuario
   registro(userData: RegistroCliente): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/registro`, userData).pipe(catchError(this.handleError));
+    return this.http.post(`${this.apiUrl}/registro`, userData).pipe(catchError(this.handleError));
   }
 
 

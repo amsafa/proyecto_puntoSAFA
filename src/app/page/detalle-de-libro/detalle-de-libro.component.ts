@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, LOCALE_ID} from '@angular/core';
 import {Libro} from '../../interface/libro';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
@@ -6,6 +6,8 @@ import {LibroService} from '../../service/libro.service';
 import {ActivatedRoute} from '@angular/router';
 import {Resena} from '../../interface/resena';
 import {ResenaService} from '../../service/resena.service';
+import {CarritoService} from '../../service/carrito.service';
+import {AuthService} from '../../service/auth.service';
 
 
 @Component({
@@ -16,6 +18,7 @@ import {ResenaService} from '../../service/resena.service';
     NgForOf,
     NgIf,
   ],
+  providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   standalone: true, // tengo que comprobar esto
   templateUrl: './detalle-de-libro.component.html',
   styleUrl: './detalle-de-libro.component.css'
@@ -27,12 +30,16 @@ export class DetalleDeLibroComponent {
   media_calificacion: number | null = null; // Variable para la calificación media
   starsArray: number[] = [];
   hasHalfStar: boolean = false;
+  isLoggedIn: boolean = false;
+  showAlert: boolean = false;
 
   constructor(
     private route: ActivatedRoute, // Para obtener el ID de la ruta
     private libroService: LibroService, // Para obtener los detalles del libro
     private resenaService: ResenaService, // Para obtener las reseñas
-    private cdr: ChangeDetectorRef // Agregado
+    private cdr: ChangeDetectorRef, // Agregado
+    private carritoService:CarritoService,
+    private authService: AuthService,
   ) {}
 
   // Método para inicializar el componente
@@ -44,6 +51,9 @@ export class DetalleDeLibroComponent {
       this.obtenerMediaCalificacion(id);
       console.log('ID del libro:', id);
     }
+    this.authService.getAuthState().subscribe(state => {
+      this.isLoggedIn = state;
+    });
   }
 
   // Método para obtener los detalles del libro
@@ -115,15 +125,26 @@ export class DetalleDeLibroComponent {
     console.log('Cantidad:', this.quantity);
   }
 
-  // Método para agregar al carrito
-  addToCart(): void {
-    if (this.libro) {
-      console.log('Libro agregado al carrito:', {
-        ...this.libro,
-        quantity: this.quantity
-      });
-    }
+  showLoginAlert() {
+    this.showAlert = true;
+
+    // Hide the alert after 3 seconds
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 3000);
   }
+
+  // Método para agregar al carrito
+  addToCart(libro?: Libro) {
+    if (!this.isLoggedIn) {
+      this.showLoginAlert();
+      return;
+    }
+    this.carritoService.addToCart(libro, this.quantity);
+
+  }
+
+
 
 
   protected readonly isNaN = isNaN;
