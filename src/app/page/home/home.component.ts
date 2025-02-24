@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HeroSectionInicioComponent } from '../../component/Inicio_componentes_propios/hero-section-inicio/hero-section-inicio.component';
 import { CajasCategoriaInicioComponent } from '../../component/Inicio_componentes_propios/cajas-categoria-inicio/cajas-categoria-inicio.component';
 import {CarouselComponent} from "../../component/Inicio_componentes_propios/carousel/carousel.component";
@@ -43,11 +43,11 @@ export class HomeComponent  implements OnInit {
       this.filterB = params['search'] || '';
       console.log('Search term from query params:', this.filterB);
       if (this.filterB) {
-        this.searchLibros();
+        this.onSearch();
       }
     });
 
-  }
+    }
 
 
 
@@ -83,4 +83,8 @@ export class HomeComponent  implements OnInit {
 
   }
 
+  clearSearch(): void {
+    this.filterB = '';
+    this.filteredBooks = this.libros;
+  }
 }
