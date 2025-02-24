@@ -12,7 +12,7 @@ export class UsuarioService {
   constructor(private http: HttpClient) {}
 
   registrarUsuario(usuario: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, usuario);
+    return this.http.post<any>(`${this.apiUrl}/registro`, usuario);
   }
 
   // Método para actualizar usuario

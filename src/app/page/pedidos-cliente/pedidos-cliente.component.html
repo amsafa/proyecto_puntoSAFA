@@ -116,55 +116,9 @@
 
       </div>
       <div class="w-full border-t border-gray-200 px-6 flex flex-col lg:flex-row items-center justify-between ">
-        <div class="flex flex-col sm:flex-row items-center max-lg:border-b border-gray-200">
-          <button
-            class="flex outline-0 py-6 sm:pr-6  sm:border-r border-gray-200 whitespace-nowrap gap-2 items-center justify-center font-semibold group text-lg text-black bg-white transition-all duration-500 hover:text-indigo-600">
-            <svg class="stroke-black transition-all duration-500 group-hover:stroke-indigo-600" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"
-                 fill="none">
-              <path d="M5.5 5.5L16.5 16.5M16.5 5.5L5.5 16.5" stroke="" stroke-width="1.6"
-                    stroke-linecap="round" />
-            </svg>
-            Cancel Order
-          </button>
-        </div>
-        <button
-          *ngIf="!showReviewForm[linea.libro.id] && pedido.estado === 'entregado'"
-          class="mt-4 px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition"
-          (click)="toggleReviewForm(linea.libro.id)"
-        >
-          Añadir reseña
-        </button>
+        <div class="flex flex-col sm:flex-row items-center max-lg:border-b border-gray-200"></div>
         <p class="font-semibold text-lg text-black py-6">Importe total: <span class="text-indigo-600"> {{pedido.total | currency: 'EUR'}}</span></p>
-        <div *ngIf="showReviewForm[linea.libro.id]" class="mt-6 p-6 bg-gray-100 rounded-lg shadow-md w-full">
-          <h3 class="font-semibold text-xl text-black mb-3">Escribir reseña</h3>
-
-          <!-- Review Text Area -->
-          <textarea
-            class="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200"
-            rows="4"
-            placeholder="Puede dejar una reseña, si lo desea"
-          ></textarea>
-
-          <!-- Buttons: Submit & Close -->
-          <div class="flex justify-between mt-4">
-            <button
-              class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
-              (click)="toggleReviewForm(linea.libro.id)"
-            >
-              Cerrar
-            </button>
-
-            <button
-              class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-            >
-              Enviar
-            </button>
-          </div>
-        </div>
       </div>
-
-
-
     </div>
   </div>
   </div>

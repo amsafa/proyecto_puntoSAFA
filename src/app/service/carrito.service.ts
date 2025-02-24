@@ -34,7 +34,7 @@ export class CarritoService {
     const existingItem:LibroCarrito | undefined = this.cartItems.find(item => item.id === libro!.id);
 
     if (existingItem) {
-      existingItem.quantity += 1; // Increment quantity if item already exists
+      existingItem.cantidad += 1; // Increment quantity if item already exists
     } else {
       this.cartItems.push({
         id: libro!.id,

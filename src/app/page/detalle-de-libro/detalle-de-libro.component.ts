@@ -6,6 +6,9 @@ import {LibroService} from '../../service/libro.service';
 import {ActivatedRoute} from '@angular/router';
 import {Resena} from '../../interface/resena';
 import {ResenaService} from '../../service/resena.service';
+import { AuthService } from '../../service/auth.service';
+import { CarritoService } from '../../service/carrito.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 
 @Component({
@@ -37,17 +40,11 @@ export class DetalleDeLibroComponent {
     private libroService: LibroService,
     private resenaService: ResenaService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
-  ) {
+    private cdr: ChangeDetectorRef, // Agregado
+    private carritoService:CarritoService) {
     this.libroId = Number(this.route.snapshot.paramMap.get('id')); // Obtener el ID del libro desde la ruta
   }
-    private route: ActivatedRoute, // Para obtener el ID de la ruta
-    private libroService: LibroService, // Para obtener los detalles del libro
-    private resenaService: ResenaService, // Para obtener las reseñas
-    private cdr: ChangeDetectorRef, // Agregado
-    private carritoService:CarritoService,
-    private authService: AuthService,
-  ) {}
+
 
   // Método para inicializar el componente
   ngOnInit(): void {
@@ -58,12 +55,10 @@ export class DetalleDeLibroComponent {
       this.obtenerMediaCalificacion(id);
       console.log('ID del libro:', id);
     }
+    this.usuarioLogueado = this.authService.isLoggedIn();
   }
 
-      // Verificar si el usuario está logueado
-      this.usuarioLogueado = this.authService.isLoggedIn();
-    }
-  }
+
 
   /**
    * Obtener las reseñas de un libro.
@@ -219,7 +214,7 @@ export class DetalleDeLibroComponent {
         quantity: this.quantity,
       });
     }
-    this.carritoService.addToCart(libro, this.quantity);
+    this.carritoService.addToCart(this.libro, this.quantity);
 
   }
 

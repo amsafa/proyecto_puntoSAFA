@@ -13,35 +13,35 @@
                   <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleCart()">Cerrar</button>
                 </div>
               </div>
-  <div *ngIf="cartItems.length === 0">Su cesta está vacía.</div>
+              <div *ngIf="cartItems.length === 0">Su cesta está vacía.</div>
 
               <div *ngIf="cartItems.length > 0" class="mt-8">
-  <div *ngFor="let item of cartItems" class="cart-item">
-    <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-      <img [src]="item.imagen" alt="" class="size-full object-cover">
-    </div>
-    <div class="ml-4 flex flex-1 flex-col">
-      <div>
-        <div class="flex justify-between text-base font-medium text-gray-900">
-          <h3>
-            <a href="http://localhost:4200/detalle-libro/{{item.id}}">{{ item.titulo }}</a>
-          </h3>
-          <p class="ml-4">{{ item.precio | currency: 'EUR' }}</p>
-        </div>
-      <div class="quantity-controls">
-        <button (click)="decreaseQuantity(item)" class="bg-customGreen text-gray-700 px-3 py-1 rounded-l-md hover:bg-gray-300">-</button>
-        <span class="bg-blue-800">{{ item.cantidad }}</span>
-        <button (click)="increaseQuantity(item)" class="bg-customAzulito text-gray-700 px-3 py-1 rounded-r-md hover:bg-gray-300">+</button>
-      </div>
-        <div class="flex flex-1 items-end justify-between text-sm">
+                <div *ngFor="let item of cartItems" class="cart-item">
+                  <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
+                    <img [src]="item.imagen" alt="" class="size-full object-cover">
+                  </div>
+                  <div class="ml-4 flex flex-1 flex-col">
+                    <div>
+                      <div class="flex justify-between text-base font-medium text-gray-900">
+                        <h3>
+                          <a href="http://localhost:4200/detalle-libro/{{item.id}}">{{ item.titulo }}</a>
+                        </h3>
+                        <p class="ml-4">{{ item.precio | currency: 'EUR' }}</p>
+                      </div>
+                      <div class="quantity-controls">
+                        <button (click)="decreaseQuantity(item)" class="bg-customGreen text-gray-700 px-3 py-1 rounded-l-md hover:bg-gray-300">-</button>
+                        <span class="bg-blue-800">{{ item.cantidad }}</span>
+                        <button (click)="increaseQuantity(item)" class="bg-customAzulito text-gray-700 px-3 py-1 rounded-r-md hover:bg-gray-300">+</button>
+                      </div>
+                      <div class="flex flex-1 items-end justify-between text-sm">
 
-          <div class="flex">
-            <button (click)="removeItem(item.id)" type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Eliminar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                        <div class="flex">
+                          <button (click)="removeItem(item.id)" type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Eliminar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div class="flex justify-between text-base  cart-total font-medium text-gray-900">
@@ -62,13 +62,11 @@
 
 
 
-</div>
-</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-
-

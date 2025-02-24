@@ -77,8 +77,6 @@ export class CarritoCompraComponent implements OnInit {
     this.router.navigate(['/pagar-pedido']);
   }
 
-  calculateTotalPrice() {
-    this.totalPrice = this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-  }
+
 
 }

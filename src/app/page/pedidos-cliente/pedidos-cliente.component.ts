@@ -24,7 +24,7 @@ export class PedidosClienteComponent implements OnInit{
   pedidos: Pedido[] = [];
   loading = true;
   errorMessage = '';
-  showReviewForm: { [libroId: number]: boolean } = {};
+  // showReviewForm: { [libroId: number]: boolean } = {};
   orderStats: EstadisticasPedidos | null =null;
   procesados:number = 0;
   totales:number = 0;
@@ -65,9 +65,9 @@ export class PedidosClienteComponent implements OnInit{
     })
   }
 
-  toggleReviewForm(libroId: number) {
-    this.showReviewForm[libroId] = !this.showReviewForm[libroId];
-  }
+  // toggleReviewForm(libroId: number) {
+  //   this.showReviewForm[libroId] = !this.showReviewForm[libroId];
+  // }
 
   animateCount(property: 'totales' | 'entregados' | 'procesados', targetValue: number) {
     let currentValue = 0;

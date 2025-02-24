@@ -56,7 +56,7 @@ export class PagarCompraComponent implements OnInit{
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]]
     });
 
-    const userDataString = localStorage.getItem('userData');
+    const userDataString = sessionStorage.getItem('userData');
     if (userDataString) {
       try {
         this.userData = JSON.parse(userDataString);
@@ -80,7 +80,7 @@ export class PagarCompraComponent implements OnInit{
     }
 
 
-    const storedCart = localStorage.getItem('cart');
+    const storedCart = sessionStorage.getItem('cart');
     if (storedCart) {
       this.cartItems = JSON.parse(storedCart);
     }
@@ -126,7 +126,13 @@ export class PagarCompraComponent implements OnInit{
       lineaPedidos: this.cartItems.map(item => ({
         cantidad: item.cantidad,
         precio_unitario: item.precio,
-        libro: item.id// Pass the full object
+        libro: {
+          id: item.id, // Book ID
+          titulo: item.titulo, // Ensure cartItems has this property
+          imagen: item.imagen,
+          precio:item.precio,
+          cantidad:item.cantidad,
+        }// Pass the full object
       })),
     };
 
