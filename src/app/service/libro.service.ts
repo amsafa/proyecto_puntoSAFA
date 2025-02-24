@@ -10,7 +10,7 @@ import {environment} from '../../environments/environment';
   providedIn: 'root'
 })
 export class LibroService {
-  private baseUrl: string =  `${environment.apiUrl}/libro`;
+  private baseUrl: string =  "http://127.0.0.1:8000/libro";
 
   constructor(private http: HttpClient) { }
 
@@ -23,15 +23,6 @@ export class LibroService {
         }))
       )
     );
-  }
-
-
-
-
-  getLibros(page: number, limit: number): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/all`, {
-      params: { page: page.toString(), limit: limit.toString() },
-    });
   }
 
 

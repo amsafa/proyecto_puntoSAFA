@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BookListComponent } from '../book-list/book-list.component';
 import {Router} from '@angular/router';
 
