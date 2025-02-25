@@ -82,4 +82,28 @@ export class PerfilAdmComponent implements OnInit {
   guardarCambios() {
 
   }
+
+  isAdmin(): boolean {
+    const user = this.userData.value; // Obtener los datos del usuario
+
+    if (!user || !user.usuario) {
+      console.log('%c⚠️ No hay datos de usuario', 'color: orange; font-weight: bold;');
+      return false;
+    }
+
+    console.log('%c🔍 Usuario detectado:', 'color: blue; font-weight: bold;', user);
+
+    const roles = user.usuario.roles; // Acceder a los roles correctamente
+
+    if (roles && roles.includes('ROLE_ADMIN')) {
+      console.log('%c✅ Usuario ES ADMIN', 'color: green; font-weight: bold;');
+      return true;
+    } else {
+      console.log('%c❌ Usuario NO es ADMIN', 'color: red; font-weight: bold;');
+      return false;
+    }
+  }
+
+
+
 }

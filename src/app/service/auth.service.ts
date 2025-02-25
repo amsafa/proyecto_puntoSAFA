@@ -30,114 +30,50 @@ export class AuthService {
   // Iniciar sesión
   async login(credentials: Login): Promise<void> {
     try {
-      console.log("🟢 Iniciando sesión con:", credentials);
-
       const response = await lastValueFrom(
         this.http.post<{ token: string }>(`${this.apiUrl}/api/login_check`, credentials)
       );
+      if (!response.token) throw new Error("Token no recibido");
 
-      if (!response.token) {
-        throw new Error("❌ Token no recibido en la respuesta del servidor.");
-      }
-
-      console.log("✅ Token recibido:", response.token);
-
-      // Guardar token en localStorage
       localStorage.setItem('token', response.token);
       this.authState.next(true);
 
-      // Obtener datos del usuario
       const user = await this.fetchUserData();
-      console.log("🟢 Datos de usuario obtenidos:", user);
-
       if (user?.usuario?.rol) {
         localStorage.setItem('userData', JSON.stringify(user));
-
-        // Redirigir según el rol
-        switch (user.usuario.rol) {
-          case 'admin':
-            console.log("🚀 Redirigiendo a perfil-admin");
-            await this.router.navigate(['/perfil-adm']);
-            break;
-          case 'cliente':
-            console.log("🚀 Redirigiendo a home");
-            await this.router.navigate(['/home']);
-            break;
-          default:
-            console.warn("⚠️ Rol desconocido, redirigiendo a login");
-            await this.router.navigate(['/login']);
-        }
+        await this.router.navigate([user.usuario.rol === 'admin' ? '/perfil-adm' : '/home']);
       } else {
-        console.warn("⚠️ No se pudo determinar el rol del usuario");
         await this.router.navigate(['/login']);
       }
     } catch (error: any) {
-      console.error("❌ Error en login:", error);
-
-      if (error instanceof HttpErrorResponse && error.status === 401) {
-        console.warn("⚠️ Credenciales incorrectas.");
-        Swal.fire("Error", "Usuario o contraseña incorrectos.", "error");
-      } else {
-        Swal.fire("Error", "No se pudo iniciar sesión. Inténtelo más tarde.", "error");
-      }
-
-      localStorage.removeItem('token'); // Eliminar token inválido si falla
+      Swal.fire("Error", error.status === 401 ? "Usuario o contraseña incorrectos." : "No se pudo iniciar sesión.", "error");
+      localStorage.removeItem('token');
       this.authState.next(false);
     }
   }
 
-
-
-
-  // Obtener datos del usuario autenticado
-  fetchUserData(): Promise<RegistroCliente | null> {
+  async fetchUserData(): Promise<RegistroCliente | null> {
     const token = this.getToken();
-    if (!token) {
-      console.error("❌ No hay token en el localStorage");
-      return Promise.resolve(null);
-    }
-
-    console.log("🟢 Enviando token:", token);
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-
-    return lastValueFrom(
-      this.http.get('https://localhost:8000/api/cliente/auth/user', { headers })
-    ).then(userData => {
+    if (!token) return null;
+    try {
+      const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+      const userData = await lastValueFrom(this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers }));
       this.userData.next(userData);
       return userData;
-    }).catch((err: any) => {
-      console.error("❌ Error al obtener datos del usuario:", err);
-
-      if (err instanceof HttpErrorResponse) {
-        console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
-      } else {
-        console.error("❌ Error inesperado:", err);
-      }
-
+    } catch {
       this.userData.next(null);
       return null;
-    });
+    }
   }
 
-
-
-
-
-
-  // Obtener datos del usuario autenticado como Observable
   getUserData(): Observable<RegistroCliente | null> {
     return this.userData.asObservable();
   }
 
-
-  // Obtener el token del localStorage
   getToken(): string | null {
     return localStorage.getItem('token');
   }
+
 
 
   // Registrar un nuevo usuario
@@ -150,24 +86,13 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     this.authState.next(false);
-    this.router.navigate(['login']).then(() => {
-      Swal.fire({
-        title: 'Sesión cerrada correctamente',
-        text: 'Se ha cerrado sesión correctamente. Nos vemos pronto.',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      }).then(() => this.actualizar.triggerRefreshHeader());
-    });
+    this.router.navigate(['login']).then(() => this.actualizar.triggerRefreshHeader());
   }
 
-
-  // Verificar si el usuario está autenticado
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
-
-  // Obtener el estado de autenticación como Observable
   getAuthState(): Observable<boolean> {
     return this.authState.asObservable();
   }
@@ -191,3 +116,6 @@ export class AuthService {
 
   }
 }
+
+
+

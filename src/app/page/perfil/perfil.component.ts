@@ -14,7 +14,7 @@ import {distinctUntilChanged, filter, switchMap} from 'rxjs';
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
-  imports: [NgIf, ReactiveFormsModule, FormsModule, FormsModule],
+  imports: [NgIf, ReactiveFormsModule, FormsModule],
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
