@@ -51,7 +51,9 @@
         <ul [ngClass]="{'block': showMenu, 'hidden': !showMenu}"
             class="absolute bg-white  shadow-md rounded mt-2 w-40 right-0">
           <li><a routerLink="/perfil" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Perfil</a></li>
-          <li *ngIf="isLoggedIn && userData?.rol === 'admin'"><a routerLink="/perfil-adm" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Perfil Administrador</a></li>
+          <li *ngIf="isAdmin">
+            <a routerLink="/perfil-adm" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Perfil Admin</a>
+          </li>
           <li><a routerLink="/mis-pedidos" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Mis Pedidos</a></li>
           <li>
             <button (click)="logout()" class=" text-l block w-full text-left px-4 py-2 hover:bg-red-100 text-red-600">
@@ -76,10 +78,9 @@
 
     <ng-template #loggedInMenu>
       <a routerLink="/perfil" class="block py-2  text-customAzulito hover:text-customBlanco">Perfil</a>
-      <!-- Se muestra solo para administradores -->
-      <li *ngIf="isLoggedIn && userData?.rol === 'admin'">
-        <a routerLink="/perfil-adm" class="block py-2 text-customAzulito hover:text-customBlanco">Perfil Administrador</a>
-      </li>
+      <a routerLink="/perfil-adm" class="block py-2  text-customAzulito hover:text-customBlanco">
+        Perfil Admin
+      </a>
       <a routerLink="/mis-pedidos" class="block py-2 text-customAzulito hover:text-customBlanco">Mis Pedidos</a>
       <button (click)="logout()" class="block w-full py-2 text-red-400 text:bg-red-100 hover:bg-red-100">
         Cerrar Sesión

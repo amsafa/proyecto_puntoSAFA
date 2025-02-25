@@ -83,4 +83,25 @@ export class LibroService {
 
 
 
+  // Método para crear un libro
+  crearLibro(libro: Libro): Observable<Libro> {
+    return this.http.post<Libro>(`${this.baseUrl}/guardar`, libro);
+  }
+
+
+
+
+// Método para editar un libro
+  editarLibro(id: number, libro: Libro): Observable<Libro> {
+    return this.http.put<Libro>(`${this.baseUrl}/editar/${id}`, libro);
+  }
+
+
+
+
+// Método para eliminar un libro
+  eliminarLibro(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/eliminar/${id}`);
+  }
+
 }

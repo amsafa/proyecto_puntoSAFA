@@ -18,47 +18,44 @@ export class HeaderComponent implements OnInit {
   userData: any = null;
   cartQuantity: number = 0;
   showCart: boolean = false;
+  isAdmin : boolean = false;
 
   constructor(private authService: AuthService, private router: Router, private carritoService:CarritoService) { }
 
   ngOnInit(): void {
-    // Recuperar datos de localStorage al iniciar
-    this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    this.userData = JSON.parse(localStorage.getItem('userData') || 'null');
-    this.cartQuantity = Number(localStorage.getItem('cartQuantity')) || 0;
-
-    console.log("UserData al iniciar el header:", this.userData); // 🔍 Debug inicial
-
-    // Suscripción al estado de autenticación
+    // Suscribirse al estado de autenticación
     this.authService.getAuthState().subscribe((state) => {
       this.isLoggedIn = state;
-      localStorage.setItem('isLoggedIn', JSON.stringify(this.isLoggedIn));
+      if (this.isLoggedIn) {
+        this.authService.fetchUserData();
+      }
     });
 
-    // Suscripción a los datos del usuario
+    // Obtener datos del usuario y verificar si es admin
     this.authService.getUserData().subscribe((user) => {
-      this.userData = user;  // Se actualizan los datos del usuario
-      localStorage.setItem('userData', JSON.stringify(this.userData));  // Guardar en localStorage
+      this.userData = user;
 
-      console.log("UserData actualizado en header:", this.userData); // 🔍 Debug
-      console.log("Rol del usuario:", this.userData?.usuario?.rol);
-      console.log("¿Es admin?", this.userData?.usuario?.rol === 'admin');
+      // Verificar si el usuario tiene el rol "ROLE_ADMIN"
+      this.isAdmin = user?.usuario?.roles?.includes("ROLE_ADMIN") ?? false;
     });
 
-    // Suscripción a los productos en el carrito
-    this.carritoService.cartItems$.subscribe(items => {
+    // Recuperar datos del usuario desde localStorage si la página se recarga
+    const userDataString = localStorage.getItem('userData');
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      this.isAdmin = userData.roles?.includes("ROLE_ADMIN") ?? false;
+    }
+
+    // Suscribirse al carrito para obtener la cantidad total de productos
+    this.carritoService.cartItems$.subscribe((items) => {
       this.cartQuantity = items.reduce((total, item) => total + item.quantity, 0);
-      localStorage.setItem('cartQuantity', this.cartQuantity.toString());
     });
 
-    // Suscripción a la visibilidad del carrito
-    this.carritoService.showCart$.subscribe(show => {
+    // Suscribirse a la visibilidad del carrito
+    this.carritoService.showCart$.subscribe((show) => {
       this.showCart = show;
     });
   }
-
-
-
 
 
   toggleMenu(event: Event) {
@@ -76,14 +73,6 @@ export class HeaderComponent implements OnInit {
     this.isLoggedIn = false;
     this.showMenu = false;
     this.isMenuOpen = false;
-    this.userData = null;
-    this.cartQuantity = 0;
-
-    // Eliminar datos de localStorage
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userData');
-    localStorage.removeItem('cartQuantity');
-
     this.router.navigate(['/home']);
   }
 
@@ -96,7 +85,9 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+
+
   toggleCart() {
-    this.carritoService.toggleCart();
+    this.carritoService.toggleCart(); // Toggle cart visibility
   }
 }
