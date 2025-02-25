@@ -33,8 +33,11 @@ export class LibroService {
     }
 
     if (priceFilter) {
-      params.price = priceFilter; // Send as a single string like "10-15" or "mayor40"
+      params.priceRanges = priceFilter; // Send as a single string like "10-15" or "mayor40"
+
     }
+
+    console.log("📡 Sending Request with Params:", params);
     return this.http.get<Libro[]>(`${this.baseUrl}/filtered-books`, { params }).pipe(
       map(libros =>
         libros.map(libro => ({
