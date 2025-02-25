@@ -32,12 +32,21 @@ export class CatalogoComponent  implements OnInit {
   filteredBooks: Libro[] = [];
   searchTerm: string = '';
   categories: Categoria[] = [];
-  selectedCategoryId: number | null = null;
+  selectedCategoryId: number | null = null
+  selectedPriceRange: string | null = null;
   currentPage: number = 1;
   totalPages: number = 1; // Placeholder, will be set dynamically
   limit: number = 12;
   isLoggedIn: boolean = false;
   showAlert: boolean = false;
+
+  priceRanges = [
+    { label: "Menos de 5 euros", value: "menor5" },
+    { label: "De 5 a 10 euros", value: "5-10" },
+    { label: "De 10 a 15 euros", value: "10-15" },
+    { label: "De 15 a 40 euros", value: "15-40" },
+    { label: "Más de 40 euros", value: "mayor40" }
+  ];
 
   constructor(private libroService: LibroService, private http:HttpClient,
               private router:Router, private route:ActivatedRoute,
@@ -67,19 +76,28 @@ export class CatalogoComponent  implements OnInit {
 
   cargarLibros(page: number = 1, limit: number = 9): void {
     this.currentPage = page;
-
-    if (this.selectedPriceRange) {
-      this.filterByPrice(this.selectedPriceRange, page, limit);
-    } else if (this.selectedCategoryId) {
-      this.filterByCategory(this.selectedCategoryId, page, limit);
-    } else {
+    if (!this.selectedCategoryId && !this.selectedPriceRange) {
       this.libroService.getBooks(page, limit).subscribe({
+        next: (data: Libro[]) => {
+          this.libros = data;
+          this.filteredBooks = [...this.libros];
+          this.totalPages = Math.ceil(50 / limit);
+
+          if (this.searchTerm) {
+            this.searchBooks();
+          }
+        },
+        error: (error) => console.error(error)
+      });
+    } else {
+      this.libroService.getLibrosByFilter(this.selectedCategoryId || undefined, this.selectedPriceRange || undefined, page, limit).subscribe({
         next: (data) => {
           this.libros = data;
           this.filteredBooks = [...this.libros];
           this.totalPages = Math.ceil(50 / limit);
+
           if (this.searchTerm) {
-            this.searchBooks(); // Ensure search runs after books load
+            this.searchBooks();
           }
         },
         error: (error) => console.error(error)
@@ -149,23 +167,23 @@ export class CatalogoComponent  implements OnInit {
   //   }
   // }
 
-  selectedPriceRange: string | null = null;
-  filterByPrice(range: string, page: number = 1, limit: number = 9): void {
-    if (this.selectedPriceRange === range) {
-      this.selectedPriceRange = null;
-      this.filteredBooks = this.libros;
-    } else {
-      this.selectedPriceRange = range;
-      this.libroService.getLibrosByPrecio(range, page, limit).subscribe({
-        next: (libros) => {
-          this.filteredBooks = libros;
-          this.totalPages = Math.ceil(libros.length / limit); // Update total pages
-          this.currentPage = page;
-        },
-        error: (error) => console.error(error)
-      });
-    }
-  }
+  // selectedPriceRange: string | null = null;
+  // filterByPrice(range: string, page: number = 1, limit: number = 9): void {
+  //   if (this.selectedPriceRange === range) {
+  //     this.selectedPriceRange = null;
+  //     this.filteredBooks = this.libros;
+  //   } else {
+  //     this.selectedPriceRange = range;
+  //     this.libroService.getLibrosByPrecio(range, page, limit).subscribe({
+  //       next: (libros) => {
+  //         this.filteredBooks = libros;
+  //         this.totalPages = Math.ceil(libros.length / limit); // Update total pages
+  //         this.currentPage = page;
+  //       },
+  //       error: (error) => console.error(error)
+  //     });
+  //   }
+  // }
 
 
   // filterByCategory(categoryId: number, page: number = 1, limit: number = 9): void {
@@ -185,22 +203,47 @@ export class CatalogoComponent  implements OnInit {
   //   }
   // }
 
-  filterByCategory(categoryId: number, page: number = 1, limit: number = 9): void {
-    if (this.selectedCategoryId === categoryId) {
-      this.selectedCategoryId = null;
-      this.filteredBooks = this.libros;
-    } else {
-      this.selectedCategoryId = categoryId;
-      this.libroService.getBooksByCategory(categoryId, page, limit).subscribe({
-        next: (books) => {
-          this.filteredBooks = books;
-          this.totalPages = Math.ceil(books.length / limit);
-          this.currentPage = page;
-        },
-        error: (error) => console.error(error)
-      });
-    }
+  // filterByCategory(categoryId: number, page: number = 1, limit: number = 9): void {
+  //   if (this.selectedCategoryId === categoryId) {
+  //     this.selectedCategoryId = null;
+  //     this.filteredBooks = this.libros;
+  //   } else {
+  //     this.selectedCategoryId = categoryId;
+  //     this.libroService.getBooksByCategory(categoryId, page, limit).subscribe({
+  //       next: (books) => {
+  //         this.filteredBooks = books;
+  //         this.totalPages = Math.ceil(books.length / limit);
+  //         this.currentPage = page;
+  //       },
+  //       error: (error) => console.error(error)
+  //     });
+  //   }
+  // }
+
+  onPriceChange(priceRange: string | null): void {
+    this.selectedPriceRange = priceRange;
+    this.applyFilters();
   }
+
+  onCategoryChange(categoryId: number | null): void {
+    this.selectedCategoryId = categoryId;  // Update the selected category
+    this.applyFilters();  // Apply filters with the new selection
+  }
+
+
+  applyFilters(): void {
+    this.libroService.getLibrosByFilter(
+      this.selectedCategoryId || undefined,
+      this.selectedPriceRange || undefined // No changes needed for price
+    ).subscribe({
+      next: (data) => {
+        this.filteredBooks = data;
+      },
+      error: (error) => console.error(error)
+    });
+  }
+
+
 
   goToPage(page: number): void {
     this.router.navigate([], {

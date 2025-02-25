@@ -25,6 +25,26 @@ export class LibroService {
     );
   }
 
+  getLibrosByFilter(categoryId?:number, priceFilter?:string, page: number = 1, limit: number = 9): Observable<Libro[]> {
+    let params:any = {page, limit};
+
+    if(categoryId !== undefined && categoryId !== null){
+      params.categoryId = categoryId;
+    }
+
+    if (priceFilter) {
+      params.price = priceFilter; // Send as a single string like "10-15" or "mayor40"
+    }
+    return this.http.get<Libro[]>(`${this.baseUrl}/filtered-books`, { params }).pipe(
+      map(libros =>
+        libros.map(libro => ({
+          ...libro,
+          mediaCalificacion: parseFloat(String(libro.mediaCalificacion)) // Ensure proper number conversion
+        }))
+      )
+    );
+  }
+
 
   getLibroById(id: number): Observable<Libro> {
     return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
