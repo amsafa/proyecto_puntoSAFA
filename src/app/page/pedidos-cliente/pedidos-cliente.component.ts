@@ -43,7 +43,7 @@ export class PedidosClienteComponent implements OnInit{
             this.loading = false;
             this.pedidos = Array.isArray(data) ? data : [];
           },error:error=>{
-            this.errorMessage = 'Error fetching orders';
+            this.errorMessage = 'No hay pedidos para el cliente';
             this.loading = false;
         }
         });
