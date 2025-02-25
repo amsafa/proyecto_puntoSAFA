@@ -16,6 +16,7 @@ import {CarouselComponent} from './component/Inicio_componentes_propios/carousel
 import {authGuard} from './auth.guard';
 import {EmailComponent} from './email/email.component';
 import {RegistroLibroComponent} from './component/registro-libro/registro-libro.component';
+import {ActivarCuentaComponent} from './component/activar-cuenta/activar-cuenta.component';
 
 
 
@@ -33,6 +34,7 @@ export const routes: Routes = [
   {path:'autor', component:AutorComponent, pathMatch: 'full'},
   {path:'catalogo', component: CatalogoComponent, pathMatch: 'full'},
   {path: 'detalle-libro/:id', component: DetalleDeLibroComponent }, // Ruta para detalles del libro
+  { path: 'activar-cuenta', component: ActivarCuentaComponent },
 
 
   // Rutas protegidas (solo accesibles si hay sesión iniciada)
