@@ -39,7 +39,7 @@ export class CatalogoComponent  implements OnInit {
   limit: number = 12;
   isLoggedIn: boolean = false;
   showAlert: boolean = false;
-
+  priceFilter:string | null = null;
   priceRanges = [
     { label: "Menos de 5 euros", value: "menor5" },
     { label: "De 5 a 10 euros", value: "5-10" },
@@ -221,22 +221,35 @@ export class CatalogoComponent  implements OnInit {
   // }
 
   onPriceChange(priceRange: string | null): void {
+    console.log("🎯 Price Filter Changed To:", priceRange);
     this.selectedPriceRange = priceRange;
     this.applyFilters();
+    if (priceRange === null) {
+      const priceRadios = document.getElementsByName("priceRange") as NodeListOf<HTMLInputElement>;
+      priceRadios.forEach(radio => radio.checked = false);
+    }
   }
 
   onCategoryChange(categoryId: number | null): void {
     this.selectedCategoryId = categoryId;  // Update the selected category
     this.applyFilters();  // Apply filters with the new selection
+    if (categoryId === null) {
+      const categoryRadios = document.getElementsByName("category") as NodeListOf<HTMLInputElement>;
+      categoryRadios.forEach(radio => radio.checked = false);
+    }
   }
 
 
   applyFilters(): void {
+    console.log("🔍 Applying filters:");
+    console.log("Category ID:", this.selectedCategoryId);
+    console.log("Price Range:", this.selectedPriceRange);
     this.libroService.getLibrosByFilter(
       this.selectedCategoryId || undefined,
       this.selectedPriceRange || undefined // No changes needed for price
     ).subscribe({
       next: (data) => {
+        console.log("✅ Filtered books received:", data);
         this.filteredBooks = data;
       },
       error: (error) => console.error(error)
