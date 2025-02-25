@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
-import { Observable } from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import { Resena } from '../interface/resena';
 import { environment } from '../../environments/environment';
+import {catchError} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -39,6 +40,21 @@ export class ResenaService {
    * La verificación de compra se realiza automáticamente en el backend.
    */
   enviarResena(resena: { libro: number | undefined; calificacion: number; comentario: string }): Observable<Resena> {
-    return this.http.post<Resena>(`${this.baseUrlResena}/nueva`, resena);
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return throwError(() => new Error('Token JWT no encontrado.'));
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.post<Resena>(`${this.baseUrlResena}/nueva`, resena, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error al enviar la reseña:', error);
+        return throwError(() => new Error('Error al enviar la reseña.'));
+      })
+    );
   }
 }

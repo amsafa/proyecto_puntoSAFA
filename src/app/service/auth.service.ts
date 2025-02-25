@@ -57,7 +57,9 @@ export class AuthService {
     if (!token) return null;
     try {
       const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
-      const userData = await lastValueFrom(this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers }));
+      // Lisset y Pablo  --->  const userData = await lastValueFrom(this.http.get<RegistroCliente>('https://localhost:8000/api/api/cliente/auth/user', { headers }));
+      const userData = await lastValueFrom(this.http.get<RegistroCliente>('/api/api/cliente/auth/user', { headers }));
+
       this.userData.next(userData);
       return userData;
     } catch {
