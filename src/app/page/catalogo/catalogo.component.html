@@ -52,7 +52,7 @@
         <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Categoría</h3>
         <div class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
           <label *ngFor="let category of categories">
-            <input type="checkbox" [checked]="selectedCategoryId === category.id" name="category" (change)="onCategoryChange(category.id)">
+            <input type="checkbox" [checked]="selectedCategoryId === category.id" name="category" (change)="filterByCategory(category.id)">
             {{ category.nombre }}
           </label>
 <!--          <button (click)="onCategoryChange(null)">Clear Category</button>-->
@@ -66,7 +66,7 @@
         <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Precios</h3>
         <div class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
           <label *ngFor="let range of priceRanges">
-            <input type="checkbox" [checked]="selectedPriceRanges.includes(range.value)" name="priceRange" (change)="onPriceChange(range.value)">
+            <input type="checkbox" [checked]="selectedPriceRanges.includes(range.value)" name="priceRange" (change)="filterByPrice(range.value)">
             {{ range.label }}
           </label>
 <!--          <button (click)="onPriceChange(null)">Clear Price Filter</button>-->
