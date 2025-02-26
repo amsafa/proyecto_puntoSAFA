@@ -5,22 +5,25 @@
 
     <!-- Contenedor de Categorías -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Ficción -->
+      <!-- Bloque 1: Ciencia y Divulgación -->
       <div class="bg-blue-50 p-3 rounded shadow-sm">
-        <h3 class="text-lg font-bold text-blue-800 text-center">Ciencia y divulgación</h3>
-        <app-book-list [categoryId]="1"></app-book-list> <!-- Ficción (ID 1) -->
+        <h3 class="text-lg font-bold text-blue-800 text-center">{{ category1Name }}</h3>
+        <app-book-list [categoryId]="category1Id"></app-book-list>
         <div class="flex justify-center mt-6">
-          <button class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">Abrir</button>
-        </div>
 
+          <button class="btn-primary" (click)="redirectToCatalog(category1Id)"> Abrir</button>
+        </div>
       </div>
 
-      <!-- No Ficción -->
+      <!-- Bloque 2: Literatura y Clásicos -->
       <div class="bg-blue-50 p-3 rounded shadow-sm">
-        <h3 class="text-lg font-bold text-blue-800 text-center">Literatura y clásicos</h3>
-        <app-book-list [categoryId]="2"></app-book-list> <!-- No Ficción (ID 2) -->
+        <h3 class="text-lg font-bold text-blue-800 text-center">{{ category3Name }}</h3>
+        <app-book-list [categoryId]="category3Id"></app-book-list>
         <div class="flex justify-center mt-6">
-          <button class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">Abrir</button>
+          <div class="flex justify-center mt-6">
+
+            <button class="btn-primary" (click)="redirectToCatalog(category3Id)"> Abrir</button>
+          </div>
         </div>
       </div>
     </div>

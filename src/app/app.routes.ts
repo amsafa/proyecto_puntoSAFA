@@ -24,10 +24,6 @@ import {EditarLibroComponent} from './component/editar-libro/editar-libro.compon
 
 export const routes: Routes = [
 
-  //Comprobación de componentes de Alba
-  {path: 'carrusel', component: CarouselComponent, pathMatch: 'full'},
-  {path: 'recomendacionLibro', component: RecomendacionLibroComponent, pathMatch: 'full'},
-
   //Comprobación de componentes
   {path: '', component: HomeComponent, pathMatch: 'full' },
   {path: 'registro', component:RegistroComponent, pathMatch: 'full'},
@@ -45,6 +41,7 @@ export const routes: Routes = [
   { path: 'email', component: EmailComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'registro-libro', component: RegistroLibroComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'editar-libro', component: EditarLibroComponent, pathMatch: 'full', canActivate: [authGuard] },
+
 
 
 

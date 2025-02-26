@@ -2,16 +2,7 @@
   <div class="container mx-auto relative">
     <h2 class="text-2xl font-bold text-center text-blue-900">EXPLORA NUESTROS LIBROS</h2>
 
-    <!-- Botón para ir al anterior -->
-    <button
-      class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-900 text-white p-2 rounded shadow-md z-10 hover:bg-blue-700 transition-colors duration-200"
-      (mousedown)="onMouseDown($event)"
-      (mouseup)="onMouseUp()"
-      (mouseleave)="onMouseUp()"
-      (click)="scroll('left')"
-    >
-      ‹
-    </button>
+
 
     <!-- Carrusel -->
     <div
@@ -30,7 +21,7 @@
           <p class="text-white text-lg font-semibold">{{ libro.precio }} €</p>
           <button
             (click)="verDetallesLibro(libro.id)"
-            class="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-700"
+            class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg"
           >
             Ver detalles
           </button>
@@ -38,15 +29,8 @@
       </div>
     </div>
 
-    <!-- Botón para ir al siguiente -->
-    <button
-      class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-900 text-white p-2 rounded shadow-md z-10 hover:bg-blue-700 transition-colors duration-200"
-      (mousedown)="onMouseDown($event)"
-      (mouseup)="onMouseUp()"
-      (mouseleave)="onMouseUp()"
-      (click)="scroll('right')"
-    >
-      ›
-    </button>
+
+
+
   </div>
 </section>

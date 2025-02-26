@@ -5,11 +5,9 @@
 <div *ngIf="books.length > 0; else noBooks">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <app-book-card-categoria
-      *ngFor="let book of books"
+      *ngFor="let book of books; trackBy: trackByBookId"
       [book]="book"
-    >
-
-    </app-book-card-categoria>
+    ></app-book-card-categoria>
   </div>
 </div>
 
