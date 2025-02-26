@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import {map, Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
@@ -13,6 +13,15 @@ export class LibroService {
   private baseUrl: string =  `${environment.apiUrl}/libro`;
 
   constructor(private http: HttpClient) { }
+
+  // Método para obtener los headers con el token
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token'); // Obtener el token almacenado
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`, // Enviar el token en cada solicitud
+      'Content-Type': 'application/json'
+    });
+  }
 
   getBooks(page: number = 1, limit: number = 9): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/all?page=${page}&limit=${limit}`).pipe(
@@ -74,11 +83,11 @@ export class LibroService {
 
 
   // Método para crear un libro
+
+
   crearLibro(libro: Libro): Observable<Libro> {
     return this.http.post<Libro>(`${this.baseUrl}/guardar`, libro);
   }
-
-
 
 
 // Método para editar un libro
@@ -90,8 +99,19 @@ export class LibroService {
 
 
 // Método para eliminar un libro
-  eliminarLibro(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/eliminar/${id}`);
+  eliminarLibro(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/eliminar/${id}`, {
+      headers: this.getHeaders()
+    });
   }
 
+
+  // Método en Angular o cualquier otro frontend que uses para buscar el libro por título
+  buscarLibroPorTitulo(titulo: string): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/search?q=${titulo}`);
+  }
+
+  obtenerLibro(libroId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${libroId}`);
+  }
 }

@@ -15,7 +15,7 @@ import {HeaderComponent} from './component/header/header.component';
     FooterComponent,
     HeaderComponent,
     RouterOutlet,
-    RouterModule],
+    RouterModule,],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
