@@ -1,13 +1,15 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { Libro } from '../../interface/libro';
-import { FormsModule } from '@angular/forms';
-import { LibroService } from '../../service/libro.service';
-import { ActivatedRoute } from '@angular/router';
-import { Resena } from '../../interface/resena';
-import { ResenaService } from '../../service/resena.service';
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
+import {Libro} from '../../interface/libro';
+import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {LibroService} from '../../service/libro.service';
+import {ActivatedRoute} from '@angular/router';
+import {Resena} from '../../interface/resena';
+import {ResenaService} from '../../service/resena.service';
 import { AuthService } from '../../service/auth.service';
-import { CurrencyPipe, NgForOf, NgIf } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
+import { CarritoService } from '../../service/carrito.service';
+import {HttpErrorResponse} from '@angular/common/http';
+
 
 @Component({
   selector: 'app-detalle-de-libro',
@@ -22,7 +24,6 @@ export class DetalleDeLibroComponent {
   resenas: Resena[] = []; // Variable para las reseñas
   media_calificacion: number | null = null; // Variable para la calificación media
   starsArray: number[] = [];
-
   hasHalfStar: boolean = false;
   usuarioLogueado: boolean = false; // Verifica si el usuario está logueado
   calificacionSeleccionada: number = 0; // Calificación seleccionada por el usuario
@@ -39,22 +40,25 @@ export class DetalleDeLibroComponent {
     private libroService: LibroService,
     private resenaService: ResenaService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
-  ) {
+    private cdr: ChangeDetectorRef, // Agregado
+    private carritoService:CarritoService) {
     this.libroId = Number(this.route.snapshot.paramMap.get('id')); // Obtener el ID del libro desde la ruta
   }
 
+
+  // Método para inicializar el componente
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!isNaN(id)) {
       this.obtenerLibro(id);
       this.obtenerResenas(id);
       this.obtenerMediaCalificacion(id);
-
-      // Verificar si el usuario está logueado
-      this.usuarioLogueado = this.authService.isLoggedIn();
+      console.log('ID del libro:', id);
     }
+    this.usuarioLogueado = this.authService.isLoggedIn();
   }
+
+
 
   /**
    * Obtener las reseñas de un libro.
@@ -186,9 +190,7 @@ export class DetalleDeLibroComponent {
     });
   }
 
-  /**
-   * Disminuir la cantidad de libros a comprar.
-   */
+  // Método para disminuir la cantidad
   decreaseQuantity(): void {
     if (this.quantity > 1) {
       this.quantity--;
@@ -196,9 +198,7 @@ export class DetalleDeLibroComponent {
     }
   }
 
-  /**
-   * Aumentar la cantidad de libros a comprar.
-   */
+  // Método para aumentar la cantidad
   increaseQuantity(): void {
     this.quantity++;
     console.log('Cantidad:', this.quantity);
@@ -214,11 +214,15 @@ export class DetalleDeLibroComponent {
         quantity: this.quantity,
       });
     }
+    this.carritoService.addToCart(this.libro, this.quantity);
+
   }
 
-  /**
-   * Actualizar la visualización de las estrellas según la calificación media.
-   */
+
+
+
+  protected readonly isNaN = isNaN;
+
   actualizarEstrellas(): void {
     if (this.media_calificacion !== null) {
       const rating = this.media_calificacion;

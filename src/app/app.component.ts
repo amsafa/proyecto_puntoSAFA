@@ -4,6 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LibroService } from './service/libro.service';
 import {FooterComponent} from './component/footer/footer.component';
 import {HeaderComponent} from './component/header/header.component';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs, 'es');
 
 
 @Component({
