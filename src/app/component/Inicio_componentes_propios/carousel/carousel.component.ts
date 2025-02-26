@@ -16,8 +16,8 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('carousel', { static: false }) carousel!: ElementRef<HTMLDivElement>;
 
   private destroy$ = new Subject<void>();
-  private autoScrollInterval!: number;
-  private continuousScrollInterval!: number;
+  private animationFrameId!: number;
+  private scrollSpeed = 2; // Ajusta la velocidad de desplazamiento
 
   books: Libro[] = [];
   loading = true;
@@ -32,8 +32,8 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
         next: (data: Libro[]) => {
           this.books = data;
           this.loading = false;
-          setTimeout(() => this.startAutoScroll(), 500); // Iniciar el desplazamiento automático después de 500ms
           this.books = this.getRandomBooks(data, 10);
+          this.startContinuousScroll();
         },
         error: (error) => {
           console.error(error);
@@ -50,30 +50,22 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    clearInterval(this.autoScrollInterval);
-    clearInterval(this.continuousScrollInterval);
+    this.stopContinuousScroll();
   }
 
-  scroll(direction: 'left' | 'right'): void {
-    const carouselElement = this.carousel.nativeElement;
-    const itemWidth = carouselElement.querySelector('div')?.offsetWidth || 300;
-    const scrollAmount = direction === 'left' ? -itemWidth : itemWidth;
-
-    carouselElement.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-
-    setTimeout(() => this.checkLoopPosition(direction), 400);
+  startContinuousScroll(): void {
+    const scroll = () => {
+      this.carousel.nativeElement.scrollBy({ left: this.scrollSpeed, behavior: 'auto' });
+      this.checkLoopPosition();
+      this.animationFrameId = requestAnimationFrame(scroll);
+    };
+    this.animationFrameId = requestAnimationFrame(scroll);
   }
 
-  startAutoScroll(): void {
-    // Detener el intervalo existente si ya está activo
-    if (this.autoScrollInterval) {
-      clearInterval(this.autoScrollInterval);
+  stopContinuousScroll(): void {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
     }
-
-    const scrollInterval = 3000;  // Intervalo en milisegundos para cada scroll
-    this.autoScrollInterval = window.setInterval(() => {
-      this.scroll('right');
-    }, scrollInterval);
   }
 
   setupScrollLoop(): void {
@@ -84,7 +76,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  checkLoopPosition(direction?: 'left' | 'right'): void {
+  checkLoopPosition(): void {
     const carouselElement = this.carousel.nativeElement;
     const itemWidth = carouselElement.querySelector('div')?.offsetWidth || 300;
 
@@ -111,32 +103,14 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(['/detalle-libro', idLibro]);
   }
 
-  onMouseDown(event: MouseEvent): void {
-    if (event.target instanceof HTMLElement && event.target.tagName === 'BUTTON') {
-      const direction = event.target.textContent?.trim() === '‹' ? 'left' : 'right';
-      this.scrollContinuously(direction);
-    }
-  }
-
-  onMouseUp(): void {
-    clearInterval(this.continuousScrollInterval);
-  }
-
-  scrollContinuously(direction: 'left' | 'right'): void {
-    this.continuousScrollInterval = window.setInterval(() => {
-      this.scroll(direction);
-    }, 100);
-  }
-
   onMouseEnter(): void {
-    clearInterval(this.autoScrollInterval); // Detener el desplazamiento automático
+    this.stopContinuousScroll(); // Detener el desplazamiento continuo
   }
 
   onMouseLeave(): void {
-    this.startAutoScroll(); // Reanudar el desplazamiento automático
+    this.startContinuousScroll(); // Reanudar el desplazamiento continuo
   }
 
-  // Obtiene libros aleatorios
   getRandomBooks(data: Libro[], count: number): Libro[] {
     return data.sort(() => 0.5 - Math.random()).slice(0, count);
   }

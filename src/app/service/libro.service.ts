@@ -37,11 +37,6 @@ export class LibroService {
 
 
 
-
-
-
-
-
   getLibros(page: number, limit: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/all`, {
       params: { page: page.toString(), limit: limit.toString() },
@@ -54,9 +49,7 @@ export class LibroService {
 
 
 
-  // getLibrosByPrecio(range:string):Observable<Libro[]> {
-  //   return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}`);
-  // }
+
 
   getLibrosByPrecio(range: string, page: number = 1, limit: number = 9): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}?page=${page}&limit=${limit}`).pipe(
@@ -69,9 +62,6 @@ export class LibroService {
 
 
   // Método para obtener libros por categoría (desde el backend)
-  // getBooksByCategory(id: number): Observable<Libro[]> {
-  //   return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`);  }
-
   getBooksByCategory(id: number, page: number = 1, limit: number = 9): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}?page=${page}&limit=${limit}`).pipe(
       map(libros => libros.map(libro => ({
@@ -80,6 +70,26 @@ export class LibroService {
       })))
     );
   }
+
+  getFilteredBooks(priceRanges: string[], categoryId: number | null, page: number, limit: number): Observable<Libro[]> {
+    let params: any = { page, limit };
+
+    if (priceRanges.length) {
+      params.priceRanges = priceRanges.join(',');
+    }
+    if (categoryId !== null) {
+      params.categoryId = categoryId;
+    }
+
+    return this.http.get<Libro[]>(`${this.baseUrl}/filtered-books`, { params }).pipe(
+      map(libros => libros.map(libro => ({
+        ...libro,
+        mediaCalificacion: parseFloat(String(libro.mediaCalificacion))
+      })))
+    );
+  }
+
+
 
 
   // Método para crear un libro

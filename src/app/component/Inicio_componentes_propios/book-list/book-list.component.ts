@@ -1,8 +1,8 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {LibroService} from '../../../service/libro.service';
-import {Libro} from '../../../interface/./libro';
-import {NgForOf, NgIf} from '@angular/common';
-import {BookCardCategoriaComponent} from '../book-card-categoria/book-card-categoria.component';
+import { Component, Input, OnInit } from '@angular/core';
+import { LibroService } from '../../../service/libro.service';
+import { Libro } from '../../../interface/libro';
+import { NgForOf, NgIf } from '@angular/common';
+import { BookCardCategoriaComponent } from '../book-card-categoria/book-card-categoria.component';
 
 
 
@@ -15,9 +15,10 @@ import {BookCardCategoriaComponent} from '../book-card-categoria/book-card-categ
     NgForOf,
     BookCardCategoriaComponent
   ],
-  styleUrls: ['./book-list.component.css']
+  styleUrls: ['./book-list.component.css'],
+  standalone: true // Asegúrate de que este componente sea standalone si estás usando Angular 14+
 })
-export class BookListComponent implements OnInit, OnChanges {
+export class BookListComponent implements OnInit {
   @Input() categoryId!: number; // Recibe categoría desde CajasCategoriaInicio
   books: Libro[] = [];
   loading = true;
@@ -26,26 +27,30 @@ export class BookListComponent implements OnInit, OnChanges {
   constructor(private apiService: LibroService) {}
 
   ngOnInit(): void {
+    this.loadBooks();
+  }
+
+  loadBooks(): void {
     this.apiService.getBooksByCategory(this.categoryId).subscribe({
       next: (data: Libro[]) => {
         this.books = this.getRandomBooks(data, 3); // Filtra 3 libros aleatorios
         this.loading = false;
-        //this.books = data;
-        console.log('Libros cargados en book-list:', this.books);
       },
       error: (error) => {
-        console.error(error);
-        this.errorMessage = 'Error al cargar los libros';
+        console.error('Error al cargar los libros:', error);
+        this.errorMessage = 'Error al cargar los libros. Por favor, inténtelo de nuevo más tarde.';
         this.loading = false;
       }
     });
   }
 
   getRandomBooks(books: Libro[], count: number): Libro[] {
-    return books.sort(() => 0.5 - Math.random()).slice(0, count);
+    const shuffled = [...books].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
   }
 
-
-  ngOnChanges(changes: SimpleChanges): void {
+  // Esto es para que Angular sepa cómo rastrear los libros por su ID
+  trackByBookId(index: number, book: Libro): number {
+    return book.id;
   }
 }
