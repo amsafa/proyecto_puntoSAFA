@@ -194,7 +194,7 @@ export class CatalogoComponent  implements OnInit {
   //   }
   // }
 
-  onPriceChange(priceRange: string): void {
+  filterByPrice(priceRange: string): void {
     console.log("🎯 Price Filter Changed To:", priceRange);
     if(this.selectedPriceRanges.includes(priceRange)){
       this.selectedPriceRanges = this.selectedPriceRanges.filter(p => p !== priceRange);
@@ -205,7 +205,7 @@ export class CatalogoComponent  implements OnInit {
 
   }
 
-  onCategoryChange(categoryId: number | null): void {
+  filterByCategory(categoryId: number | null): void {
     this.selectedCategoryId = this.selectedCategoryId === categoryId ? null : categoryId; // Update the selected category
     this.applyFilters();  // Apply filters with the new selection
 
