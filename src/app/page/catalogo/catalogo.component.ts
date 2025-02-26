@@ -3,7 +3,7 @@ import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Libro} from '../../interface/libro';
 import {LibroService} from '../../service/libro.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+// import {HttpClientModule} from '@angular/common/http';
 import {Categoria} from '../../interface/categoria';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CategoriaService} from '../../service/categoria.service';
@@ -19,7 +19,6 @@ import {AuthService} from '../../service/auth.service';
   styleUrls: ['./catalogo.component.css'],
   imports: [
     FormsModule,
-    HttpClientModule,
     ReactiveFormsModule,
     NgIf,
     NgForOf,
@@ -33,13 +32,13 @@ export class CatalogoComponent  implements OnInit {
   searchTerm: string = '';
   categories: Categoria[] = [];
   selectedCategoryId: number | null = null
-  selectedPriceRange: string | null = null;
+  selectedPriceRanges: string[] = [];
   currentPage: number = 1;
   totalPages: number = 1; // Placeholder, will be set dynamically
   limit: number = 12;
   isLoggedIn: boolean = false;
   showAlert: boolean = false;
-  priceFilter:string | null = null;
+
   priceRanges = [
     { label: "Menos de 5 euros", value: "menor5" },
     { label: "De 5 a 10 euros", value: "5-10" },
@@ -48,7 +47,7 @@ export class CatalogoComponent  implements OnInit {
     { label: "Más de 40 euros", value: "mayor40" }
   ];
 
-  constructor(private libroService: LibroService, private http:HttpClient,
+  constructor(private libroService: LibroService,
               private router:Router, private route:ActivatedRoute,
               private categoriaService:CategoriaService, private carritoService:CarritoService, private authService:AuthService) {}
 
@@ -76,33 +75,8 @@ export class CatalogoComponent  implements OnInit {
 
   cargarLibros(page: number = 1, limit: number = 9): void {
     this.currentPage = page;
-    if (!this.selectedCategoryId && !this.selectedPriceRange) {
-      this.libroService.getBooks(page, limit).subscribe({
-        next: (data: Libro[]) => {
-          this.libros = data;
-          this.filteredBooks = [...this.libros];
-          this.totalPages = Math.ceil(50 / limit);
+    this.applyFilters(page, limit);
 
-          if (this.searchTerm) {
-            this.searchBooks();
-          }
-        },
-        error: (error) => console.error(error)
-      });
-    } else {
-      this.libroService.getLibrosByFilter(this.selectedCategoryId || undefined, this.selectedPriceRange || undefined, page, limit).subscribe({
-        next: (data) => {
-          this.libros = data;
-          this.filteredBooks = [...this.libros];
-          this.totalPages = Math.ceil(50 / limit);
-
-          if (this.searchTerm) {
-            this.searchBooks();
-          }
-        },
-        error: (error) => console.error(error)
-      });
-    }
   }
 
 
@@ -113,7 +87,7 @@ export class CatalogoComponent  implements OnInit {
   noResults: boolean = false;
 
   searchBooks(): void {
-    if (!this.libros || this.libros.length === 0) {
+    if (!this.filteredBooks || this.filteredBooks.length === 0) {
       console.warn('No books available for searching.');
       return;
     }
@@ -121,8 +95,8 @@ export class CatalogoComponent  implements OnInit {
     console.log('Filtered term in catalogue component:', searchTerm);
 
     if (!searchTerm) {
-      this.filteredBooks = this.libros;
       this.noResults = false;
+      return;
     }
 
     this.filteredBooks = this.libros.filter(libro => {
@@ -146,7 +120,7 @@ export class CatalogoComponent  implements OnInit {
     window.history.replaceState({}, document.title, newUrl);
 
     // Reload the page
-    window.location.reload();
+    location.reload();
   }
 
   // selectedPriceRange: string | null = null;
@@ -220,37 +194,44 @@ export class CatalogoComponent  implements OnInit {
   //   }
   // }
 
-  onPriceChange(priceRange: string | null): void {
+  onPriceChange(priceRange: string): void {
     console.log("🎯 Price Filter Changed To:", priceRange);
-    this.selectedPriceRange = priceRange;
-    this.applyFilters();
-    if (priceRange === null) {
-      const priceRadios = document.getElementsByName("priceRange") as NodeListOf<HTMLInputElement>;
-      priceRadios.forEach(radio => radio.checked = false);
+    if(this.selectedPriceRanges.includes(priceRange)){
+      this.selectedPriceRanges = this.selectedPriceRanges.filter(p => p !== priceRange);
+    }else{
+      this.selectedPriceRanges.push(priceRange);
     }
+    this.applyFilters();
+
   }
 
   onCategoryChange(categoryId: number | null): void {
-    this.selectedCategoryId = categoryId;  // Update the selected category
+    this.selectedCategoryId = this.selectedCategoryId === categoryId ? null : categoryId; // Update the selected category
     this.applyFilters();  // Apply filters with the new selection
-    if (categoryId === null) {
-      const categoryRadios = document.getElementsByName("category") as NodeListOf<HTMLInputElement>;
-      categoryRadios.forEach(radio => radio.checked = false);
-    }
+
   }
 
 
-  applyFilters(): void {
+  applyFilters(page: number = 1, limit: number = 9): void {
     console.log("🔍 Applying filters:");
     console.log("Category ID:", this.selectedCategoryId);
-    console.log("Price Range:", this.selectedPriceRange);
-    this.libroService.getLibrosByFilter(
-      this.selectedCategoryId || undefined,
-      this.selectedPriceRange || undefined // No changes needed for price
+    console.log("Price Range:", this.selectedPriceRanges);
+    this.libroService.getFilteredBooks(
+      this.selectedCategoryId,
+      this.selectedPriceRanges,
+      page,
+      limit
     ).subscribe({
       next: (data) => {
         console.log("✅ Filtered books received:", data);
-        this.filteredBooks = data;
+        this.libros = data;
+        this.totalPages = Math.ceil(data.length / limit);
+        const startIdx = (page - 1) * limit;
+        const endIdx = startIdx + limit;
+        this.filteredBooks = this.libros.slice(startIdx, endIdx);
+
+        // Apply search filtering AFTER pagination
+        this.searchBooks();
       },
       error: (error) => console.error(error)
     });
@@ -264,7 +245,7 @@ export class CatalogoComponent  implements OnInit {
         page,
         limit: this.limit,
         search: this.searchTerm || null,
-        price: this.selectedPriceRange || null,
+        price: this.selectedPriceRanges || null,
         category: this.selectedCategoryId || null
       },
       queryParamsHandling: 'merge',
