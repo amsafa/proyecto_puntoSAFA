@@ -25,17 +25,18 @@ export class LibroService {
     );
   }
 
-  getLibrosByFilter(categoryId?:number, priceFilter?:string, page: number = 1, limit: number = 9): Observable<Libro[]> {
+  getFilteredBooks(categoryId:number | null, priceRanges:string [], page: number = 1, limit: number = 9): Observable<Libro[]> {
     let params:any = {page, limit};
+    if (priceRanges.length) {
+      params.priceRanges = priceRanges.join(','); // Send as a single string like "10-15" or "mayor40"
 
-    if(categoryId !== undefined && categoryId !== null){
+    }
+
+
+    if(categoryId !== null){
       params.categoryId = categoryId;
     }
 
-    if (priceFilter) {
-      params.priceRanges = priceFilter; // Send as a single string like "10-15" or "mayor40"
-
-    }
 
     console.log("📡 Sending Request with Params:", params);
     return this.http.get<Libro[]>(`${this.baseUrl}/filtered-books`, { params }).pipe(
@@ -76,23 +77,6 @@ export class LibroService {
     );
   }
 
-  getFilteredBooks(priceRanges: string[], categoryId: number | null, page: number, limit: number): Observable<Libro[]> {
-    let params: any = { page, limit };
-
-    if (priceRanges.length) {
-      params.priceRanges = priceRanges.join(',');
-    }
-    if (categoryId !== null) {
-      params.categoryId = categoryId;
-    }
-
-    return this.http.get<Libro[]>(`${this.baseUrl}/filtered-books`, { params }).pipe(
-      map(libros => libros.map(libro => ({
-        ...libro,
-        mediaCalificacion: parseFloat(String(libro.mediaCalificacion))
-      })))
-    );
-  }
 
 
 
