@@ -31,13 +31,9 @@ export class LibroService {
       params.priceRanges = priceRanges.join(','); // Send as a single string like "10-15" or "mayor40"
 
     }
-
-
     if(categoryId !== null){
       params.categoryId = categoryId;
     }
-
-
     console.log("📡 Sending Request with Params:", params);
     return this.http.get<Libro[]>(`${this.baseUrl}/filtered-books`, { params }).pipe(
       map(libros =>
@@ -49,13 +45,8 @@ export class LibroService {
     );
   }
 
-
   getLibroById(id: number): Observable<Libro> {
     return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
-
-
-
-
 
   getLibrosByPrecio(range: string, page: number = 1, limit: number = 9): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}?page=${page}&limit=${limit}`).pipe(
@@ -66,7 +57,6 @@ export class LibroService {
     );
   }
 
-
   // Método para obtener libros por categoría (desde el backend)
   getBooksByCategory(id: number, page: number = 1, limit: number = 9): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}?page=${page}&limit=${limit}`).pipe(
@@ -76,9 +66,5 @@ export class LibroService {
       })))
     );
   }
-
-
-
-
 
 }

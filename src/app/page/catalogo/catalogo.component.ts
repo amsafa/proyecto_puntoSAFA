@@ -38,7 +38,9 @@ export class CatalogoComponent  implements OnInit {
   limit: number = 12;
   isLoggedIn: boolean = false;
   showAlert: boolean = false;
-
+  noResults: boolean = false;
+  filtersApplied: boolean = false;
+  totalResults: number = 0;
   priceRanges = [
     { label: "Menos de 5 euros", value: "menor5" },
     { label: "De 5 a 10 euros", value: "5-10" },
@@ -60,10 +62,8 @@ export class CatalogoComponent  implements OnInit {
       console.log('Received search term from query params:', this.searchTerm);
       this.currentPage = params['page'] ? parseInt(params['page'], 10) : 1;
       this.limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
-
       this.cargarLibros(this.currentPage, this.limit);
     });
-
     this.categoriaService.getCategorias().subscribe(categorias => {
       this.categories = categorias;
     });
@@ -72,19 +72,10 @@ export class CatalogoComponent  implements OnInit {
     });
   }
 
-
   cargarLibros(page: number = 1, limit: number = 9): void {
     this.currentPage = page;
     this.applyFilters(page, limit);
-
   }
-
-
-
-
-
-
-  noResults: boolean = false;
 
   searchBooks(): void {
     if (!this.filteredBooks || this.filteredBooks.length === 0) {
@@ -93,12 +84,10 @@ export class CatalogoComponent  implements OnInit {
     }
     const searchTerm = this.searchTerm.toLowerCase().trim();
     console.log('Filtered term in catalogue component:', searchTerm);
-
     if (!searchTerm) {
       this.noResults = false;
       return;
     }
-
     this.filteredBooks = this.libros.filter(libro => {
       const { nombre, apellidos } = libro.autor || {}; // Ensure autor exists
       return (
@@ -107,7 +96,6 @@ export class CatalogoComponent  implements OnInit {
         (nombre && nombre.toLowerCase().includes(searchTerm))
       );
     });
-
     this.noResults = this.filteredBooks.length === 0;
     console.log('Filtered books:', this.filteredBooks);
     console.log('No results:', this.noResults);
@@ -118,81 +106,21 @@ export class CatalogoComponent  implements OnInit {
     this.filteredBooks = this.libros;
     const newUrl = window.location.origin + window.location.pathname;
     window.history.replaceState({}, document.title, newUrl);
-
-    // Reload the page
     location.reload();
   }
 
-  // selectedPriceRange: string | null = null;
-  // filterByPrice(range: string, page: number = 1, limit: number = 9): void {
-  //   if (this.selectedPriceRange === range) {
-  //     this.selectedPriceRange = null;
-  //     this.filteredBooks = this.libros;
-  //   } else {
-  //     this.selectedPriceRange = range;
-  //     this.libroService.getLibrosByPrecio(range, page, limit).subscribe({
-  //       next: (libros) => {
-  //         this.filteredBooks = libros;
-  //         this.totalPages = Math.ceil(libros.length / limit); // Update total pages
-  //         this.currentPage = page;
-  //       },
-  //       error: (error) => console.error(error)
-  //     });
-  //   }
-  // }
-
-  // selectedPriceRange: string | null = null;
-  // filterByPrice(range: string, page: number = 1, limit: number = 9): void {
-  //   if (this.selectedPriceRange === range) {
-  //     this.selectedPriceRange = null;
-  //     this.filteredBooks = this.libros;
-  //   } else {
-  //     this.selectedPriceRange = range;
-  //     this.libroService.getLibrosByPrecio(range, page, limit).subscribe({
-  //       next: (libros) => {
-  //         this.filteredBooks = libros;
-  //         this.totalPages = Math.ceil(libros.length / limit); // Update total pages
-  //         this.currentPage = page;
-  //       },
-  //       error: (error) => console.error(error)
-  //     });
-  //   }
-  // }
-
-
-  // filterByCategory(categoryId: number, page: number = 1, limit: number = 9): void {
-  //   if (this.selectedCategoryId === categoryId) {
-  //     this.selectedCategoryId = null;
-  //     this.filteredBooks = this.libros;
-  //   } else {
-  //     this.selectedCategoryId = categoryId;
-  //     this.libroService.getBooksByCategory(categoryId, page, limit).subscribe({
-  //       next: (books) => {
-  //         this.filteredBooks = books;
-  //         this.totalPages = Math.ceil(books.length / limit);
-  //         this.currentPage = page;
-  //       },
-  //       error: (error) => console.error(error)
-  //     });
-  //   }
-  // }
-
-  // filterByCategory(categoryId: number, page: number = 1, limit: number = 9): void {
-  //   if (this.selectedCategoryId === categoryId) {
-  //     this.selectedCategoryId = null;
-  //     this.filteredBooks = this.libros;
-  //   } else {
-  //     this.selectedCategoryId = categoryId;
-  //     this.libroService.getBooksByCategory(categoryId, page, limit).subscribe({
-  //       next: (books) => {
-  //         this.filteredBooks = books;
-  //         this.totalPages = Math.ceil(books.length / limit);
-  //         this.currentPage = page;
-  //       },
-  //       error: (error) => console.error(error)
-  //     });
-  //   }
-  // }
+  clearFilters(): void {
+    this.selectedCategoryId = null;
+    this.selectedPriceRanges = [];
+    this.searchTerm = '';
+    this.noResults = false;
+    this.currentPage = 1;
+    this.router.navigate([], {
+      queryParams: {},
+      queryParamsHandling: 'merge',
+    });
+    this.cargarLibros();
+  }
 
   filterByPrice(priceRange: string): void {
     console.log("🎯 Price Filter Changed To:", priceRange);
@@ -202,20 +130,18 @@ export class CatalogoComponent  implements OnInit {
       this.selectedPriceRanges.push(priceRange);
     }
     this.applyFilters();
-
   }
 
   filterByCategory(categoryId: number | null): void {
     this.selectedCategoryId = this.selectedCategoryId === categoryId ? null : categoryId; // Update the selected category
     this.applyFilters();  // Apply filters with the new selection
-
   }
-
 
   applyFilters(page: number = 1, limit: number = 9): void {
     console.log("🔍 Applying filters:");
     console.log("Category ID:", this.selectedCategoryId);
     console.log("Price Range:", this.selectedPriceRanges);
+    this.filtersApplied = !!(this.selectedCategoryId || this.selectedPriceRanges.length > 0); // Check if filters are applied
     this.libroService.getFilteredBooks(
       this.selectedCategoryId,
       this.selectedPriceRanges,
@@ -225,19 +151,18 @@ export class CatalogoComponent  implements OnInit {
       next: (data) => {
         console.log("✅ Filtered books received:", data);
         this.libros = data;
-        this.totalPages = Math.ceil(data.length / limit);
+        this.totalResults = data.length;
+        this.totalPages = Math.ceil(this.totalResults / limit);
         const startIdx = (page - 1) * limit;
         const endIdx = startIdx + limit;
         this.filteredBooks = this.libros.slice(startIdx, endIdx);
-
+        this.noResults = this.filteredBooks.length === 0 && this.filtersApplied; // No results only if filters were applied
         // Apply search filtering AFTER pagination
         this.searchBooks();
       },
       error: (error) => console.error(error)
     });
   }
-
-
 
   goToPage(page: number): void {
     this.router.navigate([], {
@@ -252,23 +177,16 @@ export class CatalogoComponent  implements OnInit {
     });
   }
 
-
-
   addToCart(libro: Libro) {
     if (!this.isLoggedIn) {
       this.showLoginAlert();
       return;
     }
     this.carritoService.addToCart(libro);
-
   }
-
-
 
   showLoginAlert() {
     this.showAlert = true;
-
-    // Hide the alert after 3 seconds
     setTimeout(() => {
       this.showAlert = false;
     }, 3000);
@@ -277,6 +195,5 @@ export class CatalogoComponent  implements OnInit {
   verDetallesLibro(idLibro: number): void {
     this.router.navigate(['/detalle-libro', idLibro]);
   }
-
 
 }
