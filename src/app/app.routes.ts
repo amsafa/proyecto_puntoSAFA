@@ -17,6 +17,8 @@ import {authGuard} from './auth.guard';
 import {EmailComponent} from './email/email.component';
 import {RegistroLibroComponent} from './component/registro-libro/registro-libro.component';
 import {ActivarCuentaComponent} from './component/activar-cuenta/activar-cuenta.component';
+import {EditarLibroComponent} from './component/editar-libro/editar-libro.component';
+
 
 
 
@@ -42,6 +44,7 @@ export const routes: Routes = [
   { path: 'perfil-adm', component: PerfilAdmComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'email', component: EmailComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'registro-libro', component: RegistroLibroComponent, pathMatch: 'full', canActivate: [authGuard] },
+  { path: 'editar-libro', component: EditarLibroComponent, pathMatch: 'full', canActivate: [authGuard] },
 
 
 

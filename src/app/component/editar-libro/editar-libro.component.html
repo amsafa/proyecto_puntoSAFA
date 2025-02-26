@@ -1,0 +1,160 @@
+<div class="min-h-screen flex flex-col">
+  <!-- Encabezado -->
+  <section class="bg-customGreen py-2 md:py-3 shadow-gray-500 shadow-sm">
+    <div class="container mx-auto flex flex-col md:flex-row items-center px-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">
+      <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-full max-w-xxs md:max-w-xs mx-auto">
+      <h1 class="text-4xl font-extrabold text-blue-900 leading-tight">
+        Registrar Libro
+      </h1>
+    </div>
+  </section>
+
+  <!-- Contenedor Principal -->
+  <main class="flex-grow flex flex-col items-center justify-center bg-white my-8">
+    <div class="bg-blue-50 p-12 rounded-xl shadow-2xl w-full max-w-[850px] mx-auto">
+
+      <!-- Contenedor Flexbox para el Autocompletado y el Formulario -->
+      <div class="flex flex-col md:flex-row gap-6">
+
+        <!-- Campo de Autocompletado -->
+        <div class="md:w-1/3 w-full relative z-50">
+          <mat-form-field class="w-full">
+            <mat-label>Buscar libro</mat-label>
+            <input type="text" matInput [formControl]="tituloControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onLibroSeleccionado($event.option.value)">
+              <mat-option *ngFor="let libro of librosFiltrados" [value]="libro">
+                {{ libro.titulo }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <!-- Formulario -->
+        <div class="md:w-2/3 w-full">
+          <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">
+            <!-- Título -->
+            <div>
+              <label for="titulo" class="block text-sm font-medium text-gray-700">Título</label>
+              <input type="text" id="titulo" formControlName="titulo"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese el título">
+              <div *ngIf="libroForm.get('titulo')?.invalid && libroForm.get('titulo')?.touched" class="text-red-600 text-sm">
+                El título es obligatorio y debe tener máximo 255 caracteres.
+              </div>
+            </div>
+
+            <!-- Resumen -->
+            <div>
+              <label for="resumen" class="block text-sm font-medium text-gray-700">Resumen</label>
+              <textarea id="resumen" formControlName="resumen"
+                        class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                        placeholder="Ingrese un resumen (opcional)"></textarea>
+              <div *ngIf="libroForm.get('resumen')?.invalid && libroForm.get('resumen')?.touched" class="text-red-600 text-sm">
+                El resumen debe tener máximo 800 caracteres.
+              </div>
+            </div>
+
+            <!-- Año de Publicación -->
+            <div>
+              <label for="anioPublicacion" class="block text-sm font-medium text-gray-700">Año de Publicación</label>
+              <input type="date" id="anioPublicacion" formControlName="anioPublicacion"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese el año de publicación">
+              <div *ngIf="libroForm.get('anioPublicacion')?.invalid && libroForm.get('anioPublicacion')?.touched" class="text-red-600 text-sm">
+                El año de publicación es obligatorio.
+              </div>
+            </div>
+
+            <!-- Precio -->
+            <div>
+              <label for="precio" class="block text-sm font-medium text-gray-700">Precio</label>
+              <input type="number" id="precio" formControlName="precio"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese el precio">
+              <div *ngIf="libroForm.get('precio')?.invalid && libroForm.get('precio')?.touched" class="text-red-600 text-sm">
+                El precio es obligatorio y debe ser un valor mayor o igual a 0.
+              </div>
+            </div>
+
+            <!-- ISBN -->
+            <div>
+              <label for="ISBN" class="block text-sm font-medium text-gray-700">ISBN</label>
+              <input type="text" id="ISBN" formControlName="ISBN"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese el ISBN (10 o 13 dígitos)">
+              <div *ngIf="libroForm.get('ISBN')?.invalid && libroForm.get('ISBN')?.touched" class="text-red-600 text-sm">
+                El ISBN es obligatorio y debe ser un número de 10 o 13 dígitos.
+              </div>
+            </div>
+
+            <!-- Editorial -->
+            <div>
+              <label for="editorial" class="block text-sm font-medium text-gray-700">Editorial</label>
+              <input type="text" id="editorial" formControlName="editorial"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese la editorial">
+              <div *ngIf="libroForm.get('editorial')?.invalid && libroForm.get('editorial')?.touched" class="text-red-600 text-sm">
+                La editorial es obligatoria.
+              </div>
+            </div>
+
+            <!-- Imagen -->
+            <div>
+              <label for="imagen" class="block text-sm font-medium text-gray-700">Imagen (URL)</label>
+              <input type="text" id="imagen" formControlName="imagen"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese la URL de la imagen">
+            </div>
+
+            <!-- Idioma -->
+            <div>
+              <label for="idioma" class="block text-sm font-medium text-gray-700">Idioma</label>
+              <input type="text" id="idioma" formControlName="idioma"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese el idioma">
+              <div *ngIf="libroForm.get('idioma')?.invalid && libroForm.get('idioma')?.touched" class="text-red-600 text-sm">
+                El idioma es obligatorio.
+              </div>
+            </div>
+
+            <!-- Número de páginas -->
+            <div>
+              <label for="numPaginas" class="block text-sm font-medium text-gray-700">Número de páginas</label>
+              <input type="number" id="numPaginas" formControlName="numPaginas"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese el número de páginas">
+              <div *ngIf="libroForm.get('numPaginas')?.invalid && libroForm.get('numPaginas')?.touched" class="text-red-600 text-sm">
+                El número de páginas es obligatorio.
+              </div>
+            </div>
+
+            <!-- Grupo Autor -->
+            <div>
+              <label for="autorId" class="block text-sm font-medium text-gray-700">ID del Autor</label>
+              <input type="text" id="autorId" formControlName="autor.id"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese el ID del autor">
+            </div>
+
+            <!-- Grupo Categoría -->
+            <div>
+              <label for="categoriaId" class="block text-sm font-medium text-gray-700">ID de la Categoría</label>
+              <input type="text" id="categoriaId" formControlName="categoria.id"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese el ID de la categoría">
+            </div>
+
+            <!-- Botón Guardar -->
+            <div class="mt-6">
+              <button type="submit"
+                      class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-green-600 transition duration-300">
+                Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
