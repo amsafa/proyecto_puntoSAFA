@@ -19,7 +19,6 @@ import {RegistroLibroComponent} from './component/registro-libro/registro-libro.
 import {ActivarCuentaComponent} from './component/activar-cuenta/activar-cuenta.component';
 import {EditarLibroComponent} from './component/editar-libro/editar-libro.component';
 
-import {CarritoComponent} from './component/carrito/carrito.component';
 import {PagarCompraComponent} from './page/pagar-compra/pagar-compra.component';
 import {PedidosClienteComponent} from './page/pedidos-cliente/pedidos-cliente.component';
 
@@ -42,8 +41,6 @@ export const routes: Routes = [
   {path:'pagar-pedido', component:PagarCompraComponent, pathMatch: 'full'},
   {path:'pedidos-cliente', component:PedidosClienteComponent, pathMatch: 'full'},
 
-
-  {path:'carro', component:CarritoComponent, pathMatch: 'full'},
 
 
   // Rutas protegidas (solo accesibles si hay sesión iniciada)
