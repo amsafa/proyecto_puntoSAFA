@@ -1,6 +1,6 @@
-<section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm" xmlns="http://www.w3.org/1999/html">
+<section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-  <div class="container mx-auto flex flex-col md:flex-row items-centerpx-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">
+  <div class="container mx-auto flex flex-col md:flex-row items-center px-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">
     <div class="mt-10 md:mt-0 md:ml-0 lg:ml-0">
       <img src="../../../../assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-full max-w-xxs md:max-w-xs mx-auto">
     </div>
@@ -11,6 +11,7 @@
     </div>
   </div>
 </section>
+
 <section class="bg-white py-4">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <div class="container mx-auto flex justify-center items-center space-x-4">
@@ -35,6 +36,7 @@
     </button>
   </div>
 </section>
+
 <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 p-4 bg-customGreen">
   <!-- Filtro Catalogo -->
   <div class="flex-shrink-0">
@@ -42,24 +44,33 @@
     <div class="bg-[#1D2C4B] max-w-[333px] max-h-[65px] text-center rounded-lg text-white">
       <h1 class="text-2xl font-bold">Filtros</h1>
     </div>
-      <!--#################################3 FILTRO CATEGORÍA ############################## -->
-      <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9">
-        <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Categoría</h3>
-        <div class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
-          <label *ngFor="let category of categories">
-            <input type="checkbox" [checked]="selectedCategoryId === category.id" name="category" (change)="filterByCategory(category.id)">
-            {{ category.nombre }}
-          </label>
-        </div>
+    <!-- Filtro Categoría -->
+    <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9">
+      <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Categoría</h3>
+      <div class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
+        <label *ngFor="let category of categories">
+          <input
+            type="checkbox"
+            [checked]="selectedCategoryId.includes(String(category.id))"
+            name="category"
+            (change)="filterByCategory(category.id)"
+          >
+          {{ category.nombre }}
+        </label>
       </div>
-    <!--###################   FILTRO PRECIO ####################################-->
+    </div>
+    <!-- Filtro Precio -->
     <div class="border-b border-gray-200 py-6">
-      <!-- Precios -->
       <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9 border-t border-custom-blue">
         <h3 class="text-[#1D2C4B] text-[20px] font-semibold">Precios</h3>
         <div class="flex flex-col space-y-2 text-[#1D2C4B] text-md font-bold font-[Montserrat]">
           <label *ngFor="let range of priceRanges">
-            <input type="checkbox" [checked]="selectedPriceRanges.includes(range.value)" name="priceRange" (change)="filterByPrice(range.value)">
+            <input
+              type="checkbox"
+              [checked]="selectedPriceRanges.includes(range.value)"
+              name="priceRange"
+              (change)="filterByPrice(range.value)"
+            >
             {{ range.label }}
           </label>
         </div>
@@ -71,47 +82,47 @@
       </div>
     </div>
   </div>
+
   <div class="bg-white w-full">
     <div class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
-      <!-- Message when no results found for search term -->
+      <!-- Mensaje cuando no hay resultados para el término de búsqueda -->
       <div *ngIf="noResults && searchTerm" class="text-center text-red-600 font-bold mt-4 bg-white">
         <p>No hay resultados para "{{ searchTerm }}"</p>
       </div>
-      <!-- Message when filters are applied but no results -->
+      <!-- Mensaje cuando se aplican filtros pero no hay resultados -->
       <div *ngIf="noResults && filtersApplied" class="text-center text-red-600 font-bold mt-4 bg-white">
         <p>No hay resultados para los filtros aplicados.</p>
       </div>
-      <!-- Message displaying the current search term -->
+      <!-- Mensaje mostrando el término de búsqueda actual -->
       <div *ngIf="searchTerm && !noResults" class="text-center text-gray-700 font-bold mt-4 bg-white">
-        <p>Results for "{{ searchTerm }}"</p>
+        <p>Resultados para "{{ searchTerm }}"</p>
       </div>
     </div>
     <div class="text-center text-gray-700 font-bold mt-4 mb-4">
       <p>Total resultados: {{ totalResults }}</p>
     </div>
-    <div class="max-w-2xl px-4 sm:px-6  lg:max-w-7xl lg:px-8">
+    <div class="max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
       <div *ngIf="!noResults" class="card--1 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-        <div *ngFor="let libro of filteredBooks" class="group  group cursor-pointer group overflow-hidden relative">
+        <div *ngFor="let libro of filteredBooks" class="group cursor-pointer overflow-hidden relative">
           <div class="card relative max-h-100 max-w-sm rounded overflow-hidden shadow-lg bg-white">
             <div class="relative">
-              <img [src]="libro.imagen" [alt]="libro.titulo"  class=" h-80 aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
-              <button  (click)="addToCart(libro)" class="add-to-cart absolute top-0 right-0 mt-4 mr-4 py-2 px-4 bg-blue-500 text-white rounded opacity-0 transition-opacity duration-300">
+              <img [src]="libro.imagen" [alt]="libro.titulo" class="h-80 aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+              <button (click)="addToCart(libro)" class="add-to-cart absolute top-0 right-0 mt-4 mr-4 py-2 px-4 bg-blue-500 text-white rounded opacity-0 transition-opacity duration-300">
                 Añadir al carrito
               </button>
             </div>
             <div class="px-6 py-4 flex flex-col items-center">
               <h3 class="mt-0 mb-0 text-lg font-bold text-gray-800 text-center line-clamp-2">{{ libro.titulo }}</h3>
-              <p class=" mt-0 mb-0 text-sm text-gray-600 text-center">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
+              <p class="mt-0 mb-0 text-sm text-gray-600 text-center">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
               <p class="mt-2 text-xl text-center font-semibold text-blue-900">{{ libro.precio | currency: 'EUR' }}</p>
               <button (click)="verDetallesLibro(libro.id)" class="my-4 px-6 py-3 bg-blue-900 text-white font-medium rounded-lg">Ver detalles</button>
-              <div class="absolute bg-gray-50 -bottom-24 w-56 p-3 flex flex-col gap-1">
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
   <div *ngIf="showAlert" class="fixed top-0 left-0 right-0 flex justify-center transition-transform duration-500 transform translate-y-0">
     <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 shadow-lg rounded-md w-full max-w-md mx-auto">
       <p class="font-bold">Acción no permitida</p>
@@ -119,6 +130,7 @@
     </div>
   </div>
 </div>
+
 <div class="flex items-center justify-center border-t border-gray-200 bg-customTeal px-4 py-3 sm:px-6">
   <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
     <button
@@ -133,7 +145,7 @@
     <button
       *ngIf="currentPage < totalPages"
       (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages"
-            class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
+      class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
       <span class="sr-only"></span>
       Siguiente
       <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

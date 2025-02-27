@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
 
     // Suscribirse al carrito para obtener la cantidad total de productos
     this.carritoService.cartItems$.subscribe((items) => {
-      this.cartQuantity = items.reduce((total, item) => total + item.quantity, 0);
+      this.cartQuantity = items.reduce((total, item) => total + item.cantidad, 0);
     });
 
     // Suscribirse a la visibilidad del carrito
