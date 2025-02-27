@@ -13,6 +13,9 @@ import {
   RecomendacionLibroComponent
 } from './component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component';
 import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
+import {authGuard} from './auth.guard';
+import {EmailComponent} from './email/email.component';
+import {RegistroLibroComponent} from './component/registro-libro/registro-libro.component';
 import {PagarCompraComponent} from './page/pagar-compra/pagar-compra.component';
 import {PedidosClienteComponent} from './page/pedidos-cliente/pedidos-cliente.component';
 
@@ -36,6 +39,12 @@ export const routes: Routes = [
 
 
 
+
+  // Rutas protegidas (solo accesibles si hay sesión iniciada)
+  { path: 'perfil', component: PerfilComponent, pathMatch: 'full', canActivate: [authGuard] },
+  { path: 'perfil-adm', component: PerfilAdmComponent, pathMatch: 'full', canActivate: [authGuard] },
+  { path: 'email', component: EmailComponent, pathMatch: 'full', canActivate: [authGuard] },
+  { path: 'registro-libro', component: RegistroLibroComponent, pathMatch: 'full', canActivate: [authGuard] },
 
 
 

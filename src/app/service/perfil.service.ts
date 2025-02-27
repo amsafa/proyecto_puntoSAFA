@@ -14,7 +14,7 @@ export class PerfilService {
   constructor(private http: HttpClient) {}
 
   getAllClientes(): Observable<RegistroCliente[]> {
-    return this.http.get<RegistroCliente[]>(`${this.apiUrl}/cliente/all`);
+    return this.http.get<RegistroCliente[]>(`${this.apiUrl}/api/cliente/all`);
   }
 
   getClienteById(id: number): Observable<any> {
@@ -24,27 +24,27 @@ export class PerfilService {
 
 
   editarCliente(id: number, cliente: RegistroCliente): Observable<RegistroCliente> {
-    return this.http.put<RegistroCliente>(`${this.apiUrl}/cliente/editar/${id}`, cliente);
+    return this.http.put<RegistroCliente>(`${this.apiUrl}/api/cliente/editar/${id}`, cliente);
   }
 
   crearCliente(cliente: RegistroCliente): Observable<any> {
-    return this.http.post(`${this.apiUrl}/cliente/guardar`, cliente);
+    return this.http.post(`${this.apiUrl}/api/cliente/guardar`, cliente);
   }
 
   eliminarCliente(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/cliente/eliminar/${id}`);
+    return this.http.delete(`${this.apiUrl}/api/cliente/eliminar/${id}`);
   }
+
 
   obtenerUsuarioAutenticado(): Observable<RegistroCliente | null> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/auth/user`, { headers }).pipe(
+    return this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers }).pipe(
       catchError(error => {
         console.error(error);
         return of(null);
       })
     );
   }
-
 }

@@ -13,7 +13,7 @@ import {
 import {CommonModule} from '@angular/common';
 import {AuthService} from '../../service/auth.service';
 import {RegistroCliente} from '../../interface/RegistroCliente';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import Swal from 'sweetalert2';
 
 
@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
   selector: 'app-registro',
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css']

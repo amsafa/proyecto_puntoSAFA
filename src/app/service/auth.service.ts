@@ -15,7 +15,8 @@ import {ActualizarService} from './actualizar.service';
 export class AuthService {
   private authState = new BehaviorSubject<boolean>(this.isLoggedIn());
   private userData = new BehaviorSubject<RegistroCliente | null>(null);
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  private apiUrl =  environment.apiUrl;
+
 
 
   constructor(
@@ -32,10 +33,7 @@ export class AuthService {
       const response = await lastValueFrom(
         this.http.post<{ token: string }>(`${this.apiUrl}/login_check`, credentials)
       );
-
-      if (!response.token) {
-        throw new Error("❌ Token no recibido en la respuesta del servidor.");
-      }
+      if (!response.token) throw new Error("Token no recibido");
 
       console.log("✅ Token recibido:", response.token);
 
@@ -67,6 +65,8 @@ export class AuthService {
         await this.router.navigate(['/login']);
       }
     } catch (error: any) {
+      Swal.fire("Error", error.status === 401 ? "Usuario o contraseña incorrectos." : "No se pudo iniciar sesión.", "error");
+      localStorage.removeItem('token');
       console.error("❌ Error en login:", error);
 
       if (error instanceof HttpErrorResponse && error.status === 401) {
@@ -122,7 +122,7 @@ export class AuthService {
     });
 
     return lastValueFrom(
-      this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/auth/user`, { headers })
+      this.http.get<RegistroCliente>(`/api/api/cliente/auth/user`, { headers })
     ).then(userData => {
       this.userData.next(userData);
       return userData; // Devuelve el usuario con su rol
@@ -143,8 +143,9 @@ export class AuthService {
 
       this.userData.next(null);
       return null;
-    });
+    }
   }
+
 
 
 
@@ -154,11 +155,10 @@ export class AuthService {
     return this.userData.asObservable();
   }
 
-
-  // Obtener el token del localStorage
   getToken(): string | null {
     return sessionStorage.getItem('token');
   }
+
 
 
   // Registrar un nuevo usuario
@@ -171,24 +171,13 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     this.authState.next(false);
-    this.router.navigate(['login']).then(() => {
-      Swal.fire({
-        title: 'Sesión cerrada correctamente',
-        text: 'Se ha cerrado sesión correctamente. Nos vemos pronto.',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      }).then(() => this.actualizar.triggerRefreshHeader());
-    });
+    this.router.navigate(['login']).then(() => this.actualizar.triggerRefreshHeader());
   }
 
-
-  // Verificar si el usuario está autenticado
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
-
-  // Obtener el estado de autenticación como Observable
   getAuthState(): Observable<boolean> {
     return this.authState.asObservable();
   }
@@ -212,3 +201,6 @@ export class AuthService {
 
   }
 }
+
+
+
