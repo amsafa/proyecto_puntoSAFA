@@ -57,10 +57,14 @@ export class LibroService {
 
   // Método para obtener libros por categoría (desde el backend)
   getBooksByCategory(id: number, page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}?page=${page}&limit=${limit}`).pipe(
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}`, { params }).pipe(
       map(libros => libros.map(libro => ({
         ...libro,
-        mediaCalificacion: parseFloat(String(libro.mediaCalificacion))
+        mediaCalificacion: isNaN(Number(libro.mediaCalificacion)) ? 0 : parseFloat(String(libro.mediaCalificacion))
       })))
     );
   }

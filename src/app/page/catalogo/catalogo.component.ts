@@ -28,6 +28,8 @@ import {AuthService} from '../../service/auth.service';
 })
 export class CatalogoComponent implements OnInit {
   libros: Libro[] = [];
+  categoryId!: number;
+
   filteredBooks: Libro[] = [];
   searchTerm: string = '';
   categories: Categoria[] = [];
@@ -64,10 +66,18 @@ export class CatalogoComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       console.log('Query Params:', params);
+
+      this.categoryId = +params['categoryId']; // Convertir a número
+
       this.searchTerm = params['search'] || '';
       console.log('Received search term from query params:', this.searchTerm);
       this.currentPage = params['page'] ? parseInt(params['page'], 10) : 1;
       this.limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
+      if (this.categoryId) {
+        this.selectedCategoryId = [String(this.categoryId)]; // Filtrar por categoría inicial
+      }
+
+
       this.cargarLibros(this.currentPage, this.limit);
     });
 
@@ -118,6 +128,7 @@ export class CatalogoComponent implements OnInit {
   }
 
   clearFilters(): void {
+
     this.selectedCategoryId = [];
     this.selectedPriceRanges = [];
     this.searchTerm = '';
@@ -160,7 +171,7 @@ export class CatalogoComponent implements OnInit {
       .getFilteredBooks(this.selectedPriceRanges, this.selectedCategoryId, page, limit)
       .subscribe({
         next: (response) => {
-          console.log('✅ Filtered books received:', response);
+          console.log('Libros filtrados recibidos:', response);
           this.libros = response.libros;
           this.totalResults = response.pagination.total;
           this.totalPages = response.pagination.totalPages;
