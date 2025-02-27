@@ -13,7 +13,6 @@ import {
   RecomendacionLibroComponent
 } from './component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component';
 import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
-import {CarritoComponent} from './component/carrito/carrito.component';
 import {PagarCompraComponent} from './page/pagar-compra/pagar-compra.component';
 import {PedidosClienteComponent} from './page/pedidos-cliente/pedidos-cliente.component';
 
@@ -36,7 +35,6 @@ export const routes: Routes = [
   {path:'pedidos-cliente', component:PedidosClienteComponent, pathMatch: 'full'},
 
 
-  {path:'carro', component:CarritoComponent, pathMatch: 'full'},
 
 
 
