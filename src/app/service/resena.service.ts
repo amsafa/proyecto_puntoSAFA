@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import {Observable, throwError} from 'rxjs';
 import { Resena } from '../interface/resena';
@@ -51,9 +51,10 @@ export class ResenaService {
     });
 
     return this.http.post<Resena>(`${this.baseUrlResena}/nueva`, resena, { headers }).pipe(
-      catchError((error) => {
+      catchError((error: HttpErrorResponse) => {
         console.error('Error al enviar la reseña:', error);
-        return throwError(() => new Error('Error al enviar la reseña.'));
+        // Deja que el error original se propague al componente
+        return throwError(() => error);
       })
     );
   }

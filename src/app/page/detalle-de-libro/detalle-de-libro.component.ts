@@ -8,6 +8,7 @@ import { ResenaService } from '../../service/resena.service';
 import { AuthService } from '../../service/auth.service';
 import { CurrencyPipe, NgForOf, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-detalle-de-libro',
@@ -22,7 +23,6 @@ export class DetalleDeLibroComponent {
   resenas: Resena[] = []; // Variable para las reseñas
   media_calificacion: number | null = null; // Variable para la calificación media
   starsArray: number[] = [];
-
   hasHalfStar: boolean = false;
   usuarioLogueado: boolean = false; // Verifica si el usuario está logueado
   calificacionSeleccionada: number = 0; // Calificación seleccionada por el usuario
@@ -32,7 +32,6 @@ export class DetalleDeLibroComponent {
   mostrarNotificacionExito: boolean = false; // Controla si se muestra la notificación de éxito
   mostrarNotificacionError: boolean = false; // Controla si se muestra la notificación de error
   mensajeNotificacion: string = ''; // Mensaje de la notificación
-
 
   constructor(
     private route: ActivatedRoute,
@@ -63,18 +62,23 @@ export class DetalleDeLibroComponent {
     this.resenaService.obtenerResenasPorLibro(id).subscribe({
       next: (data) => {
         console.log('Datos recibidos del servicio:', data);
+
         if (data && Array.isArray(data)) {
-          this.resenas = data;
+          // Ordenar las reseñas por fecha (la más reciente primero)
+          this.resenas = data.sort((a, b) => {
+            const fechaA = new Date(a.fecha).getTime(); // Convertir a timestamp
+            const fechaB = new Date(b.fecha).getTime(); // Convertir a timestamp
+            return fechaB - fechaA; // Orden descendente (más reciente primero)
+          });
         } else {
           this.resenas = [];
         }
+
         console.log('Resenas después de la asignación:', this.resenas);
         this.cdr.detectChanges();
       },
-      error: (error) => {
+      error: (error: HttpErrorResponse) => {
         console.error('Error al obtener las reseñas:', error);
-        this.resenas = [];
-        this.cdr.detectChanges();
       },
     });
   }
@@ -114,29 +118,27 @@ export class DetalleDeLibroComponent {
     this.calificacionSeleccionada = calificacion;
   }
 
-  // Método para mostrar una notificación
+  /**
+   * Mostrar una notificación con SweetAlert2.
+   * @param mensaje Mensaje a mostrar en la notificación.
+   * @param tipo Tipo de notificación: 'exito' o 'error'.
+   */
   mostrarNotificacion(mensaje: string, tipo: 'exito' | 'error'): void {
-    this.mensajeNotificacion = mensaje;
-
-    if (tipo === 'exito') {
-      this.mostrarNotificacionExito = true;
-    } else {
-      this.mostrarNotificacionError = true;
-    }
-
-    // Ocultar la notificación después de 3 segundos
-    setTimeout(() => {
-      this.mostrarNotificacionExito = false;
-      this.mostrarNotificacionError = false;
-    }, 6000);
+    Swal.fire({
+      icon: tipo === 'exito' ? 'success' : 'error',
+      title: tipo === 'exito' ? 'Éxito' : 'Error',
+      text: mensaje,
+      showConfirmButton: false,
+      timer: 3000, // Ocultar automáticamente después de 3 segundos
+    });
   }
 
   /**
    * Enviar una nueva reseña.
    * La verificación de compra se realiza automáticamente en el backend.
    */
-  // Método enviarResena
   enviarResena(): void {
+    // Validar que la calificación y el comentario estén completos
     if (this.calificacionSeleccionada > 0 && this.comentario.trim()) {
       const nuevaResena = {
         libro: this.libro?.id,
@@ -146,29 +148,49 @@ export class DetalleDeLibroComponent {
 
       this.resenaService.enviarResena(nuevaResena).subscribe({
         next: (response) => {
-          this.mostrarErrorCompra = false; // Ocultar el mensaje de error
-          this.mostrarNotificacion('Reseña enviada con éxito', 'exito'); // Mostrar notificación de éxito
-          this.comentario = ''; // Limpiar el campo de comentario
-          this.calificacionSeleccionada = 0; // Reiniciar la calificación
+          // Éxito: Ocultar mensajes de error y mostrar notificación de éxito
+          this.mostrarErrorCompra = false;
+          this.mostrarNotificacion('Reseña enviada con éxito', 'exito');
+          this.limpiarFormulario();
           this.obtenerResenas(this.libroId); // Actualizar la lista de reseñas
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error al enviar la reseña:', error);
-          if (error.status === 403) {
-            this.mostrarErrorCompra = true; // Mostrar el mensaje de error
-            this.mostrarNotificacion('Para poder valorar este libro, tienes que comprarlo.', 'error'); // Mostrar notificación de error
-          } else {
-            this.mostrarNotificacion('Error al enviar la reseña', 'error'); // Mostrar notificación de error
-          }
-          if (error.status === 401) {
-            this.mostrarNotificacion('Debes de tener el libro comprado y entregado para poder escribir una reseña.', 'error'); // Mostrar notificación de error
-          }
+          console.error('Error completo:', error);
+          console.log('Tipo de error:', typeof error);
+          console.log('Propiedades del error:', Object.keys(error));
 
+          // Verificar si el error es una instancia de HttpErrorResponse
+          console.log('El error es de tipo HttpErrorResponse');
+          console.error('Error al enviar la reseña:', {
+            status: error.status,
+            statusText: error.statusText,
+            message: error.message,
+            error: error.error, // Detalles adicionales del error
+          });
+          const status = Number(error.status);
+          if (status === 403) {
+            this.mostrarErrorCompra = true;
+            this.mostrarNotificacion('Para poder valorar este libro, tienes que comprarlo.', 'error');
+          } else if (status === 401) {
+            this.mostrarNotificacion('Debes iniciar sesión para escribir una reseña.', 'error');
+          } else if (status === 409) {
+            this.mostrarNotificacion('Ya has escrito una reseña para este libro.', 'error');
+          } else {
+            this.mostrarNotificacion('Error al enviar la reseña. Por favor, inténtalo de nuevo.', 'error');
+          }
         },
       });
     } else {
-      this.mostrarNotificacion('Por favor, selecciona una calificación y escribe un comentario.', 'error'); // Mostrar notificación de error
+      this.mostrarNotificacion('Por favor, selecciona una calificación y escribe un comentario.', 'error');
     }
+  }
+
+  /**
+   * Limpiar el formulario después de enviar la reseña.
+   */
+  limpiarFormulario(): void {
+    this.comentario = '';
+    this.calificacionSeleccionada = 0;
   }
 
   /**
