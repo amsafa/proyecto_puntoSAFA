@@ -74,7 +74,7 @@ export class RegistroLibroComponent implements OnInit {
         alert("📚 ¡Libro creado!");
         this.crearNuevoLibro();
       },
-      error => {
+        (error: any) => {
         console.error("❌ Error al registrar el libro:", error);
         alert("Hubo un error al registrar el libro.");
       }

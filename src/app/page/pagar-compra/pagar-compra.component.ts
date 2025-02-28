@@ -56,7 +56,7 @@ export class PagarCompraComponent implements OnInit{
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]]
     });
 
-    const userDataString = sessionStorage.getItem('userData');
+    const userDataString = localStorage.getItem('userData');
     if (userDataString) {
       try {
         this.userData = JSON.parse(userDataString);

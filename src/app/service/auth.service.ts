@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { RegistroCliente } from '../interface/RegistroCliente';
 import { Login } from '../interface/Login';
 import { ActualizarService } from './actualizar.service';
+import {environment} from '../../environments/environment';
 
 
 @Injectable({
@@ -15,7 +16,8 @@ import { ActualizarService } from './actualizar.service';
 export class AuthService {
   private authState = new BehaviorSubject<boolean>(this.isLoggedIn());
   private userData = new BehaviorSubject<RegistroCliente | null>(null);
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  private apiUrl =  environment.apiUrl;
+
 
 
   constructor(
@@ -137,16 +139,15 @@ export class AuthService {
     return this.userData.asObservable();
   }
 
-
-  // Obtener el token del localStorage
   getToken(): string | null {
-    return sessionStorage.getItem('token');
+    return localStorage.getItem('token');
   }
+
 
 
   // Registrar un nuevo usuario
   registro(userData: RegistroCliente): Observable<any> {
-    return this.http.post(`${this.apiUrl}/registro`, userData).pipe(catchError(this.handleError));
+    return this.http.post(`${this.apiUrl}/api/registro`, userData).pipe(catchError(this.handleError));
   }
 
 
@@ -164,14 +165,10 @@ export class AuthService {
     });
   }
 
-
-  // Verificar si el usuario está autenticado
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
-
-  // Obtener el estado de autenticación como Observable
   getAuthState(): Observable<boolean> {
     return this.authState.asObservable();
   }
@@ -194,4 +191,24 @@ export class AuthService {
   actualizarUsuario(usuarioEditado: any) {
 
   }
+
+  recuperarContrasena(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/recuperar-contrasena`, { email });
+  }
+
+  // Método para restablecer la contraseña con el token
+  // authService.ts
+  restablecerContrasena(token: string, nuevaContrasena: string): Observable<any> {
+    return this.http.post(`https://localhost:8000/api/restablecer-contrasena/${token}`, { contraseña: nuevaContrasena });
+  }
+
+
+
+  verificarToken(token: string) {
+    return this.http.get(`${this.apiUrl}/api/verificar-token/${token}`);
+
+  }
 }
+
+
+
