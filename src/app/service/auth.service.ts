@@ -52,19 +52,47 @@ export class AuthService {
     }
   }
 
-  async fetchUserData(): Promise<RegistroCliente | null> {
+  fetchUserData(): Promise<RegistroCliente | null> {
     const token = this.getToken();
-    if (!token) return null;
-    try {
-      const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
-      const userData = await lastValueFrom(this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers }));
+
+    if (!token) {
+      console.error("❌ No hay token en sessionStorage");
+      return Promise.resolve(null);
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return lastValueFrom(
+      this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })
+    ).then(userData => {
       this.userData.next(userData);
+      localStorage.setItem('userData', JSON.stringify(userData));  // 🔹 Guardar en localStorage
+      console.log(userData);
       return userData;
-    } catch {
+    }).catch(err => {
+      console.error("❌ Error al obtener datos del usuario:", err);
+
+      if (err instanceof HttpErrorResponse) {
+        if (err.status === 401) {
+          console.error("❌ Token inválido o caducado. Requiere autenticación.");
+          this.router.navigate(['/login']);
+          this.userData.next(null);
+        } else {
+          console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
+        }
+      } else {
+        console.error("❌ Error inesperado:", err);
+      }
+
       this.userData.next(null);
       return null;
-    }
+    });
   }
+
+
 
   getUserData(): Observable<RegistroCliente | null> {
     return this.userData.asObservable();
