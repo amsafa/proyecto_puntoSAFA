@@ -79,24 +79,6 @@ export class AuthService {
       sessionStorage.removeItem('token'); // Eliminar token inválido si falla
       this.authState.next(false);
     }
-
-    //   if (user && user.usuario) { // 🔹 Verifica que usuario exista
-    //     localStorage.setItem('userData', JSON.stringify(user));
-    //
-    //     // Redirigir según el rol dentro de usuario
-    //     if (user.usuario.rol === 'admin') {
-    //       console.log("Redirigiendo a perfil-admin");
-    //       this.router.navigate(['/perfil-adm']);
-    //     } else if (user.usuario.rol === 'cliente') {
-    //       console.log("Redirigiendo a home");
-    //       this.router.navigate(['/home']);
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.error("Error en login:", error);
-    //   // @ts-ignore
-    //   this.handleError(error);
-    // }
   }
 
 
@@ -163,7 +145,7 @@ export class AuthService {
 
   // Registrar un nuevo usuario
   registro(userData: RegistroCliente): Observable<any> {
-    return this.http.post(`${this.apiUrl}/registro`, userData).pipe(catchError(this.handleError));
+    return this.http.post(`${this.apiUrl}/api/registro`, userData).pipe(catchError(this.handleError));
   }
 
 
