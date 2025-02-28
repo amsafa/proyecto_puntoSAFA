@@ -78,7 +78,7 @@ export class PagarCompraComponent implements OnInit{
     }
 
 
-    const storedCart = sessionStorage.getItem('cart');
+    const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       this.cartItems = JSON.parse(storedCart);
     }

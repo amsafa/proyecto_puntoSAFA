@@ -44,7 +44,6 @@ export class AuthService {
       localStorage.setItem('token', response.token);
       this.authState.next(true);
 
-      // Obtener datos del usuario
       const user = await this.fetchUserData();
       console.log("Datos de usuario obtenidos:", user); // ✅ Depuración
       if (user?.usuario?.rol) {
@@ -83,12 +82,7 @@ export class AuthService {
     }
   }
 
-
-
-
-
-  // Obtener datos del usuario autenticado
-  fetchUserData(): Promise<RegistroCliente | null> {
+   fetchUserData(): Promise<RegistroCliente | null> {
     const token = this.getToken();
 
     // if (!token) return Promise.resolve(null);
@@ -130,10 +124,6 @@ export class AuthService {
     });
   }
 
-
-
-
-  // Obtener datos del usuario autenticado como Observable
   getUserData(): Observable<RegistroCliente | null> {
     return this.userData.asObservable();
   }

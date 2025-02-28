@@ -4,13 +4,14 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {Libro} from '../interface/libro';
 import {Pedido} from '../interface/pedido';
 import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarritoService {
-  private baseUrl: string = "http://127.0.0.1:8000/pedido";
+  private apiUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -91,7 +92,7 @@ export class CarritoService {
   }
 
   savePedido(pedido: Pedido): Observable<any> {
-    return this.http.post(`${this.baseUrl}/save`, pedido);
+    return this.http.post(`${this.apiUrl}/pedido/save`, pedido);
   }
 
 
