@@ -3,19 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import {map, Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {Categoria} from '../interface/categoria';
-import {Autor} from '../interface/autor';
 
-
-interface PaginatedResponse {
-  libros: Libro[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
 
 
 @Injectable({
@@ -40,11 +28,19 @@ export class LibroService {
 
 
 
-
+  getLibros(page: number, limit: number): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.baseUrl}/all`, {
+      params: { page: page.toString(), limit: limit.toString() },
+    });
+  }
 
 
   getLibroById(id: number): Observable<Libro> {
     return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
+
+
+
+
 
   getLibrosByPrecio(range: string, page: number = 1, limit: number = 9): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}?page=${page}&limit=${limit}`).pipe(
@@ -105,24 +101,46 @@ export class LibroService {
 
 
   // Método para crear un libro
-  crearLibro(libro: Libro): Observable<Libro> {
-    return this.http.post<Libro>(`${this.baseUrl}/guardar`, libro);
+
+
+  crearLibro(libro: LibroCrea): Observable<Libro> {
+    return this.http.post<Libro>(`${this.apiUrl}/guardar`, libro);
   }
 
 
-
-
 // Método para editar un libro
-  editarLibro(id: number, libro: Libro): Observable<Libro> {
-    return this.http.put<Libro>(`${this.baseUrl}/editar/${id}`, libro);
+  actualizarLibro(id: number, libro: LibroCrea): Observable<Libro> {
+    return this.http.put<Libro>(`${this.apiUrl}/actualizar/${id}`, libro, {
+    });
   }
 
 
 
 
 // Método para eliminar un libro
-  eliminarLibro(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/eliminar/${id}`);
+  eliminarLibro(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/eliminar/${id}`, {
+    });
+  }
+
+
+  // Método en Angular o cualquier otro frontend que uses para buscar el libro por título
+  buscarLibroPorTitulo(titulo: string): Observable<LibroCrea[]> {
+    return this.http.get<LibroCrea[]>(`${this.apiUrl}/search?q=${titulo}`);
+  }
+
+  obtenerLibro(libroId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${libroId}`);
+  }
+
+
+  obtenerAutores(): Observable<Autor[]> {
+  return this.http.get<Autor[]>(`${this.apiUrl}/all`);
+}
+
+  obtenerCategorias():Observable<Categoria[]> {
+    return this.http.get<Categoria[]>(`${this.apiUrl}/all`);
+
   }
 
 }

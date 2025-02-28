@@ -56,7 +56,7 @@ export class PagarCompraComponent implements OnInit{
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]]
     });
 
-    const userDataString = sessionStorage.getItem('userData');
+    const userDataString = localStorage.getItem('userData');
     if (userDataString) {
       try {
         this.userData = JSON.parse(userDataString);
@@ -80,7 +80,7 @@ export class PagarCompraComponent implements OnInit{
     }
 
 
-    const storedCart = sessionStorage.getItem('cart');
+    const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       this.cartItems = JSON.parse(storedCart);
     }

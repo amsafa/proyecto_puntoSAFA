@@ -1,28 +1,28 @@
-<div class="min-h-screen flex flex-col bg-gray-100">
-  <!-- Encabezado -->
-  <header class="w-full bg-[#F0F4EF] flex flex-wrap items-center p-4 shadow">
+<section class="min-h-[calc(100vh-8rem)] py-16 px-4 sm:px-6 lg:px-8 " style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)), url('../../../../assets/puntosafa_fondo3.jpeg'); background-size: cover; background-position: center;">
+<!-- Encabezado -->
+  <div class="w-full bg-[#F0F4EF] flex flex-wrap items-center p-4 shadow relative z-10">
     <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-24 h-auto md:w-40 ml-4">
     <h2 class="flex-grow text-center text-lg md:text-2xl font-bold text-[#1F2D3D]">
       Bienvenido a PuntoSafa
     </h2>
     <h1 class="text-lg md:text-2xl font-bold text-blue-600 mr-4 md:mr-10">¡HOLA! {{ userData?.nombre }}</h1>
-  </header>
+  </div>
 
-  <!-- Contenido principal -->
-  <main class="flex-grow container mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg mt-4 md:mt-6">
-    <div class="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+  <!-- Main Content -->
+  <main class="flex-grow container mx-auto p-6 bg-white shadow-lg rounded-lg mt-6">
+    <div class="flex flex-col lg:flex-row items-start lg:items-center gap-8">
       <!-- Foto del Cliente -->
-      <div class="w-40 h-40 md:w-80 md:h-80 flex-shrink-0">
+      <div class="flex-shrink-0">
         <img
           [src]="userData?.foto || 'assets/logo_puntosafa.png'"
           alt="Foto del Cliente"
-          class="w-full h-full rounded-full object-cover border-4 border-blue-500"
+          class="w-80 h-80 rounded-full object-cover border-4 border-blue-500"
         >
       </div>
 
       <!-- Información del Cliente -->
-      <div class="flex-grow bg-gray-50 p-4 md:p-6 rounded-lg shadow-md w-full md:w-3/5">
-        <h2 class="text-lg md:text-xl font-semibold text-gray-700 mb-4">Perfil del Cliente</h2>
+      <div class="flex-grow bg-gray-50 p-4 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Perfil del Cliente</h2>
 
         <!-- Mensajes de éxito y error -->
         <p *ngIf="successMessage" class="text-green-600 mt-2 p-3 bg-green-100 border border-green-600 rounded">
@@ -33,7 +33,7 @@
           {{ errorMessage }}
         </p>
 
-        <div class="space-y-2 text-sm md:text-base">
+        <div class="space-y-3">
           <p><strong class="text-gray-600">Email:</strong> {{ userData?.usuario?.email }}</p>
           <p><strong class="text-gray-600">Nick:</strong> {{ userData?.usuario?.nick }}</p>
           <p><strong class="text-gray-600">Nombre:</strong> {{ userData?.nombre }}</p>
@@ -46,60 +46,67 @@
         </div>
 
         <div class="mt-4 flex flex-wrap gap-4">
-          <button (click)="abrirFormulario()" class="bg-blue-500 text-white text-sm md:text-lg px-4 py-2 rounded shadow-md w-full md:w-auto">
+          <button (click)="abrirFormulario()" class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
             Editar Perfil
           </button>
 
-          <button (click)="abrirEdicionUsuario()" class="bg-blue-500 text-white text-sm md:text-lg px-4 py-2 rounded shadow-md w-full md:w-auto">
+          <button (click)="abrirEdicionUsuario()" class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
             Editar Contraseña
           </button>
         </div>
       </div> <!-- Fin de Información del Cliente -->
     </div> <!-- Fin del flex principal -->
 
-    <!-- Modal de Edición de Perfil -->
-    <div *ngIf="mostrandoFormulario" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center p-4">
-      <div class="bg-white p-4 md:p-6 rounded shadow-lg w-full md:w-1/3">
-        <h2 class="text-lg font-semibold mb-4">Editar Perfil</h2>
 
-        <label>Email:</label>
-        <input [(ngModel)]="usuarioEditado.usuario.email" class="w-full border p-2 rounded" disabled />
+      <!-- Modal / Formulario de Edición -->
+      <div *ngIf="mostrandoFormulario" class=" z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-6 rounded shadow-lg w-1/3">
+          <h2 class="text-lg font-semibold mb-4">Editar Perfil</h2>
 
-        <label>Nick:</label>
-        <input [(ngModel)]="usuarioEditado.usuario.nick" class="w-full border p-2 rounded" disabled />
 
-        <label>Nombre:</label>
-        <input [(ngModel)]="usuarioEditado.nombre" class="w-full border p-2 rounded" disabled />
+          <label>Email:</label>
+          <input [(ngModel)]="usuarioEditado.usuario.email" class="w-full border p-2 rounded" disabled />
 
-        <label>Dirección:</label>
-        <input [(ngModel)]="usuarioEditado.direccion" class="w-full border p-2 rounded" />
+          <label>Nick:</label>
+          <input [(ngModel)]="usuarioEditado.usuario.nick" class="w-full border p-2 rounded" disabled />
 
-        <label>Teléfono:</label>
-        <input [(ngModel)]="usuarioEditado.telefono" class="w-full border p-2 rounded" />
+          <label>Nombre:</label>
+          <input [(ngModel)]="usuarioEditado.nombre" class="w-full border p-2 rounded" disabled />
 
-        <label>Foto:</label>
-        <input [(ngModel)]="usuarioEditado.foto" class="w-full border p-2 rounded" />
+          <label>Dirección:</label>
+          <input [(ngModel)]="usuarioEditado.direccion" class="w-full border p-2 rounded" />
 
-        <div class="flex justify-end mt-4 gap-2">
-          <button (click)="guardarCambios()" class="bg-green-500 text-white px-4 py-2 rounded">
-            Guardar
-          </button>
-          <button (click)="cerrarFormulario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
+          <label>Teléfono:</label>
+          <input [(ngModel)]="usuarioEditado.telefono" class="w-full border p-2 rounded" />
+
+          <label>Foto:</label>
+          <input [(ngModel)]="usuarioEditado.foto" class="w-full border p-2 rounded" />
+
+
+          <div class="flex justify-end mt-4">
+            <button (click)="guardarCambios()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">
+              Guardar
+            </button>
+
+            <button (click)="cerrarFormulario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Modal de Edición de Contraseña -->
-    <div *ngIf="mostrandoEdicionContrasena" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center p-4">
-      <div class="bg-white p-4 md:p-6 rounded shadow-lg w-full md:w-1/3">
+
+
+
+    <!-- Modal para editar email y contraseña -->
+    <div *ngIf="mostrandoEdicionContrasena" class=" z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+      <div class="bg-white p-6 rounded shadow-lg w-1/3 ">
         <h2 class="text-lg font-semibold mb-4">Editar Email y Contraseña</h2>
 
         <label>Contraseña:</label>
         <input type="password" [(ngModel)]="usuarioEditado.contrasena" class="w-full border p-2 rounded"
                placeholder="Nueva contraseña (opcional)" />
 
-        <div class="flex justify-end mt-4 gap-2">
-          <button (click)="guardarEdicionContrasena()" class="bg-green-500 text-white px-4 py-2 rounded">
+        <div class="flex justify-end mt-4">
+          <button (click)="guardarEdicionContrasena()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">
             Guardar
           </button>
           <button (click)="cerrarEdicionUsuario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
@@ -107,10 +114,6 @@
       </div>
     </div>
 
-    <!-- Información del Carrito de Compras -->
-    <div class="mt-6 bg-gray-100 p-4 rounded-lg shadow-md">
-      <h2 class="text-lg font-semibold text-gray-700 mb-2">Carrito de Compras</h2>
-      <p class="text-gray-600">Aquí se muestra la información del carrito de compras...</p>
-    </div>
+
   </main>
-</div>
+</section>

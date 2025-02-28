@@ -19,7 +19,7 @@ registerLocaleData(localeEs, 'es');
     FooterComponent,
     HeaderComponent,
     RouterOutlet,
-    RouterModule],
+    RouterModule,],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

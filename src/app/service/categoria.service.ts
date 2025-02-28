@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {Categoria} from '../interface/categoria';
+import {environment} from '../../environments/environment';
 import {Libro} from '../interface/libro';
 
 @Injectable({
@@ -9,12 +10,12 @@ import {Libro} from '../interface/libro';
 })
 
 export class CategoriaService {
-  private baseUrl: string = "api/categoria";
+  private apiUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
   getCategorias(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(`${this.baseUrl}/all`);
+    return this.http.get<Categoria[]>(`${this.apiUrl}/categoria/all`);
   }
 
   getBooksByCategory(id: number, page: number = 1, limit: number = 9): Observable<Libro[]> {

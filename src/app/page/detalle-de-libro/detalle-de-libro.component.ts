@@ -1,20 +1,18 @@
-import {ChangeDetectorRef, Component, Input} from '@angular/core';
-import {Libro} from '../../interface/libro';
-import {FormsModule} from '@angular/forms';
-import {LibroService} from '../../service/libro.service';
-import {ActivatedRoute} from '@angular/router';
-import {Resena} from '../../interface/resena';
-import {ResenaService} from '../../service/resena.service';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { Libro } from '../../interface/libro';
+import { FormsModule } from '@angular/forms';
+import { LibroService } from '../../service/libro.service';
+import { ActivatedRoute } from '@angular/router';
+import { Resena } from '../../interface/resena';
+import { ResenaService } from '../../service/resena.service';
 import { AuthService } from '../../service/auth.service';
-import { CarritoService } from '../../service/carrito.service';
-import {HttpErrorResponse} from '@angular/common/http';
+import { CurrencyPipe, NgForOf, NgIf } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
-import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
-
 
 @Component({
   selector: 'app-detalle-de-libro',
-  imports: [FormsModule, NgForOf, NgIf, CurrencyPipe],
+  imports: [FormsModule, NgIf, CurrencyPipe, NgForOf],
   standalone: true,
   templateUrl: './detalle-de-libro.component.html',
   styleUrl: './detalle-de-libro.component.css',
@@ -40,25 +38,22 @@ export class DetalleDeLibroComponent {
     private libroService: LibroService,
     private resenaService: ResenaService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef, // Agregado
-    private carritoService:CarritoService) {
+    private cdr: ChangeDetectorRef
+  ) {
     this.libroId = Number(this.route.snapshot.paramMap.get('id')); // Obtener el ID del libro desde la ruta
   }
 
-
-  // Método para inicializar el componente
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!isNaN(id)) {
       this.obtenerLibro(id);
       this.obtenerResenas(id);
       this.obtenerMediaCalificacion(id);
-      console.log('ID del libro:', id);
+
+      // Verificar si el usuario está logueado
+      this.usuarioLogueado = this.authService.isLoggedIn();
     }
-    this.usuarioLogueado = this.authService.isLoggedIn();
   }
-
-
 
   /**
    * Obtener las reseñas de un libro.
@@ -188,6 +183,8 @@ export class DetalleDeLibroComponent {
     } else {
       this.mostrarNotificacion('Por favor, selecciona una calificación y escribe un comentario.', 'error');
     }
+    this.limpiarFormulario();
+
   }
 
   /**
@@ -213,7 +210,9 @@ export class DetalleDeLibroComponent {
     });
   }
 
-  // Método para disminuir la cantidad
+  /**
+   * Disminuir la cantidad de libros a comprar.
+   */
   decreaseQuantity(): void {
     if (this.quantity > 1) {
       this.quantity--;
@@ -221,7 +220,9 @@ export class DetalleDeLibroComponent {
     }
   }
 
-  // Método para aumentar la cantidad
+  /**
+   * Aumentar la cantidad de libros a comprar.
+   */
   increaseQuantity(): void {
     this.quantity++;
     console.log('Cantidad:', this.quantity);
@@ -237,15 +238,11 @@ export class DetalleDeLibroComponent {
         quantity: this.quantity,
       });
     }
-    this.carritoService.addToCart(this.libro, this.quantity);
-
   }
 
-
-
-
-  protected readonly isNaN = isNaN;
-
+  /**
+   * Actualizar la visualización de las estrellas según la calificación media.
+   */
   actualizarEstrellas(): void {
     if (this.media_calificacion !== null) {
       const rating = this.media_calificacion;

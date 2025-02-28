@@ -5,7 +5,6 @@ import { AuthService } from '../../service/auth.service';
 import {CarritoService} from '../../service/carrito.service';
 import {CarritoCompraComponent} from '../carrito-compra/carrito-compra.component';
 
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -51,17 +50,12 @@ export class HeaderComponent implements OnInit {
       this.isAdmin = userData.roles?.includes("ROLE_ADMIN") ?? false;
     }
 
-    // Suscribirse al carrito para obtener la cantidad total de productos
-    this.carritoService.cartItems$.subscribe((items) => {
-      this.cartQuantity = items.reduce((total, item) => total + item.cantidad, 0);
-    });
 
     // Suscribirse a la visibilidad del carrito
     this.carritoService.showCart$.subscribe((show) => {
       this.showCart = show;
     });
   }
-
 
   toggleMenu(event: Event) {
     event.stopPropagation();
