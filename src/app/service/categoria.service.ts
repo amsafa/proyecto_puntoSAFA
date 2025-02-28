@@ -9,11 +9,11 @@ import {environment} from '../../environments/environment';
 })
 
 export class CategoriaService {
-  private apiUrl: string = environment.apiUrl;
+  private baseUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
   getCategorias(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(`${this.apiUrl}/categoria/all`);
+    return this.http.get<Categoria[]>(`${this.baseUrl}/categoria/all`);
   }
 }

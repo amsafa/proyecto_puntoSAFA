@@ -100,7 +100,6 @@ export class DetalleDeLibroComponent {
           console.error('La respuesta del backend no tiene la estructura esperada:', data);
           this.media_calificacion = 0; // Asignar un valor por defecto
         }
-
         this.actualizarEstrellas();
       },
       error: (error) => {

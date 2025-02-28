@@ -19,11 +19,11 @@
     </button>
 
     <!-- Menú de navegación para pantallas grandes -->
-    <ul class="hidden md:flex space-x-12 ">
+    <ul class="hidden md:flex space-x-12">
       <li><a routerLink="/home" class=" text-2xl text-gray-50 hover:text-customAzulito">Inicio</a></li>
       <li><a routerLink="/catalogo" class=" text-2xl text-gray-50 hover:text-customAzulito">Catálogo</a></li>
       <li>
-        <div class="cart-icon-container" (click)="toggleCart()">
+        <div class="cart-icon-container" *ngIf="isLoggedIn" (click)="toggleCart()">
           <svg class="icon-cart" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
             <path d="M240-80q-33 0-56.5-23.5T160-160v-480q0-33 23.5-56.5T240-720h80q0-66 47-113t113-47q66 0 113 47t47 113h80q33 0 56.5 23.5T800-640v480q0 33-23.5 56.5T720-80H240Zm0-80h480v-480h-80v80q0 17-11.5 28.5T600-520q-17 0-28.5-11.5T560-560v-80H400v80q0 17-11.5 28.5T360-520q-17 0-28.5-11.5T320-560v-80h-80v480Zm160-560h160q0-33-23.5-56.5T480-800q-33 0-56.5 23.5T400-720ZM240-160v-480 480Z"/>
           </svg>
@@ -37,7 +37,6 @@
           Iniciar sesión o registrarse
         </a>
       </li>
-
       <li *ngIf="isLoggedIn" class="relative">
         <button (click)="toggleAccountMenu($event)" class="flex items-center space-x-2">
           <img
@@ -51,9 +50,6 @@
         <ul [ngClass]="{'block': showMenu, 'hidden': !showMenu}"
             class="absolute bg-white  shadow-md rounded mt-2 w-40 right-0">
           <li><a routerLink="/perfil" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Perfil</a></li>
-          <li *ngIf="isAdmin">
-            <a routerLink="/perfil-adm" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Perfil Admin</a>
-          </li>
           <li><a routerLink="/pedidos-cliente" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Mis Pedidos</a></li>
           <li>
             <button (click)="logout()" class=" text-l block w-full text-left px-4 py-2 hover:bg-red-100 text-red-600">
@@ -76,18 +72,19 @@
       </a>
     </ng-container>
 
+
     <ng-template #loggedInMenu>
       <a routerLink="/perfil" class="block py-2  text-customAzulito hover:text-customBlanco">Perfil</a>
-      <a routerLink="/perfil-adm" class="block py-2  text-customAzulito hover:text-customBlanco">
-        Perfil Admin
-      </a>
-      <a routerLink="/mis-pedidos" class="block py-2 text-customAzulito hover:text-customBlanco">Mis Pedidos</a>
+      <a routerLink="/pedidos-cliente" class="block py-2 text-customAzulito hover:text-customBlanco">Mis Pedidos</a>
       <button (click)="logout()" class="block w-full py-2 text-red-400 text:bg-red-100 hover:bg-red-100">
         Cerrar Sesión
       </button>
     </ng-template>
   </div>
+
+
 </header>
-<div *ngIf="showCart">
+
+<div *ngIf="isLoggedIn && showCart">
   <app-carrito-compra></app-carrito-compra>
 </div>
