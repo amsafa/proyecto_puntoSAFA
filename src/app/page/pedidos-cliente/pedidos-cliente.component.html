@@ -1,12 +1,10 @@
-<section class="py-24 relative">
-  <div class="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
-    <h2 class="font-bold text-4xl leading-10 text-center tracking-tight text-black sm:text-6xl">Mis pedidos</h2>
-    <p class="mt-6 text-lg text-center leading-8 text-gray-600">Aquí puedes consultar tus pedidos</p>
+<header class="bg-[#F0F4EF] w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto flex items-center p-4 shadow">
+  <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-40 h-auto ml-10">
+  <h2 class="font-bold text-4xl leading-10 text-center tracking-tight text-black sm:text-6xl">Mis pedidos</h2>
+</header>
 
-
-
-    <div *ngIf="orderStats" class="mt-12 flex justify-center items-center">
-    <div class="flex flex-col md:flex-row md:space-x-4">
+<div *ngIf="orderStats" class="mt-12 flex justify-center items-center">
+  <div class="flex flex-col md:flex-row md:space-x-4">
     <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:border-gray-900 transition">
       <svg class="h-8 w-8 text-sky-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />  <line x1="12" y1="22.08" x2="12" y2="12" /></svg>
       <a href="#">
@@ -31,7 +29,7 @@
       <p class="mb-3 text-3xl text-gray-500 dark:text-gray-400">{{entregados}}</p>
     </div>
   </div>
-  </div>
+</div>
 
     <div *ngIf="loading">
 
@@ -121,5 +119,5 @@
       </div>
     </div>
   </div>
-  </div>
-</section>
+<!--  </div>-->
+<!--</section>-->

@@ -29,7 +29,6 @@ export class LibroService {
     let params:any = {page, limit};
     if (priceRanges.length) {
       params.priceRanges = priceRanges.join(','); // Send as a single string like "10-15" or "mayor40"
-
     }
     if(categoryId !== null){
       params.categoryId = categoryId;

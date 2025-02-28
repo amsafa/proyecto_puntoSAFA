@@ -104,7 +104,6 @@ export class AuthService {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
-
     return lastValueFrom(
       this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers })
     ).then(userData => {
