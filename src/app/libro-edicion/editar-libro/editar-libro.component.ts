@@ -11,11 +11,11 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatOptionModule} from '@angular/material/core';
+import {Libro} from '../../interface/libro';
 
 @Component({
   selector: 'app-editar-libro',
   templateUrl: './editar-libro.component.html',
-  styleUrls: ['./editar-libro.component.css'],
   imports: [
     ReactiveFormsModule,
     NgIf,
@@ -33,7 +33,6 @@ export class EditarLibroComponent implements OnInit {
   librosFiltrados: LibroCrea[] = [];
   libroId?: number;
   isEditMode = false;
-
 
   constructor(
     private fb: FormBuilder,
@@ -143,11 +142,6 @@ export class EditarLibroComponent implements OnInit {
     });
   }
 
-  onLibroSeleccionado(libro: LibroCrea): void {
-    this.libroId = libro.id;
-    this.isEditMode = true;
-    this.libroForm.patchValue(libro);
-  }
 
   private fechaFormateada(anioPublicacion: string | number): string {
     if (!anioPublicacion) return '';
@@ -157,4 +151,19 @@ export class EditarLibroComponent implements OnInit {
   }
 
 
+  onLibroSeleccionado(libro: Libro): void {
+    this.libroForm.patchValue({
+      titulo: libro.titulo,
+      resumen: libro.resumen,
+      anioPublicacion: this.fechaFormateada(libro.anioPublicacion),
+      precio: libro.precio,
+      ISBN: libro.ISBN,
+      editorial: libro.editorial,
+      imagen: libro.imagen,
+      idioma: libro.idioma,
+      numPaginas: libro.numPaginas,
+      autor: { id: libro.autor?.id || '' },
+      categoria: { id: libro.categoria?.id || '' }
+    });
+  }
 }

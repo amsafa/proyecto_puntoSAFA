@@ -22,4 +22,18 @@ export class PedidoService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<any>(`${this.apiUrl}/pedido/cliente/${clientId}/estadisticas`, { headers });
   }
+
+  getPendingPedidos(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}/pedido/all/pendientes`);
+  }
+
+  updateEstado(pedidoId: number | undefined, newEstado: string): Observable<Pedido> {
+    return this.http.put<Pedido>(
+      `${this.apiUrl}/pedido/${pedidoId}/estado`,
+      { estado: newEstado },
+      { headers: { 'Content-Type': 'application/json' } } // Explicitly set JSON headers
+    );
+  }
+
+
 }
