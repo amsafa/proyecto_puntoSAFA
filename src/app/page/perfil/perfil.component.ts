@@ -14,7 +14,7 @@ import {distinctUntilChanged, filter, switchMap} from 'rxjs';
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
-  imports: [NgIf, ReactiveFormsModule, FormsModule, FormsModule],
+  imports: [NgIf, ReactiveFormsModule, FormsModule],
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
@@ -73,6 +73,13 @@ export class PerfilComponent implements OnInit {
       next: (data) => {
         this.cliente = data; // Asigna los datos del cliente
         this.perfilForm.patchValue(data); // Carga los datos en el formulario
+
+        // Deshabilitar los campos que no se desean editar
+        this.perfilForm.get('email')?.disable();
+        this.perfilForm.get('nick')?.disable();
+        this.perfilForm.get('nombre')?.disable();
+        this.perfilForm.get('apellidos')?.disable();
+        this.perfilForm.get('dni')?.disable();
       },
       error: () => {
         this.errorMessage = 'Error al cargar los datos del perfil.';
@@ -110,6 +117,7 @@ export class PerfilComponent implements OnInit {
     );
 
   }
+
 
 
 

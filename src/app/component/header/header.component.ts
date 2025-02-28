@@ -5,7 +5,6 @@ import { AuthService } from '../../service/auth.service';
 import {CarritoService} from '../../service/carrito.service';
 import {CarritoCompraComponent} from '../carrito-compra/carrito-compra.component';
 
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -20,10 +19,12 @@ export class HeaderComponent implements OnInit {
   userData: any = null;
   cartQuantity: number = 0;
   showCart: boolean = false;
+  isAdmin : boolean = false;
 
   constructor(private authService: AuthService, private router: Router, private carritoService:CarritoService) { }
 
   ngOnInit(): void {
+    // Suscribirse al estado de autenticación
     this.authService.getAuthState().subscribe((state) => {
       this.isLoggedIn = state;
       if (this.isLoggedIn) {
@@ -31,18 +32,29 @@ export class HeaderComponent implements OnInit {
       }
     });
 
+    // Obtener datos del usuario y verificar si es admin
     this.authService.getUserData().subscribe((user) => {
       this.userData = user;
+
+      // Verificar si el usuario tiene el rol "ROLE_ADMIN"
+      this.isAdmin = user?.usuario?.roles?.includes("ROLE_ADMIN") ?? false;
     });
     this.carritoService.cartItems$.subscribe(items => {
       this.cartQuantity = items.reduce((total, item) => total + item.cantidad, 0);  // Sum up all item quantities
     });
 
-    // Subscribe to cart visibility
-    this.carritoService.showCart$.subscribe(show => {
-      this.showCart = show; // Update cart visibility in header
-    });
+    // Recuperar datos del usuario desde localStorage si la página se recarga
+    const userDataString = localStorage.getItem('userData');
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      this.isAdmin = userData.roles?.includes("ROLE_ADMIN") ?? false;
+    }
 
+
+    // Suscribirse a la visibilidad del carrito
+    this.carritoService.showCart$.subscribe((show) => {
+      this.showCart = show;
+    });
   }
 
   toggleMenu(event: Event) {
