@@ -56,14 +56,15 @@
 
             <!-- Año de Publicación -->
             <div>
-              <label for="anioPublicacion" class="block text-sm font-medium text-gray-700">Año de Publicación</label>
-              <input type="date" id="anioPublicacion" formControlName="anioPublicacion"
+              <label for="anio_publicacion" class="block text-sm font-medium text-gray-700">Año de Publicación</label>
+              <input type="number" id="anio_publicacion" formControlName="anio_publicacion"
                      class="mt-1 block w-full border border-gray-300 rounded-md p-3"
                      placeholder="Ingrese el año de publicación">
-              <div *ngIf="libroForm.get('anioPublicacion')?.invalid && libroForm.get('anioPublicacion')?.touched" class="text-red-600 text-sm">
+              <div *ngIf="libroForm.get('anio_publicacion')?.invalid && libroForm.get('anio_publicacion')?.touched" class="text-red-600 text-sm">
                 El año de publicación es obligatorio.
               </div>
             </div>
+
 
             <!-- Precio -->
             <div>
@@ -117,31 +118,38 @@
               </div>
             </div>
 
-            <!-- Número de páginas -->
+
+            <!-- Número de Páginas -->
             <div>
-              <label for="numPaginas" class="block text-sm font-medium text-gray-700">Número de páginas</label>
-              <input type="number" id="numPaginas" formControlName="numPaginas"
+              <label for="num_paginas" class="block text-sm font-medium text-gray-700">Número de Páginas</label>
+              <input id="num_paginas" formControlName="num_paginas"
                      class="mt-1 block w-full border border-gray-300 rounded-md p-3"
-                     placeholder="Ingrese el número de páginas">
-              <div *ngIf="libroForm.get('numPaginas')?.invalid && libroForm.get('numPaginas')?.touched" class="text-red-600 text-sm">
+                     placeholder="Ingrese el número de páginas" />
+              <div *ngIf="libroForm.get('num_paginas')?.invalid && libroForm.get('num_paginas')?.touched" class="text-red-600 text-sm">
                 El número de páginas es obligatorio.
               </div>
             </div>
 
-            <!-- Grupo Autor -->
+            <!-- Autor -->
             <div>
-              <label for="autorId" class="block text-sm font-medium text-gray-700">ID del Autor</label>
-              <input type="text" id="autorId" formControlName="autor.id"
+              <label for="autor" class="block text-sm font-medium text-gray-700">Autor</label>
+              <input id="autor" formControlName="autor"
                      class="mt-1 block w-full border border-gray-300 rounded-md p-3"
-                     placeholder="Ingrese el ID del autor">
+                     placeholder="Ingrese el autor" />
+              <div *ngIf="libroForm.get('autor')?.invalid && libroForm.get('autor')?.touched" class="text-red-600 text-sm">
+                El autor es obligatorio.
+              </div>
             </div>
 
-            <!-- Grupo Categoría -->
+            <!-- Categoría -->
             <div>
-              <label for="categoriaId" class="block text-sm font-medium text-gray-700">ID de la Categoría</label>
-              <input type="text" id="categoriaId" formControlName="categoria.id"
+              <label for="categoria" class="block text-sm font-medium text-gray-700">Categoría</label>
+              <input id="categoria" formControlName="categoria"
                      class="mt-1 block w-full border border-gray-300 rounded-md p-3"
-                     placeholder="Ingrese el ID de la categoría">
+                     placeholder="Ingrese la categoría" />
+              <div *ngIf="libroForm.get('categoria')?.invalid && libroForm.get('categoria')?.touched" class="text-red-600 text-sm">
+                La categoría es obligatoria.
+              </div>
             </div>
 
             <!-- Botón Guardar -->
@@ -149,6 +157,14 @@
               <button type="submit"
                       class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-green-600 transition duration-300">
                 Guardar
+              </button>
+            </div>
+
+            <!-- Botón Eliminar (solo visible cuando hay un libro cargado, es decir, en modo edición) -->
+            <div class="mt-6" *ngIf="isEditMode">
+              <button type="button" (click)="eliminarLibro()"
+                      class="w-full bg-red-500 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-red-600 transition duration-300">
+                Eliminar
               </button>
             </div>
           </form>
