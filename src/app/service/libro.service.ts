@@ -39,7 +39,7 @@ export class LibroService {
       params.categoryId = categoryId;
     }
     console.log("📡 Sending Request with Params:", params);
-    return this.http.get<Libro[]>(`${this.baseUrl}/filtered-books`, { params }).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/filtered-books`, { params }).pipe(
       map(libros =>
         libros.map(libro => ({
           ...libro,
@@ -50,10 +50,10 @@ export class LibroService {
   }
 
   getLibroById(id: number): Observable<Libro> {
-    return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
+    return this.http.get<Libro>(`${this.apiUrl}/${id}`);}
 
   getLibrosByPrecio(range: string, page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}?page=${page}&limit=${limit}`).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/precio/${range}?page=${page}&limit=${limit}`).pipe(
       map(libros => libros.map(libro => ({
         ...libro,
         mediaCalificacion: parseFloat(String(libro.mediaCalificacion))
