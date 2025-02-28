@@ -66,7 +66,11 @@ export class AuthService {
     });
 
     return lastValueFrom(
-      this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })
+      //this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })  //lisseth
+      //this.http.get<RegistroCliente>('api/api/cliente/auth/user', { headers })  // alba
+      this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers })  // pablo
+
+
     ).then(userData => {
       this.userData.next(userData);
       localStorage.setItem('userData', JSON.stringify(userData));  // 🔹 Guardar en localStorage
