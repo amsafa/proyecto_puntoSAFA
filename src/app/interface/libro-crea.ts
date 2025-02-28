@@ -9,7 +9,7 @@ export interface LibroCrea {
   precio: number;
   ISBN: string;
   editorial: string;
-  imagen?: string; // Imagen opcional
+  imagen: string; // Imagen opcional
   idioma: string;
   num_paginas: number;
   autor: Autor; // ID del autor
