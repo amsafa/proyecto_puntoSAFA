@@ -84,8 +84,8 @@ export class LibroService {
 
 
 // Método para editar un libro
-  actualizarLibro(id: number, libro: LibroCrea): Observable<Libro> {
-    return this.http.put<Libro>(`${this.apiUrl}/actualizar/${id}`, libro, {
+  actualizarLibro(id: number, libro: LibroCrea): Observable<LibroCrea> {
+    return this.http.put<LibroCrea>(`${this.apiUrl}/actualizar/${id}`, libro, {
     });
   }
 
