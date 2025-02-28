@@ -65,11 +65,10 @@ export class RegistroLibroComponent implements OnInit {
       categoria: this.libroForm.value.categoria?.id,
     };
 
-    // Transformar libroCrea al formato que espera el servicio (LibroOriginal)
-    const libroOriginal: LibroOriginal = this.transformarLibroCreaAOriginal(libroCrea);
+
 
     // Llamar al servicio con el libro transformado
-    this.libroService.crearLibro(libroOriginal).subscribe(
+    this.libroService.crearLibro(libroCrea).subscribe(
       () => {
         alert("📚 ¡Libro creado!");
         this.crearNuevoLibro();

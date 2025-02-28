@@ -78,7 +78,7 @@ export class LibroService {
   // Método para crear un libro
 
 
-  crearLibro(libro: Libro): Observable<Libro> {
+  crearLibro(libro: LibroCrea): Observable<Libro> {
     return this.http.post<Libro>(`${this.apiUrl}/guardar`, libro);
   }
 
@@ -100,8 +100,8 @@ export class LibroService {
 
 
   // Método en Angular o cualquier otro frontend que uses para buscar el libro por título
-  buscarLibroPorTitulo(titulo: string): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.apiUrl}/search?q=${titulo}`);
+  buscarLibroPorTitulo(titulo: string): Observable<LibroCrea[]> {
+    return this.http.get<LibroCrea[]>(`${this.apiUrl}/search?q=${titulo}`);
   }
 
   obtenerLibro(libroId: number): Observable<any> {
