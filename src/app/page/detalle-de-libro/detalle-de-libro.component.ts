@@ -183,6 +183,8 @@ export class DetalleDeLibroComponent {
     } else {
       this.mostrarNotificacion('Por favor, selecciona una calificación y escribe un comentario.', 'error');
     }
+    this.limpiarFormulario();
+
   }
 
   /**
