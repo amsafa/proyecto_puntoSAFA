@@ -32,7 +32,7 @@ export class AuthService {
     localStorage.removeItem('token'); // Limpiar token anterior
     try {
       const response = await lastValueFrom(
-        this.http.post<{ token: string }>(`${this.apiUrl}/login_check`, credentials)
+        this.http.post<{ token: string }>(`${this.apiUrl}/api/login_check`, credentials)
       );
 
       if (!response.token) {
@@ -106,7 +106,7 @@ export class AuthService {
     });
 
     return lastValueFrom(
-      this.http.get<RegistroCliente>(`${this.apiUrl}/cliente/auth/user`, { headers })
+      this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers })
     ).then(userData => {
       this.userData.next(userData);
       console.log(userData)

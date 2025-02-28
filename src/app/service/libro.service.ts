@@ -15,7 +15,7 @@ export class LibroService {
   constructor(private http: HttpClient) { }
 
   getBooks(page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.apiUrl}/all?page=${page}&limit=${limit}`).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/libro/all?page=${page}&limit=${limit}`).pipe(
       map(libros =>
         libros.map(libro => ({
           ...libro,
@@ -35,7 +35,7 @@ export class LibroService {
       params.categoryId = categoryId;
     }
     console.log("📡 Sending Request with Params:", params);
-    return this.http.get<Libro[]>(`${this.apiUrl}/filtered-books`, { params }).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/libro/filtered-books`, { params }).pipe(
       map(libros =>
         libros.map(libro => ({
           ...libro,
@@ -49,7 +49,7 @@ export class LibroService {
     return this.http.get<Libro>(`${this.apiUrl}/${id}`);}
 
   getLibrosByPrecio(range: string, page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.apiUrl}/precio/${range}?page=${page}&limit=${limit}`).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/libro/precio/${range}?page=${page}&limit=${limit}`).pipe(
       map(libros => libros.map(libro => ({
         ...libro,
         mediaCalificacion: parseFloat(String(libro.mediaCalificacion))
@@ -57,9 +57,9 @@ export class LibroService {
     );
   }
 
-  // Método para obtener libros por categoría (desde el backend)
+
   getBooksByCategory(id: number, page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.apiUrl}/categoria/${id}?page=${page}&limit=${limit}`).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/libro/categoria/${id}?page=${page}&limit=${limit}`).pipe(
       map(libros => libros.map(libro => ({
         ...libro,
         mediaCalificacion: parseFloat(String(libro.mediaCalificacion))

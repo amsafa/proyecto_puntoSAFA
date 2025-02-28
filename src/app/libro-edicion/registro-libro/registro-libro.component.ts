@@ -44,42 +44,42 @@ export class RegistroLibroComponent implements OnInit {
     });
   }
 
-  guardarLibro(): void {
-    if (this.libroForm.invalid) {
-      alert("El formulario no es válido. Revisa los campos.");
-      return;
-    }
-
-    const libroCrea: LibroCrea = {
-      id: 0,
-      titulo: this.libroForm.value.titulo,
-      resumen: this.libroForm.value.resumen,
-      anio_publicacion: this.libroForm.value.anio_publicacion,
-      precio: this.libroForm.value.precio,
-      ISBN: this.libroForm.value.ISBN,
-      editorial: this.libroForm.value.editorial,
-      imagen: this.libroForm.value.imagen,
-      idioma: this.libroForm.value.idioma,
-      num_paginas: this.libroForm.value.num_paginas,
-      autor:this.libroForm.value.autor?.id,
-      categoria: this.libroForm.value.categoria?.id,
-    };
-
-    // Transformar libroCrea al formato que espera el servicio (LibroOriginal)
-    const libroOriginal: LibroOriginal = this.transformarLibroCreaAOriginal(libroCrea);
-
-    // Llamar al servicio con el libro transformado
-    this.libroService.crearLibro(libroOriginal).subscribe(
-      () => {
-        alert("📚 ¡Libro creado!");
-        this.crearNuevoLibro();
-      },
-        (error: any) => {
-        console.error("❌ Error al registrar el libro:", error);
-        alert("Hubo un error al registrar el libro.");
-      }
-    );
-  }
+  // guardarLibro(): void {
+  //   if (this.libroForm.invalid) {
+  //     alert("El formulario no es válido. Revisa los campos.");
+  //     return;
+  //   }
+  //
+  //   const libroCrea: LibroCrea = {
+  //     id: 0,
+  //     titulo: this.libroForm.value.titulo,
+  //     resumen: this.libroForm.value.resumen,
+  //     anio_publicacion: this.libroForm.value.anio_publicacion,
+  //     precio: this.libroForm.value.precio,
+  //     ISBN: this.libroForm.value.ISBN,
+  //     editorial: this.libroForm.value.editorial,
+  //     imagen: this.libroForm.value.imagen,
+  //     idioma: this.libroForm.value.idioma,
+  //     num_paginas: this.libroForm.value.num_paginas,
+  //     autor:this.libroForm.value.autor?.id,
+  //     categoria: this.libroForm.value.categoria?.id,
+  //   };
+  //
+  //   // Transformar libroCrea al formato que espera el servicio (LibroOriginal)
+  //   const libroOriginal: LibroOriginal = this.transformarLibroCreaAOriginal(libroCrea);
+  //
+  //   // Llamar al servicio con el libro transformado
+  //   this.libroService.crearLibro(libroOriginal).subscribe(
+  //     () => {
+  //       alert("📚 ¡Libro creado!");
+  //       this.crearNuevoLibro();
+  //     },
+  //       (error: any) => {
+  //       console.error("❌ Error al registrar el libro:", error);
+  //       alert("Hubo un error al registrar el libro.");
+  //     }
+  //   );
+  // }
 
   // Función para transformar el libro de libro-crea.ts a libro.ts
   private transformarLibroCreaAOriginal(libroCrea: LibroCrea): LibroOriginal {
