@@ -13,13 +13,13 @@ import {Autor} from './autor.service';
   providedIn: 'root'
 })
 export class LibroService {
-  private baseUrl: string =  `${environment.apiUrl}/libro`;
+  private apiUrl: string =  `${environment.apiUrl}/libro`;
 
   constructor(private http: HttpClient) { }
 
 
   getBooks(page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/all?page=${page}&limit=${limit}`).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/all?page=${page}&limit=${limit}`).pipe(
       map(libros =>
         libros.map(libro => ({
           ...libro,
@@ -39,7 +39,7 @@ export class LibroService {
       params.categoryId = categoryId;
     }
     console.log("📡 Sending Request with Params:", params);
-    return this.http.get<Libro[]>(`${this.baseUrl}/filtered-books`, { params }).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/filtered-books`, { params }).pipe(
       map(libros =>
         libros.map(libro => ({
           ...libro,
@@ -50,10 +50,10 @@ export class LibroService {
   }
 
   getLibroById(id: number): Observable<Libro> {
-    return this.http.get<Libro>(`${this.baseUrl}/${id}`);}
+    return this.http.get<Libro>(`${this.apiUrl}/${id}`);}
 
   getLibrosByPrecio(range: string, page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/precio/${range}?page=${page}&limit=${limit}`).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/precio/${range}?page=${page}&limit=${limit}`).pipe(
       map(libros => libros.map(libro => ({
         ...libro,
         mediaCalificacion: parseFloat(String(libro.mediaCalificacion))
@@ -64,7 +64,7 @@ export class LibroService {
 
   // Método para obtener libros por categoría (desde el backend)
   getBooksByCategory(id: number, page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/categoria/${id}?page=${page}&limit=${limit}`).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/categoria/${id}?page=${page}&limit=${limit}`).pipe(
       map(libros => libros.map(libro => ({
         ...libro,
         mediaCalificacion: parseFloat(String(libro.mediaCalificacion))
@@ -79,13 +79,13 @@ export class LibroService {
 
 
   crearLibro(libro: Libro): Observable<Libro> {
-    return this.http.post<Libro>(`${this.baseUrl}/guardar`, libro);
+    return this.http.post<Libro>(`${this.apiUrl}/guardar`, libro);
   }
 
 
 // Método para editar un libro
   actualizarLibro(id: number, libro: Libro): Observable<Libro> {
-    return this.http.put<Libro>(`${this.baseUrl}/actualizar/${id}`, libro, {
+    return this.http.put<Libro>(`${this.apiUrl}/actualizar/${id}`, libro, {
     });
   }
 
@@ -94,27 +94,27 @@ export class LibroService {
 
 // Método para eliminar un libro
   eliminarLibro(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/eliminar/${id}`, {
+    return this.http.delete<void>(`${this.apiUrl}/eliminar/${id}`, {
     });
   }
 
 
   // Método en Angular o cualquier otro frontend que uses para buscar el libro por título
   buscarLibroPorTitulo(titulo: string): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.baseUrl}/search?q=${titulo}`);
+    return this.http.get<Libro[]>(`${this.apiUrl}/search?q=${titulo}`);
   }
 
   obtenerLibro(libroId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${libroId}`);
+    return this.http.get(`${this.apiUrl}/${libroId}`);
   }
 
 
   obtenerAutores(): Observable<Autor[]> {
-  return this.http.get<Autor[]>(`${this.baseUrl}/all`);
+  return this.http.get<Autor[]>(`${this.apiUrl}/all`);
 }
 
   obtenerCategorias():Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(`${this.baseUrl}/all`);
+    return this.http.get<Categoria[]>(`${this.apiUrl}/all`);
 
   }
 
