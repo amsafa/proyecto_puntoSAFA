@@ -11,6 +11,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatOptionModule} from '@angular/material/core';
+import {Libro} from '../../interface/libro';
 
 @Component({
   selector: 'app-editar-libro',
@@ -141,11 +142,6 @@ export class EditarLibroComponent implements OnInit {
     });
   }
 
-  onLibroSeleccionado(libro: LibroCrea): void {
-    this.libroId = libro.id;
-    this.isEditMode = true;
-    this.libroForm.patchValue(libro);
-  }
 
   private fechaFormateada(anioPublicacion: string | number): string {
     if (!anioPublicacion) return '';
