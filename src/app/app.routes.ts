@@ -15,12 +15,15 @@ import {
 import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
 import {authGuard} from './auth.guard';
 import {EmailComponent} from './email/email.component';
-import {RegistroLibroComponent} from './component/registro-libro/registro-libro.component';
+import {RegistroLibroComponent} from './libro-edicion/registro-libro/registro-libro.component';
 import {ActivarCuentaComponent} from './component/activar-cuenta/activar-cuenta.component';
-import {EditarLibroComponent} from './component/editar-libro/editar-libro.component';
+import {EditarLibroComponent} from './libro-edicion/editar-libro/editar-libro.component';
 
 import {PagarCompraComponent} from './page/pagar-compra/pagar-compra.component';
 import {PedidosClienteComponent} from './page/pedidos-cliente/pedidos-cliente.component';
+import {RecuperarContrasenaComponent} from './contrasena/recuperar-contrasena/recuperar-contrasena.component';
+import {RestablecerContrasenaComponent} from './contrasena/restablecer-contrasena/restablecer-contrasena.component';
+
 
 
 
@@ -40,6 +43,8 @@ export const routes: Routes = [
   {path: 'perfil-adm', component: PerfilAdmComponent, pathMatch: 'full'},
   {path:'pagar-pedido', component:PagarCompraComponent, pathMatch: 'full'},
   {path:'pedidos-cliente', component:PedidosClienteComponent, pathMatch: 'full'},
+  { path: 'recuperar-contrasena', component: RecuperarContrasenaComponent, pathMatch: 'full' },
+  { path: 'restablecer-contrasena/:token', component: RestablecerContrasenaComponent, pathMatch: 'full' },
 
 
 

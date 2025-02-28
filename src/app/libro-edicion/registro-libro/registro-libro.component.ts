@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LibroService } from '../../service/libro.service';
-import { Libro as LibroCrea } from '../../interface/libro-crea';  // Importando desde libro-crea.ts
+import { LibroCrea } from '../../interface/libro-crea';  // Importando desde libro-crea.ts
 import {Libro, Libro as LibroOriginal} from '../../interface/libro';  // Importando desde libro.ts
 import { NgIf } from '@angular/common';
 
@@ -54,20 +54,15 @@ export class RegistroLibroComponent implements OnInit {
       id: 0,
       titulo: this.libroForm.value.titulo,
       resumen: this.libroForm.value.resumen,
-      anioPublicacion: this.fechaFormateada(this.libroForm.value.anioPublicacion),
+      anio_publicacion: this.libroForm.value.anio_publicacion,
       precio: this.libroForm.value.precio,
       ISBN: this.libroForm.value.ISBN,
       editorial: this.libroForm.value.editorial,
       imagen: this.libroForm.value.imagen,
       idioma: this.libroForm.value.idioma,
-      numPaginas: this.libroForm.value.numPaginas,
-      autor: { id: Number(this.libroForm.value.autor?.id) },
-      categoria: { id: Number(this.libroForm.value.categoria?.id) },
-      // Propiedades opcionales que puedes dejar vacías o con valores por defecto
-      calificacion: 0,
-      mediaCalificacion: 0,
-      autorNombre: "",
-      autorApellidos: ""
+      num_paginas: this.libroForm.value.num_paginas,
+      autor:this.libroForm.value.autor?.id,
+      categoria: this.libroForm.value.categoria?.id,
     };
 
     // Transformar libroCrea al formato que espera el servicio (LibroOriginal)
@@ -92,19 +87,15 @@ export class RegistroLibroComponent implements OnInit {
       id: 0,  // Asegúrate de que el id se asigna correctamente o se usa como un valor predeterminado
       titulo: libroCrea.titulo,
       resumen: libroCrea.resumen,
-      anioPublicacion: libroCrea.anioPublicacion,
+      anioPublicacion: libroCrea.anio_publicacion,
       precio: libroCrea.precio,
       ISBN: libroCrea.ISBN,
       editorial: libroCrea.editorial,
       imagen: libroCrea.imagen,
       idioma: libroCrea.idioma,
-      numPaginas: libroCrea.numPaginas,
+      numPaginas: libroCrea.num_paginas,
       autor: libroCrea.autor,
       categoria: libroCrea.categoria,
-      calificacion: libroCrea.calificacion || 0,  // Asignar valor por defecto si es necesario
-      mediaCalificacion: libroCrea.mediaCalificacion || 0,  // Asignar valor por defecto si es necesario
-      autorNombre: libroCrea.autorNombre || "",  // Valor por defecto
-      autorApellidos: libroCrea.autorApellidos || ""  // Valor por defecto
     };
   }
 
@@ -119,4 +110,8 @@ export class RegistroLibroComponent implements OnInit {
     }
     return new Date(anioPublicacion).toISOString().split('T')[0];
   }
+
+
+
+
 }

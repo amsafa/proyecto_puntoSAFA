@@ -3,6 +3,9 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Libro } from '../interface/libro'; // Importar la interfaz de libro
 import {map, Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
+import {LibroCrea} from '../interface/libro-crea';
+import {Categoria} from '../interface/categoria';
+import {Autor} from './autor.service';
 
 
 
@@ -14,14 +17,6 @@ export class LibroService {
 
   constructor(private http: HttpClient) { }
 
-  // Método para obtener los headers con el token
-  private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token'); // Obtener el token almacenado
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`, // Enviar el token en cada solicitud
-      'Content-Type': 'application/json'
-    });
-  }
 
   getBooks(page: number = 1, limit: number = 9): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.baseUrl}/all?page=${page}&limit=${limit}`).pipe(
@@ -78,6 +73,8 @@ export class LibroService {
   }
 
 
+
+
   // Método para crear un libro
 
 
@@ -87,8 +84,9 @@ export class LibroService {
 
 
 // Método para editar un libro
-  editarLibro(id: number, libro: Libro): Observable<Libro> {
-    return this.http.put<Libro>(`${this.baseUrl}/editar/${id}`, libro);
+  actualizarLibro(id: number, libro: Libro): Observable<Libro> {
+    return this.http.put<Libro>(`${this.baseUrl}/actualizar/${id}`, libro, {
+    });
   }
 
 
@@ -97,7 +95,6 @@ export class LibroService {
 // Método para eliminar un libro
   eliminarLibro(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/eliminar/${id}`, {
-      headers: this.getHeaders()
     });
   }
 
@@ -110,4 +107,15 @@ export class LibroService {
   obtenerLibro(libroId: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/${libroId}`);
   }
+
+
+  obtenerAutores(): Observable<Autor[]> {
+  return this.http.get<Autor[]>(`${this.baseUrl}/all`);
+}
+
+  obtenerCategorias():Observable<Categoria[]> {
+    return this.http.get<Categoria[]>(`${this.baseUrl}/all`);
+
+  }
+
 }

@@ -115,6 +115,23 @@ export class AuthService {
   actualizarUsuario(usuarioEditado: any) {
 
   }
+
+  recuperarContrasena(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/recuperar-contrasena`, { email });
+  }
+
+  // Método para restablecer la contraseña con el token
+  // authService.ts
+  restablecerContrasena(token: string, nuevaContrasena: string): Observable<any> {
+    return this.http.post(`https://localhost:8000/api/restablecer-contrasena/${token}`, { contraseña: nuevaContrasena });
+  }
+
+
+
+  verificarToken(token: string) {
+    return this.http.get(`${this.apiUrl}/api/verificar-token/${token}`);
+
+  }
 }
 
 

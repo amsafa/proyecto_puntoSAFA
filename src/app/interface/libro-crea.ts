@@ -1,20 +1,18 @@
-export interface Libro {
+import {Autor} from './autor';
+import {Categoria} from './categoria';
+
+export interface LibroCrea {
   id: number;
   titulo: string;
   resumen: string;
-  anioPublicacion: string;
+  anio_publicacion: string; // Formato de fecha: YYYY-MM-DD
   precio: number;
   ISBN: string;
   editorial: string;
-  imagen?: string;
+  imagen?: string; // Imagen opcional
   idioma: string;
-  numPaginas: number;
-  autor: { id: number };
-  categoria: { id: number };
+  num_paginas: number;
+  autor: Autor; // ID del autor
+  categoria: Categoria; // ID de la categoría
 
-  // Hacer estas propiedades opcionales
-  calificacion?: number;
-  mediaCalificacion?: number;
-  autorNombre?: string;
-  autorApellidos?: string;
 }

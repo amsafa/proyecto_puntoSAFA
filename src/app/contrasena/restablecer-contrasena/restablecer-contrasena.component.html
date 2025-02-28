@@ -1,0 +1,43 @@
+<div *ngIf="cargando">Cargando...</div>
+<div *ngIf="!cargando">
+  <div *ngIf="!tokenValido">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="tokenValido">
+    <h2>Restablecer Contraseña</h2>
+    <form (ngSubmit)="onRestablecerContrasena()">
+      <div>
+        <label for="nuevaContrasena">Nueva Contraseña</label>
+        <input
+          type="password"
+          id="nuevaContrasena"
+          [(ngModel)]="nuevaContrasena"
+          name="nuevaContrasena"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="confirmContrasena">Confirmar Nueva Contraseña</label>
+        <input
+          type="password"
+          id="confirmContrasena"
+          [(ngModel)]="confirmContrasena"
+          name="confirmContrasena"
+          required
+        />
+      </div>
+
+      <div *ngIf="error" class="error">
+        <p>{{ error }}</p>
+      </div>
+
+      <div *ngIf="mensaje" class="success">
+        <p>{{ mensaje }}</p>
+      </div>
+
+      <button type="submit">Restablecer Contraseña</button>
+    </form>
+  </div>
+</div>
