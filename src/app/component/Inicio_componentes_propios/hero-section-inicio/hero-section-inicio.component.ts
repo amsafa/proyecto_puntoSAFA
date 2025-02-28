@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
+import {Router, RouterLink, RouterModule} from '@angular/router';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-hero-section-inicio',
@@ -7,7 +8,10 @@ import {Router, RouterLink} from '@angular/router';
   styleUrls: ['./hero-section-inicio.component.css'],
   standalone: true,
   imports: [
-    RouterLink
+    CommonModule,
+    RouterModule, // Asegúrate de importar RouterModule
+
+
   ]
 })
 export class HeroSectionInicioComponent  implements OnInit {
@@ -15,8 +19,11 @@ export class HeroSectionInicioComponent  implements OnInit {
   constructor(private router: Router) {}
 
   navigateToAboutUs() {
-    this.router.navigate(['/sobre-nosotros']);
+    this.router.navigate(['/sobrenosotros']);
   }
+
+
+
 
   ngOnInit(): void {
   }
