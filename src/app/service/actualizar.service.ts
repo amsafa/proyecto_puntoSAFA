@@ -17,3 +17,6 @@ export class ActualizarService {
     this.refreshHeaderSubject.next();
   }
 }
+
+export class ActualizarHeaderService {
+}

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {Router} from '@angular/router';
-import {Libro} from '../../interface/libro';
+
 
 @Component({
   selector: 'app-buscador-inicio',
@@ -14,34 +13,11 @@ import {Libro} from '../../interface/libro';
 })
 export class BuscadorInicioComponent  implements OnInit {
 
-  constructor(private router:Router) { }
-
-  ngOnInit() {}
-
-  libros: Libro[] = [];
-  filteredBooks: Libro[] = [];
-  filter: string = '';
 
 
-  searchBooks(): void {
-    const searchTerm = this.filter.toLowerCase().trim();
+  constructor() { }
 
-    if (!searchTerm) {
-      this.filteredBooks = this.libros;
-    } else {
-      this.filteredBooks = this.libros.filter(libro =>
-        libro.titulo?.toLowerCase().includes(searchTerm) ||
-        libro.autor?.apellidos?.toLowerCase().includes(searchTerm) ||
-        libro.autor?.nombre?.toLowerCase().includes(searchTerm)
-      );
-    }
+  ngOnInit(): void {
 
-    // Redirect with query params
-    this.router.navigate(['/catalogo'], { queryParams: { search: searchTerm } });
   }
-  clearSearch(): void {
-    this.filter = '';
-    this.filteredBooks = this.libros;
-  }
-
 }

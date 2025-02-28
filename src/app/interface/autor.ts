@@ -4,5 +4,5 @@ export interface Autor {
   apellidos: string;
   biografia: string;
   nacionalidad: string | null;
-  fechaNacimiento: string | null; // Fecha de nacimiento del autor (opcional)
+  fechaNacimiento?: Date; // Fecha de nacimiento del autor (opcional)
 }

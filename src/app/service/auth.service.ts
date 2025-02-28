@@ -52,21 +52,51 @@ export class AuthService {
     }
   }
 
-  async fetchUserData(): Promise<RegistroCliente | null> {
+  fetchUserData(): Promise<RegistroCliente | null> {
     const token = this.getToken();
-    if (!token) return null;
-    try {
-      const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
-      // Lisset y Pablo  --->  const userData = await lastValueFrom(this.http.get<RegistroCliente>('https://localhost:8000/api/api/cliente/auth/user', { headers }));
-      const userData = await lastValueFrom(this.http.get<RegistroCliente>('/api/api/cliente/auth/user', { headers }));
 
+    if (!token) {
+      console.error("❌ No hay token en sessionStorage");
+      return Promise.resolve(null);
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return lastValueFrom(
+      //this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })  //lisseth
+      this.http.get<RegistroCliente>('api/api/cliente/auth/user', { headers })  // alba
+      //this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers })  // pablo
+
+
+    ).then(userData => {
       this.userData.next(userData);
+      localStorage.setItem('userData', JSON.stringify(userData));  // 🔹 Guardar en localStorage
+      console.log(userData);
       return userData;
-    } catch {
+    }).catch(err => {
+      console.error("❌ Error al obtener datos del usuario:", err);
+
+      if (err instanceof HttpErrorResponse) {
+        if (err.status === 401) {
+          console.error("❌ Token inválido o caducado. Requiere autenticación.");
+          this.router.navigate(['/login']);
+          this.userData.next(null);
+        } else {
+          console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
+        }
+      } else {
+        console.error("❌ Error inesperado:", err);
+      }
+
       this.userData.next(null);
       return null;
-    }
+    });
   }
+
+
 
   getUserData(): Observable<RegistroCliente | null> {
     return this.userData.asObservable();
@@ -115,6 +145,23 @@ export class AuthService {
   }
 
   actualizarUsuario(usuarioEditado: any) {
+
+  }
+
+  recuperarContrasena(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/recuperar-contrasena`, { email });
+  }
+
+  // Método para restablecer la contraseña con el token
+  // authService.ts
+  restablecerContrasena(token: string, nuevaContrasena: string): Observable<any> {
+    return this.http.post(`https://localhost:8000/api/restablecer-contrasena/${token}`, { contraseña: nuevaContrasena });
+  }
+
+
+
+  verificarToken(token: string) {
+    return this.http.get(`${this.apiUrl}/api/verificar-token/${token}`);
 
   }
 }
