@@ -66,9 +66,9 @@ export class AuthService {
     });
 
     return lastValueFrom(
-      //this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })  //lisseth
+      this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })  //lisseth
       //this.http.get<RegistroCliente>('api/api/cliente/auth/user', { headers })  // alba
-      this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers })  // pablo
+      //this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers })  // pablo
 
 
     ).then(userData => {
