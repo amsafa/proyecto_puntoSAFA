@@ -29,7 +29,7 @@ export class AuthService {
 
   // Iniciar sesión
   async login(credentials: Login): Promise<void> {
-    sessionStorage.removeItem('token'); // Limpiar token anterior
+    localStorage.removeItem('token'); // Limpiar token anterior
     try {
       const response = await lastValueFrom(
         this.http.post<{ token: string }>(`${this.apiUrl}/login_check`, credentials)
@@ -41,14 +41,14 @@ export class AuthService {
 
       console.log("✅ Token recibido:", response.token);
 
-      sessionStorage.setItem('token', response.token);
+      localStorage.setItem('token', response.token);
       this.authState.next(true);
 
       // Obtener datos del usuario
       const user = await this.fetchUserData();
       console.log("Datos de usuario obtenidos:", user); // ✅ Depuración
       if (user?.usuario?.rol) {
-        sessionStorage.setItem('userData', JSON.stringify(user)); // Guardamos los datos de usuario en sessionStorage
+        localStorage.setItem('userData', JSON.stringify(user)); // Guardamos los datos de usuario en sessionStorage
 
         // Redirigir según el rol
         switch (user.usuario.rol) {
@@ -78,7 +78,7 @@ export class AuthService {
         Swal.fire("Error", "No se pudo iniciar sesión. Inténtelo más tarde.", "error");
       }
 
-      sessionStorage.removeItem('token'); // Eliminar token inválido si falla
+      localStorage.removeItem('token'); // Eliminar token inválido si falla
       this.authState.next(false);
     }
   }
