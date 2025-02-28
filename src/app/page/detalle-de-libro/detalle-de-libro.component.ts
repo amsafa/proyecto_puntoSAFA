@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-detalle-de-libro',
-  imports: [FormsModule, NgForOf, NgIf, CurrencyPipe],
+  imports: [FormsModule, NgIf, CurrencyPipe, NgForOf],
   standalone: true,
   templateUrl: './detalle-de-libro.component.html',
   styleUrl: './detalle-de-libro.component.css',
