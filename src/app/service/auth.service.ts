@@ -61,7 +61,6 @@ export class AuthService {
   fetchUserData(): Promise<RegistroCliente | null> {
     const token = this.getToken();
 
-
     if (!token) {
       console.error("❌ No hay token en sessionStorage");
       return Promise.resolve(null);
@@ -80,7 +79,7 @@ export class AuthService {
     ).then(userData => {
       this.userData.next(userData);
       localStorage.setItem('userData', JSON.stringify(userData));  // 🔹 Guardar en localStorage
-      //console.log(userData);
+     // console.log(userData);
       return userData;
     }).catch(err => {
       console.error("❌ Error al obtener datos del usuario:", err);
@@ -176,3 +175,6 @@ export class AuthService {
 
   }
 }
+
+
+
