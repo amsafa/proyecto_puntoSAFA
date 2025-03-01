@@ -58,7 +58,7 @@
             <!-- Año de Publicación -->
             <div>
               <label for="anio_publicacion" class="block text-sm font-medium text-gray-700">Año de Publicación</label>
-              <input type="number" id="anio_publicacion" formControlName="anio_publicacion"
+              <input type="number" id="anio_publicacion" formControlName="anioPublicacion"
                      class="mt-1 block w-full border border-gray-300 rounded-md p-3"
                      placeholder="Ingrese el año de publicación">
               <div *ngIf="libroForm.get('anio_publicacion')?.invalid && libroForm.get('anio_publicacion')?.touched" class="text-red-600 text-sm">
@@ -122,11 +122,11 @@
 
             <!-- Número de Páginas -->
             <div>
-              <label for="num_paginas" class="block text-sm font-medium text-gray-700">Número de Páginas</label>
-              <input id="num_paginas" formControlName="num_paginas"
+              <label for="numPaginas" class="block text-sm font-medium text-gray-700">Número de Páginas</label>
+              <input id="numPaginas" formControlName="numPaginas"
                      class="mt-1 block w-full border border-gray-300 rounded-md p-3"
                      placeholder="Ingrese el número de páginas" />
-              <div *ngIf="libroForm.get('num_paginas')?.invalid && libroForm.get('num_paginas')?.touched" class="text-red-600 text-sm">
+              <div *ngIf="libroForm.get('numPaginas')?.invalid && libroForm.get('numPaginas')?.touched" class="text-red-600 text-sm">
                 El número de páginas es obligatorio.
               </div>
             </div>
@@ -134,10 +134,12 @@
             <!-- Autor -->
             <div>
               <label for="autor" class="block text-sm font-medium text-gray-700">Autor</label>
-              <input id="autor" formControlName="autor"
-                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
-                     placeholder="Ingrese el autor" />
-              <div *ngIf="libroForm.get('autor')?.invalid && libroForm.get('autor')?.touched" class="text-red-600 text-sm">
+              <select id="autor" formControlName="autor" class="mt-1 block w-full border border-gray-300 rounded-md p-3">
+                <option *ngFor="let autor of autores" [value]="autor.id">
+                  {{ autor.nombre }} {{ autor.apellidos }}
+                </option>
+              </select>
+              <div *ngIf="libroForm.get('autor.id')?.invalid && libroForm.get('autor.id')?.touched" class="text-red-600 text-sm">
                 El autor es obligatorio.
               </div>
             </div>
@@ -145,10 +147,12 @@
             <!-- Categoría -->
             <div>
               <label for="categoria" class="block text-sm font-medium text-gray-700">Categoría</label>
-              <input id="categoria" formControlName="categoria"
-                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
-                     placeholder="Ingrese la categoría" />
-              <div *ngIf="libroForm.get('categoria')?.invalid && libroForm.get('categoria')?.touched" class="text-red-600 text-sm">
+              <select id="categoria" formControlName="categoria" class="mt-1 block w-full border border-gray-300 rounded-md p-3">
+                <option *ngFor="let categoria of categorias" [value]="categoria.id">
+                  {{ categoria.nombre }}
+                </option>
+              </select>
+              <div *ngIf="libroForm.get('categoria.id')?.invalid && libroForm.get('categoria.id')?.touched" class="text-red-600 text-sm">
                 La categoría es obligatoria.
               </div>
             </div>
@@ -156,6 +160,7 @@
             <!-- Botón Guardar -->
             <div class="mt-6">
               <button type="submit"
+                      (click)="guardarCambios()"
                       class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-green-600 transition duration-300">
                 Guardar
               </button>

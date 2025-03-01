@@ -56,9 +56,14 @@ export class EditarLibroComponent implements OnInit {
       imagen: [''],
       idioma: ['', Validators.required],
       numPaginas: ['', Validators.required],
-      autor: this.fb.group({ id: ['', Validators.required] }),  // ✅ Se asegura que autor tenga id
-      categoria: this.fb.group({ id: ['', Validators.required] }) // ✅ Se asegura que categoría tenga id
+      autor: this.fb.group({  // ✅ Define as a FormGroup
+        id: ['', Validators.required]
+      }),
+      categoria: this.fb.group({  // ✅ Define as a FormGroup
+        id: ['', Validators.required]
+      })
     });
+
 
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -86,7 +91,7 @@ export class EditarLibroComponent implements OnInit {
   }
 
   cargarLibro(id: number): void {
-    this.libroService.obtenerLibro(id).subscribe(libro => {
+    this.libroService.obtenerLibro(id).subscribe((libro: LibroCrea) => {  // Ensure libro is of type LibroCrea
       if (!libro) {
         alert("Libro no encontrado.");
         return;
@@ -95,20 +100,21 @@ export class EditarLibroComponent implements OnInit {
       this.libroForm.patchValue({
         titulo: libro.titulo,
         resumen: libro.resumen,
-        anioPublicacion: libro.anioPublicacion,
+        anioPublicacion: libro.anioPublicacion, // Already string (YYYY-MM-DD)
         precio: libro.precio,
         ISBN: libro.ISBN,
         editorial: libro.editorial,
         imagen: libro.imagen,
         idioma: libro.idioma,
         numPaginas: libro.numPaginas,
-        autor: { id: libro.autor?.id || '' },  // ✅ Asegura que siempre haya un valor
-        categoria: { id: libro.categoria?.id || '' }
+        autor: { id: libro.autor?.id || '' }, // Ensure autor follows the Autor interface
+        categoria: { id: libro.categoria?.id || '' }// Ensure categoria follows the Categoria interface
       });
     }, error => {
       alert('Hubo un problema al cargar los datos del libro.');
     });
   }
+
 
   guardarLibro(): void {
     if (this.libroForm.invalid) {
@@ -172,15 +178,30 @@ export class EditarLibroComponent implements OnInit {
     this.libroForm.patchValue({
       titulo: libro.titulo,
       resumen: libro.resumen,
-      anioPublicacion: this.fechaFormateada(libro.anioPublicacion),
+      anioPublicacion: libro.anioPublicacion,
       precio: libro.precio,
       ISBN: libro.ISBN,
       editorial: libro.editorial,
       imagen: libro.imagen,
       idioma: libro.idioma,
       numPaginas: libro.numPaginas,
-      autor: { id: libro.autor?.id },
-      categoria: { id: libro.categoria?.id }
+      autor: { id: libro.autor?.id || '' },  // ✅ Store only the ID
+      categoria: { id: libro.categoria?.id || '' } // ✅ Store only the ID
+    });
+  }
+
+  guardarCambios(): void {
+    const libroActualizado = this.libroForm.value;
+
+    this.libroService.actualizarLibro(libroActualizado.id, {
+      ...libroActualizado,
+      anioPublicacion: libroActualizado.anioPublicacion, // Keep as string (YYYY-MM-DD)
+      autor: { id: libroActualizado.autor.id },  // ✅ Use ID directly
+      categoria: { id: libroActualizado.categoria.id } // ✅ Use ID directly
+    }).subscribe(() => {
+      alert('Libro actualizado con éxito');
+    }, error => {
+      alert('Error al actualizar el libro.');
     });
   }
 }
