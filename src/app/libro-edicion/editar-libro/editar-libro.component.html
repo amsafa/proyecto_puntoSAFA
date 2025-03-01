@@ -31,7 +31,8 @@
 
         <!-- Formulario -->
         <div class="md:w-2/3 w-full">
-          <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">
+          <form [formGroup]="libroForm">
+<!--            <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">-->
             <!-- Título -->
             <div>
               <label for="titulo" class="block text-sm font-medium text-gray-700">Título</label>
@@ -162,7 +163,7 @@
 
             <!-- Botón Eliminar (solo visible cuando hay un libro cargado, es decir, en modo edición) -->
             <div class="mt-6" *ngIf="isEditMode">
-              <button type="button" (click)="eliminarLibro()"
+              <button type="button"
                       class="w-full bg-red-500 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-red-600 transition duration-300">
                 Eliminar
               </button>

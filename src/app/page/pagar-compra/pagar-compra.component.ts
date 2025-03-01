@@ -32,8 +32,6 @@ export class PagarCompraComponent implements OnInit{
   paymentForm!: FormGroup;
 
 
-
-
   constructor(private carritoService:CarritoService, private fb:FormBuilder, private router:Router) {
   }
 
