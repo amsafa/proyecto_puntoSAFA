@@ -60,15 +60,16 @@
         <span class="text-2xl font-bold text-gray-900">{{ libro?.precio | currency: '€' }}</span>
       </div>
 
-      <div class="mt-6 flex items-center gap-x-2">
-        <button (click)="decreaseQuantity()" class="bg-customGreen text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300">-</button>
-        <input id="cantidad" type="number" [(ngModel)]="quantity" class="w-16 text-center border border-gray-300 rounded-md">
-        <button (click)="increaseQuantity()" class="bg-customAzulito text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300">+</button>
-      </div>
 
-      <button (click)="addToCart()" class="w-full mt-6 bg-yellow-600 text-white py-3 rounded-lg hover:bg-gray-400 transition duration-300">
+
+      <button
+        (click)="addToCart(libro)"
+        [disabled]="!libro || quantity < 1"
+        class="w-full mt-6 bg-yellow-600 text-white py-3 rounded-lg hover:bg-gray-400 transition duration-300"
+      >
         Agregar al carrito
       </button>
+
     </div>
   </div>
 

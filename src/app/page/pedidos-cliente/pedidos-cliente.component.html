@@ -77,10 +77,10 @@
                 </div>
                 <div class="grid grid-cols-5">
                   <div class="col-span-5 lg:col-span-1 flex items-center max-lg:mt-3">
-                    <p class="font-medium text-sm leading-7 text-black">Precio: <span class="text-indigo-600">{{ linea.precio_unitario | currency: 'EUR' }}</span></p>
+                    <p class="font-medium text-xl leading-7 text-black">Precio/unidad: <span class="text-customTeal">{{ linea.precio_unitario | currency: 'EUR' }}</span></p>
                   </div>
                   <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3">
-                    <p class="font-medium text-sm leading-6 whitespace-nowrap py-0.5 px-3 rounded-full"
+                    <p class="font-medium text-2xl leading-6 whitespace-nowrap py-0.5 px-3 rounded-full"
                        [ngClass]="{
                          'bg-emerald-50 text-emerald-600': pedido.estado === 'entregado',
                          'bg-yellow-50 text-yellow-600': pedido.estado === 'enviado',
@@ -90,7 +90,7 @@
                     </p>
                   </div>
                   <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3">
-                    <p class="font-medium text-base whitespace-nowrap leading-7 text-emerald-500">{{ pedido.direccion_entrega }}</p>
+                    <p class="font-medium text-xl whitespace-nowrap leading-7 text-custom-blue">{{ pedido.direccion_entrega }}</p>
                   </div>
                 </div>
               </div>
@@ -99,7 +99,7 @@
         </div>
 
         <div class="w-full border-t border-gray-200 px-6 flex flex-col lg:flex-row items-center justify-between">
-          <p class="font-semibold text-lg text-black py-6">Importe total: <span class="text-indigo-600">{{ pedido.total | currency: 'EUR' }}</span></p>
+          <p class="font-semibold text-lg text-black py-6">Importe total: <span class="text-customTeal">{{ pedido.total | currency: 'EUR' }}</span></p>
         </div>
       </div>
     </div>

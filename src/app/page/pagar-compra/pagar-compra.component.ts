@@ -14,8 +14,7 @@ import {Router, RouterLink} from '@angular/router';
     CurrencyPipe,
     FormsModule,
     NgIf,
-    ReactiveFormsModule,
-    RouterLink
+    ReactiveFormsModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   templateUrl: './pagar-compra.component.html',
