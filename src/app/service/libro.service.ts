@@ -78,14 +78,14 @@ export class LibroService {
   // Método para crear un libro
 
 
-  crearLibro(libro: LibroCrea): Observable<Libro> {
-    return this.http.post<Libro>(`${this.apiUrl}/guardar`, libro);
+  crearLibro(libro: LibroCrea): Observable<LibroCrea> {
+    return this.http.post<LibroCrea>(`${this.apiUrl}/guardar`, libro);
   }
 
 
 // Método para editar un libro
-  actualizarLibro(id: number, libro: LibroCrea): Observable<Libro> {
-    return this.http.put<Libro>(`${this.apiUrl}/actualizar/${id}`, libro, {
+  actualizarLibro(id: number, libro: LibroCrea): Observable<LibroCrea> {
+    return this.http.put<LibroCrea>(`${this.apiUrl}/actualizar/${id}`, libro, {
     });
   }
 

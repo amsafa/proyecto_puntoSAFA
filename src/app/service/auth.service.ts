@@ -29,11 +29,17 @@ export class AuthService {
 
   // Iniciar sesión
   async login(credentials: Login): Promise<void> {
+    localStorage.removeItem('token'); // Limpiar token anterior
     try {
       const response = await lastValueFrom(
         this.http.post<{ token: string }>(`${this.apiUrl}/api/login_check`, credentials)
       );
-      if (!response.token) throw new Error("Token no recibido");
+
+      if (!response.token) {
+        throw new Error("❌ Token no recibido en la respuesta del servidor.");
+      }
+
+      console.log("✅ Token recibido:", response.token);
 
       localStorage.setItem('token', response.token);
       this.authState.next(true);
@@ -70,11 +76,10 @@ export class AuthService {
       //this.http.get<RegistroCliente>('api/api/cliente/auth/user', { headers })  // alba
       //this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers })  // pablo
 
-
     ).then(userData => {
       this.userData.next(userData);
       localStorage.setItem('userData', JSON.stringify(userData));  // 🔹 Guardar en localStorage
-      console.log(userData);
+     // console.log(userData);
       return userData;
     }).catch(err => {
       console.error("❌ Error al obtener datos del usuario:", err);
@@ -96,8 +101,6 @@ export class AuthService {
     });
   }
 
-
-
   getUserData(): Observable<RegistroCliente | null> {
     return this.userData.asObservable();
   }
@@ -118,7 +121,14 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     this.authState.next(false);
-    this.router.navigate(['login']).then(() => this.actualizar.triggerRefreshHeader());
+    this.router.navigate(['login']).then(() => {
+      Swal.fire({
+        title: 'Sesión cerrada correctamente',
+        text: 'Se ha cerrado sesión correctamente. Nos vemos pronto.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => this.actualizar.triggerRefreshHeader());
+    });
   }
 
   isLoggedIn(): boolean {
