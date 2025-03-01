@@ -84,7 +84,8 @@ export class LibroService {
 
 // Método para editar un libro
   actualizarLibro(id: number, libro: LibroCrea): Observable<LibroCrea> {
-    return this.http.put<LibroCrea>(`${this.apiUrl}/actualizar/${id}`, libro, {
+    return this.http.put<LibroCrea>(`${this.apiUrl}/editar/${id}`, libro, {
+      headers: { 'Content-Type': 'application/json' } // ✅ Ensure JSON format
     });
   }
 
@@ -108,13 +109,6 @@ export class LibroService {
   }
 
 
-  obtenerAutores(): Observable<Autor[]> {
-  return this.http.get<Autor[]>(`${this.apiUrl}/all`);
-}
 
-  obtenerCategorias():Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(`${this.apiUrl}/all`);
-
-  }
 
 }

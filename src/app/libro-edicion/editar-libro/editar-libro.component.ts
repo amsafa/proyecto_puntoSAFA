@@ -47,6 +47,7 @@ export class EditarLibroComponent implements OnInit {
 
   ngOnInit() {
     this.libroForm = this.fb.group({
+      id: [null],
       titulo: ['', Validators.required],
       resumen: ['', Validators.required],
       anioPublicacion: ['', Validators.required],
@@ -69,15 +70,6 @@ export class EditarLibroComponent implements OnInit {
     if (this.isEditMode && this.libroId) {
       this.cargarLibro(this.libroId);
     }
-
-    this.libroService.obtenerAutores().subscribe(autores => {
-      this.autores = autores;
-    });
-
-    this.libroService.obtenerCategorias().subscribe(categorias => {
-      this.categorias = categorias;
-    });
-
     this.tituloControl.valueChanges.pipe(
       debounceTime(300),
       switchMap(value => value ? this.libroService.buscarLibroPorTitulo(value) : of([]))
@@ -173,7 +165,9 @@ export class EditarLibroComponent implements OnInit {
 
 
   onLibroSeleccionado(libro: LibroCrea): void {
+    console.log("Libro seleccionado:", libro);
     this.libroForm.patchValue({
+      id: libro.id ?? null,
       titulo: libro.titulo,
       resumen: libro.resumen,
       anioPublicacion: libro.anioPublicacion ? libro.anioPublicacion.split('T')[0] : '', // ✅ Remove time + timezone
@@ -186,19 +180,35 @@ export class EditarLibroComponent implements OnInit {
       autor: libro.autor ? `${libro.autor.nombre} ${libro.autor.apellidos}` : '', // ✅ Store full name
       categoria: libro.categoria ? libro.categoria.nombre : '' // ✅ Store category name
     });
+    console.log("ID almacenado en el formulario:", this.libroForm.get('id')?.value);
   }
 
   guardarCambios(): void {
     const libroActualizado = this.libroForm.value;
+    const libroId = this.libroForm.get('id')?.value;
 
-    // Ensure anioPublicacion is stored as a full date
-    const fullDate = libroActualizado.anioPublicacion ? `${libroActualizado.anioPublicacion}-01-01` : null;
+    console.log("ID extraído para actualizar:", libroId);
+
+    if (!libroId) {
+      alert("Error: No se encontró el ID del libro.");
+      return;
+    }
+
+    // Find the author object based on the full name entered
+    const autorSeleccionado = this.autores.find(a =>
+      `${a.nombre} ${a.apellidos}` === libroActualizado.autor
+    );
+
+    // Find the category object based on the name entered
+    const categoriaSeleccionada = this.categorias.find(c =>
+      c.nombre === libroActualizado.categoria
+    );
 
     this.libroService.actualizarLibro(libroActualizado.id, {
       ...libroActualizado,
-      anioPublicacion: fullDate, // ✅ Convert year back to full date
-      autor: this.autores.find(a => `${a.nombre} ${a.apellidos}` === libroActualizado.autor) || null,
-      categoria: this.categorias.find(c => c.nombre === libroActualizado.categoria) || null
+      anioPublicacion: libroActualizado.anioPublicacion, // Keep as string (YYYY-MM-DD)
+      autor: autorSeleccionado ? { id: autorSeleccionado.id } : null,  // ✅ Convert back to autor ID
+      categoria: categoriaSeleccionada ? { id: categoriaSeleccionada.id } : null  // ✅ Convert back to categoria ID
     }).subscribe(() => {
       alert('Libro actualizado con éxito');
     }, error => {
