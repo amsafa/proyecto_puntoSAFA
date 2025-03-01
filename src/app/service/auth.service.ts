@@ -29,73 +29,43 @@ export class AuthService {
 
   // Iniciar sesión
   async login(credentials: Login): Promise<void> {
+    localStorage.removeItem('token'); // Limpiar token anterior
     try {
       const response = await lastValueFrom(
         this.http.post<{ token: string }>(`${this.apiUrl}/api/login_check`, credentials)
       );
-
-      if (!response.token) {
-        throw new Error("❌ Token no recibido en la respuesta del servidor.");
-      }
-
-      console.log("✅ Token recibido:", response.token);
+      if (!response.token) throw new Error("Token no recibido");
 
       localStorage.setItem('token', response.token);
       this.authState.next(true);
 
       const user = await this.fetchUserData();
-      console.log("Datos de usuario obtenidos:", user); // ✅ Depuración
       if (user?.usuario?.rol) {
-        localStorage.setItem('userData', JSON.stringify(user)); // Guardamos los datos de usuario en sessionStorage
-
-        // Redirigir según el rol
-        switch (user.usuario.rol) {
-          case 'admin':
-            console.log("🚀 Redirigiendo a perfil-admin");
-            await this.router.navigate(['/perfil-adm']);
-            break;
-          case 'cliente':
-            console.log("🚀 Redirigiendo a home");
-            await this.router.navigate(['/home']);
-            break;
-          default:
-            console.warn("⚠️ Rol desconocido, redirigiendo a login");
-            await this.router.navigate(['/login']);
-        }
+        localStorage.setItem('userData', JSON.stringify(user));
+        await this.router.navigate([user.usuario.rol === 'admin' ? '/perfil-adm' : '/home']);
       } else {
-        console.warn("⚠️ No se pudo determinar el rol del usuario");
         await this.router.navigate(['/login']);
       }
     } catch (error: any) {
-      console.error("❌ Error en login:", error);
-
-      if (error instanceof HttpErrorResponse && error.status === 401) {
-        console.warn("⚠️ Credenciales incorrectas.");
-        Swal.fire("Error", "Usuario o contraseña incorrectos.", "error");
-      } else {
-        Swal.fire("Error", "No se pudo iniciar sesión. Inténtelo más tarde.", "error");
-      }
-
-      localStorage.removeItem('token'); // Eliminar token inválido si falla
+      Swal.fire("Error", error.status === 401 ? "Usuario o contraseña incorrectos." : "No se pudo iniciar sesión.", "error");
+      localStorage.removeItem('token');
       this.authState.next(false);
     }
   }
 
-   fetchUserData(): Promise<RegistroCliente | null> {
+  fetchUserData(): Promise<RegistroCliente | null> {
     const token = this.getToken();
-
 
     if (!token) {
       console.error("❌ No hay token en sessionStorage");
       return Promise.resolve(null);
     }
 
-    // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
+
     return lastValueFrom(
       //this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })  //lisseth
       this.http.get<RegistroCliente>('api/api/cliente/auth/user', { headers })  // alba
@@ -104,8 +74,9 @@ export class AuthService {
 
     ).then(userData => {
       this.userData.next(userData);
-      console.log(userData)
-      return userData; // Devuelve el usuario con su rol
+      localStorage.setItem('userData', JSON.stringify(userData));  // 🔹 Guardar en localStorage
+      console.log(userData);
+      return userData;
     }).catch(err => {
       console.error("❌ Error al obtener datos del usuario:", err);
 
@@ -125,6 +96,8 @@ export class AuthService {
       return null;
     });
   }
+
+
 
   getUserData(): Observable<RegistroCliente | null> {
     return this.userData.asObservable();
@@ -146,14 +119,7 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     this.authState.next(false);
-    this.router.navigate(['login']).then(() => {
-      Swal.fire({
-        title: 'Sesión cerrada correctamente',
-        text: 'Se ha cerrado sesión correctamente. Nos vemos pronto.',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      }).then(() => this.actualizar.triggerRefreshHeader());
-    });
+    this.router.navigate(['login']).then(() => this.actualizar.triggerRefreshHeader());
   }
 
   isLoggedIn(): boolean {
