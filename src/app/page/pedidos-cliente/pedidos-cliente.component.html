@@ -1,123 +1,108 @@
-<header class="bg-[#F0F4EF] w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto flex items-center p-4 shadow">
-  <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-40 h-auto ml-10">
-  <h2 class="font-bold text-4xl leading-10 text-center tracking-tight text-black sm:text-6xl">Mis pedidos</h2>
-</header>
 
-<div *ngIf="orderStats" class="mt-12 flex justify-center items-center">
-  <div class="flex flex-col md:flex-row md:space-x-4">
-    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:border-gray-900 transition">
-      <svg class="h-8 w-8 text-sky-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />  <line x1="12" y1="22.08" x2="12" y2="12" /></svg>
-      <a href="#">
-        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Pedidos realizados</h5>
-      </a>
-      <p class="mb-3 text-3xl text-gray-500 dark:text-gray-400">{{totales}}</p>
-    </div>
+<section class="min-h-[calc(100vh-8rem)] py-16 px-4 sm:px-6 lg:px-8 relative">
 
-    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:border-gray-900 transition">
-      <svg class="h-8 w-8 text-yellow-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />  <line x1="12" y1="22.08" x2="12" y2="12" /></svg>
-      <a href="#">
-        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Pedidos procesados</h5>
-      </a>
-      <p class="mb-3 text-3xl text-gray-500 dark:text-gray-400">{{procesados}}</p>
-    </div>
+  <header class="bg-[#F0F4EF] w-full max-w-7xl px-4 md:px-5 lg:px-6 mx-auto flex items-center p-4 shadow">
+    <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-40 h-auto ml-10">
+    <h2 class="font-bold text-4xl leading-10 text-center tracking-tight text-black sm:text-6xl">Mis pedidos</h2>
+  </header>
 
-    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:border-gray-900 transition">
-      <svg class="h-8 w-8 text-emerald-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />  <line x1="12" y1="22.08" x2="12" y2="12" /></svg>
-      <a href="#">
-        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Pedidos entregados</h5>
-      </a>
-      <p class="mb-3 text-3xl text-gray-500 dark:text-gray-400">{{entregados}}</p>
-    </div>
+  <!-- Indicador de carga -->
+  <div *ngIf="loading" class="mt-12 flex justify-center items-center">
+  <div class="spinner book"></div></div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="mt-8 text-center">
+    <a routerLink="/login" class="text-red-500 text-xl hover:underline">{{ errorMessage }}</a>
   </div>
-</div>
 
-    <div *ngIf="loading">
-
-    </div>
-
-    <div *ngIf="errorMessage" class="mt-8"><a routerLink="/login">{{ errorMessage }}</a></div>
-    <div *ngFor="let pedido of pedidos" class="border-4 border-custom-blue mt-20 main-box rounded-xl pt-6 max-w-xl max-lg:mx-auto lg:max-w-full">
-      <div *ngFor="let linea of pedido.lineaPedidos">
-<!--              <pre>{{ pedido | json }}</pre>-->
-
-        <div
-        class="flex flex-col lg:flex-row lg:items-center justify-between px-6 pb-6 border-b border-gray-200">
-<!--        <div class="data">-->
-<!--          <p class="font-semibold text-base leading-7 text-black mt-4">Pedido: <span class="text-gray-400 font-medium">-->
-<!--                            {{pedido.codigo}}</span></p>-->
-
-<!--        </div>-->
-          <div class="data">
-            <p class="font-semibold text-base leading-7 text-black mt-4">Fecha del pedido: <span class="text-gray-400 font-medium">
-                            {{pedido.fecha | date: 'dd/MM/yyyy'}}</span></p>
-
-          </div>
+  <!-- Estadísticas de pedidos -->
+  <div *ngIf="orderStats && !loading" class="mt-12 flex justify-center items-center">
+    <div class="flex flex-col md:flex-row md:space-x-4">
+      <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-transform transform hover:scale-105">
+        <svg class="h-8 w-8 text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+          <line x1="12" y1="22.08" x2="12" y2="12" />
+        </svg>
+        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900">Pedidos realizados</h5>
+        <p class="mb-3 text-3xl text-gray-500">{{ totales }}</p>
       </div>
 
+      <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-transform transform hover:scale-105">
+        <svg class="h-8 w-8 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+          <line x1="12" y1="22.08" x2="12" y2="12" />
+        </svg>
+        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900">Pedidos procesados</h5>
+        <p class="mb-3 text-3xl text-gray-500">{{ procesados }}</p>
+      </div>
 
+      <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-transform transform hover:scale-105">
+        <svg class="h-8 w-8 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+          <line x1="12" y1="22.08" x2="12" y2="12" />
+        </svg>
+        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900">Pedidos entregados</h5>
+        <p class="mb-3 text-3xl text-gray-500">{{ entregados }}</p>
+      </div>
+    </div>
+  </div>
 
-      <div class="w-full px-3 min-[400px]:px-6">
-        <div class="flex flex-col lg:flex-row items-center py-6 border-b border-gray-200 gap-6 w-full">
-          <div class="img-box max-lg:w-full">
-            <img alt="Imagen del libro"
-                 class="aspect-square w-full lg:max-w-[140px] rounded-xl object-cover" [src]="linea.libro.imagen">
+  <!-- Lista de pedidos -->
+  <div *ngIf="!loading && pedidos.length > 0" class="mt-12">
+    <div *ngFor="let pedido of pedidos" class="border-4 border-custom-blue mt-20 main-box rounded-xl pt-6 max-w-xl mx-auto lg:max-w-full">
+      <div *ngFor="let linea of pedido.lineaPedidos">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between px-6 pb-6 border-b border-gray-200">
+          <div class="data">
+            <p class="font-semibold text-base leading-7 text-black mt-4">
+              Fecha del pedido: <span class="text-gray-400 font-medium">{{ pedido.fecha | date: 'dd/MM/yyyy' }}</span>
+            </p>
           </div>
-          <div class="flex flex-row items-center w-full ">
-            <div class="grid grid-cols-1 lg:grid-cols-2 w-full">
-              <div class="flex items-center">
-                <div class="">
-                  <h2 class="font-semibold text-xl leading-8 text-black mb-3">
-                    {{linea.libro.titulo}}</h2>
-                  <div class="flex items-center ">
-                    <p class="font-medium text-base leading-7 text-black ">Cantidad: <span
-                      class="text-gray-500">{{linea.cantidad}}</span></p>
-                  </div>
-                </div>
+        </div>
 
-              </div>
-              <div class="grid grid-cols-5">
-                <div class="col-span-5 lg:col-span-1 flex items-center max-lg:mt-3">
-                  <div class="flex gap-3 lg:block">
-                    <p class="font-medium text-sm leading-7 text-black">Precio</p>
-                    <p class="lg:mt-4 font-medium text-sm leading-7 text-indigo-600">  {{linea.precio_unitario | currency: 'EUR'}}</p>
+        <div class="w-full px-3 min-[400px]:px-6">
+          <div class="flex flex-col lg:flex-row items-center py-6 border-b border-gray-200 gap-6 w-full">
+            <div class="img-box max-lg:w-full">
+              <img alt="Imagen del libro" class="aspect-square w-full lg:max-w-[140px] rounded-xl object-cover" [src]="linea.libro.imagen">
+            </div>
+            <div class="flex flex-row items-center w-full">
+              <div class="grid grid-cols-1 lg:grid-cols-2 w-full">
+                <div class="flex items-center">
+                  <div>
+                    <h2 class="font-semibold text-xl leading-8 text-black mb-3">{{ linea.libro.titulo }}</h2>
+                    <p class="font-medium text-base leading-7 text-black">Cantidad: <span class="text-gray-500">{{ linea.cantidad }}</span></p>
                   </div>
                 </div>
-                <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3 ">
-                  <div class="flex gap-3 lg:block">
-                    <p class="font-medium text-sm leading-7 text-black">Estado
+                <div class="grid grid-cols-5">
+                  <div class="col-span-5 lg:col-span-1 flex items-center max-lg:mt-3">
+                    <p class="font-medium text-sm leading-7 text-black">Precio: <span class="text-indigo-600">{{ linea.precio_unitario | currency: 'EUR' }}</span></p>
+                  </div>
+                  <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3">
+                    <p class="font-medium text-sm leading-6 whitespace-nowrap py-0.5 px-3 rounded-full"
+                       [ngClass]="{
+                         'bg-emerald-50 text-emerald-600': pedido.estado === 'entregado',
+                         'bg-yellow-50 text-yellow-600': pedido.estado === 'enviado',
+                         'bg-red-50 text-red-600': pedido.estado === 'procesado'
+                       }">
+                      {{ pedido.estado }}
                     </p>
-                    <p
-                      class="font-medium text-sm leading-6 whitespace-nowrap py-0.5 px-3 rounded-full lg:mt-3"
-                      [ngClass]="{
-      'bg-emerald-50 text-emerald-600': pedido.estado === 'entregado',
-      'bg-yellow-50 text-yellow-600': pedido.estado === 'enviado',
-      'bg-red-50 text-red-600': pedido.estado === 'procesado'
-    }"
-                    >
-                      {{pedido.estado}}</p>
                   </div>
-
-                </div>
-                <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3">
-                  <div class="flex gap-3 lg:block">
-                    <p class="font-medium text-sm whitespace-nowrap leading-6 text-black">
-                      Dirección de entrega</p>
-                    <p class="font-medium text-base whitespace-nowrap leading-7 lg:mt-3 text-emerald-500">
-                      {{pedido.direccion_entrega}}</p>
+                  <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3">
+                    <p class="font-medium text-base whitespace-nowrap leading-7 text-emerald-500">{{ pedido.direccion_entrega }}</p>
                   </div>
-
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-      </div>
-      <div class="w-full border-t border-gray-200 px-6 flex flex-col lg:flex-row items-center justify-between ">
-        <div class="flex flex-col sm:flex-row items-center max-lg:border-b border-gray-200"></div>
-        <p class="font-semibold text-lg text-black py-6">Importe total: <span class="text-indigo-600"> {{pedido.total | currency: 'EUR'}}</span></p>
+        <div class="w-full border-t border-gray-200 px-6 flex flex-col lg:flex-row items-center justify-between">
+          <p class="font-semibold text-lg text-black py-6">Importe total: <span class="text-indigo-600">{{ pedido.total | currency: 'EUR' }}</span></p>
+        </div>
       </div>
     </div>
   </div>
-<!--  </div>-->
-<!--</section>-->
+
+</section>
