@@ -1,33 +1,25 @@
-<section class="py-2 bg-customBlanco">
+<section class="py-2" style="background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('../../../../assets/fondo_puntosafa2.jpeg'); background-size: cover; background-position: center 18%;">
   <div class="container mx-auto">
     <!-- Título de la sección -->
-    <h2 class="text-xl font-bold text-center text-blue-900 mb-4">CATEGORÍAS</h2>
-
+    <h2 class="text-xl font-bold text-center text-blue-900 mb-4 bg-gray-300 bg-opacity-40">CATEGORÍAS</h2>
 
     <!-- Contenedor de Categorías -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <!-- Bloque 1: Ciencia y Divulgación -->
-      <div class="bg-blue-50 p-3 rounded shadow-sm">
+      <div class="bg-blue-50 p-3 rounded shadow-sm flex flex-col justify-between">
         <h3 class="text-lg font-bold text-blue-800 text-center">{{ category1Name }}</h3>
         <app-book-list [categoryId]="category1Id"></app-book-list>
         <div class="flex justify-center mt-6">
-
-
           <button class="btn-primary" (click)="redirectToCatalog(category1Id)"> Abrir</button>
         </div>
       </div>
 
-
       <!-- Bloque 2: Literatura y Clásicos -->
-      <div class="bg-blue-50 p-3 rounded shadow-sm">
+      <div class="bg-blue-50 p-3 rounded shadow-sm flex flex-col justify-between">
         <h3 class="text-lg font-bold text-blue-800 text-center">{{ category3Name }}</h3>
         <app-book-list [categoryId]="category3Id"></app-book-list>
         <div class="flex justify-center mt-6">
-          <div class="flex justify-center mt-6">
-
-
-            <button class="btn-primary" (click)="redirectToCatalog(category3Id)"> Abrir</button>
-          </div>
+          <button class="btn-primary" (click)="redirectToCatalog(category3Id)"> Abrir</button>
         </div>
       </div>
     </div>

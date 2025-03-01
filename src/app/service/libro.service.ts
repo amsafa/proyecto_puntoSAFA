@@ -19,7 +19,7 @@ export class LibroService {
 
 
   getBooks(page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.apiUrl}/libro/all?page=${page}&limit=${limit}`).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/all?page=${page}&limit=${limit}`).pipe(
       map(libros =>
         libros.map(libro => ({
           ...libro,
@@ -74,7 +74,6 @@ export class LibroService {
 
 
 
-
   // Método para crear un libro
 
 
@@ -84,8 +83,8 @@ export class LibroService {
 
 
 // Método para editar un libro
-  actualizarLibro(id: number, libro: LibroCrea): Observable<Libro> {
-    return this.http.put<Libro>(`${this.apiUrl}/actualizar/${id}`, libro, {
+  actualizarLibro(id: number, libro: LibroCrea): Observable<LibroCrea> {
+    return this.http.put<LibroCrea>(`${this.apiUrl}/actualizar/${id}`, libro, {
     });
   }
 
