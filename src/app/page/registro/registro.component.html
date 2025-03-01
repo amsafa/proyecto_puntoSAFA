@@ -1,10 +1,13 @@
 <div class="min-h-screen flex flex-col">
-  <section class="bg-customGreen py-2 md:py-3 shadow-gray-500 shadow-sm">
-    <div class="container mx-auto flex flex-col md:flex-row items-center px-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">
-      <div class="mt-10 md:mt-0">
-        <img src="../../../../assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-full max-w-xs mx-auto">
+  <!-- Encabezado -->
+  <section class="bg-customGreen py-4 shadow-md">
+    <div class="container mx-auto flex flex-col md:flex-row items-center px-6 lg:px-8 justify-between">
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <img src="../../../../assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-40 md:w-48 mx-auto">
       </div>
-      <div class="flex items-center justify-center text-center md:text-left max-w-2xl lg:max-w-xl mx-auto">
+      <!-- Título -->
+      <div class="text-center md:text-left max-w-xl mx-auto">
         <h1 class="text-4xl font-extrabold text-blue-900 leading-tight">Registro</h1>
       </div>
     </div>
@@ -95,7 +98,7 @@
           <!-- Contraseña -->
           <div class="relative">
             <i class="fa fa-lock absolute left-3 top-3 text-gray-400"></i>
-            <input id="password" type="password" formControlName="contrasena" required class="w-full pl-10 py-2 border rounded-lg shadow-sm" placeholder="(<6 carac,1 mayú,1 num,1 carc esp)">
+            <input id="password" type="password" formControlName="contrasena" required class="w-full pl-10 py-2 border rounded-lg shadow-sm" placeholder="Contraseña">
             <div *ngIf="registroForm.get('contrasena')?.invalid && registroForm.get('contrasena')?.touched" class="text-red-500 text-sm">
               La contraseña debe tener al menos 6 caracteres, 1 mayúscula, 1  número y un caracter especial.
             </div>
@@ -111,7 +114,7 @@
           </div>
         </div>
         <!-- Botón de registro -->
-        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-teal-700 transition-all" [disabled]="registroForm.invalid">
+        <button type="submit" class="w-full bg-custom-blue text-white py-3 rounded-md font-semibold hover:bg-gray-400 transition-all" [disabled]="registroForm.invalid">
           Registrarme
         </button>
       </form>

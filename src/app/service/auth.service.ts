@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import {BehaviorSubject, lastValueFrom, Observable, throwError} from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { RegistroCliente } from '../interface/RegistroCliente';
@@ -72,8 +72,8 @@ export class AuthService {
     });
 
     return lastValueFrom(
-      this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })  //lisseth
-      //this.http.get<RegistroCliente>('api/api/cliente/auth/user', { headers })  // alba
+      //this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })  //lisseth
+      this.http.get<RegistroCliente>('api/api/cliente/auth/user', { headers })  // alba
       //this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers })  // pablo
 
     ).then(userData => {

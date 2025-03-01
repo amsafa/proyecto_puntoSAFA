@@ -1,16 +1,18 @@
-<section class="py-12 bg-customTeal text-white text-center">
-  <h2 class="text-3xl font-bold mb-8">Los mejores calificados</h2>
+<section class="py-12 bg-custom-blue text-white text-center"  >
+  <h2 class="text-3xl font-bold mb-8 italic" style="text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.7);">
+    LOS MEJORES CALIFICADOS
+  </h2>
   <div *ngIf="libros && libros.length > 0" class="container mx-auto flex flex-col md:flex-row items-end justify-center gap-4 px-4 relative">
     <!-- Podio Base -->
-    <div class="absolute bottom-0 left-1/4 w-1/2 h-24 bg-gray-700 opacity-50 rounded-t-lg"></div>
+    <div class="absolute bottom-0 left-1/4 w-1/2 h-24 bg-customAzulito opacity-50 rounded-t-lg"></div>
 
     <!-- Segundo lugar (izquierda, más alto que el tercer lugar) -->
-    <div class="w-full md:w-1/3 transform transition-all duration-300 hover:scale-105 relative z-10 md:-mb-4"> <!-- Ajustado a md:-mb-4 -->
+    <div class="w-full md:w-1/3 transform transition-all duration-300 hover:scale-105 relative z-10 md:-mb-4 border-gray-400"> <!-- Ajustado a md:-mb-4 -->
       <div class="bg-white rounded-lg shadow-md flex flex-col md:flex-row max-w-lg mx-auto group transition-all duration-300 hover:shadow-xl">
         <div class="md:w-1/2 relative h-64 md:h-auto overflow-hidden group">
           <img [src]="libros[1].imagen" alt="{{ libros[1].titulo }}" class="object-cover w-full h-full md:rounded-l-lg md:rounded-t-none">
           <div class="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <button (click)="verDetallesLibro(libros[1].id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-blue-700 transition shadow-lg">
+            <button (click)="verDetallesLibro(libros[1].id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">
               Ver detalles
             </button>
           </div>
@@ -32,7 +34,7 @@
         <div class="md:w-1/2 relative h-96 md:h-auto overflow-hidden group">
           <img [src]="libros[0].imagen" alt="{{ libros[0].titulo }}" class="object-cover w-full h-full md:rounded-l-lg md:rounded-t-none">
           <div class="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <button (click)="verDetallesLibro(libros[0].id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-blue-700 transition shadow-lg">
+            <button (click)="verDetallesLibro(libros[0].id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">
               Ver detalles
             </button>
           </div>

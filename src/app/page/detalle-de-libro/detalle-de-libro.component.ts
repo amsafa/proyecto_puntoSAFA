@@ -1,19 +1,19 @@
-import {ChangeDetectorRef, Component, Input} from '@angular/core';
-import {Libro} from '../../interface/libro';
-import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {LibroService} from '../../service/libro.service';
-import {ActivatedRoute} from '@angular/router';
-import {Resena} from '../../interface/resena';
-import {ResenaService} from '../../service/resena.service';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { Libro } from '../../interface/libro';
+import { FormsModule } from '@angular/forms';
+import { LibroService } from '../../service/libro.service';
+import { Resena } from '../../interface/resena';
+import { ResenaService } from '../../service/resena.service';
 import { AuthService } from '../../service/auth.service';
-import { CarritoService } from '../../service/carrito.service';
-import {HttpErrorResponse} from '@angular/common/http';
-
+import { CurrencyPipe, NgForOf, NgIf } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
+import {CarritoService} from '../../service/carrito.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-detalle-de-libro',
-  imports: [FormsModule, NgForOf, NgIf, CurrencyPipe],
+  imports: [FormsModule, NgIf, CurrencyPipe, NgForOf],
   standalone: true,
   templateUrl: './detalle-de-libro.component.html',
   styleUrl: './detalle-de-libro.component.css',
@@ -34,31 +34,29 @@ export class DetalleDeLibroComponent {
   mostrarNotificacionError: boolean = false; // Controla si se muestra la notificación de error
   mensajeNotificacion: string = ''; // Mensaje de la notificación
 
-
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private libroService: LibroService,
     private resenaService: ResenaService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef, // Agregado
-    private carritoService:CarritoService) {
+    private cdr: ChangeDetectorRef,
+    private carritoService: CarritoService
+  ) {
     this.libroId = Number(this.route.snapshot.paramMap.get('id')); // Obtener el ID del libro desde la ruta
   }
 
-
-  // Método para inicializar el componente
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!isNaN(id)) {
       this.obtenerLibro(id);
       this.obtenerResenas(id);
       this.obtenerMediaCalificacion(id);
-      console.log('ID del libro:', id);
+
+      // Verificar si el usuario está logueado
+      this.usuarioLogueado = this.authService.isLoggedIn();
     }
-    this.usuarioLogueado = this.authService.isLoggedIn();
   }
-
-
 
   /**
    * Obtener las reseñas de un libro.
@@ -67,18 +65,23 @@ export class DetalleDeLibroComponent {
     this.resenaService.obtenerResenasPorLibro(id).subscribe({
       next: (data) => {
         console.log('Datos recibidos del servicio:', data);
+
         if (data && Array.isArray(data)) {
-          this.resenas = data;
+          // Ordenar las reseñas por fecha (la más reciente primero)
+          this.resenas = data.sort((a, b) => {
+            const fechaA = new Date(a.fecha).getTime(); // Convertir a timestamp
+            const fechaB = new Date(b.fecha).getTime(); // Convertir a timestamp
+            return fechaB - fechaA; // Orden descendente (más reciente primero)
+          });
         } else {
           this.resenas = [];
         }
+
         console.log('Resenas después de la asignación:', this.resenas);
         this.cdr.detectChanges();
       },
-      error: (error) => {
+      error: (error: HttpErrorResponse) => {
         console.error('Error al obtener las reseñas:', error);
-        this.resenas = [];
-        this.cdr.detectChanges();
       },
     });
   }
@@ -117,29 +120,27 @@ export class DetalleDeLibroComponent {
     this.calificacionSeleccionada = calificacion;
   }
 
-  // Método para mostrar una notificación
+  /**
+   * Mostrar una notificación con SweetAlert2.
+   * @param mensaje Mensaje a mostrar en la notificación.
+   * @param tipo Tipo de notificación: 'exito' o 'error'.
+   */
   mostrarNotificacion(mensaje: string, tipo: 'exito' | 'error'): void {
-    this.mensajeNotificacion = mensaje;
-
-    if (tipo === 'exito') {
-      this.mostrarNotificacionExito = true;
-    } else {
-      this.mostrarNotificacionError = true;
-    }
-
-    // Ocultar la notificación después de 3 segundos
-    setTimeout(() => {
-      this.mostrarNotificacionExito = false;
-      this.mostrarNotificacionError = false;
-    }, 6000);
+    Swal.fire({
+      icon: tipo === 'exito' ? 'success' : 'error',
+      title: tipo === 'exito' ? 'Éxito' : 'Error',
+      text: mensaje,
+      showConfirmButton: false,
+      timer: 3000, // Ocultar automáticamente después de 3 segundos
+    });
   }
 
   /**
    * Enviar una nueva reseña.
    * La verificación de compra se realiza automáticamente en el backend.
    */
-  // Método enviarResena
   enviarResena(): void {
+    // Validar que la calificación y el comentario estén completos
     if (this.calificacionSeleccionada > 0 && this.comentario.trim()) {
       const nuevaResena = {
         libro: this.libro?.id,
@@ -149,29 +150,51 @@ export class DetalleDeLibroComponent {
 
       this.resenaService.enviarResena(nuevaResena).subscribe({
         next: (response) => {
-          this.mostrarErrorCompra = false; // Ocultar el mensaje de error
-          this.mostrarNotificacion('Reseña enviada con éxito', 'exito'); // Mostrar notificación de éxito
-          this.comentario = ''; // Limpiar el campo de comentario
-          this.calificacionSeleccionada = 0; // Reiniciar la calificación
+          // Éxito: Ocultar mensajes de error y mostrar notificación de éxito
+          this.mostrarErrorCompra = false;
+          this.mostrarNotificacion('Reseña enviada con éxito', 'exito');
+          this.limpiarFormulario();
           this.obtenerResenas(this.libroId); // Actualizar la lista de reseñas
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error al enviar la reseña:', error);
-          if (error.status === 403) {
-            this.mostrarErrorCompra = true; // Mostrar el mensaje de error
-            this.mostrarNotificacion('Para poder valorar este libro, tienes que comprarlo.', 'error'); // Mostrar notificación de error
-          } else {
-            this.mostrarNotificacion('Error al enviar la reseña', 'error'); // Mostrar notificación de error
-          }
-          if (error.status === 401) {
-            this.mostrarNotificacion('Debes de tener el libro comprado y entregado para poder escribir una reseña.', 'error'); // Mostrar notificación de error
-          }
+          console.error('Error completo:', error);
+          console.log('Tipo de error:', typeof error);
+          console.log('Propiedades del error:', Object.keys(error));
 
+          // Verificar si el error es una instancia de HttpErrorResponse
+          console.log('El error es de tipo HttpErrorResponse');
+          console.error('Error al enviar la reseña:', {
+            status: error.status,
+            statusText: error.statusText,
+            message: error.message,
+            error: error.error, // Detalles adicionales del error
+          });
+          const status = Number(error.status);
+          if (status === 403) {
+            this.mostrarErrorCompra = true;
+            this.mostrarNotificacion('Para poder valorar este libro, tienes que comprarlo.', 'error');
+          } else if (status === 401) {
+            this.mostrarNotificacion('Debes iniciar sesión para escribir una reseña.', 'error');
+          } else if (status === 409) {
+            this.mostrarNotificacion('Ya has escrito una reseña para este libro.', 'error');
+          } else {
+            this.mostrarNotificacion('Error al enviar la reseña. Por favor, inténtalo de nuevo.', 'error');
+          }
         },
       });
     } else {
-      this.mostrarNotificacion('Por favor, selecciona una calificación y escribe un comentario.', 'error'); // Mostrar notificación de error
+      this.mostrarNotificacion('Por favor, selecciona una calificación y escribe un comentario.', 'error');
     }
+    this.limpiarFormulario();
+
+  }
+
+  /**
+   * Limpiar el formulario después de enviar la reseña.
+   */
+  limpiarFormulario(): void {
+    this.comentario = '';
+    this.calificacionSeleccionada = 0;
   }
 
   /**
@@ -189,7 +212,9 @@ export class DetalleDeLibroComponent {
     });
   }
 
-  // Método para disminuir la cantidad
+  /**
+   * Disminuir la cantidad de libros a comprar.
+   */
   decreaseQuantity(): void {
     if (this.quantity > 1) {
       this.quantity--;
@@ -197,31 +222,39 @@ export class DetalleDeLibroComponent {
     }
   }
 
-  // Método para aumentar la cantidad
-  increaseQuantity(): void {
-    this.quantity++;
+  /**
+   * Aumentar la cantidad de libros a comprar.
+   */
+  increaseQuantity(increment: number = 1): void {
+    this.quantity += increment;
     console.log('Cantidad:', this.quantity);
   }
 
   /**
    * Agregar un libro al carrito.
    */
-  addToCart(): void {
-    if (this.libro) {
-      console.log('Libro agregado al carrito:', {
-        ...this.libro,
-        quantity: this.quantity,
-      });
+  addToCart(libro: Libro | undefined) {
+    if (!this.usuarioLogueado) {
+      this.mostrarNotificacion('Debes iniciar sesión para agregar libros al carrito', 'error');
+      this.router.navigate(['/login']);
+      return;
     }
-    this.carritoService.addToCart(this.libro, this.quantity);
-
+    if (libro && this.quantity > 0) {
+      this.carritoService.addToCart(libro, this.quantity);
+    } else {
+      this.mostrarNotificacion('Error al agregar el libro al carrito', 'error');
+    }
   }
 
+  validateQuantity(): void {
+    if (this.quantity < 1 || isNaN(this.quantity)) {
+      this.quantity = 1;
+    }
+  }
 
-
-
-  protected readonly isNaN = isNaN;
-
+  /**
+   * Actualizar la visualización de las estrellas según la calificación media.
+   */
   actualizarEstrellas(): void {
     if (this.media_calificacion !== null) {
       const rating = this.media_calificacion;
