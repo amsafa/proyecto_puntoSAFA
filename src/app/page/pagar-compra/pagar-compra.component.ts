@@ -5,7 +5,7 @@ import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Pedido} from '../../interface/pedido';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Cliente} from '../../interface/cliente';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-pagar-compra',
@@ -14,7 +14,8 @@ import {Router} from '@angular/router';
     CurrencyPipe,
     FormsModule,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   templateUrl: './pagar-compra.component.html',
@@ -177,5 +178,7 @@ export class PagarCompraComponent implements OnInit{
   closeModal() {
     this.showModal = false;
   }
+
+
 
 }
