@@ -42,12 +42,14 @@ export class CatalogoComponent  implements OnInit {
   filtersApplied: boolean = false;
   totalResults: number = 0;
   priceRanges = [
-    { label: "Menos de 5 euros", value: "menor5" },
-    { label: "De 5 a 10 euros", value: "5-10" },
-    { label: "De 10 a 15 euros", value: "10-15" },
-    { label: "De 15 a 40 euros", value: "15-40" },
-    { label: "Más de 40 euros", value: "mayor40" }
+    { label: 'Menos de 5 euros', value: 'menor5' },
+    { label: 'De 5 a 10 euros', value: '5-10' },
+    { label: 'De 10 a 15 euros', value: '10-15' },
+    { label: 'De 15 a 40 euros', value: '15-40' },
+    { label: 'Más de 40 euros', value: 'mayor40' },
+
   ];
+
 
   constructor(private libroService: LibroService,
               private router:Router, private route:ActivatedRoute,
@@ -125,12 +127,8 @@ export class CatalogoComponent  implements OnInit {
   }
 
   filterByPrice(priceRange: string): void {
-    console.log("🎯 Price Filter Changed To:", priceRange);
-    if(this.selectedPriceRanges.includes(priceRange)){
-      this.selectedPriceRanges = this.selectedPriceRanges.filter(p => p !== priceRange);
-    }else{
-      this.selectedPriceRanges.push(priceRange);
-    }
+    console.log("Filtro aplicado:", priceRange);
+    this.selectedPriceRanges = [priceRange]; // Limpiar y aplicar el nuevo filtro
     this.applyFilters();
   }
 
@@ -140,10 +138,11 @@ export class CatalogoComponent  implements OnInit {
   }
 
   applyFilters(page: number = 1, limit: number = 9): void {
-    console.log("🔍 Applying filters:");
-    console.log("Category ID:", this.selectedCategoryId);
-    console.log("Price Range:", this.selectedPriceRanges);
-    this.filtersApplied = !!(this.selectedCategoryId || this.selectedPriceRanges.length > 0); // Check if filters are applied
+    console.log("Aplicar filtros::");
+    console.log("Categorías:", this.selectedCategoryId);
+    console.log("Rango de precios:", this.selectedPriceRanges);
+    this.filtersApplied = !!(this.selectedCategoryId || this.selectedPriceRanges.length > 0);
+
     this.libroService.getFilteredBooks(
       this.selectedCategoryId,
       this.selectedPriceRanges,
@@ -151,7 +150,7 @@ export class CatalogoComponent  implements OnInit {
       limit
     ).subscribe({
       next: (data) => {
-        console.log("✅ Filtered books received:", data);
+        console.log("Filtered books received:", data);
         this.libros = data;
         this.totalResults = data.length;
         this.totalPages = Math.ceil(this.totalResults / limit);
