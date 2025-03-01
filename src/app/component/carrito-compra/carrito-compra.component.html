@@ -1,0 +1,71 @@
+<div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+  <div *ngIf="showCart" class="cart">
+    <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+    <div  class="absolute inset-0 overflow-hidden">
+      <div  class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+
+        <div class="pointer-events-auto w-screen max-w-md">
+          <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+            <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+              <div class="flex items-start justify-between">
+                <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Su cesta</h2>
+                <div class="ml-3 flex h-7 items-center">
+                  <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleCart()">Cerrar</button>
+                </div>
+              </div>
+              <div *ngIf="cartItems.length === 0">Su cesta está vacía.</div>
+
+              <div *ngIf="cartItems.length > 0" class="mt-8">
+                <div *ngFor="let item of cartItems" class="cart-item">
+                  <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
+                    <img [src]="item.imagen" alt="" class="size-full object-cover">
+                  </div>
+                  <div class="ml-4 flex flex-1 flex-col">
+                    <div>
+                      <div class="flex justify-between text-base font-medium text-gray-900">
+                        <h3>
+                          <a href="http://localhost:4200/detalle-libro/{{item.id}}">{{ item.titulo }}</a>
+                        </h3>
+                        <p class="ml-4">{{ item.precio | currency: 'EUR' }}</p>
+                      </div>
+                      <div class="mt-6 flex items-center gap-x-">
+                        <button (click)="decreaseQuantity(item)" class="bg-customGreen text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300">-</button>
+                        <span class="w-16 text-center border border-gray-300 rounded-md">{{ item.cantidad }}</span>
+                        <button (click)="increaseQuantity(item)" class="bg-customAzulito text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300">+</button>
+                      </div>
+                      <div class="flex flex-1 items-end justify-between text-sm">
+
+                        <div class="mt-4 flex items-end justify-between text-sm">
+                          <button (click)="removeItem(item.id)" type="button" class="font-medium text-customTeal hover:text-custom-blue">Eliminar</button>                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+                  <div class="flex justify-between text-base font-medium text-gray-900">
+                    <p>Subtotal:</p>
+                    <p>{{baseTotal.toFixed(2) | currency:'EUR':true}}</p>
+                  </div>
+                  <div class="flex justify-between text-base font-medium text-gray-900 mt-2">
+                    <p>Precio IVA inc.:</p>
+                    <p>{{ totalWithTaxes.toFixed(2) | currency:'EUR':true }}</p>
+                  </div>
+                  <p class="mt-2 text-sm text-gray-500">Costes de envío calculados al pagar.</p>
+                  <div class="mt-6">
+                    <button (click)="pagarPedido()" class="flex items-center justify-center rounded-md border border-transparent bg-custom-blue px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-yellow-600 w-full">Finalizar compra</button>
+                    <!-- Botón "Seguir comprando" -->
+                    <br/>
+                    <button (click)="toggleCart()" class="flex items-center justify-center rounded-md border border-gray-300 bg-customGreen px-6 py-3 text-base font-medium text-gray-700 shadow-xs hover:bg-gray-100 w-full">
+                      Seguir comprando
+                    </button>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

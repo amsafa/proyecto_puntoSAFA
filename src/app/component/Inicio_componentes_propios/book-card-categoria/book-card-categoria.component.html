@@ -1,0 +1,6 @@
+<div class="p-4 bg-white shadow rounded h-64 flex flex-col">
+  <img [src]="book.imagen || 'assets/default-book.jpg'" alt="{{ book.titulo }}" class="w-full h-32 object-contain rounded-md">
+  <h3 class="text-gray-600 text-lg font-bold mt-2 truncate">{{ book.titulo }}</h3>
+  <p class="text-gray-600 truncate">{{ book.autor.nombre }} {{ book.autor.apellidos }}</p>
+  <p class="text-blue-500 font-semibold mt-auto">{{ book.precio | currency: '€'}} </p>
+</div>

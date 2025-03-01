@@ -1,0 +1,73 @@
+<div class="min-h-screen flex flex-col">
+  <!-- Encabezado -->
+  <section class="bg-customGreen py-4 shadow-gray-500 shadow-sm">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <div class="container mx-auto flex flex-col md:flex-row items-center px-4 md:px-6 lg:px-8 lg:gap-x-4 justify-between">
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-40 md:w-48 mx-auto">
+      </div>
+      <!-- Título -->
+      <div class="text-center md:text-left max-w-xl mx-auto">
+        <h1 class="text-4xl font-extrabold text-blue-900 leading-tight">
+          Iniciar sesión
+        </h1>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contenedor Principal -->
+  <main class="flex-grow flex flex-col items-center justify-center bg-gray-50">
+    <div class="bg-white p-12 rounded-xl shadow-xl w-full max-w-lg mx-auto">
+      <h3 class="text-3xl font-semibold text-gray-800 text-center mb-6">
+        Bienvenido de nuevo 👋
+      </h3>
+
+      <!-- Formulario -->
+      <form class="space-y-6" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <!-- Campo Usuario -->
+        <div class="relative">
+          <input id="username" type="text" formControlName="username" required
+                 class="block w-full pl-12 pr-4 rounded-lg border border-gray-300 py-3 text-gray-900 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-500 sm:text-lg"
+                 placeholder="Nombre de usuario">
+          <div class="absolute inset-y-0 left-4 flex items-center text-gray-500">
+            <i class="fa-solid fa-user text-lg"></i>
+          </div>
+        </div>
+
+        <!-- Campo Contraseña -->
+        <div class="relative">
+          <input id="password" type="password" formControlName="password" required
+                 class="block w-full pl-12 pr-4 rounded-lg border border-gray-300 py-3 text-gray-900 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-500 sm:text-lg"
+                 placeholder="Contraseña">
+          <div class="absolute inset-y-0 left-4 flex items-center text-gray-500">
+            <i class="fa-solid fa-lock text-lg"></i>
+          </div>
+        </div>
+
+        <!-- Botón de Inicio -->
+        <button type="submit"
+                class="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-gray-600 transition-all duration-300 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          Iniciar Sesión
+        </button>
+      </form>
+
+      <!-- Enlace a Registro -->
+      <p class="text-center text-lg mt-6 text-gray-700">
+        ¿No tienes cuenta?
+        <a href="/registro" class="text-blue-600 font-bold hover:underline">Regístrate aquí</a>
+      </p>
+
+      <!-- Enlace a Recuperar Contraseña -->
+      <p class="text-center text-lg mt-3 text-gray-700">
+        ¿Olvidaste tu contraseña?
+        <a href="/recuperar-contrasena" class="text-blue-600 font-bold hover:underline">Recupérala aquí</a>
+      </p>
+
+      <!-- Mensaje de error -->
+      <div *ngIf="errorMessage" class="mt-4 p-4 bg-red-100 text-red-800 border border-red-400 rounded-md text-center">
+        {{ errorMessage }}
+      </div>
+    </div>
+  </main>
+</div>

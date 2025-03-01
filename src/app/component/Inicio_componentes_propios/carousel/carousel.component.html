@@ -1,0 +1,34 @@
+
+<section class="py-10 " style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('../../../../assets/fondo_puntosafa2.jpeg'); background-size: cover; background-position:center 45% ;">
+  <div class="container mx-auto relative">
+    <h2 class="text-2xl font-bold text-center text-blue-900 bg-gray-300 bg-opacity-40">EXPLORA NUESTROS LIBROS</h2>
+    <!-- Carrusel -->
+    <div
+      #carousel
+      class="carousel-container flex overflow-hidden space-x-6 mt-6 transition-all duration-300"
+      (mouseenter)="onMouseEnter()"
+      (mouseleave)="onMouseLeave()"
+    >
+      <div *ngFor="let libro of books" class="carousel-item hover:scale-110 min-w-[200px] w-[200px] h-[300px] flex-shrink-0 relative group">
+        <img [src]="libro.imagen" alt="Portada del libro {{ libro.titulo }}" class="w-full h-full object-cover rounded-lg shadow-md">
+
+        <!-- Overlay con información del libro -->
+        <div class="absolute inset-0 bg-black bg-opacity-75 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
+          <h3 class="text-white text-xl font-bold text-center">{{ libro.titulo }}</h3>
+          <p class="text-white text-sm">{{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
+          <p class="text-white text-lg font-semibold">{{ libro.precio }} €</p>
+          <button
+            (click)="verDetallesLibro(libro.id)"
+            class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg"
+          >
+            Ver detalles
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </div>
+</section>

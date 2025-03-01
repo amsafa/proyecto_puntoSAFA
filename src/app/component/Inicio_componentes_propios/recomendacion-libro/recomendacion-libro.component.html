@@ -1,0 +1,78 @@
+<section class="py-12 bg-custom-blue text-white text-center"  >
+  <h2 class="text-3xl font-bold mb-8 italic" style="text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.7);">
+    LOS MEJORES CALIFICADOS
+  </h2>
+  <div *ngIf="libros && libros.length > 0" class="container mx-auto flex flex-col md:flex-row items-end justify-center gap-4 px-4 relative">
+    <!-- Podio Base -->
+    <div class="absolute bottom-0 left-1/4 w-1/2 h-24 bg-customAzulito opacity-50 rounded-t-lg"></div>
+
+    <!-- Segundo lugar (izquierda, más alto que el tercer lugar) -->
+    <div class="w-full md:w-1/3 transform transition-all duration-300 hover:scale-105 relative z-10 md:-mb-4 border-gray-400"> <!-- Ajustado a md:-mb-4 -->
+      <div class="bg-white rounded-lg shadow-md flex flex-col md:flex-row max-w-lg mx-auto group transition-all duration-300 hover:shadow-xl">
+        <div class="md:w-1/2 relative h-64 md:h-auto overflow-hidden group">
+          <img [src]="libros[1].imagen" alt="{{ libros[1].titulo }}" class="object-cover w-full h-full md:rounded-l-lg md:rounded-t-none">
+          <div class="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button (click)="verDetallesLibro(libros[1].id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">
+              Ver detalles
+            </button>
+          </div>
+        </div>
+        <div class="md:w-1/2 p-6 flex flex-col justify-between relative">
+          <div>
+            <h3 class="font-bold text-xl mb-2 text-gray-900">{{ libros[1].titulo }}</h3>
+            <p class="text-gray-700 text-base mb-4 line-clamp-3">{{ libros[1].resumen }}</p>
+          </div>
+          <div class="text-sm text-gray-900">{{ libros[1].autorNombre }} {{ libros[1].autorApellidos }}</div>
+          <div class="absolute top-2 right-2 bg-yellow-500 text-white text-sm font-semibold px-3 py-1 rounded-full">⭐ {{ libros[1].mediaCalificacion }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Primer lugar (centro, más destacado) -->
+    <div class="w-full md:w-1/2 transform transition-all duration-300 hover:scale-105 relative z-20">
+      <div class="bg-white rounded-lg shadow-xl flex flex-col md:flex-row max-w-lg mx-auto group transition-all duration-300 hover:shadow-2xl">
+        <div class="md:w-1/2 relative h-96 md:h-auto overflow-hidden group">
+          <img [src]="libros[0].imagen" alt="{{ libros[0].titulo }}" class="object-cover w-full h-full md:rounded-l-lg md:rounded-t-none">
+          <div class="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button (click)="verDetallesLibro(libros[0].id)" class="px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg">
+              Ver detalles
+            </button>
+          </div>
+        </div>
+        <div class="md:w-1/2 p-6 flex flex-col justify-between relative">
+          <div>
+            <h3 class="font-bold text-2xl mb-2 text-gray-900">{{ libros[0].titulo }}</h3>
+            <p class="text-gray-700 text-base mb-4 line-clamp-3">{{ libros[0].resumen }}</p>
+          </div>
+          <div class="text-sm text-gray-900">{{ libros[0].autorNombre }} {{ libros[0].autorApellidos }}</div>
+          <div class="absolute top-2 right-2 bg-yellow-500 text-white text-sm font-semibold px-3 py-1 rounded-full">⭐ {{ libros[0].mediaCalificacion }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tercer lugar (derecha, más bajo que el segundo lugar) -->
+    <div class="w-full md:w-1/3 transform transition-all duration-300 hover:scale-105 relative z-10 md:-mb-8"> <!-- Ajustado a md:-mb-8 -->
+      <div class="bg-white rounded-lg shadow-md flex flex-col md:flex-row max-w-md mx-auto group transition-all duration-300 hover:shadow-xl">
+        <div class="md:w-1/2 relative h-56 md:h-auto overflow-hidden group">
+          <img [src]="libros[2].imagen" alt="{{ libros[2].titulo }}" class="object-cover w-full h-full md:rounded-l-lg md:rounded-t-none">
+          <div class="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button (click)="verDetallesLibro(libros[2].id)" class="mt-6 px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg shadow-gray-500">
+              Ver detalles
+            </button>
+          </div>
+        </div>
+        <div class="md:w-1/2 p-5 flex flex-col justify-between relative">
+          <div>
+            <h3 class="font-bold text-lg mb-2 text-gray-900">{{ libros[2].titulo }}</h3>
+            <p class="text-gray-700 text-sm mb-4 line-clamp-2">{{ libros[2].resumen }}</p>
+          </div>
+          <div class="text-xs text-gray-900">{{ libros[2].autorNombre }} {{ libros[2].autorApellidos }}</div>
+          <div class="absolute top-2 right-2 bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded-full">⭐ {{ libros[2].mediaCalificacion }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!libros || libros.length === 0" class="text-white">
+    No hay libros disponibles.
+  </div>
+</section>

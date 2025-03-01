@@ -1,0 +1,165 @@
+<section class="bg-customGreen py-4 md:py-6 shadow-gray-500 shadow-sm">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <div class="container mx-auto flex flex-col md:flex-row items-center px-4 md:px-6 lg:px-8 gap-6 md:gap-8">
+
+    <!-- Logo -->
+    <div class="flex-shrink-0">
+      <img src="../../../../assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-32 md:w-40 lg:w-48 mx-auto">
+    </div>
+
+    <!-- Texto con más espacio -->
+    <div class="md:text-left w-full max-w-3xl flex-grow text-justify">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-blue-900 leading-tight text-center">
+        Catálogo
+      </h1>
+      <p class="mt-3 text-lg text-gray-800 leading-relaxed text-center">
+        <strong>El universo de los libros te espera...</strong><br/>
+        Desde cuentos estelares hasta ciencia fascinante, aquí encontrarás historias para todos los exploradores del conocimiento.
+        Embárcate en un viaje a través de páginas llenas de aventuras, misterios y descubrimientos. <br/>
+        <strong>¿Listo para tu próxima misión de lectura? 🚀 </strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<section class="bg-white py-4">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <div class="container mx-auto flex justify-center items-center space-x-4">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="searchBooks()"
+      id="search"
+      name="search"
+      placeholder="Buscar libro por autor o título..."
+      class="border border-gray-300 rounded-xl px-4 py-2 w-2/3 text-custom-blue"
+    />
+    <button (click)="searchBooks()" class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
+      Buscar
+    </button>
+    <button
+      *ngIf="searchTerm"
+      (click)="clearSearch()"
+      class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400">
+      ✖</button>
+  </div>
+</section>
+<div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 p-4 bg-custom-blue">
+  <!-- Filtro Catalogo -->
+  <div class="flex-shrink-0">
+    <!-- Filtros -->
+    <div class="bg-white max-w-[333px] max-h-[65px] text-center rounded-lg text-custom-blue">
+      <h1 class="text-2xl font-bold">Filtros</h1>
+    </div>
+      <!--#################################3 FILTRO CATEGORÍA ############################## -->
+      <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9">
+        <h3 class="text-white text-[20px] font-semibold">Categoría</h3>
+        <div class="flex flex-col space-y-2 text-white text-md font-bold font-[Montserrat]">
+          <label *ngFor="let category of categories">
+            <input type="radio" [checked]="selectedCategoryId === category.id" name="category" (change)="filterByCategory(category.id)">
+            {{ category.nombre }}
+          </label>
+        </div>
+      </div>
+    <!--###################   FILTRO PRECIO ####################################-->
+    <div class="border-b border-gray-200 py-6">
+      <!-- Precios -->
+      <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9 border-t border-custom-blue">
+        <h3 class="text-white text-[20px] font-semibold">Precios</h3>
+        <div class="flex flex-col space-y-2 text-white text-md font-bold font-[Montserrat]">
+          <label *ngFor="let range of priceRanges">
+            <input
+              type="radio"
+              [checked]="selectedPriceRanges.includes(range.value)"
+              name="priceRange"
+              (change)="filterByPrice(range.value)"
+            >
+            {{ range.label }}
+          </label>
+        </div>
+      </div>
+      <div class="flex justify-center my-4">
+        <button (click)="clearFilters()" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-400">
+          Limpiar filtros
+        </button>
+      </div>
+    </div>
+  </div>
+<div class="w-full " style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)), url('../../../../assets/fondo4_puntosafa.jpeg'); background-size: cover; background-position: center;">    <div class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
+      <!-- Message when no results found for search term -->
+      <div *ngIf="noResults && searchTerm" class="text-center text-red-600 font-bold mt-4 bg-white">
+        <p>No hay resultados para "{{ searchTerm }}"</p>
+      </div>
+      <!-- Message when filters are applied but no results -->
+      <div *ngIf="noResults && filtersApplied" class="text-center text-red-600 font-bold mt-4 bg-white">
+        <p>No hay resultados para los filtros aplicados.</p>
+      </div>
+      <!-- Message displaying the current search term -->
+      <div *ngIf="searchTerm && !noResults" class="text-center text-gray-700 font-bold mt-4 bg-white">
+        <p>Results for "{{ searchTerm }}"</p>
+      </div>
+    </div>
+    <div class="text-center text-gray-700 font-bold mt-4 mb-4">
+      <p>Total resultados: {{ totalResults }}</p>
+    </div>
+    <div class="max-w-2xl px-2 sm:px-1  lg:max-w-7xl lg:px-1 mx-auto ">
+      <div *ngIf="!noResults" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div *ngFor="let libro of filteredBooks" class="flex flex-col h-full">
+          <div class="card bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
+            <div class="relative flex-shrink-0">
+              <img [src]="libro.imagen" [alt]="libro.titulo" class="w-full h-64 object-cover rounded-t-lg group-hover:opacity-75 transition-opacity duration-300">
+              <button (click)="addToCart(libro)" class="add-to-cart absolute top-4 right-4 bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                Añadir al carrito
+              </button>
+            </div>
+            <div class="p-6 flex flex-col flex-grow">
+              <h3 class="text-lg font-bold text-gray-800 text-center line-clamp-2">{{ libro.titulo }}</h3>
+              <p class="text-sm text-gray-600 text-center mt-2">por {{ libro.autor.nombre }} {{ libro.autor.apellidos }}</p>
+              <div class="mt-auto pt-4">
+                <p class="text-xl font-semibold text-blue-900 mt-2 text-center">{{ libro.precio | currency: 'EUR' }}</p>
+
+                <button (click)="verDetallesLibro(libro.id)" class="w-full px-6 py-2 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition-colors duration-300">
+                  Ver detalles
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showAlert" class="fixed top-0 left-0 right-0 flex justify-center transition-transform duration-500 transform translate-y-0">
+    <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 shadow-lg rounded-md w-full max-w-md mx-auto">
+      <p class="font-bold">Acción no permitida</p>
+      <p class="text-sm">Debes iniciar sesión para agregar al carrito.</p>
+    </div>
+  </div>
+
+
+</div>
+<div class="flex items-center justify-center border-t border-custom-blue bg-custom-blue px-4 py-3 sm:px-6">
+  <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
+    <button
+      (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
+      class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-300 ring-1 ring-customBlanco ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
+      Anterior
+      <span class="sr-only"></span>
+      <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+      </svg>
+    </button>
+    <button
+      *ngIf="currentPage < totalPages"
+      (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages"
+      class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
+      <span class="sr-only"></span>
+      Siguiente
+      <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+      </svg>
+    </button>
+  </nav>
+</div>
+

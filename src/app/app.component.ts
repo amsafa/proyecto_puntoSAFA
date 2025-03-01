@@ -1,12 +1,37 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import {RouterModule, RouterOutlet} from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LibroService } from './service/libro.service';
+import {FooterComponent} from './component/footer/footer.component';
+import {HeaderComponent} from './component/header/header.component';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs, 'es');
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    FooterComponent,
+    HeaderComponent,
+    RouterOutlet,
+    RouterModule,],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+
+
+export class AppComponent implements OnInit {
   title = 'puntoSafa';
+  usuarios: any[] = [];
+
+  constructor(private apiService: LibroService) {}
+
+  ngOnInit() {
+
+  }
 }
