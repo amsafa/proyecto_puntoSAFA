@@ -9,23 +9,28 @@ import {PerfilComponent} from './page/perfil/perfil.component';
 import {CatalogoComponent} from './page/catalogo/catalogo.component';
 import {DetalleDeLibroComponent} from './page/detalle-de-libro/detalle-de-libro.component';
 import {PerfilAdmComponent} from './page/perfil-adm/perfil-adm.component';
-
-import {authGuard} from './auth.guard';
-import {EmailComponent} from './email/email.component';
-import {RegistroLibroComponent} from './libro-edicion/registro-libro/registro-libro.component';
-import {ActivarCuentaComponent} from './component/activar-cuenta/activar-cuenta.component';
-import {EditarLibroComponent} from './libro-edicion/editar-libro/editar-libro.component';
-
+import {
+  RecomendacionLibroComponent
+} from './component/Inicio_componentes_propios/recomendacion-libro/recomendacion-libro.component';
+import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
 import {PagarCompraComponent} from './page/pagar-compra/pagar-compra.component';
 import {PedidosClienteComponent} from './page/pedidos-cliente/pedidos-cliente.component';
+import {EmailComponent} from './email/email.component';
+import {authGuard} from './auth.guard';
+import {RegistroLibroComponent} from './libro-edicion/registro-libro/registro-libro.component';
+import {EditarLibroComponent} from './libro-edicion/editar-libro/editar-libro.component';
+import {ActivarCuentaComponent} from './component/activar-cuenta/activar-cuenta.component';
 import {RecuperarContrasenaComponent} from './contrasena/recuperar-contrasena/recuperar-contrasena.component';
 import {RestablecerContrasenaComponent} from './contrasena/restablecer-contrasena/restablecer-contrasena.component';
 
 
 
 
-
 export const routes: Routes = [
+
+  //Comprobación de componentes de Alba
+  {path: 'carrusel', component: CarouselComponent, pathMatch: 'full'},
+  {path: 'recomendacionLibro', component: RecomendacionLibroComponent, pathMatch: 'full'},
 
   //Comprobación de componentes
   {path: '', component: HomeComponent, pathMatch: 'full' },
@@ -35,13 +40,16 @@ export const routes: Routes = [
   {path:'autor', component:AutorComponent, pathMatch: 'full'},
   {path:'catalogo', component: CatalogoComponent, pathMatch: 'full'},
   {path:'perfil', component:PerfilComponent, pathMatch: 'full'},
-  {path: 'detalle-libro/:id', component: DetalleDeLibroComponent }, // Ruta para detalles del libro
+  {path: 'detalle-libro/:id', component: DetalleDeLibroComponent },
   { path: 'activar-cuenta', component: ActivarCuentaComponent },
   {path: 'perfil-adm', component: PerfilAdmComponent, pathMatch: 'full'},
   {path:'pagar-pedido', component:PagarCompraComponent, pathMatch: 'full'},
   {path:'pedidos-cliente', component:PedidosClienteComponent, pathMatch: 'full'},
   { path: 'recuperar-contrasena', component: RecuperarContrasenaComponent, pathMatch: 'full' },
   { path: 'restablecer-contrasena/:token', component: RestablecerContrasenaComponent, pathMatch: 'full' },
+  // {path: 'sobrenosotros', component: SobrenosotrosComponent, pathMatch: 'full'},
+  {path: 'carrusel', component: CarouselComponent, pathMatch: 'full'},
+
 
 
 
