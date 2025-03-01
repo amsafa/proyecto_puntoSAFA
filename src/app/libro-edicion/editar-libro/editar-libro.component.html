@@ -57,11 +57,10 @@
 
             <!-- Año de Publicación -->
             <div>
-              <label for="anio_publicacion" class="block text-sm font-medium text-gray-700">Año de Publicación</label>
-              <input type="number" id="anio_publicacion" formControlName="anioPublicacion"
-                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
-                     placeholder="Ingrese el año de publicación">
-              <div *ngIf="libroForm.get('anio_publicacion')?.invalid && libroForm.get('anio_publicacion')?.touched" class="text-red-600 text-sm">
+              <label for="anio_publicacion" class="block text-sm font-medium text-gray-700">Fecha de Publicación</label>
+              <input type="date" id="anio_publicacion" formControlName="anioPublicacion"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3">
+              <div *ngIf="libroForm.get('anioPublicacion')?.invalid && libroForm.get('anioPublicacion')?.touched" class="text-red-600 text-sm">
                 El año de publicación es obligatorio.
               </div>
             </div>
@@ -130,33 +129,27 @@
                 El número de páginas es obligatorio.
               </div>
             </div>
-
-            <!-- Autor -->
+            <!-- Autor (Full Name) -->
             <div>
               <label for="autor" class="block text-sm font-medium text-gray-700">Autor</label>
-              <select id="autor" formControlName="autor" class="mt-1 block w-full border border-gray-300 rounded-md p-3">
-                <option *ngFor="let autor of autores" [value]="autor.id">
-                  {{ autor.nombre }} {{ autor.apellidos }}
-                </option>
-              </select>
-              <div *ngIf="libroForm.get('autor.id')?.invalid && libroForm.get('autor.id')?.touched" class="text-red-600 text-sm">
+              <input id="autor" formControlName="autor"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese el autor" />
+              <div *ngIf="libroForm.get('autor')?.invalid && libroForm.get('autor')?.touched" class="text-red-600 text-sm">
                 El autor es obligatorio.
               </div>
             </div>
 
-            <!-- Categoría -->
+            <!-- Categoría (Name) -->
             <div>
               <label for="categoria" class="block text-sm font-medium text-gray-700">Categoría</label>
-              <select id="categoria" formControlName="categoria" class="mt-1 block w-full border border-gray-300 rounded-md p-3">
-                <option *ngFor="let categoria of categorias" [value]="categoria.id">
-                  {{ categoria.nombre }}
-                </option>
-              </select>
-              <div *ngIf="libroForm.get('categoria.id')?.invalid && libroForm.get('categoria.id')?.touched" class="text-red-600 text-sm">
+              <input id="categoria" formControlName="categoria"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
+                     placeholder="Ingrese la categoría" />
+              <div *ngIf="libroForm.get('categoria')?.invalid && libroForm.get('categoria')?.touched" class="text-red-600 text-sm">
                 La categoría es obligatoria.
               </div>
             </div>
-
             <!-- Botón Guardar -->
             <div class="mt-6">
               <button type="submit"

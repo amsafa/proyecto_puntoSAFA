@@ -56,12 +56,8 @@ export class EditarLibroComponent implements OnInit {
       imagen: [''],
       idioma: ['', Validators.required],
       numPaginas: ['', Validators.required],
-      autor: this.fb.group({  // ✅ Define as a FormGroup
-        id: ['', Validators.required]
-      }),
-      categoria: this.fb.group({  // ✅ Define as a FormGroup
-        id: ['', Validators.required]
-      })
+      autor: ['', Validators.required],
+      categoria: ['', Validators.required]
     });
 
 
@@ -91,26 +87,28 @@ export class EditarLibroComponent implements OnInit {
   }
 
   cargarLibro(id: number): void {
-    this.libroService.obtenerLibro(id).subscribe((libro: LibroCrea) => {  // Ensure libro is of type LibroCrea
+    this.libroService.obtenerLibro(id).subscribe((libro: LibroCrea) => {
       if (!libro) {
         alert("Libro no encontrado.");
         return;
       }
+      console.log("Libro cargado:", libro);
 
       this.libroForm.patchValue({
         titulo: libro.titulo,
         resumen: libro.resumen,
-        anioPublicacion: libro.anioPublicacion, // Already string (YYYY-MM-DD)
+        anioPublicacion: libro.anioPublicacion ? libro.anioPublicacion.split('T')[0] : '', // ✅ Remove time + timezone
         precio: libro.precio,
         ISBN: libro.ISBN,
         editorial: libro.editorial,
         imagen: libro.imagen,
         idioma: libro.idioma,
         numPaginas: libro.numPaginas,
-        autor: { id: libro.autor?.id || '' }, // Ensure autor follows the Autor interface
-        categoria: { id: libro.categoria?.id || '' }// Ensure categoria follows the Categoria interface
+        autor: libro.autor ? `${libro.autor.nombre} ${libro.autor.apellidos}` : '', // ✅ Store full name
+        categoria: libro.categoria ? libro.categoria.nombre : '' // ✅ Store category name
       });
     }, error => {
+      console.error("Error al cargar el libro:", error);
       alert('Hubo un problema al cargar los datos del libro.');
     });
   }
@@ -178,26 +176,29 @@ export class EditarLibroComponent implements OnInit {
     this.libroForm.patchValue({
       titulo: libro.titulo,
       resumen: libro.resumen,
-      anioPublicacion: libro.anioPublicacion,
+      anioPublicacion: libro.anioPublicacion ? libro.anioPublicacion.split('T')[0] : '', // ✅ Remove time + timezone
       precio: libro.precio,
       ISBN: libro.ISBN,
       editorial: libro.editorial,
       imagen: libro.imagen,
       idioma: libro.idioma,
       numPaginas: libro.numPaginas,
-      autor: { id: libro.autor?.id || '' },  // ✅ Store only the ID
-      categoria: { id: libro.categoria?.id || '' } // ✅ Store only the ID
+      autor: libro.autor ? `${libro.autor.nombre} ${libro.autor.apellidos}` : '', // ✅ Store full name
+      categoria: libro.categoria ? libro.categoria.nombre : '' // ✅ Store category name
     });
   }
 
   guardarCambios(): void {
     const libroActualizado = this.libroForm.value;
 
+    // Ensure anioPublicacion is stored as a full date
+    const fullDate = libroActualizado.anioPublicacion ? `${libroActualizado.anioPublicacion}-01-01` : null;
+
     this.libroService.actualizarLibro(libroActualizado.id, {
       ...libroActualizado,
-      anioPublicacion: libroActualizado.anioPublicacion, // Keep as string (YYYY-MM-DD)
-      autor: { id: libroActualizado.autor.id },  // ✅ Use ID directly
-      categoria: { id: libroActualizado.categoria.id } // ✅ Use ID directly
+      anioPublicacion: fullDate, // ✅ Convert year back to full date
+      autor: this.autores.find(a => `${a.nombre} ${a.apellidos}` === libroActualizado.autor) || null,
+      categoria: this.categorias.find(c => c.nombre === libroActualizado.categoria) || null
     }).subscribe(() => {
       alert('Libro actualizado con éxito');
     }, error => {
