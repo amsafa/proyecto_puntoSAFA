@@ -110,7 +110,6 @@ export class PerfilComponent implements OnInit {
       (respuesta) => {
         console.log("Respuesta del backend:", respuesta);
         console.log("Datos recibidos después de actualizar:", respuesta);
-        this.successMessage = 'Los datos del perfil se han actualizado correctamente';
         Swal.fire('Éxito', 'Los datos del perfil se han actualizado correctamente', 'success');
 
         // Recargar los datos del usuario actualizado
