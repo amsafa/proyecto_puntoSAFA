@@ -35,6 +35,8 @@ export class EditarLibroComponent implements OnInit {
   autores: Autor[] = [];
   categorias: Categoria[] = [];
   titulo: string = '';
+  private confirmationService: any;
+  private messageService: any;
 
   constructor(
     private fb: FormBuilder,
@@ -132,16 +134,39 @@ export class EditarLibroComponent implements OnInit {
     );
   }
 
+  private fechaFormateada(anio_publicacion: Date): string {
+    if (!anio_publicacion) return '';
+    return new Date(anio_publicacion).toISOString().split('T')[0];
+  }
+
   crearNuevoLibro(): void {
     this.isEditMode = false;
     this.libroId = undefined;
     this.libroForm.reset();
   }
 
-  private fechaFormateada(anio_publicacion: Date): string {
-    if (!anio_publicacion) return '';
-    return new Date(anio_publicacion).toISOString().split('T')[0];
+  eliminarLibro(): void {
+    if (!this.libroId) return;
+
+    this.confirmationService.confirm({
+      message: '¿Estás seguro de que deseas eliminar este libro?',
+      header: 'Confirmación de Eliminación',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.libroService.eliminarLibro(this.libroId!).subscribe(
+          () => {
+            this.messageService.add({ severity: 'success', summary: 'Libro Eliminado', detail: 'El libro ha sido eliminado correctamente.' });
+            this.router.navigate(['/lista-libros']);
+          },
+          error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el libro.' });
+          }
+        );
+      }
+    });
   }
+
+
 
   onLibroSeleccionado(libro: LibroCrea): void {
     this.libroForm.patchValue({
