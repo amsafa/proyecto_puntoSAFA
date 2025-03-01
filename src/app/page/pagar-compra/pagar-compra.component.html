@@ -1,3 +1,6 @@
+
+<section class="min-h-[calc(100vh-8rem)] py-16 px-4 sm:px-6 lg:px-8 relative" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)), url('../../../../assets/fondo_puntosafa.jpeg'); background-size: cover; background-position: center;">
+
 <div class="font-sans max-w-6xl max-lg:max-w-2xl mx-auto bg-white p-4">
   <div class="grid lg:grid-cols-2 gap-12">
     <div>
@@ -69,26 +72,26 @@
         <div>
           <label class="block text-base text-gray-800 mb-2">Nombre</label>
           <input type="text"  formControlName="nombre" placeholder="Introduzca su nombre"
-                 class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-purple-500 outline-none" />
+                 class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-customTeal outline-none" />
           <p class="text-red-500 text-sm mt-1" *ngIf="paymentForm.get('nombre')?.invalid && paymentForm.get('nombre')?.touched">Este campo es obligatorio.</p>
         </div>
         <div>
           <label class="block text-base text-gray-800 mb-2">Apellidos</label>
           <input type="text" formControlName="apellidos" placeholder="Introduzca sus apellidos"
-                 class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-purple-500 outline-none" />
+                 class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-customTeal outline-none" />
           <p class="text-red-500 text-sm mt-1" *ngIf="paymentForm.get('apellidos')?.invalid && paymentForm.get('apellidos')?.touched">Este campo es obligatorio.</p>
         </div>
 
         <div>
           <label class="block text-base text-gray-800 mb-2">Dirección:</label>
           <input type="text" formControlName="direccion"  name="address"  placeholder="Introduzca su dirección"
-                 class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-purple-500 outline-none" />
+                 class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-customTeal outline-none" />
           <p class="text-red-500 text-sm mt-1" *ngIf="paymentForm.get('direccion')?.invalid && paymentForm.get('direccion')?.touched">Este campo es obligatorio.</p>
         </div>
 
         <div>
           <label class="block text-base text-gray-800 mb-2">Número de tarjeta</label>
-          <div class="flex bg-transparent border border-gray-300 rounded-md focus-within:border-purple-500 overflow-hidden">
+          <div class="flex bg-transparent border border-gray-300 rounded-md focus-within:border-customTeal overflow-hidden">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 ml-3" viewBox="0 0 32 20">
               <circle cx="10" cy="10" r="10" fill="#f93232" data-original="#f93232" />
               <path fill="#fed049"
@@ -107,7 +110,7 @@
           <div>
             <label class="block text-base text-gray-800 mb-2">Fecha de caducidad</label>
             <input type="text" formControlName="expiryDate" placeholder="08/27"
-                   class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-purple-500 outline-none" />
+                   class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-customTeal outline-none" />
             <p class="text-red-500 text-sm mt-1" *ngIf="paymentForm.get('expiryDate')?.invalid && paymentForm.get('expiryDate')?.touched">
               Fecha de expiración no válida.
             </p>
@@ -116,7 +119,7 @@
           <div>
             <label class="block text-base text-gray-800 mb-2">CVV</label>
             <input type="number" formControlName="cvv" placeholder="XXX"
-                   class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-purple-500 outline-none" />
+                   class="px-4 py-2.5 bg-transparent text-gray-800 w-full text-sm border border-gray-300 rounded-md focus:border-customTeal outline-none" />
             <p class="text-red-500 text-sm mt-1" *ngIf="paymentForm.get('cvv')?.invalid && paymentForm.get('cvv')?.touched">
               CVV debe ser un número de 3 dígitos.
             </p>
@@ -129,10 +132,10 @@
         <li class="flex flex-wrap gap-4 text-sm">Gastos de envío <span class="ml-auto font-bold">{{shipping.toFixed(1) | currency:'EUR':true}}</span></li>
         <li class="flex flex-wrap gap-4 text-sm">IVA <span class="ml-auto font-bold">21%</span></li>
         <hr class="border-gray-300" />
-        <li class="flex flex-wrap gap-4 text-sm font-bold">Total <span class="ml-auto">{{totalWithTaxes.toFixed(2)| currency:'EUR':true}}</span></li>
+        <li class="flex flex-wrap gap-4 text-xl font-bold">Total <span class="ml-auto">{{totalWithTaxes.toFixed(2)| currency:'EUR':true}}</span></li>
       </ul>
 
-      <button (click)="makePayment()" type="button" class="mt-8 text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-purple-600 hover:bg-purple-700 text-white rounded-md">Pagar</button>
+      <button (click)="makePayment()" type="button" class="mt-8 text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-yellow-600 hover:bg-gray-400 text-white rounded-md">Pagar</button>
     </form>
   </div>
 </div>
@@ -152,5 +155,6 @@
     </div>
   </div>
 </div>
+</section>
 
 

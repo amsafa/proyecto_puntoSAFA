@@ -1,11 +1,11 @@
 <section class="min-h-[calc(100vh-8rem)] py-16 px-4 sm:px-6 lg:px-8 " style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)), url('../../../../assets/puntosafa_fondo3.jpeg'); background-size: cover; background-position: center;">
 <!-- Encabezado -->
-  <div class="w-full bg-[#F0F4EF] flex flex-wrap items-center p-4 shadow relative z-10">
+  <div class="w-full bg-[#F0F4EF] flex flex-wrap items-center p-4 shadow relative z-5">
     <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-24 h-auto md:w-40 ml-4">
     <h2 class="flex-grow text-center text-lg md:text-2xl font-bold text-[#1F2D3D]">
       Bienvenido a PuntoSafa
     </h2>
-    <h1 class="text-lg md:text-2xl font-bold text-blue-600 mr-4 md:mr-10">¡HOLA! {{ userData?.nombre }}</h1>
+    <h1 class="text-lg md:text-2xl font-bold text-customTeal mr-4 md:mr-10">¡HOLA, {{ userData?.nombre }}!</h1>
   </div>
 
   <!-- Main Content -->
@@ -84,11 +84,11 @@
 
 
           <div class="flex justify-end mt-4">
-            <button (click)="guardarCambios()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">
+            <button (click)="guardarCambios()" class="bg-customTeal text-white px-4 py-2 rounded mr-2">
               Guardar
             </button>
 
-            <button (click)="cerrarFormulario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
+            <button (click)="cerrarFormulario()" class="bg-custom-blue text-white px-4 py-2 rounded">Cancelar</button>
           </div>
         </div>
       </div>
@@ -106,10 +106,10 @@
                placeholder="Nueva contraseña (opcional)" />
 
         <div class="flex justify-end mt-4">
-          <button (click)="guardarEdicionContrasena()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">
+          <button (click)="guardarEdicionContrasena()" class="bg-customTeal text-white px-4 py-2 rounded mr-2">
             Guardar
           </button>
-          <button (click)="cerrarEdicionUsuario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
+          <button (click)="cerrarEdicionUsuario()" class="bg-custom-blue text-white px-4 py-2 rounded">Cancelar</button>
         </div>
       </div>
     </div>

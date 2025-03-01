@@ -1,15 +1,19 @@
-<section class="bg-customGreen py-2 md:py-4 shadow-gray-500 shadow-sm">
+<section class="bg-customGreen py-4 md:py-6 shadow-gray-500 shadow-sm">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
-  <div class="container mx-auto flex flex-col md:flex-row items-center justify-center px-4 md:px-6 lg:px-8 lg:gap-x-4">
-<!-- Texto -->    <!-- Texto --><!-- Texto -->    <!-- Texto -->
-    <div class="text-center md:text-left max-w-2xl lg:max-w-xl">
-      <h1 class="text-4xl font-extrabold text-blue-900 leading-tight">
+  <div class="container mx-auto flex flex-col md:flex-row items-center justify-center px-4 md:px-6 lg:px-8 gap-6 md:gap-8">
+
+    <!-- Texto con más espacio -->
+    <div class="text-center md:text-left w-full max-w-3xl flex-grow">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-blue-900 leading-tight">
         ¡Bienvenido a Punto Safa!
       </h1>
-      <p class="text-lg text-gray-700 mt-4">
-        Te presentamos nuestro espacio literario, en el que encontrarás una amplia selección de libros, desde los clásicos hasta las más recientes historias. ¡Ven y descubre tu próxima gran lectura!
+
+      <p class="text-lg text-gray-700 mt-4 leading-relaxed">
+        Te presentamos nuestro espacio literario, en el que encontrarás una amplia selección de libros, desde los clásicos hasta las más recientes historias. <br/> <strong>
+        ¡Ven y descubre tu próximo libro favorito!</strong>
       </p>
+
       <button
         (click)="navigateToAboutUs()"
         class="mt-6 px-6 py-3 bg-blue-900 text-white font-medium rounded-lg hover:bg-gray-400 transition shadow-lg shadow-gray-500"
@@ -17,9 +21,13 @@
         Sobre nosotros
       </button>
     </div>
+
     <!-- Imagen -->
-    <div class="mt-10 md:mt-0 md:ml-6 lg:ml-0">
-      <img src="../../../../assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-full max-w-xxs md:max-w-xs mx-auto">
+    <div class="flex-shrink-0">
+      <img src="../../../../assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-32 md:w-40 lg:w-48 mx-auto">
     </div>
+
   </div>
 </section>
+
+
