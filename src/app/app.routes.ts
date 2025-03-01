@@ -19,6 +19,8 @@ import {RecuperarContrasenaComponent} from './contrasena/recuperar-contrasena/re
 import {RestablecerContrasenaComponent} from './contrasena/restablecer-contrasena/restablecer-contrasena.component';
 import {RegistroLibroComponent} from './libro-edicion/registro-libro/registro-libro.component';
 import {SobrenosotrosComponent} from './page/sobrenosotros/sobrenosotros.component';
+import {CajasCategoriaInicioComponent} from './component/Inicio_componentes_propios/cajas-categoria-inicio/cajas-categoria-inicio.component';
+import {CarouselComponent} from './component/Inicio_componentes_propios/carousel/carousel.component';
 
 
 
@@ -41,6 +43,8 @@ export const routes: Routes = [
   { path: 'recuperar-contrasena', component: RecuperarContrasenaComponent, pathMatch: 'full' },
   { path: 'restablecer-contrasena/:token', component: RestablecerContrasenaComponent, pathMatch: 'full' },
   {path: 'sobrenosotros', component: SobrenosotrosComponent, pathMatch: 'full'},
+  {path: 'carrusel', component: CarouselComponent, pathMatch: 'full'},
+
 
 
 

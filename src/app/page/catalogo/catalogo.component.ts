@@ -61,11 +61,14 @@ export class CatalogoComponent  implements OnInit {
       this.searchTerm = params['search'] || '';
       this.currentPage = params['page'] ? parseInt(params['page'], 10) : 1;
       this.limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
+      this.selectedCategoryId = params['categoryId'] ? parseInt(params['categoryId'], 10) : null; // Captura el categoryId
       this.cargarLibros(this.currentPage, this.limit);
     });
+
     this.categoriaService.getCategorias().subscribe(categorias => {
       this.categories = categorias;
     });
+
     this.authService.getAuthState().subscribe(state => {
       this.isLoggedIn = state;
     });

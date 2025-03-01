@@ -19,7 +19,7 @@ export class LibroService {
 
 
   getBooks(page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.apiUrl}/libro/all?page=${page}&limit=${limit}`).pipe(
+    return this.http.get<Libro[]>(`${this.apiUrl}/all?page=${page}&limit=${limit}`).pipe(
       map(libros =>
         libros.map(libro => ({
           ...libro,
@@ -71,7 +71,6 @@ export class LibroService {
       })))
     );
   }
-
 
 
 
