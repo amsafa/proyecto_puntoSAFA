@@ -62,7 +62,7 @@ export class CatalogoComponent  implements OnInit {
       console.log('Query Params:', params);
       this.searchTerm = params['search'] || '';
       this.currentPage = params['page'] ? parseInt(params['page'], 10) : 1;
-      this.limit = params['limit'] ? parseInt(params['limit'], 10) : 9;
+      this.limit = params['limit'] ? parseInt(params['limit'], 10) : 8;
       this.selectedCategoryId = params['categoryId'] ? parseInt(params['categoryId'], 10) : null; // Captura el categoryId
       this.cargarLibros(this.currentPage, this.limit);
     });
@@ -76,7 +76,7 @@ export class CatalogoComponent  implements OnInit {
     });
   }
 
-  cargarLibros(page: number = 1, limit: number = 9): void {
+  cargarLibros(page: number = 1, limit: number = 8): void {
     this.currentPage = page;
     this.applyFilters(page, limit);
   }
@@ -137,7 +137,7 @@ export class CatalogoComponent  implements OnInit {
     this.applyFilters();  // Apply filters with the new selection
   }
 
-  applyFilters(page: number = 1, limit: number = 9): void {
+  applyFilters(page: number = 1, limit: number = 8): void {
     console.log("Aplicar filtros::");
     console.log("Categorías:", this.selectedCategoryId);
     console.log("Rango de precios:", this.selectedPriceRanges);
