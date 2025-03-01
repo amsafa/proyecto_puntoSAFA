@@ -114,7 +114,7 @@ export class EditarLibroComponent implements OnInit {
 
     const libro: LibroCrea = {
       ...this.libroForm.value,
-      anioPublicacion: this.fechaFormateada(this.libroForm.value.anioPublicacion),
+      anio_publicacion: this.fechaFormateada(this.libroForm.value.anio_publicacion),
       autor: { id: this.libroForm.value.autor.id },
       categoria: { id: this.libroForm.value.categoria.id }
     };
@@ -206,7 +206,7 @@ export class EditarLibroComponent implements OnInit {
 
     this.libroService.actualizarLibro(libroActualizado.id, {
       ...libroActualizado,
-      anioPublicacion: libroActualizado.anioPublicacion, // Keep as string (YYYY-MM-DD)
+      anio_publicacion: libroActualizado.anio_publicacion, // Keep as string (YYYY-MM-DD)
       autor: autorSeleccionado ? { id: autorSeleccionado.id } : null,  // ✅ Convert back to autor ID
       categoria: categoriaSeleccionada ? { id: categoriaSeleccionada.id } : null  // ✅ Convert back to categoria ID
     }).subscribe(() => {
