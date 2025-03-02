@@ -70,7 +70,7 @@ export class LibroService {
 
 
   crearLibro(libro: LibroNuevo): Observable<LibroNuevo> {
-    return this.http.post<LibroNuevo>(`${this.apiUrl}/guardar`, libro, {
+    return this.http.post<LibroNuevo>(`${this.apiUrl}/guardar?XDEBUG_SESSION_START=14361`, libro, {
       headers: { 'Content-Type': 'application/json' } // Ensure JSON format
     });
   }

@@ -7,6 +7,7 @@ import { AuthService } from '../../service/auth.service';
 import {Pedido} from '../../interface/pedido';
 import {PedidoService} from '../../service/pedido.service';
 import {Cliente} from '../../interface/cliente';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-perfil-adm',
