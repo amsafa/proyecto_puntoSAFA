@@ -39,7 +39,7 @@ export class AuthService {
         throw new Error("❌ Token no recibido en la respuesta del servidor.");
       }
 
-      console.log("✅ Token recibido:", response.token);
+    //  console.log("✅ Token recibido:", response.token);
 
       localStorage.setItem('token', response.token);
       this.authState.next(true);
@@ -72,14 +72,14 @@ export class AuthService {
     });
 
     return  lastValueFrom(
-      // this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })  //lisseth
-      this.http.get<RegistroCliente>('api/api/cliente/auth/user', { headers })  // alba
+       this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })  //lisseth
+      //this.http.get<RegistroCliente>('api/api/cliente/auth/user', { headers })  // alba
       //this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers })  // pablo
 
     ).then(userData => {
       this.userData.next(userData);
       localStorage.setItem('userData', JSON.stringify(userData));  // 🔹 Guardar en localStorage
-      console.log(userData);
+    //  console.log(userData);
       return userData;
     }).catch(err => {
       console.error("❌ Error al obtener datos del usuario:", err);
@@ -90,7 +90,7 @@ export class AuthService {
           this.router.navigate(['/login']);
           this.userData.next(null);
         } else {
-          console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
+        //  console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
         }
       } else {
         console.error("❌ Error inesperado:", err);
