@@ -1,5 +1,6 @@
+<section class="min-h-[calc(100vh-8rem)] py-16 px-4 sm:px-6 lg:px-8 relative" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)), url('../../../../assets/fondo_puntosafa.jpeg'); background-size: cover;">
 
-<section class="min-h-[calc(100vh-8rem)] py-16 px-4 sm:px-6 lg:px-8 relative">
+
 
   <header class="bg-[#F0F4EF] w-full max-w-7xl px-4 md:px-5 lg:px-6 mx-auto flex items-center p-4 shadow">
     <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-40 h-auto ml-10">
@@ -19,7 +20,7 @@
   <div *ngIf="orderStats && !loading" class="mt-12 flex justify-center items-center">
     <div class="flex flex-col md:flex-row md:space-x-4">
       <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-transform transform hover:scale-105">
-        <svg class="h-8 w-8 text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="h-8 w-8 text-custom-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
           <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
           <line x1="12" y1="22.08" x2="12" y2="12" />
@@ -39,7 +40,7 @@
       </div>
 
       <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-transform transform hover:scale-105">
-        <svg class="h-8 w-8 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="h-8 w-8 text-customTeal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
           <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
           <line x1="12" y1="22.08" x2="12" y2="12" />
@@ -52,7 +53,7 @@
 
   <!-- Lista de pedidos -->
   <div *ngIf="!loading && pedidos.length > 0" class="mt-12">
-    <div *ngFor="let pedido of pedidos" class="border-4 border-custom-blue mt-20 main-box rounded-xl pt-6 max-w-xl mx-auto lg:max-w-full">
+    <div *ngFor="let pedido of pedidos" class="border-4 bg-customBlanco border-custom-blue mt-20 main-box rounded-xl pt-6 max-w-xl mx-auto lg:max-w-full">
       <div *ngFor="let linea of pedido.lineaPedidos">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between px-6 pb-6 border-b border-gray-200">
           <div class="data">
