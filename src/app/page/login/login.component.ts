@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid || true) {
       this.login = { ...this.login, ...this.loginForm.value };
 
-      console.log("Iniciando sesión con:", this.login); // ✅ Depuración
+    //  console.log("Iniciando sesión con:", this.login); // ✅ Depuración
       this.authService.login(this.login);
       try {
 

@@ -1,12 +1,12 @@
-<div class="min-h-screen flex flex-col bg-gray-100">
+<section class="min-h-[calc(100vh-8rem)] py-16 px-4 sm:px-6 lg:px-8" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)), url('../../../../assets/puntosafa_fondo3.jpeg'); background-size: cover; background-position: center;">
   <!-- Encabezado -->
-  <header class="w-full bg-[#F0F4EF] flex items-center p-4 shadow">
-    <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-40 h-auto ml-10">
-    <h2 class="flex-grow text-center text-2xl md:text-4xl font-bold text-[#1F2D3D]">
+  <div class="w-full bg-[#F0F4EF] flex flex-wrap items-center p-4 shadow relative z-5">
+    <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-24 h-auto md:w-40 ml-4">
+    <h2 class="flex-grow text-center text-lg md:text-2xl font-bold text-[#1F2D3D]">
       Bienvenido a PuntoSafa
     </h2>
-    <h1 class="text-2xl md:text-3xl font-bold text-blue-600 mr-10">¡HOLA! {{ userData?.nombre }}</h1>
-  </header>
+    <h1 class="text-lg md:text-2xl font-bold text-customTeal mr-4 md:mr-10">¡HOLA, {{ userData?.nombre }}!</h1>
+  </div>
 
   <!-- Main Content -->
   <main class="flex-grow container mx-auto p-6 bg-white shadow-lg rounded-lg mt-6">
@@ -45,81 +45,77 @@
           <p><strong class="text-gray-600">Contraseña:</strong> ••••••••••</p>
         </div>
 
-        <!-- Botones más grandes y separados -->
-        <div class="mt-6 flex gap-6">
-          <button (click)="abrirFormulario()" class="bg-blue-500 text-white text-lg px-6 py-3 rounded shadow-md">
+        <div class="mt-4 flex flex-wrap gap-4">
+          <button (click)="abrirFormulario()" class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
             Editar Perfil
           </button>
 
-          <button (click)="abrirEdicionUsuario()" class="bg-blue-500 text-white text-lg px-6 py-3 rounded shadow-md">
+          <button (click)="abrirEdicionUsuario()" class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-gray-400">
             Editar Contraseña
           </button>
         </div>
-      </div>
+      </div> <!-- Fin de Información del Cliente -->
+    </div> <!-- Fin del flex principal -->
+
+    <!-- Modal / Formulario de Edición -->
+    <div *ngIf="mostrandoFormulario" class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+      <div class="bg-white p-6 rounded shadow-lg w-1/3">
+        <h2 class="text-lg font-semibold mb-4">Editar Perfil</h2>
+
+        <form [formGroup]="perfilForm" (ngSubmit)="guardarCambios()">
+          <!-- Campos del formulario -->
 
 
 
-      <!-- Modal / Formulario de Edición -->
-      <div *ngIf="mostrandoFormulario" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-        <div class="bg-white p-6 rounded shadow-lg w-1/3">
-          <h2 class="text-lg font-semibold mb-4">Editar Perfil</h2>
+          <div class="mb-4">
+            <label>Dirección:</label>
+            <input formControlName="direccion" class="w-full border p-2 rounded" />
+          </div>
 
+          <div class="mb-4">
+            <label>Teléfono:</label>
+            <input formControlName="telefono" class="w-full border p-2 rounded" />
+          </div>
 
-          <label>Email:</label>
-          <input [(ngModel)]="usuarioEditado.usuario.email" class="w-full border p-2 rounded" disabled />
+          <div class="mb-4">
+            <label>Foto:</label>
+            <input formControlName="foto" class="w-full border p-2 rounded" />
+          </div>
 
-          <label>Nick:</label>
-          <input [(ngModel)]="usuarioEditado.usuario.nick" class="w-full border p-2 rounded" disabled />
-
-          <label>Nombre:</label>
-          <input [(ngModel)]="usuarioEditado.nombre" class="w-full border p-2 rounded" disabled />
-
-          <label>Dirección:</label>
-          <input [(ngModel)]="usuarioEditado.direccion" class="w-full border p-2 rounded" />
-
-          <label>Teléfono:</label>
-          <input [(ngModel)]="usuarioEditado.telefono" class="w-full border p-2 rounded" />
-
-          <label>Foto:</label>
-          <input [(ngModel)]="usuarioEditado.foto" class="w-full border p-2 rounded" />
-
-
+          <!-- Botones del formulario -->
           <div class="flex justify-end mt-4">
-            <button (click)="guardarCambios()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">
+            <button type="submit" class="bg-customTeal text-white px-4 py-2 rounded mr-2">
               Guardar
             </button>
-
-            <button (click)="cerrarFormulario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
+            <button type="button" (click)="cerrarFormulario()" class="bg-custom-blue text-white px-4 py-2 rounded">
+              Cancelar
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 
-
-
-    <!-- Modal para editar email y contraseña -->
-    <div *ngIf="mostrandoEdicionContrasena" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+    <!-- Modal para editar contraseña -->
+    <div *ngIf="mostrandoEdicionContrasena" class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
       <div class="bg-white p-6 rounded shadow-lg w-1/3">
-        <h2 class="text-lg font-semibold mb-4">Editar Email y Contraseña</h2>
+        <h2 class="text-lg font-semibold mb-4">Editar Contraseña</h2>
 
-        <label>Contraseña:</label>
-        <input type="password" [(ngModel)]="usuarioEditado.contrasena" class="w-full border p-2 rounded"
-               placeholder="Nueva contraseña (opcional)" />
+        <form (ngSubmit)="guardarEdicionContrasena()">
+          <div class="mb-4">
+            <label>Contraseña:</label>
+            <input type="password" [(ngModel)]="usuarioEditado.contrasena" class="w-full border p-2 rounded" placeholder="Nueva contraseña" />
+          </div>
 
-        <div class="flex justify-end mt-4">
-          <button (click)="guardarEdicionContrasena()" class="bg-green-500 text-white px-4 py-2 rounded mr-2">
-            Guardar
-          </button>
-          <button (click)="cerrarEdicionUsuario()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
-        </div>
+          <div class="flex justify-end mt-4">
+            <button type="submit" class="bg-customTeal text-white px-4 py-2 rounded mr-2">
+              Guardar
+            </button>
+            <button type="button" (click)="cerrarEdicionUsuario()" class="bg-custom-blue text-white px-4 py-2 rounded">
+              Cancelar
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-
-    <!-- Información del Carrito de Compras -->
-    <div class="mt-8 bg-gray-100 p-4 rounded-lg shadow-md">
-      <h2 class="text-lg font-semibold text-gray-700 mb-2">Carrito de Compras</h2>
-      <p class="text-gray-600">Aquí se muestra la información del carrito de compras...</p>
-    </div>
-
   </main>
-</div>
+</section>

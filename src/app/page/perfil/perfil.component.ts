@@ -56,6 +56,7 @@ export class PerfilComponent implements OnInit {
     this.authService.getAuthState().pipe(
       filter(authState => authState), // Asegurar que está autenticado
       switchMap(() => this.authService.getUserData()), // Obtener datos del usuariodistinctUntilChanged() // Evitar que emita datos repetidos
+      distinctUntilChanged() // Evitar que emita datos repetidos
     ).subscribe(userData => {
       if (userData) {
         console.log('Datos únicos obtenidos:', userData);
@@ -80,6 +81,11 @@ export class PerfilComponent implements OnInit {
         this.perfilForm.get('nombre')?.disable();
         this.perfilForm.get('apellidos')?.disable();
         this.perfilForm.get('dni')?.disable();
+
+        //Hay que habilitar los campos que se desean editar
+        this.perfilForm.get('telefono')?.enable();
+        this.perfilForm.get('direccion')?.enable();
+        this.perfilForm.get('foto')?.enable();
       },
       error: () => {
         this.errorMessage = 'Error al cargar los datos del perfil.';
@@ -88,34 +94,38 @@ export class PerfilComponent implements OnInit {
   }
 
 
-
   guardarCambios(): void {
+    console.log('Método guardarCambios ejecutado');
+
     if (!this.userData?.id) {
       console.error("❌ No se encontró el ID del usuario.");
       return;
     }
 
-    // Obtener los valores del formulario
     const usuarioActualizado = this.perfilForm.value;
+    console.log('Datos del formulario:', usuarioActualizado);
 
-    console.log('Datos a enviar:', usuarioActualizado); // Verifica los datos antes de enviarlos
-
-    // Llamada al servicio para actualizar los datos del cliente
     this.perfilService.editarCliente(this.userData.id, usuarioActualizado).subscribe(
       (respuesta) => {
-        console.log("Datos del backend después de la actualización:", respuesta);
-        Swal.fire('Éxito', 'Los datos del perfil se han actualizado correctamente', 'success');
-        this.mostrandoFormulario = false;
+        console.log("Respuesta del backend:", respuesta);
+        console.log("Datos recibidos después de actualizar:", respuesta);
 
-        // Actualiza los datos en el formulario después de la respuesta exitosa
-        this.perfilForm.patchValue(respuesta);  // Aquí estamos recargando los datos del formulario
+        Swal.fire('Éxito', 'Los datos del perfil se han actualizado correctamente', 'success');
+
+        // ACTUALIZAR LOS DATOS DEL USUARIO EN EL FRONTEND
+        this.userData = { ...this.userData, ...usuarioActualizado };
+
+        // ACTUALIZAR EL FORMULARIO PARA REFLEJAR LOS CAMBIOS
+        this.perfilForm.patchValue(usuarioActualizado);
+
+        // Cerrar el formulario sin recargar la página
+        this.cerrarFormulario();
       },
       (error) => {
         console.error("❌ Error en la actualización:", error);
         Swal.fire('Error', 'Hubo un problema al actualizar el perfil', 'error');
       }
     );
-
   }
 
 

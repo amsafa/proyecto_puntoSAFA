@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { LibroService } from '../../service/libro.service';
 import { LibroCrea } from '../../interface/libro-crea';  // Importando desde libro-crea.ts
 import { NgIf } from '@angular/common';
+import {LibroNuevo} from '../../interface/libroNuevo';
 
 @Component({
   selector: 'app-registro-libro',
@@ -20,63 +20,74 @@ export class RegistroLibroComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private libroService: LibroService,
-    private router: Router
   ) {}
 
   ngOnInit() {
     this.libroForm = this.fb.group({
-      titulo: ['', Validators.required],
-      resumen: ['', Validators.required],
+      titulo: ['', [Validators.required, Validators.maxLength(255)]], // Added max length validation
+      resumen: ['', [Validators.required, Validators.maxLength(800)]], // Added max length validation
       anioPublicacion: ['', Validators.required],
       precio: ['', [Validators.required, Validators.min(0)]],
-      ISBN: ['', Validators.required],
+      ISBN: ['', [Validators.required, Validators.pattern(/^\d{10}(\d{3})?$/)]], // Added pattern validation for ISBN
       editorial: ['', Validators.required],
-      imagen: [''],
+      imagen: [''], // Optional field
       idioma: ['', Validators.required],
       numPaginas: ['', [Validators.required, Validators.min(1)]],
-      autor: this.fb.group({
-        id: ['', Validators.required]  // ✅ Definir bien el FormGroup
-      }),
-      categoria: this.fb.group({
-        id: ['', Validators.required]  // ✅ Asegurar que está bien definido
-      })
+      autor: [null, Validators.required], // Directly as a number
+      categoria: [null, Validators.required], // Directly as a number
+
     });
   }
 
   guardarLibro(): void {
     if (this.libroForm.invalid) {
+      console.log("Form is invalid");
+      return;  // Prevent form submission
+    }
+
+    if (this.libroForm.invalid) {
       alert("El formulario no es válido. Revisa los campos.");
       return;
     }
 
-    const libroCrea: LibroCrea = {
-      id: 0,
+    const libroNuevo: LibroNuevo = {
+      id: 0,  // This can be omitted if not needed
       titulo: this.libroForm.value.titulo,
       resumen: this.libroForm.value.resumen,
-      anioPublicacion: this.libroForm.value.anio_publicacion,
+      anioPublicacion: new Date(this.libroForm.value.anioPublicacion).toISOString().split('T')[0], // Format the date
       precio: this.libroForm.value.precio,
       ISBN: this.libroForm.value.ISBN,
       editorial: this.libroForm.value.editorial,
       imagen: this.libroForm.value.imagen,
       idioma: this.libroForm.value.idioma,
-      numPaginas: this.libroForm.value.num_paginas,
-      autor:this.libroForm.value.autor?.id,
-      categoria: this.libroForm.value.categoria?.id,
+      numPaginas: this.libroForm.value.numPaginas,
+      autor: Number(this.libroForm.value.autor),  // Ensure it's a number
+      categoria: Number(this.libroForm.value.categoria),
     };
-
-
-
-    // Llamar al servicio con el libro transformado
-    this.libroService.crearLibro(libroCrea).subscribe(
+    this.libroService.crearLibro(libroNuevo).subscribe(
       () => {
-        alert("📚 ¡Libro creado!");
+        this.mostrarModalExito();
+        // Mostrar modal de éxito en vez de alert
         this.crearNuevoLibro();
       },
       error => {
         console.error("❌ Error al registrar el libro:", error);
-        alert("Hubo un error al registrar el libro.");
+        this.mostrarModalError(); // Mostrar modal de error en vez de alert
       }
     );
+  }
+
+  mostrarModalError(): void {
+    document.getElementById('error-modal')?.classList.remove('hidden');
+  }
+  cerrarModalError(): void {
+    document.getElementById('error-modal')?.classList.add('hidden');
+  }
+  mostrarModalExito(): void {
+    document.getElementById('success-modal')?.classList.remove('hidden');
+  }
+  cerrarModalExito(): void {
+    document.getElementById('success-modal')?.classList.add('hidden');
   }
 
 

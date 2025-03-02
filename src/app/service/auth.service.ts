@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import {BehaviorSubject, lastValueFrom, Observable, throwError} from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError} from 'rxjs/operators';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { RegistroCliente } from '../interface/RegistroCliente';
 import { Login } from '../interface/Login';
 import { ActualizarService } from './actualizar.service';
 import {environment} from '../../environments/environment';
-
+import {Usuario} from '../interface/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,7 @@ export class AuthService {
         throw new Error("❌ Token no recibido en la respuesta del servidor.");
       }
 
-      console.log("✅ Token recibido:", response.token);
+    //  console.log("✅ Token recibido:", response.token);
 
       localStorage.setItem('token', response.token);
       this.authState.next(true);
@@ -71,15 +71,15 @@ export class AuthService {
       'Content-Type': 'application/json'
     });
 
-    return lastValueFrom(
-      this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })  //lisseth
+    return  lastValueFrom(
+       this.http.get<RegistroCliente>('https://localhost:8000/api/cliente/auth/user', { headers })  //lisseth
       //this.http.get<RegistroCliente>('api/api/cliente/auth/user', { headers })  // alba
       //this.http.get<RegistroCliente>(`${this.apiUrl}/api/cliente/auth/user`, { headers })  // pablo
 
     ).then(userData => {
       this.userData.next(userData);
       localStorage.setItem('userData', JSON.stringify(userData));  // 🔹 Guardar en localStorage
-     // console.log(userData);
+    //  console.log(userData);
       return userData;
     }).catch(err => {
       console.error("❌ Error al obtener datos del usuario:", err);
@@ -90,7 +90,7 @@ export class AuthService {
           this.router.navigate(['/login']);
           this.userData.next(null);
         } else {
-          console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
+        //  console.error(`❌ Error HTTP ${err.status}: ${err.message}`);
         }
       } else {
         console.error("❌ Error inesperado:", err);
@@ -154,9 +154,7 @@ export class AuthService {
     return throwError(() => new Error(errorMessage));
   }
 
-  actualizarUsuario(usuarioEditado: any) {
 
-  }
 
   recuperarContrasena(email: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/api/recuperar-contrasena`, { email });
@@ -174,7 +172,35 @@ export class AuthService {
     return this.http.get(`${this.apiUrl}/api/verificar-token/${token}`);
 
   }
+
+
+  // Method to update user information
+  actualizarUsuario(id: number, usuarioEditado: any): Observable<Usuario> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    // Crear el cuerpo de la solicitud
+    const body: any = {
+      nick: usuarioEditado.usuario.nick,
+      email: usuarioEditado.usuario.email,
+      rol: usuarioEditado.usuario.rol // Añadir el campo rol si es necesario
+    };
+
+    // Añadir la contraseña solo si no está vacía
+    if (usuarioEditado.contrasena) {
+      body.contrasena = usuarioEditado.contrasena;
+    }
+
+    return this.http.put<Usuario>(`${this.apiUrl}/usuario/editar/${id}`, body, { headers })
+      .pipe(
+        catchError(error => {
+          console.error('Error al actualizar el usuario:', error);
+          return throwError(() => new Error('No se pudo actualizar el usuario. Por favor, inténtalo de nuevo.'));
+        })
+      );
+  }
+
 }
-
-
-

@@ -57,11 +57,10 @@
 
             <!-- Año de Publicación -->
             <div>
-              <label for="anio_publicacion" class="block text-sm font-medium text-gray-700">Año de Publicación</label>
-              <input type="number" id="anio_publicacion" formControlName="anio_publicacion"
-                     class="mt-1 block w-full border border-gray-300 rounded-md p-3"
-                     placeholder="Ingrese el año de publicación">
-              <div *ngIf="libroForm.get('anio_publicacion')?.invalid && libroForm.get('anio_publicacion')?.touched" class="text-red-600 text-sm">
+              <label for="anio_publicacion" class="block text-sm font-medium text-gray-700">Fecha de Publicación</label>
+              <input type="date" id="anio_publicacion" formControlName="anioPublicacion"
+                     class="mt-1 block w-full border border-gray-300 rounded-md p-3">
+              <div *ngIf="libroForm.get('anioPublicacion')?.invalid && libroForm.get('anioPublicacion')?.touched" class="text-red-600 text-sm">
                 El año de publicación es obligatorio.
               </div>
             </div>
@@ -122,16 +121,15 @@
 
             <!-- Número de Páginas -->
             <div>
-              <label for="num_paginas" class="block text-sm font-medium text-gray-700">Número de Páginas</label>
-              <input id="num_paginas" formControlName="num_paginas"
+              <label for="numPaginas" class="block text-sm font-medium text-gray-700">Número de Páginas</label>
+              <input id="numPaginas" formControlName="numPaginas"
                      class="mt-1 block w-full border border-gray-300 rounded-md p-3"
                      placeholder="Ingrese el número de páginas" />
-              <div *ngIf="libroForm.get('num_paginas')?.invalid && libroForm.get('num_paginas')?.touched" class="text-red-600 text-sm">
+              <div *ngIf="libroForm.get('numPaginas')?.invalid && libroForm.get('numPaginas')?.touched" class="text-red-600 text-sm">
                 El número de páginas es obligatorio.
               </div>
             </div>
-
-            <!-- Autor -->
+            <!-- Autor (Full Name) -->
             <div>
               <label for="autor" class="block text-sm font-medium text-gray-700">Autor</label>
               <input id="autor" formControlName="autor"
@@ -142,7 +140,7 @@
               </div>
             </div>
 
-            <!-- Categoría -->
+            <!-- Categoría (Name) -->
             <div>
               <label for="categoria" class="block text-sm font-medium text-gray-700">Categoría</label>
               <input id="categoria" formControlName="categoria"
@@ -152,18 +150,18 @@
                 La categoría es obligatoria.
               </div>
             </div>
-
             <!-- Botón Guardar -->
             <div class="mt-6">
               <button type="submit"
+                      (click)="guardarCambios()"
                       class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-green-600 transition duration-300">
                 Guardar
               </button>
             </div>
 
             <!-- Botón Eliminar (solo visible cuando hay un libro cargado, es decir, en modo edición) -->
-            <div class="mt-6" *ngIf="isEditMode">
-              <button type="button"
+            <div class="mt-6">
+              <button type="button" (click)="eliminarLibro()"
                       class="w-full bg-red-500 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-red-600 transition duration-300">
                 Eliminar
               </button>
@@ -175,3 +173,55 @@
     </div>
   </main>
 </div>
+
+<!-- Modal de Error -->
+<div id="error-modal" class="hidden fixed inset-0 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg p-6 shadow-lg max-w-md w-full">
+    <h2 class="text-lg font-bold text-gray-900">Error</h2>
+    <p class="text-gray-700 mt-2">Ha ocurrido un error. Por favor, intenta nuevamente.</p>
+    <div class="mt-4 flex justify-end">
+      <button class="px-4 py-2 bg-red-600 text-white rounded-lg" (click)="cerrarModalError()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Éxito -->
+<div id="success-modal" class="hidden fixed inset-0 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg p-6 shadow-lg max-w-md w-full">
+    <h2 class="text-lg font-bold text-gray-900">Éxito</h2>
+    <p class="text-gray-700 mt-2">La operación se realizó correctamente.</p>
+    <div class="mt-4 flex justify-end">
+      <button class="px-4 py-2 bg-green-600 text-white rounded-lg" (click)="cerrarModalExito()">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Confirmación -->
+<div id="confirm-modal" class="hidden fixed inset-0 flex items-center justify-center z-50 backdrop-blur confirm-dialog">
+  <div class="relative px-4 min-h-screen md:flex md:items-center md:justify-center">
+    <div class="opacity-25 w-full h-full absolute z-10 inset-0"></div>
+    <div class="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative shadow-lg">
+      <div class="md:flex items-center">
+        <div class="rounded-full border border-gray-300 flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
+          <i class="bx bx-error text-3xl">&#9888;</i>
+        </div>
+        <div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
+          <p class="font-bold">¡Advertencia!</p>
+          <p class="text-sm text-gray-700 mt-1">Perderás todos tus datos si eliminas esto. Esta acción no se puede deshacer.</p>
+        </div>
+      </div>
+      <div class="text-center md:text-right mt-4 md:flex md:justify-end">
+        <button class="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-red-200 text-red-700 rounded-lg font-semibold text-sm md:ml-2 md:order-2" (click)="confirmarAccion()">
+          Eliminar
+        </button>
+        <button class="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-gray-200 rounded-lg font-semibold text-sm mt-4 md:mt-0 md:order-1" (click)="cerrarModalConfirmacion()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

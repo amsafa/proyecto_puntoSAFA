@@ -1,0 +1,27 @@
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: #09f;
+  animation: spin 1s ease infinite;
+}
+
+.book-spinner {
+  width: 50px;
+  height: 70px;
+  background: linear-gradient(135deg, #09f 25%, transparent 25%) -50px 0/100px 100px,
+  linear-gradient(225deg, #09f 25%, transparent 25%) -50px 0/100px 100px,
+  linear-gradient(315deg, #09f 25%, transparent 25%) 0px 0/100px 100px,
+  linear-gradient(45deg, #09f 25%, transparent 25%) 0px 0/100px 100px;
+  animation: book-spin 1s ease infinite;
+}
+
+@keyframes book-spin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}

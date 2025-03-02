@@ -1,11 +1,11 @@
 import {Component, LOCALE_ID, OnInit} from '@angular/core';
 import {LibroCarrito} from '../../interface/libro-carrito';
 import {CarritoService} from '../../service/carrito.service';
-import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
+import {CurrencyPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {Pedido} from '../../interface/pedido';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Cliente} from '../../interface/cliente';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-pagar-compra',
@@ -14,7 +14,8 @@ import {Router} from '@angular/router';
     CurrencyPipe,
     FormsModule,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgClass
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   templateUrl: './pagar-compra.component.html',
@@ -137,8 +138,9 @@ export class PagarCompraComponent implements OnInit{
     this.carritoService.savePedido(pedido).subscribe({
       next: (response) => {
         console.log('Order saved:', response);
-        this.showAlert('Pedido realizado con éxito');
-        this.clearCart();
+        this.modalMessage = '¡Tu pedido ha sido realizado con éxito!';
+        this.showModal = true;
+        this.clearCart();        this.clearCart();
         setTimeout(() => {
           this.router.navigateByUrl('/home').then(()=>{
             window.location.reload();
@@ -177,5 +179,7 @@ export class PagarCompraComponent implements OnInit{
   closeModal() {
     this.showModal = false;
   }
+
+
 
 }

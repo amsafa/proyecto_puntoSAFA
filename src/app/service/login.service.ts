@@ -27,7 +27,7 @@ export class LoginService {
 
       try {
         await this.authService.login(this.login);
-        console.log("Login exitoso"); // ✅ Depuración
+      //  console.log("Login exitoso"); // ✅ Depuración
       } catch (error) {
         this.errorMessage = 'Error en el inicio de sesión. Verifica tus credenciales.';
       }

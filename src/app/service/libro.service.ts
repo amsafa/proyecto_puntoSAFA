@@ -6,6 +6,7 @@ import {environment} from '../../environments/environment';
 import {LibroCrea} from '../interface/libro-crea';
 import {Categoria} from '../interface/categoria';
 import {Autor} from './autor.service';
+import {LibroNuevo} from '../interface/libroNuevo';
 
 
 
@@ -52,15 +53,6 @@ export class LibroService {
   getLibroById(id: number): Observable<Libro> {
     return this.http.get<Libro>(`${this.apiUrl}/${id}`);}
 
-  getLibrosByPrecio(range: string, page: number = 1, limit: number = 9): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.apiUrl}/precio/${range}?page=${page}&limit=${limit}`).pipe(
-      map(libros => libros.map(libro => ({
-        ...libro,
-        mediaCalificacion: parseFloat(String(libro.mediaCalificacion))
-      })))
-    );
-  }
-
 
   // Método para obtener libros por categoría (desde el backend)
   getBooksByCategory(id: number, page: number = 1, limit: number = 9): Observable<Libro[]> {
@@ -74,18 +66,20 @@ export class LibroService {
 
 
 
-
   // Método para crear un libro
 
 
-  crearLibro(libro: LibroCrea): Observable<Libro> {
-    return this.http.post<Libro>(`${this.apiUrl}/guardar`, libro);
+  crearLibro(libro: LibroNuevo): Observable<LibroNuevo> {
+    return this.http.post<LibroNuevo>(`${this.apiUrl}/guardar?XDEBUG_SESSION_START=14361`, libro, {
+      headers: { 'Content-Type': 'application/json' } // Ensure JSON format
+    });
   }
 
 
 // Método para editar un libro
   actualizarLibro(id: number, libro: LibroCrea): Observable<LibroCrea> {
-    return this.http.put<LibroCrea>(`${this.apiUrl}/actualizar/${id}`, libro, {
+    return this.http.put<LibroCrea>(`${this.apiUrl}/editar/${id}`, libro, {
+      headers: { 'Content-Type': 'application/json' } // ✅ Ensure JSON format
     });
   }
 
@@ -109,13 +103,6 @@ export class LibroService {
   }
 
 
-  obtenerAutores(): Observable<Autor[]> {
-  return this.http.get<Autor[]>(`${this.apiUrl}/all`);
-}
 
-  obtenerCategorias():Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(`${this.apiUrl}/all`);
-
-  }
 
 }

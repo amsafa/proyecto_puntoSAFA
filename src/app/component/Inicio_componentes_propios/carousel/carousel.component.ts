@@ -17,7 +17,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   private animationFrameId!: number;
-  private scrollSpeed = 2; // Ajusta la velocidad de desplazamiento
+  private scrollSpeed = 1; // Ajusta la velocidad de desplazamiento
 
   books: Libro[] = [];
   loading = true;
