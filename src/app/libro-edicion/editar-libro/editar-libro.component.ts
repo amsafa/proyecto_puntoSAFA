@@ -105,26 +105,64 @@ export class EditarLibroComponent implements OnInit {
     });
   }
 
+  mostrarModalError(): void {
+    document.getElementById('error-modal')?.classList.remove('hidden');
+  }
+
+  cerrarModalError(): void {
+    document.getElementById('error-modal')?.classList.add('hidden');
+  }
+
+  mostrarModalExito(): void {
+    document.getElementById('success-modal')?.classList.remove('hidden');
+  }
+
+  cerrarModalExito(): void {
+    document.getElementById('success-modal')?.classList.add('hidden');
+  }
+
+  mostrarModalConfirmacion(): void {
+    document.getElementById('confirm-modal')?.classList.remove('hidden');
+  }
+
+  cerrarModalConfirmacion(): void {
+    document.getElementById('confirm-modal')?.classList.add('hidden');
+  }
+
+
+
   eliminarLibro(): void {
     if (!this.libroId) {
       alert('Debe seleccionar un libro antes de eliminar.');
       return;
     }
 
-    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este libro?');
-    console.log("ID a eliminar:", this.libroId);
+    this.mostrarModalConfirmacion();
+  }
 
-    if (confirmDelete) {
-      this.libroService.eliminarLibro(this.libroId).subscribe(
-        () => {
-          alert('Libro eliminado correctamente.');
-          this.router.navigate(['/lista-libros']);
-        },
-        error => {
-          alert('Error: No se pudo eliminar el libro.');
-        }
-      );
-    }
+  confirmarAccion(): void {
+    if (!this.libroId) return;
+
+    console.log("✅ Confirmando eliminación del libro con ID:", this.libroId);
+
+    this.libroService.eliminarLibro(this.libroId).subscribe(
+      () => {
+        this.mostrarModalExito(); // Modal de éxito
+        this.resetearFormulario();
+      },
+      error => {
+        this.mostrarModalError(); // Modal de error
+        console.error("❌ Error al eliminar el libro:", error);
+      }
+    );
+
+    this.cerrarModalConfirmacion(); // Cerrar el modal después de confirmar
+  }
+
+
+
+  private resetearFormulario() {
+    this.libroForm.reset();
   }
 
 
@@ -176,9 +214,13 @@ export class EditarLibroComponent implements OnInit {
       autor: autorSeleccionado ? { id: autorSeleccionado.id } : null,  // ✅ Convert back to autor ID
       categoria: categoriaSeleccionada ? { id: categoriaSeleccionada.id } : null  // ✅ Convert back to categoria ID
     }).subscribe(() => {
-      alert('Libro actualizado con éxito');
-    }, error => {
-      alert('Error al actualizar el libro.');
-    });
+        this.mostrarModalExito(); // Modal de éxito en vez de alert
+      this.resetearFormulario();
+      },
+      error => {
+        this.mostrarModalError(); // Modal de error en vez de alert
+        console.error("❌ Error al actualizar el libro:", error);
+      }
+    );
   }
 }

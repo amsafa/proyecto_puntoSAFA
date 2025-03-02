@@ -66,14 +66,28 @@ export class RegistroLibroComponent implements OnInit {
     };
     this.libroService.crearLibro(libroNuevo).subscribe(
       () => {
-        alert("📚 ¡Libro creado!");
+        this.mostrarModalExito();
+        // Mostrar modal de éxito en vez de alert
         this.crearNuevoLibro();
       },
       error => {
         console.error("❌ Error al registrar el libro:", error);
-        alert("Hubo un error al registrar el libro.");
+        this.mostrarModalError(); // Mostrar modal de error en vez de alert
       }
     );
+  }
+
+  mostrarModalError(): void {
+    document.getElementById('error-modal')?.classList.remove('hidden');
+  }
+  cerrarModalError(): void {
+    document.getElementById('error-modal')?.classList.add('hidden');
+  }
+  mostrarModalExito(): void {
+    document.getElementById('success-modal')?.classList.remove('hidden');
+  }
+  cerrarModalExito(): void {
+    document.getElementById('success-modal')?.classList.add('hidden');
   }
 
 
