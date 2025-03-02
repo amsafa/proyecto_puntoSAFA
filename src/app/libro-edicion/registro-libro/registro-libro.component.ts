@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { LibroService } from '../../service/libro.service';
 import { LibroCrea } from '../../interface/libro-crea';  // Importando desde libro-crea.ts
 import { NgIf } from '@angular/common';
+import {LibroNuevo} from '../../interface/libro-nuevo';
 
 @Component({
   selector: 'app-registro-libro',
@@ -20,22 +20,22 @@ export class RegistroLibroComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private libroService: LibroService,
-    private router: Router
   ) {}
 
   ngOnInit() {
     this.libroForm = this.fb.group({
-      titulo: ['', Validators.required],
-      resumen: ['', Validators.required],
+      titulo: ['', [Validators.required, Validators.maxLength(255)]], // Added max length validation
+      resumen: ['', [Validators.required, Validators.maxLength(800)]], // Added max length validation
       anioPublicacion: ['', Validators.required],
       precio: ['', [Validators.required, Validators.min(0)]],
-      ISBN: ['', Validators.required],
+      ISBN: ['', [Validators.required, Validators.pattern(/^\d{10}(\d{3})?$/)]], // Added pattern validation for ISBN
       editorial: ['', Validators.required],
-      imagen: [''],
+      imagen: [''], // Optional field
       idioma: ['', Validators.required],
       numPaginas: ['', [Validators.required, Validators.min(1)]],
-      autor: ['', Validators.required],
-      categoria: ['', Validators.required]
+      autor: [null, Validators.required], // Directly as a number
+      categoria: [null, Validators.required], // Directly as a number
+
     });
   }
 
@@ -50,29 +50,29 @@ export class RegistroLibroComponent implements OnInit {
       return;
     }
 
-    const libroCrea: LibroCrea = {
-      id: 0,
+    const libroNuevo: LibroNuevo = {
+      id: 0,  // This can be omitted if not needed
       titulo: this.libroForm.value.titulo,
       resumen: this.libroForm.value.resumen,
-      anioPublicacion: this.libroForm.value.anioPublicacion,
+      anioPublicacion: new Date(this.libroForm.value.anioPublicacion).toISOString().split('T')[0], // Format the date
       precio: this.libroForm.value.precio,
       ISBN: this.libroForm.value.ISBN,
       editorial: this.libroForm.value.editorial,
       imagen: this.libroForm.value.imagen,
       idioma: this.libroForm.value.idioma,
-      numPaginas: this.libroForm.value.num_paginas,
-      autor:this.libroForm.value.autor,
-      categoria: this.libroForm.value.categoria,
+      numPaginas: this.libroForm.value.numPaginas,
+      autor: this.libroForm.value.autor.id,  // Only send the ID
+      categoria: this.libroForm.value.categoria.id, // Only send the ID
     };
 
-    console.log(this.libroForm.value);
-
-
-
-
+    console.log("libroForm.value", this.libroForm.value);
+    console.log("libroCrea", libroNuevo);
+    console.log("libroForm.value.autor", this.libroForm.value.autor);
+    console.log("libroForm.value.categoria", this.libroForm.value.categoria);
+    console.log("Final libroCrea object before sending:", libroNuevo);
 
     // Llamar al servicio con el libro transformado
-    this.libroService.crearLibro(libroCrea).subscribe(
+    this.libroService.crearLibro(libroNuevo).subscribe(
       () => {
         alert("📚 ¡Libro creado!");
         this.crearNuevoLibro();
