@@ -1,3 +1,5 @@
+<section class="min-h-[calc(100vh-8rem)] py-16 px-4 sm:px-6 lg:px-8 relative" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)), url('../../../../assets/puntosafa_fondo3.jpeg'); background-size: cover; background-position: center;">
+
 <section class="bg-customGreen py-4 md:py-6 shadow-gray-500 shadow-sm">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
@@ -46,9 +48,9 @@
       ✖</button>
   </div>
 </section>
-<div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 p-4 bg-custom-blue">
+<div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 p-4">
   <!-- Filtro Catalogo -->
-  <div class="flex-shrink-0">
+  <div class="flex-shrink-0 bg-custom-blue">
     <!-- Filtros -->
     <div class="bg-white max-w-[333px] max-h-[65px] text-center rounded-lg text-custom-blue">
       <h1 class="text-2xl font-bold">Filtros</h1>
@@ -66,7 +68,7 @@
     <!--###################   FILTRO PRECIO ####################################-->
     <div class="border-b border-gray-200 py-6">
       <!-- Precios -->
-      <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9 border-t border-custom-blue">
+      <div class="max-w-[500px] p-4 space-y-4 mt-4 mr-9 ml-9 border-t border-custom-blue ">
         <h3 class="text-white text-[20px] font-semibold">Precios</h3>
         <div class="flex flex-col space-y-2 text-white text-md font-bold font-[Montserrat]">
           <label *ngFor="let range of priceRanges">
@@ -139,12 +141,12 @@
 
 
 </div>
-<div class="flex items-center justify-center border-t border-custom-blue bg-custom-blue px-4 py-3 sm:px-6">
+<div class="flex items-center justify-center  px-4 py-3 sm:px-6">
   <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
     <button
       (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
-      class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-300 ring-1 ring-customBlanco ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
-      Anterior
+      class="relative inline-flex items-center rounded-l-md px-2 py-2 text-custom-blue ring-1 ring-customBlanco ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
+       <strong>Anterior</strong>
       <span class="sr-only"></span>
       <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
@@ -153,13 +155,15 @@
     <button
       *ngIf="currentPage < totalPages"
       (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages"
-      class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
+      class="relative inline-flex items-center rounded-r-md px-2 py-2 text-custom-blue ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer">
       <span class="sr-only"></span>
-      Siguiente
+      <strong> Siguiente </strong>
       <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
       </svg>
     </button>
   </nav>
 </div>
+
+</section>
 
