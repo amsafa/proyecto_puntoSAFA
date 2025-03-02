@@ -50,6 +50,7 @@
         <ul [ngClass]="{'block': showMenu, 'hidden': !showMenu}"
             class="absolute bg-white  shadow-md rounded mt-2 w-40 right-0">
           <li><a routerLink="/perfil" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Perfil</a></li>
+          <li *ngIf="isAdmin"><a routerLink="/perfil-adm" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Perfil Adm</a></li>
           <li><a routerLink="/pedidos-cliente" class=" text-l block px-4 py-2 text-custom-blue hover:bg-gray-100">Mis Pedidos</a></li>
           <li>
             <button (click)="logout()" class=" text-l block w-full text-left px-4 py-2 hover:bg-red-100 text-red-600">
@@ -75,6 +76,7 @@
 
     <ng-template #loggedInMenu>
       <a routerLink="/perfil" class="block py-2  text-customAzulito hover:text-customBlanco">Perfil</a>
+      <li *ngIf="isAdmin"><a routerLink="/perfil-adm" class="block py-2  text-customAzulito hover:text-customBlanco">Perfil Admin</a></li>
       <a routerLink="/pedidos-cliente" class="block py-2 text-customAzulito hover:text-customBlanco">Mis Pedidos</a>
       <button (click)="logout()" class="block w-full py-2 text-red-400 text:bg-red-100 hover:bg-red-100">
         Cerrar Sesión

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, LOCALE_ID, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators } from "@angular/forms";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import { adm } from '../../interface/adm';
 import { PerfiladmService } from '../../service/perfiladm.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -17,8 +17,10 @@ import {Cliente} from '../../interface/cliente';
     NgIf,
     RouterLink,
     NgForOf,
-    DatePipe
+    DatePipe,
+    NgClass
   ],
+  providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   templateUrl: './perfil-adm.component.html',
   styleUrls: ['./perfil-adm.component.css']
 })

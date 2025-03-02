@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { of } from 'rxjs';
 import { Autor } from '../../interface/autor';
 import { Categoria } from '../../interface/categoria';
+import {LibroNuevo} from '../../interface/libro-nuevo';
 
 @Component({
   selector: 'app-editar-libro',
@@ -35,8 +36,7 @@ export class EditarLibroComponent implements OnInit {
   autores: Autor[] = [];
   categorias: Categoria[] = [];
   titulo: string = '';
-  private confirmationService: any;
-  private messageService: any;
+
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +47,7 @@ export class EditarLibroComponent implements OnInit {
 
   ngOnInit() {
     this.libroForm = this.fb.group({
+      id: [null],
       titulo: ['', Validators.required],
       resumen: ['', Validators.required],
       anioPublicacion: ['', Validators.required],
@@ -56,9 +57,10 @@ export class EditarLibroComponent implements OnInit {
       imagen: [''],
       idioma: ['', Validators.required],
       numPaginas: ['', Validators.required],
-      autor: this.fb.group({ id: ['', Validators.required] }),  // ✅ Se asegura que autor tenga id
-      categoria: this.fb.group({ id: ['', Validators.required] }) // ✅ Se asegura que categoría tenga id
+      autor: ['', Validators.required],
+      categoria: ['', Validators.required]
     });
+
 
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -68,15 +70,6 @@ export class EditarLibroComponent implements OnInit {
     if (this.isEditMode && this.libroId) {
       this.cargarLibro(this.libroId);
     }
-
-    this.libroService.obtenerAutores().subscribe(autores => {
-      this.autores = autores;
-    });
-
-    this.libroService.obtenerCategorias().subscribe(categorias => {
-      this.categorias = categorias;
-    });
-
     this.tituloControl.valueChanges.pipe(
       debounceTime(300),
       switchMap(value => value ? this.libroService.buscarLibroPorTitulo(value) : of([]))
@@ -86,101 +79,106 @@ export class EditarLibroComponent implements OnInit {
   }
 
   cargarLibro(id: number): void {
-    this.libroService.obtenerLibro(id).subscribe(libro => {
+    this.libroService.obtenerLibro(id).subscribe((libro: LibroCrea) => {
       if (!libro) {
         alert("Libro no encontrado.");
         return;
       }
+      console.log("Libro cargado:", libro);
 
       this.libroForm.patchValue({
         titulo: libro.titulo,
         resumen: libro.resumen,
-        anioPublicacion: libro.anioPublicacion,
+        anioPublicacion: libro.anioPublicacion ? libro.anioPublicacion.split('T')[0] : '', // ✅ Remove time + timezone
         precio: libro.precio,
         ISBN: libro.ISBN,
         editorial: libro.editorial,
         imagen: libro.imagen,
         idioma: libro.idioma,
         numPaginas: libro.numPaginas,
-        autor: { id: libro.autor?.id || '' },  // ✅ Asegura que siempre haya un valor
-        categoria: { id: libro.categoria?.id || '' }
+        autor: libro.autor ? `${libro.autor.nombre} ${libro.autor.apellidos}` : '', // ✅ Store full name
+        categoria: libro.categoria ? libro.categoria.nombre : '' // ✅ Store category name
       });
     }, error => {
+      console.error("Error al cargar el libro:", error);
       alert('Hubo un problema al cargar los datos del libro.');
     });
   }
 
-  guardarLibro(): void {
-    if (this.libroForm.invalid) {
-      alert("El formulario no es válido. Revisa los campos.");
+  eliminarLibro(): void {
+    if (!this.libroId) {
+      alert('Debe seleccionar un libro antes de eliminar.');
       return;
     }
 
-    const libro: LibroCrea = {
-      ...this.libroForm.value,
-      anioPublicacion: this.fechaFormateada(this.libroForm.value.anioPublicacion),
-      autor: { id: this.libroForm.value.autor.id },
-      categoria: { id: this.libroForm.value.categoria.id }
-    };
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este libro?');
+    console.log("ID a eliminar:", this.libroId);
 
-    this.libroService.crearLibro(libro).subscribe(
-      () => {
-        alert("📚 ¡Se ha creado tu libro!");
-        this.crearNuevoLibro();
-      },
-      error => {
-        alert("Hubo un error al registrar el libro.");
-      }
-    );
-  }
-
-  private fechaFormateada(anio_publicacion: Date): string {
-    if (!anio_publicacion) return '';
-    return new Date(anio_publicacion).toISOString().split('T')[0];
-  }
-
-  crearNuevoLibro(): void {
-    this.isEditMode = false;
-    this.libroId = undefined;
-    this.libroForm.reset();
-  }
-
-  eliminarLibro(): void {
-    if (!this.libroId) return;
-
-    this.confirmationService.confirm({
-      message: '¿Estás seguro de que deseas eliminar este libro?',
-      header: 'Confirmación de Eliminación',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.libroService.eliminarLibro(this.libroId!).subscribe(
-          () => {
-            this.messageService.add({ severity: 'success', summary: 'Libro Eliminado', detail: 'El libro ha sido eliminado correctamente.' });
-            this.router.navigate(['/lista-libros']);
-          },
-          error => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el libro.' });
-          }
-        );
-      }
-    });
+    if (confirmDelete) {
+      this.libroService.eliminarLibro(this.libroId).subscribe(
+        () => {
+          alert('Libro eliminado correctamente.');
+          this.router.navigate(['/lista-libros']);
+        },
+        error => {
+          alert('Error: No se pudo eliminar el libro.');
+        }
+      );
+    }
   }
 
 
 
   onLibroSeleccionado(libro: LibroCrea): void {
+    console.log("Libro seleccionado:", libro);
+    this.libroId = libro.id;
     this.libroForm.patchValue({
+      id: libro.id ?? null,
       titulo: libro.titulo,
       resumen: libro.resumen,
-      anioPublicacion: this.fechaFormateada(libro.anioPublicacion),
+      anioPublicacion: libro.anioPublicacion ? libro.anioPublicacion.split('T')[0] : '', // ✅ Remove time + timezone
       precio: libro.precio,
       ISBN: libro.ISBN,
       editorial: libro.editorial,
       imagen: libro.imagen,
       idioma: libro.idioma,
       numPaginas: libro.numPaginas,
-      autor: { id: libro.autor?.id },
-      categoria: { id: libro.categoria?.id }
+      autor: libro.autor ? `${libro.autor.nombre} ${libro.autor.apellidos}` : '', // ✅ Store full name
+      categoria: libro.categoria ? libro.categoria.nombre : '' // ✅ Store category name
+    });
+    console.log("ID almacenado en el formulario:", this.libroForm.get('id')?.value);
+  }
+
+  guardarCambios(): void {
+    const libroActualizado = this.libroForm.value;
+    const libroId = this.libroForm.get('id')?.value;
+
+    console.log("ID extraído para actualizar:", libroId);
+
+    if (!libroId) {
+      alert("Error: No se encontró el ID del libro.");
+      return;
+    }
+
+    // Find the author object based on the full name entered
+    const autorSeleccionado = this.autores.find(a =>
+      `${a.nombre} ${a.apellidos}` === libroActualizado.autor
+    );
+
+    // Find the category object based on the name entered
+    const categoriaSeleccionada = this.categorias.find(c =>
+      c.nombre === libroActualizado.categoria
+    );
+
+    this.libroService.actualizarLibro(libroActualizado.id, {
+      ...libroActualizado,
+      anio_publicacion: libroActualizado.anio_publicacion, // Keep as string (YYYY-MM-DD)
+      autor: autorSeleccionado ? { id: autorSeleccionado.id } : null,  // ✅ Convert back to autor ID
+      categoria: categoriaSeleccionada ? { id: categoriaSeleccionada.id } : null  // ✅ Convert back to categoria ID
+    }).subscribe(() => {
+      alert('Libro actualizado con éxito');
+    }, error => {
+      alert('Error al actualizar el libro.');
     });
   }
 }
