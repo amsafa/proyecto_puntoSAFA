@@ -61,17 +61,9 @@ export class RegistroLibroComponent implements OnInit {
       imagen: this.libroForm.value.imagen,
       idioma: this.libroForm.value.idioma,
       numPaginas: this.libroForm.value.numPaginas,
-      autor: this.libroForm.value.autor.id,  // Only send the ID
-      categoria: this.libroForm.value.categoria.id, // Only send the ID
+      autor: Number(this.libroForm.value.autor),  // Ensure it's a number
+      categoria: Number(this.libroForm.value.categoria),
     };
-
-    console.log("libroForm.value", this.libroForm.value);
-    console.log("libroCrea", libroNuevo);
-    console.log("libroForm.value.autor", this.libroForm.value.autor);
-    console.log("libroForm.value.categoria", this.libroForm.value.categoria);
-    console.log("Final libroCrea object before sending:", libroNuevo);
-
-    // Llamar al servicio con el libro transformado
     this.libroService.crearLibro(libroNuevo).subscribe(
       () => {
         alert("📚 ¡Libro creado!");
