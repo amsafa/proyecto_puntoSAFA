@@ -35,8 +35,7 @@ export class EditarLibroComponent implements OnInit {
   autores: Autor[] = [];
   categorias: Categoria[] = [];
   titulo: string = '';
-  private confirmationService: any;
-  private messageService: any;
+
 
   constructor(
     private fb: FormBuilder,
@@ -142,30 +141,32 @@ export class EditarLibroComponent implements OnInit {
   }
 
   eliminarLibro(): void {
-    if (!this.libroId) return;
+    if (!this.libroId) {
+      alert('Debe seleccionar un libro antes de eliminar.');
+      return;
+    }
 
-    this.confirmationService.confirm({
-      message: '¿Estás seguro de que deseas eliminar este libro?',
-      header: 'Confirmación de Eliminación',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.libroService.eliminarLibro(this.libroId!).subscribe(
-          () => {
-            this.messageService.add({ severity: 'success', summary: 'Libro Eliminado', detail: 'El libro ha sido eliminado correctamente.' });
-            this.router.navigate(['/lista-libros']);
-          },
-          error => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el libro.' });
-          }
-        );
-      }
-    });
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este libro?');
+    console.log("ID a eliminar:", this.libroId);
+
+    if (confirmDelete) {
+      this.libroService.eliminarLibro(this.libroId).subscribe(
+        () => {
+          alert('Libro eliminado correctamente.');
+          this.router.navigate(['/lista-libros']);
+        },
+        error => {
+          alert('Error: No se pudo eliminar el libro.');
+        }
+      );
+    }
   }
 
 
 
   onLibroSeleccionado(libro: LibroCrea): void {
     console.log("Libro seleccionado:", libro);
+    this.libroId = libro.id;
     this.libroForm.patchValue({
       id: libro.id ?? null,
       titulo: libro.titulo,

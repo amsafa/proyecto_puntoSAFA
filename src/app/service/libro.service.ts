@@ -77,8 +77,10 @@ export class LibroService {
   // Método para crear un libro
 
 
-  crearLibro(libro: LibroCrea): Observable<Libro> {
-    return this.http.post<Libro>(`${this.apiUrl}/guardar`, libro);
+  crearLibro(libro: LibroCrea): Observable<LibroCrea> {
+    return this.http.post<LibroCrea>(`${this.apiUrl}/guardar`, libro, {
+      headers: { 'Content-Type': 'application/json' } // ✅ Ensure JSON format
+    });
   }
 
 
