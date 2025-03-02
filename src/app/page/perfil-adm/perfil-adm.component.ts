@@ -77,22 +77,67 @@ export class PerfilAdmComponent implements OnInit {
 
 
 
+  // Abrir el formulario de edición
   abrirFormulario(): void {
     if (this.userData) {
-      this.usuarioEditado = { ...this.userData, contrasena: '' };
+      this.usuarioEditado = { ...this.userData, contrasena: '' }; // Copiar datos y añadir campo de contraseña
       this.mostrandoFormulario = true;
-      localStorage.setItem('mostrandoFormulario', 'true');
+      localStorage.setItem('mostrandoFormulario', JSON.stringify(true));
     }
   }
 
+
+
+
+  // Cerrar el formulario de edición
   cerrarFormulario(): void {
     this.mostrandoFormulario = false;
-    localStorage.setItem('mostrandoFormulario', 'false');
+    localStorage.removeItem('mostrandoFormulario');
   }
 
-  guardarCambios() {
+  validarFormulario(): boolean {
+    if (!this.usuarioEditado.nick || !this.usuarioEditado.email ) {
+      Swal.fire('Error', 'Todos los campos son obligatorios', 'error');
+      return false;
+    }
 
+    if (!this.validarEmail(this.usuarioEditado.email)) {
+      Swal.fire('Error', 'El correo electrónico no es válido', 'error');
+      return false;
+    }
+
+    return true;
   }
+
+  validarEmail(email: string): boolean {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
+  guardarCambios(): void {
+    if (this.usuarioEditado) {
+      const idUsuario = this.userData.usuario.id; // Obtener el ID del usuario
+
+      // Llamar al servicio para actualizar el usuario
+      this.authService.actualizarUsuario(idUsuario, this.usuarioEditado).subscribe({
+        next: (usuarioActualizado) => {
+          console.log('Usuario actualizado:', usuarioActualizado);
+          this.successMessage = 'Los cambios se han guardado correctamente';
+          this.cerrarFormulario(); // Cerrar el formulario
+          this.userData = { ...this.userData, ...usuarioActualizado }; // Actualizar los datos del usuario en el componente
+        },
+        error: (error) => {
+          console.error('Error al actualizar el usuario:', error);
+          this.errorMessage = 'No se pudieron guardar los cambios';
+        }
+      });
+    }
+  }
+
+
+
+
+
 
   isAdmin(): boolean {
     const user = this.userData.value; // Obtener los datos del usuario
