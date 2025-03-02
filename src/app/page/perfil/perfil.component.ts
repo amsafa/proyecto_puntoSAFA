@@ -106,14 +106,20 @@ export class PerfilComponent implements OnInit {
     console.log('Datos del formulario:', usuarioActualizado);
 
     this.perfilService.editarCliente(this.userData.id, usuarioActualizado).subscribe(
-
       (respuesta) => {
         console.log("Respuesta del backend:", respuesta);
         console.log("Datos recibidos después de actualizar:", respuesta);
+
         Swal.fire('Éxito', 'Los datos del perfil se han actualizado correctamente', 'success');
 
-        // Recargar los datos del usuario actualizado
-        this.cargarCliente(this.userData.id);
+        // ACTUALIZAR LOS DATOS DEL USUARIO EN EL FRONTEND
+        this.userData = { ...this.userData, ...usuarioActualizado };
+
+        // ACTUALIZAR EL FORMULARIO PARA REFLEJAR LOS CAMBIOS
+        this.perfilForm.patchValue(usuarioActualizado);
+
+        // Cerrar el formulario sin recargar la página
+        this.cerrarFormulario();
       },
       (error) => {
         console.error("❌ Error en la actualización:", error);
@@ -121,6 +127,7 @@ export class PerfilComponent implements OnInit {
       }
     );
   }
+
 
 
 

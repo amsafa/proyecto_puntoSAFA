@@ -24,7 +24,7 @@ export class PerfilService {
 
 
   editarCliente(id: number, cliente: RegistroCliente): Observable<RegistroCliente> {
-    return this.http.put<RegistroCliente>(`${this.apiUrl}/api/cliente/editar/${id}?XDEBUG_SESSION_START=18932`, cliente);
+    return this.http.put<RegistroCliente>(`${this.apiUrl}/api/cliente/editar/${id}`, cliente);
   }
 
   crearCliente(cliente: RegistroCliente): Observable<any> {

@@ -11,7 +11,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { of } from 'rxjs';
 import { Autor } from '../../interface/autor';
 import { Categoria } from '../../interface/categoria';
-import {LibroNuevo} from '../../interface/libro-nuevo';
 
 @Component({
   selector: 'app-editar-libro',
