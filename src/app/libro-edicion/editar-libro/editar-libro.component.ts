@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { of } from 'rxjs';
 import { Autor } from '../../interface/autor';
 import { Categoria } from '../../interface/categoria';
+import {LibroNuevo} from '../../interface/libro-nuevo';
 
 @Component({
   selector: 'app-editar-libro',
@@ -102,42 +103,6 @@ export class EditarLibroComponent implements OnInit {
       console.error("Error al cargar el libro:", error);
       alert('Hubo un problema al cargar los datos del libro.');
     });
-  }
-
-
-  guardarLibro(): void {
-    if (this.libroForm.invalid) {
-      alert("El formulario no es válido. Revisa los campos.");
-      return;
-    }
-
-    const libro: LibroCrea = {
-      ...this.libroForm.value,
-      anio_publicacion: this.fechaFormateada(this.libroForm.value.anio_publicacion),
-      autor: { id: this.libroForm.value.autor.id },
-      categoria: { id: this.libroForm.value.categoria.id }
-    };
-
-    this.libroService.crearLibro(libro).subscribe(
-      () => {
-        alert("📚 ¡Se ha creado tu libro!");
-        this.crearNuevoLibro();
-      },
-      error => {
-        alert("Hubo un error al registrar el libro.");
-      }
-    );
-  }
-
-  private fechaFormateada(anio_publicacion: Date): string {
-    if (!anio_publicacion) return '';
-    return new Date(anio_publicacion).toISOString().split('T')[0];
-  }
-
-  crearNuevoLibro(): void {
-    this.isEditMode = false;
-    this.libroId = undefined;
-    this.libroForm.reset();
   }
 
   eliminarLibro(): void {

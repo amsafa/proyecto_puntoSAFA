@@ -6,6 +6,7 @@ import {environment} from '../../environments/environment';
 import {LibroCrea} from '../interface/libro-crea';
 import {Categoria} from '../interface/categoria';
 import {Autor} from './autor.service';
+import {LibroNuevo} from '../interface/libro-nuevo';
 
 
 
@@ -77,9 +78,9 @@ export class LibroService {
   // Método para crear un libro
 
 
-  crearLibro(libro: LibroCrea): Observable<LibroCrea> {
-    return this.http.post<LibroCrea>(`${this.apiUrl}/guardar`, libro, {
-      headers: { 'Content-Type': 'application/json' } // ✅ Ensure JSON format
+  crearLibro(libro: LibroNuevo): Observable<LibroNuevo> {
+    return this.http.post<LibroNuevo>(`${this.apiUrl}/guardar`, libro, {
+      headers: { 'Content-Type': 'application/json' } // Ensure JSON format
     });
   }
 

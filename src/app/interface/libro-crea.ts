@@ -12,7 +12,7 @@ export interface LibroCrea {
   imagen?: string; // Imagen opcional
   idioma: string;
   numPaginas: number;
-  autor: Autor; // ID del autor
-  categoria: Categoria; // ID de la categoría
+  autor: Autor;
+  categoria: Categoria;
 
 }
