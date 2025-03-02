@@ -15,8 +15,7 @@
 
       <!-- Formulario para Crear -->
       <div class="md:w-2/3 w-full">
-        <form [formGroup]="libroForm">
-<!--          <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">-->
+          <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">
           <!-- Título -->
           <div>
             <label for="titulo" class="block text-sm font-medium text-gray-700">Título</label>
@@ -113,22 +112,25 @@
             </div>
           </div>
 
-          <!-- Grupo Autor -->
-          <div formGroupName="autor">
-            <label for="autorId" class="block text-sm font-medium text-gray-700">ID del Autor</label>
-            <input type="text" id="autorId" formControlName="id"
-                   class="mt-1 block w-full border border-gray-300 rounded-md p-3"
-                   placeholder="Ingrese el ID del autor">
-          </div>
+            <!-- Autor -->
 
-          <!-- Grupo Categoría -->
-          <div formGroupName="categoria">
-            <label for="categoriaId" class="block text-sm font-medium text-gray-700">ID de la Categoría</label>
-            <input type="text" id="categoriaId" formControlName="id"
-                   class="mt-1 block w-full border border-gray-300 rounded-md p-3"
-                   placeholder="Ingrese el ID de la categoría">
-          </div>
+            <div>
+              <label for="autorId" class="block text-sm font-medium text-gray-700">ID del Autor</label>
+              <input type="text" id="autorId" formControlName="autor" class="mt-1 block w-full border border-gray-300 rounded-md p-3" placeholder="Ingrese el ID del autor">
+              <div *ngIf="libroForm.get('autor')?.invalid && libroForm.get('autor')?.touched" class="text-red-600 text-sm">
+                El autor es obligatorio.
+              </div>
 
+            </div>
+
+            <!-- Categoría -->
+            <div>
+              <label for="categoriaId" class="block text-sm font-medium text-gray-700">ID de la Categoría</label>
+              <input type="text" id="categoriaId" formControlName="categoria" class="mt-1 block w-full border border-gray-300 rounded-md p-3" placeholder="Ingrese el ID de la categoría">
+              <div *ngIf="libroForm.get('categoria')?.invalid && libroForm.get('categoria')?.touched" class="text-red-600 text-sm">
+                La categoría es obligatoria.
+              </div>
+            </div>
 
           <!-- Botón Guardar -->
           <div class="mt-6">

@@ -34,16 +34,17 @@ export class RegistroLibroComponent implements OnInit {
       imagen: [''],
       idioma: ['', Validators.required],
       numPaginas: ['', [Validators.required, Validators.min(1)]],
-      autor: this.fb.group({
-        id: ['', Validators.required]  // ✅ Definir bien el FormGroup
-      }),
-      categoria: this.fb.group({
-        id: ['', Validators.required]  // ✅ Asegurar que está bien definido
-      })
+      autor: ['', Validators.required],
+      categoria: ['', Validators.required]
     });
   }
 
   guardarLibro(): void {
+    if (this.libroForm.invalid) {
+      console.log("Form is invalid");
+      return;  // Prevent form submission
+    }
+
     if (this.libroForm.invalid) {
       alert("El formulario no es válido. Revisa los campos.");
       return;
@@ -53,16 +54,20 @@ export class RegistroLibroComponent implements OnInit {
       id: 0,
       titulo: this.libroForm.value.titulo,
       resumen: this.libroForm.value.resumen,
-      anioPublicacion: this.libroForm.value.anio_publicacion,
+      anioPublicacion: this.libroForm.value.anioPublicacion,
       precio: this.libroForm.value.precio,
       ISBN: this.libroForm.value.ISBN,
       editorial: this.libroForm.value.editorial,
       imagen: this.libroForm.value.imagen,
       idioma: this.libroForm.value.idioma,
       numPaginas: this.libroForm.value.num_paginas,
-      autor:this.libroForm.value.autor?.id,
-      categoria: this.libroForm.value.categoria?.id,
+      autor:this.libroForm.value.autor,
+      categoria: this.libroForm.value.categoria,
     };
+
+    console.log(this.libroForm.value);
+
+
 
 
 
