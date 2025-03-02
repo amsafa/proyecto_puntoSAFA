@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { LibroService } from '../../service/libro.service';
 import { LibroCrea } from '../../interface/libro-crea';  // Importando desde libro-crea.ts
 import { NgIf } from '@angular/common';
-import {LibroNuevo} from '../../interface/libro-nuevo';
+import {LibroNuevo} from '../../interface/libroNuevo';
 
 @Component({
   selector: 'app-registro-libro',

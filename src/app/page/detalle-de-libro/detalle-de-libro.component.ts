@@ -2,13 +2,14 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { Libro } from '../../interface/libro';
 import { FormsModule } from '@angular/forms';
 import { LibroService } from '../../service/libro.service';
-import { ActivatedRoute } from '@angular/router';
 import { Resena } from '../../interface/resena';
 import { ResenaService } from '../../service/resena.service';
 import { AuthService } from '../../service/auth.service';
 import { CurrencyPipe, NgForOf, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import {CarritoService} from '../../service/carrito.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-detalle-de-libro',
@@ -35,10 +36,12 @@ export class DetalleDeLibroComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private libroService: LibroService,
     private resenaService: ResenaService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private carritoService: CarritoService
   ) {
     this.libroId = Number(this.route.snapshot.paramMap.get('id')); // Obtener el ID del libro desde la ruta
   }
@@ -100,7 +103,6 @@ export class DetalleDeLibroComponent {
           console.error('La respuesta del backend no tiene la estructura esperada:', data);
           this.media_calificacion = 0; // Asignar un valor por defecto
         }
-
         this.actualizarEstrellas();
       },
       error: (error) => {
@@ -223,20 +225,30 @@ export class DetalleDeLibroComponent {
   /**
    * Aumentar la cantidad de libros a comprar.
    */
-  increaseQuantity(): void {
-    this.quantity++;
+  increaseQuantity(increment: number = 1): void {
+    this.quantity += increment;
     console.log('Cantidad:', this.quantity);
   }
 
   /**
    * Agregar un libro al carrito.
    */
-  addToCart(): void {
-    if (this.libro) {
-      console.log('Libro agregado al carrito:', {
-        ...this.libro,
-        quantity: this.quantity,
-      });
+  addToCart(libro: Libro | undefined) {
+    if (!this.usuarioLogueado) {
+      this.mostrarNotificacion('Debes iniciar sesión para agregar libros al carrito', 'error');
+      this.router.navigate(['/login']);
+      return;
+    }
+    if (libro && this.quantity > 0) {
+      this.carritoService.addToCart(libro, this.quantity);
+    } else {
+      this.mostrarNotificacion('Error al agregar el libro al carrito', 'error');
+    }
+  }
+
+  validateQuantity(): void {
+    if (this.quantity < 1 || isNaN(this.quantity)) {
+      this.quantity = 1;
     }
   }
 

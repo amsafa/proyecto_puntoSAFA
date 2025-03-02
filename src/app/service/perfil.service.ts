@@ -18,7 +18,7 @@ export class PerfilService {
   }
 
   getClienteById(id: number): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/api/cliente/${id}`);
+    return this.http.get<any>(`${environment.apiUrl}api/cliente/${id}`);
 
   }
 

@@ -1,5 +1,5 @@
-<section class="min-h-[calc(100vh-8rem)] py-16 px-4 sm:px-6 lg:px-8 " style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)), url('../../../../assets/puntosafa_fondo3.jpeg'); background-size: cover; background-position: center;">
-<!-- Encabezado -->
+<section class="min-h-[calc(100vh-8rem)] py-16 px-4 sm:px-6 lg:px-8" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)), url('../../../../assets/puntosafa_fondo3.jpeg'); background-size: cover; background-position: center;">
+  <!-- Encabezado -->
   <div class="w-full bg-[#F0F4EF] flex flex-wrap items-center p-4 shadow relative z-5">
     <img src="/assets/logo_puntosafa.png" alt="Logo Punto Safa" class="w-24 h-auto md:w-40 ml-4">
     <h2 class="flex-grow text-center text-lg md:text-2xl font-bold text-[#1F2D3D]">
@@ -57,63 +57,65 @@
       </div> <!-- Fin de Información del Cliente -->
     </div> <!-- Fin del flex principal -->
 
+    <!-- Modal / Formulario de Edición -->
+    <div *ngIf="mostrandoFormulario" class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+      <div class="bg-white p-6 rounded shadow-lg w-1/3">
+        <h2 class="text-lg font-semibold mb-4">Editar Perfil</h2>
 
-      <!-- Modal / Formulario de Edición -->
-      <div *ngIf="mostrandoFormulario" class=" z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-        <div class="bg-white p-6 rounded shadow-lg w-1/3">
-          <h2 class="text-lg font-semibold mb-4">Editar Perfil</h2>
-
-
-          <label>Email:</label>
-          <input [(ngModel)]="usuarioEditado.usuario.email" class="w-full border p-2 rounded" disabled />
-
-          <label>Nick:</label>
-          <input [(ngModel)]="usuarioEditado.usuario.nick" class="w-full border p-2 rounded" disabled />
-
-          <label>Nombre:</label>
-          <input [(ngModel)]="usuarioEditado.nombre" class="w-full border p-2 rounded" disabled />
-
-          <label>Dirección:</label>
-          <input [(ngModel)]="usuarioEditado.direccion" class="w-full border p-2 rounded" />
-
-          <label>Teléfono:</label>
-          <input [(ngModel)]="usuarioEditado.telefono" class="w-full border p-2 rounded" />
-
-          <label>Foto:</label>
-          <input [(ngModel)]="usuarioEditado.foto" class="w-full border p-2 rounded" />
+        <form [formGroup]="perfilForm" (ngSubmit)="guardarCambios()">
+          <!-- Campos del formulario -->
 
 
+
+          <div class="mb-4">
+            <label>Dirección:</label>
+            <input formControlName="direccion" class="w-full border p-2 rounded" />
+          </div>
+
+          <div class="mb-4">
+            <label>Teléfono:</label>
+            <input formControlName="telefono" class="w-full border p-2 rounded" />
+          </div>
+
+          <div class="mb-4">
+            <label>Foto:</label>
+            <input formControlName="foto" class="w-full border p-2 rounded" />
+          </div>
+
+          <!-- Botones del formulario -->
           <div class="flex justify-end mt-4">
-            <button (click)="guardarCambios()" class="bg-customTeal text-white px-4 py-2 rounded mr-2">
+            <button type="submit" class="bg-customTeal text-white px-4 py-2 rounded mr-2">
               Guardar
             </button>
-
-            <button (click)="cerrarFormulario()" class="bg-custom-blue text-white px-4 py-2 rounded">Cancelar</button>
+            <button type="button" (click)="cerrarFormulario()" class="bg-custom-blue text-white px-4 py-2 rounded">
+              Cancelar
+            </button>
           </div>
-        </div>
-      </div>
-
-
-
-
-    <!-- Modal para editar email y contraseña -->
-    <div *ngIf="mostrandoEdicionContrasena" class=" z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-      <div class="bg-white p-6 rounded shadow-lg w-1/3 ">
-        <h2 class="text-lg font-semibold mb-4">Editar Email y Contraseña</h2>
-
-        <label>Contraseña:</label>
-        <input type="password" [(ngModel)]="usuarioEditado.contrasena" class="w-full border p-2 rounded"
-               placeholder="Nueva contraseña (opcional)" />
-
-        <div class="flex justify-end mt-4">
-          <button (click)="guardarEdicionContrasena()" class="bg-customTeal text-white px-4 py-2 rounded mr-2">
-            Guardar
-          </button>
-          <button (click)="cerrarEdicionUsuario()" class="bg-custom-blue text-white px-4 py-2 rounded">Cancelar</button>
-        </div>
+        </form>
       </div>
     </div>
 
+    <!-- Modal para editar contraseña -->
+    <div *ngIf="mostrandoEdicionContrasena" class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+      <div class="bg-white p-6 rounded shadow-lg w-1/3">
+        <h2 class="text-lg font-semibold mb-4">Editar Contraseña</h2>
 
+        <form (ngSubmit)="guardarEdicionContrasena()">
+          <div class="mb-4">
+            <label>Contraseña:</label>
+            <input type="password" [(ngModel)]="usuarioEditado.contrasena" class="w-full border p-2 rounded" placeholder="Nueva contraseña" />
+          </div>
+
+          <div class="flex justify-end mt-4">
+            <button type="submit" class="bg-customTeal text-white px-4 py-2 rounded mr-2">
+              Guardar
+            </button>
+            <button type="button" (click)="cerrarEdicionUsuario()" class="bg-custom-blue text-white px-4 py-2 rounded">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </main>
 </section>

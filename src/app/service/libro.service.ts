@@ -6,7 +6,7 @@ import {environment} from '../../environments/environment';
 import {LibroCrea} from '../interface/libro-crea';
 import {Categoria} from '../interface/categoria';
 import {Autor} from './autor.service';
-import {LibroNuevo} from '../interface/libro-nuevo';
+import {LibroNuevo} from '../interface/libroNuevo';
 
 
 
