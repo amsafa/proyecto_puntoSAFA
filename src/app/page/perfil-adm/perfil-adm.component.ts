@@ -2,10 +2,8 @@ import {Component, LOCALE_ID, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators } from "@angular/forms";
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import { adm } from '../../interface/adm';
-import { PerfiladmService } from '../../service/perfiladm.service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import {RouterLink } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
-import Swal from 'sweetalert2';
 import {Pedido} from '../../interface/pedido';
 import {PedidoService} from '../../service/pedido.service';
 import {Cliente} from '../../interface/cliente';
@@ -38,9 +36,6 @@ export class PerfilAdmComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private perfiladmService: PerfiladmService,
-    private route: ActivatedRoute,
-    private router: Router,
     private authService: AuthService,
     private pedidoservice: PedidoService,
   ) {

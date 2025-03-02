@@ -47,7 +47,9 @@ export class ResenaService {
     }
 
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+
     });
 
     return this.http.post<Resena>(`${this.apiUrl}/nueva`, resena, { headers }).pipe(
