@@ -58,16 +58,17 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  // Función para cerrar sesión
   toggleMenu(event: Event) {
     event.stopPropagation();
     this.isMenuOpen = !this.isMenuOpen;
   }
-
+  // Función para cerrar sesión
   toggleAccountMenu(event: Event) {
     event.stopPropagation();
     this.showMenu = !this.showMenu;
   }
-
+  // Función para cerrar sesión
   logout() {
     this.authService.logout();
     this.isLoggedIn = false;
@@ -86,7 +87,7 @@ export class HeaderComponent implements OnInit {
   }
 
 
-
+  // Función para abrir el carrito
   toggleCart() {
     this.carritoService.toggleCart(); // Toggle cart visibility
   }

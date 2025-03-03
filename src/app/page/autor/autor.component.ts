@@ -4,7 +4,6 @@ import { DatePipe, NgForOf, NgIf } from '@angular/common'; // ✅ Importar NgIf
 import { HttpClient } from '@angular/common/http';
 import {HeaderComponent} from '../../component/header/header.component';
 import {FooterComponent} from '../../component/footer/footer.component';
-import {BuscadorInicioComponent} from '../../component/buscador-inicio/buscador-inicio.component';
 
 interface Libro {
   titulo: string;
@@ -27,7 +26,6 @@ interface Autor {
   imports: [
     HeaderComponent,
     FooterComponent,
-    BuscadorInicioComponent,
     NgForOf,
     DatePipe,
     NgIf

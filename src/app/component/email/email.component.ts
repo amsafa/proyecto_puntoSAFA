@@ -31,6 +31,10 @@ export class EmailComponent implements OnInit {
     this.detectarNombre();
   }
 
+  /**
+   * Detecta el nombre ingresado y busca el correo asociado al mismo.
+
+   */
   detectarNombre() {
     this.FormContacto.get('nombre')?.valueChanges.subscribe(nombre => {
       if (nombre) {
@@ -40,6 +44,12 @@ export class EmailComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * Busca el correo asociado al nombre ingresado.
+   * @param nombre Nombre del usuario.
+   *
+   * */
 
   buscarCorreo(nombre: string) {
     const nombreLimpio = nombre.trim();
@@ -61,12 +71,22 @@ export class EmailComponent implements OnInit {
     });
   }
 
+  /**
+   * Selecciona el archivo a enviar.
+   * @param event Evento de selección de archivo.
+   *
+   * */
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFileName = input.files[0].name; // Guardamos el nombre del archivo
     }
   }
+
+  /**
+   * Envía el correo con los datos ingresados en el formulario.
+   * @returns Mensaje de éxito o error al enviar el correo.
+   * */
 
   EnviarEmail() {
     if (this.FormContacto.valid) {

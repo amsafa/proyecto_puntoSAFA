@@ -30,6 +30,7 @@ export class BookListComponent implements OnInit {
     this.loadBooks();
   }
 
+  // Carga los libros de la categoría seleccionada
   loadBooks(): void {
     this.apiService.getBooksByCategory(this.categoryId).subscribe({
       next: (data: Libro[]) => {
@@ -44,6 +45,7 @@ export class BookListComponent implements OnInit {
     });
   }
 
+  // Obtener libros aleatorios. Esto es solo para mostrar cómo se pueden mostrar libros aleatorios
   getRandomBooks(books: Libro[], count: number): Libro[] {
     const shuffled = [...books].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);

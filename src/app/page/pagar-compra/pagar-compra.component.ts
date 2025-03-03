@@ -55,6 +55,7 @@ export class PagarCompraComponent implements OnInit{
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]]
     });
 
+    // Cargar datos del usuario y carrito desde localStorage
     const userDataString = localStorage.getItem('userData');
     if (userDataString) {
       try {
@@ -102,6 +103,7 @@ export class PagarCompraComponent implements OnInit{
     return this.paymentForm.get('direccion_entrega');
   }
 
+  // Realizar el pago del pedido.
   makePayment() {
     if (this.paymentForm.invalid) {
       this.paymentForm.markAllAsTouched(); // Show all errors
@@ -161,6 +163,7 @@ export class PagarCompraComponent implements OnInit{
     localStorage.removeItem('cart'); // Remove cart from localStorage
   }
 
+  // Validar fecha de expiración de la tarjeta.
   expiryDateValidator(control: any) {
     if (!control.value) return { invalidDate: true };
 

@@ -64,6 +64,7 @@ export class PedidosClienteComponent implements OnInit {
     });
   }
 
+  // Funcion para animar los contadores de las estadisticas. No es necesario modificarla.
   animateCount(property: 'totales' | 'entregados' | 'procesados', targetValue: number) {
     let currentValue = 0;
     const interval = setInterval(() => {

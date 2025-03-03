@@ -26,6 +26,12 @@ export class RestablecerContrasenaComponent {
     private router: Router
   ) {}
 
+  /**
+   * Método que se ejecuta al iniciar el componente
+   * Se encarga de verificar si el token es válido
+   * y si no lo es, mostrar un mensaje de error
+   *
+   */
   ngOnInit(): void {
     this.token = this.activatedRoute.snapshot.paramMap.get('token') || '';
 
@@ -33,6 +39,12 @@ export class RestablecerContrasenaComponent {
       this.verificarToken(this.token);
     }
   }
+
+  /**
+   * Método que verifica si el token es válido
+   *
+   * @param token Token a verificar
+   */
 
   verificarToken(token: string): void {
     this.cargando = true;
@@ -50,6 +62,11 @@ export class RestablecerContrasenaComponent {
   }
 
 
+  /**
+   * Método que se ejecuta al hacer click en el botón de restablecer contraseña
+   * Se encarga de enviar la nueva contraseña al servidor
+   *
+   */
 
   onRestablecerContrasena() {
     if (this.nuevaContrasena !== this.confirmContrasena) {

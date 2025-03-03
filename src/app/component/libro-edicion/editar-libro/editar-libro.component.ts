@@ -77,6 +77,7 @@ export class EditarLibroComponent implements OnInit {
     });
   }
 
+  // Método para cargar los datos del libro en el formulario
   cargarLibro(id: number): void {
     this.libroService.obtenerLibro(id).subscribe((libro: LibroCrea) => {
       if (!libro) {
@@ -104,32 +105,36 @@ export class EditarLibroComponent implements OnInit {
     });
   }
 
+  // Método para guardar los cambios en el formulario
   mostrarModalError(): void {
     document.getElementById('error-modal')?.classList.remove('hidden');
   }
-
+  // Método para cerrar el modal de error
   cerrarModalError(): void {
     document.getElementById('error-modal')?.classList.add('hidden');
   }
 
+  // Método para mostrar el modal de éxito
   mostrarModalExito(): void {
     document.getElementById('success-modal')?.classList.remove('hidden');
   }
-
+  // Método para cerrar el modal de éxito
   cerrarModalExito(): void {
     document.getElementById('success-modal')?.classList.add('hidden');
   }
-
+  // Método para mostrar el modal de confirmación
   mostrarModalConfirmacion(): void {
     document.getElementById('confirm-modal')?.classList.remove('hidden');
   }
 
+  // Método para cerrar el modal de confirmación
   cerrarModalConfirmacion(): void {
     document.getElementById('confirm-modal')?.classList.add('hidden');
   }
 
 
 
+  // Método para eliminar un libro
   eliminarLibro(): void {
     if (!this.libroId) {
       alert('Debe seleccionar un libro antes de eliminar.');
@@ -139,10 +144,11 @@ export class EditarLibroComponent implements OnInit {
     this.mostrarModalConfirmacion();
   }
 
+  // Método para confirmar la acción de eliminar un libro
   confirmarAccion(): void {
     if (!this.libroId) return;
 
-    console.log("✅ Confirmando eliminación del libro con ID:", this.libroId);
+    console.log("Confirmando eliminación del libro con ID:", this.libroId);
 
     this.libroService.eliminarLibro(this.libroId).subscribe(
       () => {
@@ -151,7 +157,7 @@ export class EditarLibroComponent implements OnInit {
       },
       error => {
         this.mostrarModalError(); // Modal de error
-        console.error("❌ Error al eliminar el libro:", error);
+        console.error("Error al eliminar el libro:", error);
       }
     );
 
@@ -166,6 +172,7 @@ export class EditarLibroComponent implements OnInit {
 
 
 
+  // Método para seleccionar un libro de la lista de libros filtrados
   onLibroSeleccionado(libro: LibroCrea): void {
     console.log("Libro seleccionado:", libro);
     this.libroId = libro.id;
@@ -186,6 +193,8 @@ export class EditarLibroComponent implements OnInit {
     console.log("ID almacenado en el formulario:", this.libroForm.get('id')?.value);
   }
 
+
+  // Método para guardar los cambios en el formulario
   guardarCambios(): void {
     const libroActualizado = this.libroForm.value;
     const libroId = this.libroForm.get('id')?.value;
@@ -197,12 +206,12 @@ export class EditarLibroComponent implements OnInit {
       return;
     }
 
-    // Find the author object based on the full name entered
+    // Encontrar el objeto autor basado en el nombre ingresado
     const autorSeleccionado = this.autores.find(a =>
       `${a.nombre} ${a.apellidos}` === libroActualizado.autor
     );
 
-    // Find the category object based on the name entered
+    // Encontrar el objeto categoría basado en el nombre ingresado
     const categoriaSeleccionada = this.categorias.find(c =>
       c.nombre === libroActualizado.categoria
     );
@@ -218,7 +227,7 @@ export class EditarLibroComponent implements OnInit {
       },
       error => {
         this.mostrarModalError(); // Modal de error en vez de alert
-        console.error("❌ Error al actualizar el libro:", error);
+        console.error("Error al actualizar el libro:", error);
       }
     );
   }

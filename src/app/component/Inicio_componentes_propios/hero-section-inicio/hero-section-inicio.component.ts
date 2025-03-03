@@ -18,6 +18,7 @@ export class HeroSectionInicioComponent  implements OnInit {
 
   constructor(private router: Router) {}
 
+  // Función para navegar a la página de contacto
   navigateToAboutUs() {
     this.router.navigate(['/sobrenosotros']);
   }

@@ -38,6 +38,7 @@ export class RecomendacionLibroComponent implements OnInit {
     });
   }
 
+  // Redirigir a la página de detalles del libro
   verDetallesLibro(idLibro: number | undefined): void {
     this.router.navigate(['/detalle-libro', idLibro]);
   }

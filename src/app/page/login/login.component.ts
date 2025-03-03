@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  // Método asíncrono para iniciar sesión
   async onLogin(): Promise<void> {
     if (this.loginForm.valid || true) {
       this.login = { ...this.login, ...this.loginForm.value };

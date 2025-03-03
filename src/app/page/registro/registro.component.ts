@@ -58,6 +58,7 @@ export class RegistroComponent implements OnInit {
   };
 
 
+  // Función para registrar un nuevo cliente
   onRegister() {
     if (this.registroForm.valid) {
       this.rellenarDatos();

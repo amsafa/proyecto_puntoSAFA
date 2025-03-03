@@ -68,6 +68,7 @@ export class PerfilComponent implements OnInit {
   }
 
 
+  // Método para cargar los datos del cliente
   cargarCliente(id: number): void {
     // Llama al servicio para obtener los datos del cliente
     this.perfilService.getClienteById(id).subscribe({
@@ -94,6 +95,7 @@ export class PerfilComponent implements OnInit {
   }
 
 
+  // Método para guardar los cambios en el perfil
   guardarCambios(): void {
     console.log('Método guardarCambios ejecutado');
 
@@ -131,6 +133,7 @@ export class PerfilComponent implements OnInit {
 
 
 
+  // Método para eliminar el perfil. Se ejecuta al pulsar el botón de eliminar.
   eliminarCliente(): void {
     if (this.clienteId) {
       this.perfilService.eliminarCliente(this.clienteId).subscribe({

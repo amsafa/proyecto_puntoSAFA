@@ -76,11 +76,13 @@ export class CatalogoComponent  implements OnInit {
     });
   }
 
+  // Cargar libros con paginación.
   cargarLibros(page: number = 1, limit: number = 8): void {
     this.currentPage = page;
     this.applyFilters(page, limit);
   }
 
+  // Buscar libros por nombre, autor o categoría.
   searchBooks(): void {
     if (!this.filteredBooks || this.filteredBooks.length === 0) {
       console.warn('No books available for searching.');
@@ -105,6 +107,7 @@ export class CatalogoComponent  implements OnInit {
     console.log('No results:', this.noResults);
   }
 
+  // Limpiar la búsqueda.
   clearSearch(): void {
     this.searchTerm = '';
     this.filteredBooks = this.libros;
@@ -113,6 +116,7 @@ export class CatalogoComponent  implements OnInit {
     location.reload();
   }
 
+  // Limpiar los filtros.
   clearFilters(): void {
     this.selectedCategoryId = null;
     this.selectedPriceRanges = [];
@@ -126,17 +130,20 @@ export class CatalogoComponent  implements OnInit {
     this.cargarLibros();
   }
 
+  // Filtrar por rango de precios.
   filterByPrice(priceRange: string): void {
     console.log("Filtro aplicado:", priceRange);
     this.selectedPriceRanges = [priceRange]; // Limpiar y aplicar el nuevo filtro
     this.applyFilters();
   }
 
+  // Filtrar por categoría.
   filterByCategory(categoryId: number | null): void {
     this.selectedCategoryId = this.selectedCategoryId === categoryId ? null : categoryId; // Update the selected category
     this.applyFilters();  // Apply filters with the new selection
   }
 
+  // Aplicar los filtros.
   applyFilters(page: number = 1, limit: number = 8): void {
     console.log("Aplicar filtros::");
     console.log("Categorías:", this.selectedCategoryId);
@@ -165,6 +172,7 @@ export class CatalogoComponent  implements OnInit {
     });
   }
 
+  // Navegar a la página seleccionada
   goToPage(page: number): void {
     this.router.navigate([], {
       queryParams: {
@@ -178,6 +186,7 @@ export class CatalogoComponent  implements OnInit {
     });
   }
 
+  // Añadir al carrito.
   addToCart(libro: Libro) {
     if (!this.isLoggedIn) {
       this.showLoginAlert();
@@ -186,6 +195,7 @@ export class CatalogoComponent  implements OnInit {
     this.carritoService.addToCart(libro);
   }
 
+  // Mostrar alerta de inicio de sesión.
   showLoginAlert() {
     this.showAlert = true;
     setTimeout(() => {
@@ -193,6 +203,7 @@ export class CatalogoComponent  implements OnInit {
     }, 3000);
   }
 
+  // Navegar a la página de detalles del libro.
   verDetallesLibro(idLibro: number): void {
     this.router.navigate(['/detalle-libro', idLibro]);
   }

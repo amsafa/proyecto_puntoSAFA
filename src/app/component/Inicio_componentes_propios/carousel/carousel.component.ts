@@ -43,16 +43,17 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
+  // Se ejecuta después de que Angular haya inicializado las vistas de un componente
   ngAfterViewInit(): void {
     this.setupScrollLoop();
   }
-
+ // Se ejecuta cuando el componente se destruye
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
     this.stopContinuousScroll();
   }
-
+  // Inicia el desplazamiento continuo
   startContinuousScroll(): void {
     const scroll = () => {
       this.carousel.nativeElement.scrollBy({ left: this.scrollSpeed, behavior: 'auto' });
@@ -62,12 +63,13 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     this.animationFrameId = requestAnimationFrame(scroll);
   }
 
+  // Detiene el desplazamiento continuo
   stopContinuousScroll(): void {
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
     }
   }
-
+ // Configura el bucle de desplazamiento
   setupScrollLoop(): void {
     const carouselElement = this.carousel.nativeElement;
 
@@ -76,6 +78,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  // Comprueba si el carrusel ha llegado al final o al principio
   checkLoopPosition(): void {
     const carouselElement = this.carousel.nativeElement;
     const itemWidth = carouselElement.querySelector('div')?.offsetWidth || 300;
@@ -99,10 +102,12 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // Navega a la página de detalles del libro
   verDetallesLibro(idLibro: number): void {
     this.router.navigate(['/detalle-libro', idLibro]);
   }
 
+  // Manejadores de eventos
   onMouseEnter(): void {
     this.stopContinuousScroll(); // Detener el desplazamiento continuo
   }
@@ -111,6 +116,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     this.startContinuousScroll(); // Reanudar el desplazamiento continuo
   }
 
+  // Obtiene libros aleatorios de la lista de libros proporcionada y devuelve un número específico de libros aleatorios (count).
   getRandomBooks(data: Libro[], count: number): Libro[] {
     return data.sort(() => 0.5 - Math.random()).slice(0, count);
   }

@@ -19,6 +19,11 @@ export class RecuperarContrasenaComponent {
 
   constructor(private authService: AuthService) {}
 
+  /**
+   * Método que se ejecuta al hacer click en el botón de recuperar contraseña
+   * Llama al servicio de autenticación para recuperar la contraseña
+   * @returns void
+   */
   onRecuperarContrasena() {
     this.authService.recuperarContrasena(this.email).subscribe(
       response => {

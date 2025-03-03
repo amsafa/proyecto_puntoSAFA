@@ -14,6 +14,12 @@ export class ActivarCuentaComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {}
 
+  /**
+   *
+   * Se encarga de leer el token de la URL y activar la cuenta
+   * @return void
+   *
+   */
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       const token = params['token'];
@@ -24,6 +30,11 @@ export class ActivarCuentaComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * Manda una petición al servidor para activar la cuenta. Si la petición es exitosa, redirige al login.
+   * @param token
+   */
 
   activarCuenta(token: string) {
     this.http.post('http://localhost:3000/api/activar-cuenta', { token }).subscribe(

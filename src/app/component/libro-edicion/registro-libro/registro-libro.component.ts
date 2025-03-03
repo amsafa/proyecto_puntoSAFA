@@ -39,6 +39,7 @@ export class RegistroLibroComponent implements OnInit {
     });
   }
 
+  // Guardar libro en la base de datos.
   guardarLibro(): void {
     if (this.libroForm.invalid) {
       console.log("Form is invalid");

@@ -105,11 +105,13 @@ export class PerfilAdmComponent implements OnInit {
     return true;
   }
 
+  // Validar un correo electrónico
   validarEmail(email: string): boolean {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   }
 
+  // Guardar los cambios realizados en el formulario
   guardarCambios(): void {
     if (this.usuarioEditado) {
       const idUsuario = this.userData.usuario.id; // Obtener el ID del usuario
