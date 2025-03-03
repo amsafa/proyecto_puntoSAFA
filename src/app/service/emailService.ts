@@ -12,7 +12,10 @@ export class EmailService {
 
   constructor(private http: HttpClient) { }
 
-  // Método para enviar el correo
+  /**
+   * Envia un correo. Se le pasa un objeto con los datos del correo.
+   * @param formData
+   */
   enviarCorreo(formData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/api/enviar-correo`, formData);
   }

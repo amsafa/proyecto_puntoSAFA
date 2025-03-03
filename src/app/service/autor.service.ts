@@ -20,6 +20,8 @@ export class AutorService {
 
   constructor(private http: HttpClient) {}
 
+  // Métodos para consumir la API de autores, pendiente de implementar  en caso de dar tiempo.
+
   getAutores(): Observable<Autor[]> {
     return this.http.get<Autor[]>(`${this.apiUrl}/all`);
   }

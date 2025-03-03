@@ -12,6 +12,11 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Obtiene los datos de la API
+   * @returns Observable<any>
+   */
+
   getData(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/usuario`);
   }

@@ -21,6 +21,10 @@ export class LoginService {
 
   ngOnInit(): void {}
 
+  /**
+   * Método para iniciar sesión
+   * @returns Promise<void>
+   */
   async onLogin(): Promise<void> {
     if (this.loginForm.valid) {
       this.login = { ...this.login, ...this.loginForm.value };

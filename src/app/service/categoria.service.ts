@@ -13,6 +13,10 @@ export class CategoriaService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   * Obtiene todas las categorias.
+   * @returns Observable<Categoria[]>
+   */
   getCategorias(): Observable<Categoria[]> {
     return this.http.get<Categoria[]>(`${this.baseUrl}/categoria/all`);
   }

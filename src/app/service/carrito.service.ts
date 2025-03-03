@@ -32,14 +32,31 @@ export class CarritoService {
   public showCart$ = this.showCartSubject.asObservable();
   public cartItems$ = this.cartSubject.asObservable();
 
+
+  /**
+   *
+   * Abrir o cerrar el carrito
+   * @returns void
+   */
   toggleCart() {
     this.showCartSubject.next(!this.showCartSubject.value);
   }
+
+  /**
+   *  Establecer la visibilidad del carrito
+   * @param visible
+   */
 
   setCartVisibility(visible: boolean) {
     this.showCartSubject.next(visible);
   }
 
+  /**
+   *
+   * Agregar un libro al carrito
+   * @param libro
+   * @param cantidad
+   */
 
   addToCart(libro: Libro |undefined, cantidad: number=1) {
     if (!libro) return;
@@ -62,6 +79,10 @@ export class CarritoService {
 
   }
 
+  /**
+   * Incrementar la cantidad de un ítem
+   * @param item
+   */
   increaseQuantity(item: LibroCarrito) {
     item.cantidad++;
     this.cartSubject.next(this.cartItems);
@@ -69,7 +90,10 @@ export class CarritoService {
   }
 
 
-  // Decrementar la cantidad de un ítem
+  /**
+   * Decrementar la cantidad de un ítem
+   * @param item
+   */
   decreaseQuantity(item: LibroCarrito) {
     if (item.cantidad > 1) {
       item.cantidad--;
@@ -80,7 +104,10 @@ export class CarritoService {
     this.saveCartToLocalStorage(); // Guardar en el localStorage
   }
 
-  // Eliminar un ítem del carrito
+  /**
+   * Eliminar un ítem del carrito
+   * @param itemId
+   */
   removeItem(itemId: number) {
     this.cartItems = this.cartItems.filter((item) => item.id !== itemId);
     this.cartSubject.next(this.cartItems); // Notificar a los suscriptores
@@ -88,7 +115,10 @@ export class CarritoService {
   }
 
 
-  // Obtener el precio total
+  /**
+   * Obtener el precio total del carrito
+   * @returns { baseTotal: number; totalWithTaxes: number; shipping: number }
+   */
   getTotalPrice(): { baseTotal: number; totalWithTaxes: number; shipping: number } {
     const baseTotal = this.cartItems.reduce((total, item) => total + item.precio * item.cantidad, 0);
     const taxes = 0.21; // Impuestos del 21%
@@ -97,34 +127,36 @@ export class CarritoService {
     return { baseTotal, totalWithTaxes, shipping };
   }
 
-  // Obtener la cantidad total de ítems en el carrito
-  getTotalQuantity(): number {
-    return this.cartItems.reduce((total, item) => total + item.cantidad, 0);
-  }
 
+  /**
+   * Obtener los ítems del carrito.
+   * @returns void
+   *
+   */
 
-
-  // Obtener los ítems del carrito como un Observable
   getCartItems(): Observable<LibroCarrito[]> {
     return this.cartItems$;
   }
 
-  // Guardar un pedido en el servidor
+  /**
+   *
+   *
+   * Guardar un pedido en la base de datos.
+   * @param pedido
+   */
   savePedido(pedido: Pedido): Observable<any> {
     return this.http.post(`${this.apiUrl}/pedido/save`, pedido);
   }
 
-  // Guardar el carrito en el localStorage
+  /**
+   * Guardar el carrito en el localStorage.
+   * @private
+   */
   private saveCartToLocalStorage() {
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
 
-  // Limpiar el carrito
-  clearCart() {
-    this.cartItems = [];
-    this.cartSubject.next(this.cartItems); // Notificar a los suscriptores
-    localStorage.removeItem('cart'); // Eliminar el carrito del localStorage
-  }
+
 
 
 

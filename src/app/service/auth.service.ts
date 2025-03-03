@@ -64,7 +64,14 @@ export class AuthService {
   }
 
 
-
+  /**
+   * Método para realizar una petición HTTP GET al servidor
+   * para obtener los datos del usuario autenticado.
+   *
+   * @returns Promise<RegistroCliente | null>
+   * @memberof AuthService
+   *
+   */
 
 
   fetchUserData(): Promise<RegistroCliente | null> {
@@ -110,23 +117,39 @@ export class AuthService {
     });
   }
 
+
+
+  /**
+   * Método para obtener los datos del usuario autenticado como un Observable.
+   *
+   * @returns Observable<RegistroCliente | null> - Un Observable que emite los datos del usuario autenticado o null si no hay datos.
+   */
   getUserData(): Observable<RegistroCliente | null> {
     return this.userData.asObservable();
   }
 
+  /**
+   * Método para obtener el token de autenticación del usuario.
+   * @returns string | null - El token de autenticación o null si no hay token.
+   */
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
 
-
-  // Registrar un nuevo usuario
+  /**
+   * Método para registrar un nuevo usuario en la aplicación como cliente.
+   * @param userData
+   */
   registro(userData: RegistroCliente): Observable<any> {
     return this.http.post(`${this.apiUrl}/api/registro`, userData).pipe(catchError(this.handleError));
   }
 
 
-  // Cerrar sesión
+  /**
+   * Método para cerrar la sesión del usuario y redirigir a la página de inicio.
+   * @returns void
+   */
   logout(): void {
     localStorage.clear();
     this.authState.next(false);
@@ -140,16 +163,30 @@ export class AuthService {
     });
   }
 
+  /**
+   * Método para comprobar si el usuario está autenticado.
+   * @returns boolean - true si el usuario está autenticado, false en caso contrario.
+   */
+
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
+
+  /**
+   * Método para obtener el estado de autenticación del usuario como un Observable.
+   * @returns Observable<boolean> - Un Observable que emite true si el usuario está autenticado, false en caso contrario.
+   */
 
   getAuthState(): Observable<boolean> {
     return this.authState.asObservable();
   }
 
 
-  // Manejo de errores en peticiones HTTP
+  /**
+   * Método privado para manejar los errores de las peticiones HTTP.
+   * @param error
+   * @private
+   */
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Ocurrió un error desconocido';
     if (error.error instanceof ErrorEvent) {
@@ -163,27 +200,40 @@ export class AuthService {
     return throwError(() => new Error(errorMessage));
   }
 
-
-
+  /**
+   * Método para recuperar la contraseña de un usuario.
+   * @param email
+   */
   recuperarContrasena(email: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/api/recuperar-contrasena`, { email });
   }
 
-  // Método para restablecer la contraseña con el token
-  // authService.ts
+  /**
+   * Método para restablecer la contraseña de un usuario.
+   * @param token
+   * @param nuevaContrasena
+   */
   restablecerContrasena(token: string, nuevaContrasena: string): Observable<any> {
     return this.http.post(`https://localhost:8000/api/restablecer-contrasena/${token}`, { contraseña: nuevaContrasena });
   }
 
 
-
+  /**
+   * Método para verificar si un token es válido.
+   * @param token
+   */
   verificarToken(token: string) {
     return this.http.get(`${this.apiUrl}/api/verificar-token/${token}`);
 
   }
 
 
-  // Method to update user information
+  /**
+   * Método para obtener la lista de usuarios registrados en la aplicación.
+   * @param id
+   * @param usuarioEditado
+   */
+
   actualizarUsuario(id: number, usuarioEditado: any): Observable<Usuario> {
     const token = this.getToken();
     const headers = new HttpHeaders({

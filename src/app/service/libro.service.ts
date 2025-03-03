@@ -19,6 +19,11 @@ export class LibroService {
   constructor(private http: HttpClient) { }
 
 
+  /**
+   * Método para obtener todos los libros con paginación.
+   * @param page
+   * @param limit
+   */
   getBooks(page: number = 1, limit: number = 9): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.apiUrl}/all?page=${page}&limit=${limit}`).pipe(
       map(libros =>
@@ -29,6 +34,14 @@ export class LibroService {
       )
     );
   }
+
+  /**
+   * Método para obtener todos los libros con paginación y filtros de categoría y rango de precios.
+   * @param categoryId
+   * @param priceRanges
+   * @param page
+   * @param limit
+   */
 
   getFilteredBooks(categoryId:number | null, priceRanges:string [], page: number = 1, limit: number = 9): Observable<Libro[]> {
     let params:any = {page, limit};
@@ -50,11 +63,21 @@ export class LibroService {
     );
   }
 
+  /**
+   * Método para obtener el detalle de un libro por su ID.
+   * @param id
+   */
+
   getLibroById(id: number): Observable<Libro> {
     return this.http.get<Libro>(`${this.apiUrl}/${id}`);}
 
 
-  // Método para obtener libros por categoría (desde el backend)
+  /**
+   * Método para obtener todos los libros de una categoría con paginación.
+   * @param id
+   * @param page
+   * @param limit
+   */
   getBooksByCategory(id: number, page: number = 1, limit: number = 9): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.apiUrl}/categoria/${id}?page=${page}&limit=${limit}`).pipe(
       map(libros => libros.map(libro => ({
@@ -65,9 +88,11 @@ export class LibroService {
   }
 
 
-
-  // Método para crear un libro
-
+  /**
+   * Método para crear un libro.
+   * @param libro
+   * @returns Observable<LibroNuevo>
+   */
 
   crearLibro(libro: LibroNuevo): Observable<LibroNuevo> {
     return this.http.post<LibroNuevo>(`${this.apiUrl}/guardar?XDEBUG_SESSION_START=14361`, libro, {
@@ -76,7 +101,12 @@ export class LibroService {
   }
 
 
-// Método para editar un libro
+  /**
+   * Método para actualizar un libro.
+   * @param id
+   * @param libro
+   * @returns Observable<LibroCrea>
+   */
   actualizarLibro(id: number, libro: LibroCrea): Observable<LibroCrea> {
     return this.http.put<LibroCrea>(`${this.apiUrl}/editar/${id}`, libro, {
       headers: { 'Content-Type': 'application/json' } // ✅ Ensure JSON format
@@ -86,18 +116,30 @@ export class LibroService {
 
 
 
-// Método para eliminar un libro
+  /**
+   * Método para eliminar un libro.
+   * @param id
+   * @returns Observable<void>
+   */
   eliminarLibro(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/eliminar/${id}`, {
     });
   }
 
 
-  // Método en Angular o cualquier otro frontend que uses para buscar el libro por título
+  /**
+   * Método para buscar un libro por su título.
+   * @returns Observable<LibroCrea[]>
+   */
   buscarLibroPorTitulo(titulo: string): Observable<LibroCrea[]> {
     return this.http.get<LibroCrea[]>(`${this.apiUrl}/search?q=${titulo}`);
   }
 
+  /**
+   * Método para obtener un libro por su ID.
+   * @param libroId
+   *
+   */
   obtenerLibro(libroId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${libroId}`);
   }
