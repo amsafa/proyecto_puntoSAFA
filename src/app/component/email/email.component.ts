@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { EmailService } from '../service/emailService';
-import { UsuarioService } from '../service/usuario.service';
-import { UsuarioResponse } from '../models/usuario-response.model';
+import { EmailService } from '../../service/emailService';
+import { UsuarioService } from '../../service/usuario.service';
+import { UsuarioResponse } from '../../models/usuario-response.model';
 import Swal from 'sweetalert2';
 
 @Component({

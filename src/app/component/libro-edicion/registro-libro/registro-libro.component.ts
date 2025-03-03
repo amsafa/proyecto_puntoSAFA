@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LibroService } from '../../service/libro.service';
-import { LibroCrea } from '../../interface/libro-crea';  // Importando desde libro-crea.ts
+import { LibroService } from '../../../service/libro.service';
+import { LibroCrea } from '../../../interface/libro-crea';  // Importando desde libro-crea.ts
 import { NgIf } from '@angular/common';
-import {LibroNuevo} from '../../interface/libroNuevo';
+import {LibroNuevo} from '../../../interface/libroNuevo';
 
 @Component({
   selector: 'app-registro-libro',

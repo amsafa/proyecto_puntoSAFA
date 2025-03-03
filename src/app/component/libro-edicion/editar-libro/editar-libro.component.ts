@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LibroService } from '../../service/libro.service';
-import { LibroCrea } from '../../interface/libro-crea';
+import { LibroService } from '../../../service/libro.service';
+import { LibroCrea } from '../../../interface/libro-crea';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { NgForOf, NgIf } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { of } from 'rxjs';
-import { Autor } from '../../interface/autor';
-import { Categoria } from '../../interface/categoria';
+import { Autor } from '../../../interface/autor';
+import { Categoria } from '../../../interface/categoria';
 
 @Component({
   selector: 'app-editar-libro',

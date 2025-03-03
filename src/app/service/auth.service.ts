@@ -27,7 +27,12 @@ export class AuthService {
   ) {}
 
 
-  // Iniciar sesión
+  /**
+   *
+   *  Método para iniciar sesión en la aplicación con las credenciales proporcionadas.
+   * @param credentials
+   *
+   */
   async login(credentials: Login): Promise<void> {
     localStorage.removeItem('token'); // Limpiar token anterior
     try {
@@ -57,6 +62,10 @@ export class AuthService {
       this.authState.next(false);
     }
   }
+
+
+
+
 
   fetchUserData(): Promise<RegistroCliente | null> {
     const token = this.getToken();
