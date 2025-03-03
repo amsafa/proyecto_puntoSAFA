@@ -14,7 +14,7 @@ import {LibroNuevo} from '../interface/libroNuevo';
   providedIn: 'root'
 })
 export class LibroService {
-  private apiUrl: string =  `${environment.apiUrl}/api/libro`;
+  private apiUrl: string =  `${environment.apiUrl}/libro`;
 
   constructor(private http: HttpClient) { }
 
