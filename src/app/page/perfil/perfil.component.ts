@@ -88,9 +88,9 @@ export class PerfilComponent implements OnInit {
         this.perfilForm.get('direccion')?.enable();
         this.perfilForm.get('foto')?.enable();
       },
-      //error: () => {
-        //this.errorMessage = 'Error al cargar los datos del perfil.';
-     // }
+      error: () => {
+        this.errorMessage = 'Error al cargar los datos del perfil en el componente.';
+     }
     });
   }
 

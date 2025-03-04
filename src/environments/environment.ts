@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://punto-safa-back-2.onrender.com/',
+  apiUrl: 'https://punto-safa-back-2.onrender.com',
 };
 
 /*
