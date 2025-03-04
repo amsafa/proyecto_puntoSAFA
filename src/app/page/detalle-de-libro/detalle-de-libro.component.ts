@@ -164,7 +164,7 @@ export class DetalleDeLibroComponent {
 
           // Verificar si el error es una instancia de HttpErrorResponse
 //          console.log('El error es de tipo HttpErrorResponse');
-          console.error('Error al enviar la reseña:', {
+          console.error('Error al enviar la reseña desde componente:', {
             status: error.status,
             statusText: error.statusText,
             message: error.message,
