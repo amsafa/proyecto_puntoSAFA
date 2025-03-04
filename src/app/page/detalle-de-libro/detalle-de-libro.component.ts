@@ -153,6 +153,7 @@ export class DetalleDeLibroComponent {
           // Éxito: Ocultar mensajes de error y mostrar notificación de éxito
           this.mostrarErrorCompra = false;
           this.mostrarNotificacion('Reseña enviada con éxito', 'exito');
+          setTimeout(() => {location.reload();}, 1000);
           this.limpiarFormulario();
           this.obtenerResenas(this.libroId); // Actualizar la lista de reseñas
         },
