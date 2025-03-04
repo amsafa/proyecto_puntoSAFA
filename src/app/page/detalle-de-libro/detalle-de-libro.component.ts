@@ -152,18 +152,18 @@ export class DetalleDeLibroComponent {
         next: (response) => {
           // Éxito: Ocultar mensajes de error y mostrar notificación de éxito
           this.mostrarErrorCompra = false;
-          this.mostrarNotificacion('Reseña enviada con éxito', 'exito');
+          //this.mostrarNotificacion('Reseña enviada con éxito', 'exito');
           setTimeout(() => {location.reload();}, 1000);
           this.limpiarFormulario();
           this.obtenerResenas(this.libroId); // Actualizar la lista de reseñas
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error completo:', error);
-          console.log('Tipo de error:', typeof error);
-          console.log('Propiedades del error:', Object.keys(error));
+          //console.error('Error completo:', error);
+          //console.log('Tipo de error:', typeof error);
+          //console.log('Propiedades del error:', Object.keys(error));
 
           // Verificar si el error es una instancia de HttpErrorResponse
-          console.log('El error es de tipo HttpErrorResponse');
+//          console.log('El error es de tipo HttpErrorResponse');
           console.error('Error al enviar la reseña:', {
             status: error.status,
             statusText: error.statusText,
