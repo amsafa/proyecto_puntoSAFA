@@ -9,7 +9,7 @@ import {environment} from '../../environments/environment';
 })
 
 export class CategoriaService {
-  private baseUrl: string = environment.apiUrl;
+  private apiUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -18,6 +18,6 @@ export class CategoriaService {
    * @returns Observable<Categoria[]>
    */
   getCategorias(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(`${this.baseUrl}/categoria/all`);
+    return this.http.get<Categoria[]>(`${this.apiUrl}/categoria/all`);
   }
 }
