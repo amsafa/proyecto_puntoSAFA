@@ -54,6 +54,7 @@ export class ResenaService {
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
 
     });
 
