@@ -177,7 +177,7 @@ export class DetalleDeLibroComponent {
             this.mostrarNotificacion('Debes iniciar sesión para escribir una reseña.', 'error');
           } else if (status === 409) {
             this.mostrarNotificacion('Ya has escrito una reseña para este libro.', 'error');
-          } else {
+          } else if (status !=  200 && status != 201) {
             this.mostrarNotificacion('Error al enviar la reseña. Por favor, inténtalo de nuevo.', 'error');
           }
         },
