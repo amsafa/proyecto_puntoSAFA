@@ -37,7 +37,7 @@ export class ActivarCuentaComponent implements OnInit {
    */
 
   activarCuenta(token: string) {
-    this.http.post('http://localhost:3000/api/activar-cuenta', { token }).subscribe(
+    this.http.post('https://punto-safa-back-2.onrender.com/api/activar-cuenta', { token }).subscribe(
       () => {
         this.mensaje = 'Cuenta activada con éxito. Redirigiendo al login...';
         setTimeout(() => this.router.navigate(['/login']), 3000);
