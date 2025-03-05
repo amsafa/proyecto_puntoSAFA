@@ -10,7 +10,6 @@ import {environment} from '../../../environments/environment';
   styleUrl: './activar-cuenta.component.css'
 })
 export class ActivarCuentaComponent implements OnInit {
-  private apiUrl = environment.apiUrl;
 
   mensaje: string = 'Activando cuenta...';
 
@@ -39,7 +38,7 @@ export class ActivarCuentaComponent implements OnInit {
    */
 
   activarCuenta(token: string) {
-    this.http.post(`${this.apiUrl}/api/activar-cuenta`, { token }).subscribe(
+    this.http.post('http://localhost:3000/api/activar-cuenta', { token }).subscribe(
       () => {
         this.mensaje = 'Cuenta activada con éxito. Redirigiendo al login...';
         setTimeout(() => this.router.navigate(['/login']), 3000);
