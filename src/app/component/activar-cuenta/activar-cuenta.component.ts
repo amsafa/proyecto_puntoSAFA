@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-activar-cuenta',
@@ -9,6 +10,7 @@ import {HttpClient} from '@angular/common/http';
   styleUrl: './activar-cuenta.component.css'
 })
 export class ActivarCuentaComponent implements OnInit {
+  private apiUrl = environment.apiUrl;
 
   mensaje: string = 'Activando cuenta...';
 
@@ -37,7 +39,7 @@ export class ActivarCuentaComponent implements OnInit {
    */
 
   activarCuenta(token: string) {
-    this.http.post('https://punto-safa-back-2.onrender.com/api/activar-cuenta', { token }).subscribe(
+    this.http.post(`${this.apiUrl}/api/activar-cuenta`, { token }).subscribe(
       () => {
         this.mensaje = 'Cuenta activada con éxito. Redirigiendo al login...';
         setTimeout(() => this.router.navigate(['/login']), 3000);
